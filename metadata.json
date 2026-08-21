@@ -1,0 +1,8 @@
+{
+  "name": "Remix EzBookNowUserScreenPrototypes",
+  "description": "Imported from GitHub: mdcr-yemaungmaung/EzBookNowUserScreenPrototypes",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

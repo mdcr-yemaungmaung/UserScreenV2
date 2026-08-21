@@ -1,0 +1,1256 @@
+/* ============================================================
+   EzBookNow Layouts — Portal-specific layout structures
+   ============================================================ */
+
+/* === App Shell === */
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   USER PORTAL LAYOUT — Public website style
+   ========================================================= */
+
+/* --- User Header (Global Nav) --- */
+.user-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--color-outline-variant);
+  height: var(--header-height);
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  transition: box-shadow var(--transition-normal);
+}
+.user-header.scrolled {
+  box-shadow: var(--shadow-md);
+}
+.user-header__logo {
+  font-family: var(--font-headline);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.user-header__search {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 var(--space-4);
+  position: relative;
+}
+.user-header__search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-4) 0 40px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-size: var(--text-body-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.user-header__search input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(19, 21, 70, 0.1);
+  outline: none;
+}
+.user-header__search .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-outline);
+  pointer-events: none;
+}
+.user-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+.header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  color: var(--color-on-surface);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+}
+.header-btn:hover {
+  background: var(--color-surface-container);
+  color: var(--color-primary);
+}
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--color-error, #ef4444);
+  color: #ffffff;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-surface, #ffffff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(25%, -25%);
+}
+.notification-badge:empty {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  top: 4px;
+  right: 4px;
+  transform: none;
+}
+.user-header__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.user-header__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- User Content Area --- */
+.user-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.user-content {
+  flex: 1;
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-margin-desktop);
+}
+
+/* --- User Footer --- */
+.user-footer {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--space-12) var(--space-margin-desktop);
+  margin-top: auto;
+}
+.user-footer__grid {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-8);
+}
+.user-footer__col h4 {
+  font-size: var(--text-body-md);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  color: var(--color-secondary-container);
+}
+.user-footer__col a {
+  display: block;
+  padding: var(--space-1) 0;
+  font-size: var(--text-body-sm);
+  color: rgba(255, 255, 255, 0.7);
+  transition: color var(--transition-fast);
+}
+.user-footer__col a:hover { color: var(--color-secondary-container); }
+.user-footer__bottom {
+  max-width: var(--content-max-width);
+  margin: var(--space-8) auto 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+  font-size: var(--text-label-sm);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- User Mobile Bottom Nav --- */
+.user-mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-fixed);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-outline-variant);
+  height: var(--mobile-nav-height);
+  padding: 0 var(--space-2);
+}
+.user-mobile-nav__items {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+.user-mobile-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-outline);
+  transition: color var(--transition-fast);
+  position: relative;
+  min-width: 56px;
+}
+.user-mobile-nav__item.active {
+  color: var(--color-primary);
+}
+.user-mobile-nav__item .nav-icon {
+  font-size: 20px;
+}
+.user-mobile-nav__item .nav-badge {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-error);
+  border-radius: var(--radius-full);
+}
+
+/* =========================================================
+   ADMIN / SHOP PORTAL LAYOUT — Console style with sidebar
+   ========================================================= */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-fixed);
+  transition: transform var(--transition-normal);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.admin-sidebar__brand {
+  padding: var(--space-5) var(--space-5);
+  border-bottom: 1px solid var(--color-surface-container);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--header-height);
+}
+.admin-sidebar__brand-logo {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+.admin-sidebar__brand-sub {
+  font-size: var(--text-label-sm);
+  color: var(--color-on-surface-variant);
+  margin-top: 2px;
+}
+.admin-sidebar__nav {
+  flex: 1;
+  padding: var(--space-3) var(--space-3);
+}
+.admin-sidebar__section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-outline);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+}
+.admin-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: 2px;
+  position: relative;
+  white-space: nowrap;
+}
+.admin-sidebar__item:hover {
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+}
+.admin-sidebar__item.active {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  font-weight: 600;
+}
+.admin-sidebar__item .nav-icon {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.admin-sidebar__item .nav-badge {
+  margin-left: auto;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  min-width: 20px;
+  text-align: center;
+}
+.admin-sidebar__footer {
+  padding: var(--space-3);
+  border-top: 1px solid var(--color-surface-container);
+}
+
+/* --- Admin Header Bar --- */
+.admin-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--color-outline-variant);
+  height: var(--header-height);
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition-normal);
+}
+.admin-header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.admin-header__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  color: var(--color-on-surface);
+  transition: background var(--transition-fast);
+}
+.admin-header__hamburger:hover {
+  background: var(--color-surface-container);
+}
+.admin-header__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+.admin-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* --- Admin Content Area --- */
+.admin-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: var(--space-6);
+  background: var(--color-bg);
+  min-height: calc(100vh - var(--header-height));
+  transition: margin-left var(--transition-normal);
+}
+.admin-content__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   LOGIN LAYOUT — Centered card
+   ========================================================= */
+.login-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  padding: var(--space-6);
+}
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+}
+.login-card__logo {
+  width: 64px;
+  height: 64px;
+  background: var(--color-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+  color: var(--color-on-primary);
+  font-size: 28px;
+}
+.login-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: 600;
+  color: var(--color-on-surface);
+  margin-bottom: var(--space-1);
+}
+.login-card__subtitle {
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--space-6);
+}
+.login-card__form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  text-align: left;
+}
+.login-card__footer {
+  margin-top: var(--space-6);
+  font-size: var(--text-label-sm);
+  color: var(--color-outline);
+}
+
+/* =========================================================
+   PAGE HEADER — Reusable page title bar
+   ========================================================= */
+.page-header {
+  margin-bottom: var(--space-6);
+}
+.page-header__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+.page-header__subtitle {
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  margin-top: var(--space-1);
+}
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.page-header--row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.page-header--row .page-header__actions {
+  margin-top: 0;
+}
+
+/* =========================================================
+   MOBILE-FIRST RESPONSIVE LAYOUTS
+   ========================================================= */
+
+/* --- 2-column layout helper: sidebar + content --- */
+.layout-sidebar {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+.layout-sidebar-right {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-8);
+  align-items: start;
+}
+.layout-sidebar > aside,
+.layout-sidebar-right > aside,
+.layout-sidebar > .card,
+.layout-sidebar-right > .card {
+  position: sticky;
+  top: 84px;
+  align-self: start;
+}
+
+/* --- Restaurant grid --- */
+.restaurant-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+.restaurant-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE — Sidebar & Header adjustments
+   ========================================================= */
+@media (max-width: 768px) {
+  /* User header mobile */
+  .user-header {
+    padding: 0 var(--space-4);
+    height: auto;
+    min-height: 56px;
+    flex-wrap: nowrap;
+  }
+  .user-header__logo {
+    font-size: 18px;
+  }
+  .user-header__search {
+    display: none;
+    margin: 0;
+  }
+  .user-header__search.open {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+    max-width: none;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-outline-variant);
+    z-index: var(--z-sticky);
+  }
+  .user-header__actions {
+    gap: var(--space-1);
+  }
+
+  /* User content */
+  .user-content {
+    padding: var(--space-4) var(--space-margin-mobile);
+    padding-bottom: calc(var(--mobile-nav-height) + 84px);
+    max-width: 100vw !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .user-mobile-nav {
+    display: block;
+  }
+
+  /* Version badge positioning on mobile */
+  #app-version-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  /* User footer */
+  .user-footer {
+    display: none !important;
+  }
+
+/* Fix Leaflet map z-index so it never overlaps fixed buttons or navigation bars */
+.leaflet-container,
+.leaflet-pane {
+  z-index: 10 !important;
+}
+.leaflet-top, 
+.leaflet-bottom {
+  z-index: 20 !important;
+}
+
+/* Ensure mobile fixed CTA buttons always stay above maps and content */
+.hide-desktop[style*="position:fixed"],
+.hide-desktop[style*="position: fixed"] {
+  z-index: 9999 !important;
+}
+
+  /* Admin sidebar */
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-xl);
+  }
+  .admin-header {
+    margin-left: 0;
+    padding: 0 var(--space-4);
+  }
+  .admin-header__hamburger {
+    display: flex;
+  }
+  .admin-content {
+    margin-left: 0;
+    padding: var(--space-4);
+  }
+
+  /* Layout helpers - stack on mobile */
+  .layout-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .layout-sidebar-right {
+    grid-template-columns: 1fr;
+  }
+  .restaurant-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .restaurant-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Page header */
+  .page-header--row {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .user-content {
+    padding: var(--space-6) var(--space-6);
+  }
+  .user-footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .layout-sidebar {
+    grid-template-columns: 240px 1fr;
+  }
+  .layout-sidebar-right {
+    grid-template-columns: 1fr 280px;
+  }
+  .restaurant-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Sidebar overlay on mobile --- */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: calc(var(--z-fixed) - 1);
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* --- Dropdown Menu --- */
+.dropdown {
+  position: relative;
+}
+.dropdown__menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  z-index: var(--z-dropdown);
+  display: none;
+  animation: fadeIn var(--transition-fast) ease;
+}
+.dropdown__menu.open {
+  display: block;
+}
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  width: 100%;
+  text-align: left;
+}
+.dropdown__item:hover {
+  background: var(--color-surface-container-low);
+}
+.dropdown__divider {
+  height: 1px;
+  background: var(--color-surface-container);
+  margin: var(--space-2) 0;
+}
+.dropdown__menu--right {
+  right: 0;
+  left: auto;
+}
+.dropdown__menu--notifications {
+  width: 340px;
+  max-width: 90vw;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl, 0 10px 25px -5px rgba(0, 0, 0, 0.15));
+}
+.dropdown-notif-header {
+  padding: 12px 16px;
+  background: var(--color-surface-container-low);
+  border-bottom: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dropdown-notif-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-on-surface);
+}
+.dropdown-notif-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+.dropdown-notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.dropdown-notif-item:last-child {
+  border-bottom: none;
+}
+.dropdown-notif-item:hover {
+  background: var(--color-surface-container);
+}
+.dropdown-notif-item.unread {
+  background: rgba(99, 102, 241, 0.06);
+}
+.dropdown-notif-item__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  line-height: 1.3;
+}
+.dropdown-notif-item__body {
+  font-size: 12px;
+  color: var(--color-outline);
+  margin-top: 2px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.dropdown-notif-item__time {
+  font-size: 10px;
+  color: var(--color-outline);
+  margin-top: 4px;
+}
+.dropdown-notif-footer {
+  padding: 10px 16px;
+  background: var(--color-surface-container-low);
+  border-top: 1px solid var(--color-outline-variant);
+  text-align: center;
+}
+.dropdown-notif-footer button {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dropdown-notif-footer button:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   S-04 AVAILABILITY LAYOUTS
+   ========================================================= */
+.availability-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.availability-time-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.availability-shift-col {
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+@media (max-width: 768px) {
+  .availability-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .availability-time-group {
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .availability-shift-col {
+    min-width: unset;
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   MOBILE BOOKING PROGRESS — Compact on small screens
+   ========================================================= */
+@media (max-width: 480px) {
+  .booking-progress__label {
+    display: none;
+  }
+  .booking-progress__line {
+    width: 24px;
+    margin: 0 var(--space-1);
+  }
+}
+
+/* =========================================================
+   SAFE AREA SUPPORT (iPhone notch / home indicator)
+   ========================================================= */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .user-mobile-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+    height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 768px) {
+    .user-content {
+      padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + var(--space-4));
+    }
+  }
+}
+
+/* =========================================================
+   SHOP PORTAL RESPONSIVE SYSTEM (S-01 to S-20)
+   ========================================================= */
+
+/* 1. Shop Main Content Container Responsive Spacing */
+@media (max-width: 992px) {
+  .admin-content,
+  .shop-content,
+  .admin-main,
+  .shop-main {
+    padding: 12px !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* 2. Responsive Table Wrappers for all Shop Tables */
+.table-responsive,
+.table-container,
+.data-table-container,
+.s02-table-container,
+.admin-table-wrapper,
+div[style*="overflow-x:auto"],
+div[style*="overflow-x: auto"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@media (max-width: 768px) {
+  table.data-table,
+  table.table,
+  .s02-table,
+  .table-responsive table {
+    min-width: 540px;
+  }
+}
+
+/* 3. Header & Filter Control Row Flex Wrapping */
+@media (max-width: 768px) {
+  .s02-header__top,
+  .s02-controls,
+  .filter-bar,
+  .action-bar-row,
+  .shop-header-row,
+  .page-header-actions {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .s02-controls > div,
+  .s02-controls input,
+  .s02-controls select,
+  .filter-bar input,
+  .filter-bar select {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* S-02 KPI Stat Row Grid on Mobile */
+  .s02-kpi-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  
+  .s02-kpi {
+    min-width: 0 !important;
+    padding: 10px 12px !important;
+  }
+  .s02-kpi__value {
+    font-size: 18px !important;
+  }
+  .s02-kpi__label {
+    font-size: 11px !important;
+  }
+
+  .s02-view-tabs {
+    width: 100% !important;
+    display: flex !important;
+  }
+  .s02-view-tab {
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* 4. Form Grids & Multi-Column Layout Collapsing on Mobile */
+@media (max-width: 768px) {
+  .form-grid,
+  .form-row,
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .restaurant-grid-2,
+  .restaurant-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Inline styled grids on shop screens */
+  div[style*="display: grid"][style*="grid-template-columns: 1fr 1fr"],
+  div[style*="display: grid"][style*="grid-template-columns: 2fr 1fr"],
+  div[style*="display: grid"][style*="grid-template-columns: 1fr 2fr"],
+  div[style*="display:grid"][style*="grid-template-columns: 1fr 1fr"],
+  div[style*="display:grid"][style*="grid-template-columns: 2fr 1fr"],
+  div[style*="display:grid"][style*="grid-template-columns: repeat(2"],
+  div[style*="display:grid"][style*="grid-template-columns: repeat(3"],
+  div[style*="display:grid"][style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* 5. Modals & Dialog Sizing for Mobile (S-03a, S-03b, S-06, S-08, S-12) */
+@media (max-width: 768px) {
+  .modal-dialog,
+  .modal-content,
+  .s03-modal,
+  .s03b-modal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 12px auto !important;
+    padding: 16px !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* 6. Horizontally Scrollable Tabs Bar (S-02, S-05, S-10, S-20) */
+.tab-row,
+.tabs,
+.s05-tabs,
+.nav-tabs {
+  display: flex !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  white-space: nowrap !important;
+  padding-bottom: 4px !important;
+  max-width: 100% !important;
+}
+
+/* 7. Specific Screen Mobile Responsive Polish */
+@media (max-width: 480px) {
+  .availability-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .availability-time-group {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .stepper, .step-indicator {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    justify-content: center !important;
+  }
+  .step-item {
+    font-size: 11px !important;
+  }
+
+  .login-card {
+    width: 100% !important;
+    padding: 20px 16px !important;
+  }
+}
+
+/* =========================================================
+   ADMIN PORTAL RESPONSIVE SYSTEM (AD-01 to AD-17)
+   ========================================================= */
+
+/* 1. Admin Main Layout & Sidebar Handling on Mobile/Tablet */
+@media (max-width: 992px) {
+  .admin-layout {
+    display: block !important;
+  }
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 260px !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2) !important;
+  }
+  .admin-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .admin-header {
+    margin-left: 0 !important;
+    padding: 10px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .admin-header__hamburger {
+    display: flex !important;
+  }
+  .admin-header__title {
+    font-size: 16px !important;
+  }
+
+  .admin-content,
+  .admin-main,
+  .admin-body {
+    margin-left: 0 !important;
+    padding: 12px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* 2. Responsive Tables for all Admin Data Tables */
+.admin-table-wrapper,
+.ad-table-container,
+.ad03-table-container,
+.ad04-table-container,
+.ad08-table-container,
+.ad15-table-container,
+.ad16-table-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: var(--radius-lg, 12px);
+  margin-bottom: 16px;
+}
+
+@media (max-width: 992px) {
+  .admin-content table,
+  table.data-table,
+  .ad-table,
+  .ad03-table,
+  .ad08-table,
+  .ad15-table,
+  .ad16-table {
+    min-width: 620px;
+  }
+}
+
+/* 3. Admin KPI Stat Card Grids (AD-01, AD-04, AD-06, AD-12) */
+@media (max-width: 992px) {
+  .ad-kpi-row,
+  .admin-stats-grid,
+  .admin-grid-4,
+  .admin-grid-3 {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-kpi-row,
+  .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 4. Filter Rows & Action Headers Flex Collapsing */
+@media (max-width: 768px) {
+  .admin-page-header,
+  .admin-controls,
+  .ad-filter-bar,
+  .ad02-controls,
+  .ad04-controls,
+  .ad08-controls,
+  .ad16-controls,
+  .admin-actions-row {
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .admin-controls > div,
+  .admin-controls input,
+  .admin-controls select,
+  .ad-filter-bar input,
+  .ad-filter-bar select,
+  .admin-actions-row button {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Admin Segment Tabs / Filter Pills */
+  .admin-tabs,
+  .ad-tabs,
+  .ad04-tabs,
+  .ad08-tabs,
+  .ad16-tabs {
+    display: flex !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    padding-bottom: 4px !important;
+  }
+  
+  .admin-tab-btn,
+  .ad-tab-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* 5. Split-View & Master Detail Grids (AD-02, AD-04, AD-15, AD-16) */
+@media (max-width: 992px) {
+  .admin-split-grid,
+  .ad16-split-layout,
+  .master-detail-grid,
+  div[style*="display: grid"][style*="grid-template-columns: 280px 1fr"],
+  div[style*="display: grid"][style*="grid-template-columns: 320px 1fr"],
+  div[style*="display: grid"][style*="grid-template-columns: 1fr 320px"],
+  div[style*="display:grid"][style*="grid-template-columns: 280px 1fr"],
+  div[style*="display:grid"][style*="grid-template-columns: 320px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/* 6. Admin Dialogs & Modal Windows (AD-02, AD-03, AD-05, AD-15, AD-16) */
+@media (max-width: 768px) {
+  .admin-modal,
+  .ad-modal-dialog,
+  .ad-modal-content {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 12px auto !important;
+    padding: 16px !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* 7. Admin Chart Cards & Dashboard Widgets (AD-01, AD-04, AD-12) */
+@media (max-width: 768px) {
+  .admin-chart-card,
+  .admin-widget {
+    width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .admin-chart-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 220px !important;
+  }
+}

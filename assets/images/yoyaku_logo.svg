@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" width="680" height="200" fill="none">
+  <defs>
+    <!-- Left Half Gradient (Rich Crimson) -->
+    <linearGradient id="fullPinLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93181F"/>
+      <stop offset="100%" stop-color="#7C0E15"/>
+    </linearGradient>
+    <!-- Right Half Gradient (Deep Burgundy Shadow) -->
+    <linearGradient id="fullPinRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6F0A11"/>
+      <stop offset="100%" stop-color="#55050A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ICON GROUP -->
+  <g transform="translate(10, 5)">
+    <!-- LEFT HALF OF PIN -->
+    <path d="M 85 10 C 48 10 18 40 18 78 C 18 114 52 152 85 190 L 85 10 Z" fill="url(#fullPinLeft)" />
+
+    <!-- RIGHT HALF OF PIN -->
+    <path d="M 85 10 L 85 190 C 118 152 152 114 152 78 C 152 40 122 10 85 10 Z" fill="url(#fullPinRight)" />
+
+    <!-- SPOON CUTOUT (Light Ivory Cream) -->
+    <path d="
+      M 79 184
+      C 80 162 74 132 66 110
+      C 56 87 57 48 85 48
+      C 113 48 114 87 104 110
+      C 96 132 90 162 91 184
+      Z"
+      fill="#FFF7E8"
+    />
+
+    <!-- CENTER RED DOT -->
+    <circle cx="85" cy="82" r="12" fill="#7C0E15" />
+    <circle cx="83" cy="80" r="11" fill="#93181F" />
+  </g>
+
+  <!-- WORDMARK "Yoyaku" -->
+  <text
+    x="185"
+    y="142"
+    font-family="'Plus Jakarta Sans', 'Inter', 'Outfit', system-ui, -apple-system, sans-serif"
+    font-size="116"
+    font-weight="900"
+    letter-spacing="-0.035em"
+    fill="#1B2028"
+  >
+    Yoyaku
+  </text>
+</svg>
