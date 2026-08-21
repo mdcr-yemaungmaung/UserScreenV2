@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const { renderRatingBadge, renderCuisineTag } = window.YoyakuComponents || {};
 
   function renderDiningPlateIcon() {
     return `
@@ -290,15 +291,10 @@
                     loading="lazy"
                   />
                   <div class="absolute top-3 right-3 z-10">
-                    <span class="inline-flex items-center gap-1 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-label font-bold text-[#231916] shadow-md">
-                      <span class="material-symbols-outlined text-xs text-[#D08E1C] fill-1 leading-none">star</span>
-                      <span class="leading-none">${r.rating || '4.9'}</span>
-                    </span>
+                    ${renderRatingBadge(r)}
                   </div>
                   <div class="absolute bottom-3 left-3 z-10">
-                    <span class="inline-flex items-center bg-[#840f16]/95 backdrop-blur-md text-white text-[11px] font-label font-bold px-3 py-1 rounded-xl shadow-md">
-                      ${r.cuisine || 'Fine Dining'}
-                    </span>
+                    ${renderCuisineTag(r.cuisine || 'Fine Dining', true)}
                   </div>
                 </div>
 

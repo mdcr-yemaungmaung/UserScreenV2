@@ -1,7 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
-  const { generateCalendarGrid } = window.YoyakuComponents;
+  const { generateCalendarGrid, renderRatingBadge } = window.YoyakuComponents || {};
 
 
 
@@ -61,11 +61,7 @@
 
           <div class="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 text-white space-y-3 z-10">
             <div>
-              <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md text-[#231916] px-3.5 py-1.5 rounded-xl font-label text-xs sm:text-sm font-bold shadow-lg">
-                <span class="material-symbols-outlined text-sm sm:text-base text-[#D08E1C] fill-1 leading-none">star</span>
-                <span class="leading-none">${restaurant.rating}</span>
-                <span class="text-[#58413f] font-medium leading-none text-xs">(${restaurant.reviewCount} ${isMm ? 'သုံးသပ်ချက်များ' : 'reviews'})</span>
-              </span>
+              ${renderRatingBadge(restaurant)}
             </div>
 
             <h1 class="font-headline text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight drop-shadow-md">

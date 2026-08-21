@@ -2,7 +2,7 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA } = window.YoyakuData;
-  const { renderRestaurantCard, attachRestaurantCardEvents } = window.YoyakuComponents;
+  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
 
@@ -405,7 +405,7 @@
             ${COLLECTIONS_DATA.map(col => `
               <div
                 data-collection-target="${col.targetRestaurantId}"
-                class="shrink-0 w-[270px] h-[320px] sm:w-[320px] sm:h-[360px] lg:w-auto lg:h-[380px] snap-start group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-end p-5 sm:p-6 lg:p-7 text-left text-white border border-white/10"
+                class="shrink-0 w-[270px] h-[320px] sm:w-[320px] sm:h-[360px] lg:w-auto lg:h-[380px] snap-start group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-end p-4 sm:p-5 lg:p-6 text-left text-white border border-white/10"
               >
                 <img
                   src="${col.image}"
@@ -421,9 +421,7 @@
                 <!-- Card Content -->
                 <div class="relative z-10 space-y-2">
                   <div>
-                    <span class="inline-block bg-[#D08E1C]/95 backdrop-blur-md text-white font-label text-[10px] sm:text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
-                      ${isMm ? col.categoryTagMM : col.categoryTag}
-                    </span>
+                    ${renderCuisineTag(isMm ? col.categoryTagMM : col.categoryTag, true)}
                   </div>
                   <h3 class="font-headline text-lg sm:text-xl lg:text-2xl font-extrabold text-white leading-tight">
                     ${isMm ? col.titleMM : col.title}
@@ -483,7 +481,7 @@
               return `
               <div
                 data-card-select-id="${r.id}"
-                class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+                class="shrink-0 w-[240px] h-[370px] sm:w-[280px] sm:h-[380px] lg:w-auto lg:h-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
               >
                 <!-- Image Container -->
                 <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
@@ -495,38 +493,15 @@
                     onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-
-                  <!-- Favorite Button Top Right -->
-                  <button
-                    data-card-fav-id="${r.id}"
-                    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
-                    title="Favorite"
-                    aria-label="Add to Favorites"
-                  >
-                    <span class="material-symbols-outlined text-lg ${state.favorites.includes(r.id) ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
-                  </button>
-
-                  <!-- Cuisine Tag Top Left -->
-                  <div class="absolute top-3 left-3 z-10">
-                    <span class="inline-block bg-[#840f16]/95 backdrop-blur-md text-white px-3 py-1 rounded-xl font-label text-[10px] font-bold uppercase tracking-wider shadow-md">
-                      ${r.cuisine}
-                    </span>
-                  </div>
-
-                  <!-- Rating & Reviews Span Box Bottom Left -->
-                  <div class="absolute bottom-3 left-3 z-10">
-                    <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl shadow-md text-xs font-label font-bold text-[#231916]">
-                      <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-                      <span class="leading-none">${r.rating}</span>
-                      <span class="text-[#58413f] font-medium leading-none text-[11px]">(${r.reviewCount || 120})</span>
-                    </span>
-                  </div>
+                  ${renderImageGradient()}
+                  ${renderFavoriteButton(r.id, state.favorites.includes(r.id))}
+                  ${renderCuisineTagOnImage(r.cuisine)}
+                  ${renderRatingBadge(r)}
                 </div>
 
                 <!-- Card Content Area: Main Highlight is Venue Name -->
-                <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
-                  <div class="space-y-2">
+                <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+                  <div class="space-y-1.5 sm:space-y-2">
                     <!-- Venue Name (MAIN HIGHLIGHT) -->
                     <h3 class="font-headline text-base sm:text-lg font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1">
                       ${venueTitle}
@@ -549,7 +524,7 @@
                   </div>
 
                   <!-- Price Row -->
-                  <div class="pt-2.5 border-t border-[#EADFD1] flex items-center justify-between">
+                  <div class="pt-2 border-t border-[#EADFD1] flex items-center justify-between">
                     <span class="font-label text-xs text-[#58413f] font-medium">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
                     <span class="font-label text-xs font-extrabold text-[#840f16]">${fitPrice}</span>
                   </div>
@@ -577,7 +552,7 @@
 
           <div class="mobile-horizontal-scroll px-0 pt-3 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
             ${RESTAURANTS_DATA.map(restaurant => `
-              <div class="shrink-0 w-[320px] h-[370px] lg:w-auto lg:h-auto snap-start flex">
+              <div class="shrink-0 w-[320px] h-[370px] lg:w-auto lg:h-auto snap-start">
                 ${renderRestaurantCard(restaurant, state)}
               </div>
             `).join('')}

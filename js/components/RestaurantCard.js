@@ -2,6 +2,81 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
 
+  // ============================================================
+  // Shared Overlay Components (Consistent across all card variants)
+  // ============================================================
+
+  // Gradient overlay on image bottom for text readability
+  function renderImageGradient() {
+    return `<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>`;
+  }
+
+  // Favorite heart button (top-right)
+  function renderFavoriteButton(restaurantId, isFavorite) {
+    return `
+      <button
+        data-card-fav-id="${restaurantId}"
+        class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
+        title="Favorite"
+        aria-label="Add to Favorites"
+      >
+        <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
+      </button>
+    `;
+  }
+
+  // Rating badge (bottom-left on image)
+  function renderRatingBadge(restaurant) {
+    return `
+      <div class="absolute bottom-3 left-3 z-10">
+        <span class="inline-flex items-center gap-1.5 bg-[#840f16]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
+          <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+          <span class="leading-none">${restaurant.rating}</span>
+          <span class="text-white/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+        </span>
+      </div>
+    `;
+  }
+
+  // Rating badge with promo tag on right (for Search Result cards)
+  function renderRatingBadgeWithPromo(restaurant) {
+    return `
+      <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
+        <!-- Review Tag (Left) -->
+        <span class="inline-flex items-center gap-1.5 bg-[#840f16]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-white pointer-events-auto">
+          <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+          <span class="leading-none">${restaurant.rating}</span>
+          <span class="text-white/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+        </span>
+        <!-- Promotion Tag (Right) -->
+        ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, true) : ''}
+      </div>
+    `;
+  }
+
+  // Cuisine tag on image (top-left) - used in Trending style
+  function renderCuisineTagOnImage(cuisine) {
+    return renderCuisineTag(cuisine, true);
+  }
+
+  // Shared cuisine/category tag - works both on-image and in-content
+  function renderCuisineTag(cuisine, onImage = false) {
+    const baseClasses = 'inline-flex items-center font-label text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-xl shadow-md text-white';
+    const onImageClasses = 'bg-[#840f16]/95 backdrop-blur-md';
+    const inContentClasses = 'bg-[#840f16]';
+    
+    return `<span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}">${cuisine}</span>`;
+  }
+
+  // Shared promo/offer tag
+  function renderPromoTag(offerTag, onImage = false) {
+    const baseClasses = 'inline-flex items-center font-label text-[11px] sm:text-xs font-extrabold tracking-wide px-3 py-1 sm:py-1.5 rounded-xl shadow-md';
+    const onImageClasses = 'bg-[#D08E1C]/95 backdrop-blur-md text-white shrink-0';
+    const inContentClasses = 'bg-[#E59819] text-white'; // promo-badge-yellow
+    
+    return `<span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}" title="${offerTag}"><span class="font-extrabold text-white truncate max-w-[120px] sm:max-w-none">${offerTag}</span></span>`;
+  }
+
   // U-01 Home Page Restaurant Card (Keeps standard Reserve Table button & footer promotion tag)
   function renderRestaurantCard(restaurant, state) {
     const isFavorite = state.favorites.includes(restaurant.id);
@@ -21,37 +96,17 @@
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
 
-          <!-- Gradient overlay on bottom of image for readability -->
-          <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
-
-          <!-- Favorite Heart Button Top Right -->
-          <button
-            data-card-fav-id="${restaurant.id}"
-            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
-            title="Favorite"
-            aria-label="Add to Favorites"
-          >
-            <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
-          </button>
-
-          <!-- Rating & Review Span Box Bottom Left ON Image -->
-          <div class="absolute bottom-3 left-3 z-10">
-            <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916]">
-              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-              <span class="leading-none">${restaurant.rating}</span>
-              <span class="text-[#58413f] font-medium leading-none">(${restaurant.reviewCount})</span>
-            </span>
-          </div>
+          ${renderImageGradient()}
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
+          ${renderRatingBadge(restaurant)}
         </div>
 
         <!-- Card Content Body -->
-        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
-          <div class="space-y-1.5">
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+          <div class="space-y-1 sm:space-y-1.5">
             <!-- Cuisine Tag -->
             <div>
-              <span class="bg-[#F0E6D8] text-[#840f16] font-label text-[10px] font-extrabold uppercase tracking-widest px-3 py-0.5 rounded-full inline-block">
-                ${restaurant.cuisine}
-              </span>
+              ${renderCuisineTag(restaurant.cuisine, false)}
             </div>
 
             <!-- Restaurant Name -->
@@ -77,9 +132,7 @@
 
           <!-- Footer Row: Offer & Action Button -->
           <div class="pt-3 border-t border-[#EADFD1] flex items-center justify-between gap-2">
-            <div class="promo-badge-yellow text-white font-label text-[11px] sm:text-xs font-extrabold px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-xs truncate max-w-[60%]" title="${restaurant.offerTag || '20% OFF'}">
-              <span class="truncate font-extrabold text-white">${restaurant.offerTag || '20% OFF'}</span>
-            </div>
+            ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, false) : renderPromoTag('20% OFF', false)}
             <button
               data-card-reserve-id="${restaurant.id}"
               class="bg-[#840f16] hover:bg-[#6c0c11] active:scale-95 text-white px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full font-label text-xs font-bold shadow-md transition-all cursor-pointer whitespace-nowrap shrink-0"
@@ -116,44 +169,18 @@
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
 
-          <!-- Gradient overlay on bottom of image for readability -->
-          <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
-
-          <!-- Favorite Heart Button Top Right -->
-          <button
-            data-card-fav-id="${restaurant.id}"
-            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
-            title="Favorite"
-            aria-label="Add to Favorites"
-          >
-            <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
-          </button>
-
-          <!-- Image Bottom Tags: Review Tag on Left & Promotion Tag on Right Most -->
-          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
-            <!-- Review Tag (Left) -->
-            <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916] pointer-events-auto">
-              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-              <span class="leading-none">${restaurant.rating}</span>
-              <span class="text-[#58413f] font-medium leading-none">(${restaurant.reviewCount})</span>
-            </span>
-
-            <!-- Promotion Tag (Right-most beside review tag) -->
-            ${restaurant.offerTag ? 
-            `<span class="inline-flex items-center bg-[#D08E1C]/95 backdrop-blur-md text-white font-label text-[11px] sm:text-xs font-extrabold tracking-wide px-3 py-1 sm:py-1.5 rounded-xl shadow-md shrink-0 pointer-events-auto" title="${restaurant.offerTag}">
-                <span class="font-extrabold text-white truncate max-w-[120px] sm:max-w-none">${restaurant.offerTag}</span>
-             </span>` : ''}
-          </div>
+          ${renderImageGradient()}
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
+          ${renderRatingBadge(restaurant)}
+          ${restaurant.offerTag ? `<div class="absolute bottom-3 right-3 z-10">${renderPromoTag(restaurant.offerTag, true)}</div>` : ''}
         </div>
 
         <!-- Card Content Body -->
-        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3 sm:space-y-4">
-          <div class="space-y-1.5">
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+          <div class="space-y-1 sm:space-y-1.5">
             <!-- Cuisine Tag -->
             <div>
-              <span class="bg-[#F0E6D8] text-[#840f16] font-label text-[10px] font-extrabold uppercase tracking-widest px-3 py-0.5 rounded-full inline-block">
-                ${restaurant.cuisine}
-              </span>
+              ${renderCuisineTag(restaurant.cuisine, false)}
             </div>
 
             <!-- Restaurant Name -->
@@ -265,4 +292,11 @@
   window.YoyakuComponents.renderRestaurantCard = renderRestaurantCard;
   window.YoyakuComponents.renderSearchResultCard = renderSearchResultCard;
   window.YoyakuComponents.attachRestaurantCardEvents = attachRestaurantCardEvents;
+  window.YoyakuComponents.renderImageGradient = renderImageGradient;
+  window.YoyakuComponents.renderFavoriteButton = renderFavoriteButton;
+  window.YoyakuComponents.renderRatingBadge = renderRatingBadge;
+  window.YoyakuComponents.renderRatingBadgeWithPromo = renderRatingBadgeWithPromo;
+  window.YoyakuComponents.renderCuisineTag = renderCuisineTag;
+  window.YoyakuComponents.renderCuisineTagOnImage = renderCuisineTagOnImage;
+  window.YoyakuComponents.renderPromoTag = renderPromoTag;
 })();
