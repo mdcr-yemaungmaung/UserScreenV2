@@ -63,6 +63,19 @@
     `;
   }
 
+  // Mobile status icon (icon-only, no text, no box shape)
+  function renderStatusIcon(status) {
+    const s = (status || '').toLowerCase();
+    const statusConfig = {
+      confirmed: { icon: 'check_circle', color: '#059669' },
+      pending: { icon: 'schedule', color: '#D97706' },
+      completed: { icon: 'task_alt', color: '#475569' },
+      cancelled: { icon: 'cancel', color: '#DC2626' }
+    };
+    const config = statusConfig[s] || { icon: 'help', color: '#9CA3AF' };
+    return `<span class="material-symbols-outlined text-xl" style="color: ${config.color};">${config.icon}</span>`;
+  }
+
   // 1. RESERVATIONS PANEL (Modern Luxe Concierge Passport Redesign)
   function renderReservationsPanel(state, isMm) {
     const currentSubTab = state.myPageSubTab || 'upcoming';
@@ -135,7 +148,9 @@
               `
               : displayedReservations
                   .map(item => {
-                    const isCompleted = (item.status || '').toLowerCase() === 'completed';
+                    const status = item.status || 'Pending';
+                    const statusLower = status.toLowerCase();
+                    const isCompleted = statusLower === 'completed';
 
                     return `
                       <div class="luxe-card bg-[#FFF8EE] rounded-2xl border border-[#EADECB] p-4 sm:p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all flex flex-col gap-3.5 sm:gap-4" style="border-radius: 16px;">
@@ -157,8 +172,15 @@
                               <span class="truncate">${item.location || 'Yangon Cultural District'}</span>
                             </div>
                           </div>
-                          <div class="shrink-0 pt-0.5">
-                            ${renderStatusPill(item.status, isMm)}
+                          <div class="shrink-0 pt-0.5 flex items-center">
+                            <!-- Desktop/Tablet: Full status pill with text -->
+                            <span class="hidden sm:inline-block">
+                              ${renderStatusPill(item.status, isMm)}
+                            </span>
+                            <!-- Mobile: Icon only, no text, no box -->
+                            <span class="sm:hidden">
+                              ${renderStatusIcon(item.status)}
+                            </span>
                           </div>
                         </div>
 
@@ -214,7 +236,8 @@
                               <span>${isMm ? 'အသေးစိတ်' : 'Details'}</span>
                             </button>
 
-                            <!-- View QR Pass Button -->
+                            <!-- QR Pass Button (only for Confirmed) -->
+                            ${status === 'Confirmed' ? `
                             <button
                               data-mypage-view-pass-id="${item.id}"
                               class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-[#840f16] hover:text-white text-[#231916] border border-[#EADFD1] font-label font-bold text-xs transition-colors cursor-pointer shadow-2xs"
@@ -224,6 +247,7 @@
                               <span class="material-symbols-outlined text-base">qr_code_2</span>
                               <span>${isMm ? 'QR ကုဒ်' : 'QR Pass'}</span>
                             </button>
+                            ` : ''}
 
                             <!-- Extra Actions for Completed (Review & Rebook) -->
                             ${
