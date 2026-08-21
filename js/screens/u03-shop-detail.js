@@ -50,25 +50,30 @@
             onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
 
-          <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-white font-label text-xs font-bold flex items-center gap-1.5 border border-white/20">
-            <span class="material-symbols-outlined text-sm">photo_camera</span>
-            <span>${isMm ? 'ပုံများကြည့်ရန်' : 'View Gallery'} (${(restaurant.images || []).length})</span>
+          <div class="absolute top-4 right-4 z-10">
+            <span class="inline-flex items-center gap-1.5 bg-[#1c1311]/85 backdrop-blur-md text-white px-3.5 py-1.5 rounded-xl font-label text-xs font-bold shadow-lg">
+              <span class="material-symbols-outlined text-sm">photo_camera</span>
+              <span>${isMm ? 'ပုံများကြည့်ရန်' : 'View Gallery'} (${(restaurant.images || []).length})</span>
+            </span>
           </div>
 
-          <div class="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 text-white space-y-2">
-            <div class="inline-flex items-center gap-1 bg-black/60 backdrop-blur-md px-3 py-1 rounded-md font-label text-xs font-bold border border-white/20">
-              <span class="material-symbols-outlined text-sm text-[#D08E1C] fill-1">star</span>
-              <span>${restaurant.rating} (${restaurant.reviewCount} ${isMm ? 'သုံးသပ်ချက်များ' : 'reviews'})</span>
+          <div class="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 text-white space-y-3 z-10">
+            <div>
+              <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md text-[#231916] px-3.5 py-1.5 rounded-xl font-label text-xs sm:text-sm font-bold shadow-lg">
+                <span class="material-symbols-outlined text-sm sm:text-base text-[#D08E1C] fill-1 leading-none">star</span>
+                <span class="leading-none">${restaurant.rating}</span>
+                <span class="text-[#58413f] font-medium leading-none text-xs">(${restaurant.reviewCount} ${isMm ? 'သုံးသပ်ချက်များ' : 'reviews'})</span>
+              </span>
             </div>
 
-            <h1 class="font-headline text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+            <h1 class="font-headline text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight drop-shadow-md">
               ${restaurant.name}
             </h1>
             ${
               restaurant.nameMM
-                ? `<div class="font-body text-sm sm:text-base text-amber-200/90 font-medium">${restaurant.nameMM}</div>`
+                ? `<div class="font-body text-sm sm:text-base text-amber-200/95 font-medium drop-shadow-sm">${restaurant.nameMM}</div>`
                 : ''
             }
           </div>

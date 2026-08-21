@@ -27,16 +27,20 @@
           <!-- Favorite Heart Button Top Right -->
           <button
             data-card-fav-id="${restaurant.id}"
-            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#840f16] shadow-md border border-black/5 flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
+            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
             title="Favorite"
+            aria-label="Add to Favorites"
           >
             <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
           </button>
 
-          <!-- Rating Pill Bottom Left ON Image -->
-          <div class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-md border border-black/5 flex items-center gap-1.5 font-label text-[11px] sm:text-xs font-bold text-[#231916] z-10">
-            <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1">star</span>
-            <span>${restaurant.rating} (${restaurant.reviewCount})</span>
+          <!-- Rating & Review Span Box Bottom Left ON Image -->
+          <div class="absolute bottom-3 left-3 z-10">
+            <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916]">
+              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+              <span class="leading-none">${restaurant.rating}</span>
+              <span class="text-[#58413f] font-medium leading-none">(${restaurant.reviewCount})</span>
+            </span>
           </div>
         </div>
 
@@ -118,25 +122,27 @@
           <!-- Favorite Heart Button Top Right -->
           <button
             data-card-fav-id="${restaurant.id}"
-            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#840f16] shadow-md border border-black/5 flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
+            class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
             title="Favorite"
+            aria-label="Add to Favorites"
           >
             <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
           </button>
 
           <!-- Image Bottom Tags: Review Tag on Left & Promotion Tag on Right Most -->
-          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10">
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
             <!-- Review Tag (Left) -->
-            <div class="bg-white/95 backdrop-blur-xs px-2.5 sm:px-3 py-1 rounded-full shadow-md border border-black/5 flex items-center gap-1 font-label text-[11px] sm:text-xs font-bold text-[#231916]">
-              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1">star</span>
-              <span>${restaurant.rating} (${restaurant.reviewCount})</span>
-            </div>
+            <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916] pointer-events-auto">
+              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+              <span class="leading-none">${restaurant.rating}</span>
+              <span class="text-[#58413f] font-medium leading-none">(${restaurant.reviewCount})</span>
+            </span>
 
             <!-- Promotion Tag (Right-most beside review tag) -->
             ${restaurant.offerTag ? 
-            `<div class="promo-badge-yellow text-white font-label text-[11px] sm:text-xs font-extrabold tracking-wide px-2.5 sm:px-3.5 py-1 rounded-full shadow-md flex items-center shrink-0" title="${restaurant.offerTag}">
-                <span class="font-extrabold text-white truncate max-w-[120px] sm:max-w-none">Special Offer</span>
-             </div>` : ''}
+            `<span class="inline-flex items-center bg-[#D08E1C]/95 backdrop-blur-md text-white font-label text-[11px] sm:text-xs font-extrabold tracking-wide px-3 py-1 sm:py-1.5 rounded-xl shadow-md shrink-0 pointer-events-auto" title="${restaurant.offerTag}">
+                <span class="font-extrabold text-white truncate max-w-[120px] sm:max-w-none">${restaurant.offerTag}</span>
+             </span>` : ''}
           </div>
         </div>
 

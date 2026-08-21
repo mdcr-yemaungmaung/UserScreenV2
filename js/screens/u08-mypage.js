@@ -289,12 +289,16 @@
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-label font-bold text-[#840f16] flex items-center gap-1 shadow-xs">
-                    <span class="material-symbols-outlined text-xs text-amber-500">star</span>
-                    <span>${r.rating || '4.9'}</span>
+                  <div class="absolute top-3 right-3 z-10">
+                    <span class="inline-flex items-center gap-1 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-label font-bold text-[#231916] shadow-md">
+                      <span class="material-symbols-outlined text-xs text-[#D08E1C] fill-1 leading-none">star</span>
+                      <span class="leading-none">${r.rating || '4.9'}</span>
+                    </span>
                   </div>
-                  <div class="absolute bottom-3 left-3 bg-[#231916]/80 backdrop-blur-md text-white text-[11px] font-label font-medium px-2.5 py-0.5 rounded-full">
-                    ${r.cuisine || 'Fine Dining'}
+                  <div class="absolute bottom-3 left-3 z-10">
+                    <span class="inline-flex items-center bg-[#840f16]/95 backdrop-blur-md text-white text-[11px] font-label font-bold px-3 py-1 rounded-xl shadow-md">
+                      ${r.cuisine || 'Fine Dining'}
+                    </span>
                   </div>
                 </div>
 

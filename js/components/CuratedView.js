@@ -42,14 +42,16 @@
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
-              <div class="relative z-10 space-y-1">
-                <div class="font-label text-xs font-extrabold uppercase tracking-widest text-[#D08E1C]">
-                  ${isMm ? col.categoryTagMM : col.categoryTag}
+              <div class="relative z-10 space-y-2">
+                <div>
+                  <span class="inline-block bg-[#D08E1C]/95 backdrop-blur-md text-white font-label text-xs font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                    ${isMm ? col.categoryTagMM : col.categoryTag}
+                  </span>
                 </div>
                 <h3 class="font-headline text-2xl sm:text-3xl font-extrabold text-white leading-tight">
                   ${isMm ? col.titleMM : col.title}
                 </h3>
-                <p class="font-body text-xs sm:text-sm text-white/80 line-clamp-2">
+                <p class="font-body text-xs sm:text-sm text-white/90 line-clamp-2">
                   ${isMm ? col.subtitleMM : col.subtitle}
                 </p>
               </div>

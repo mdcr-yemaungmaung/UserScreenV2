@@ -179,7 +179,9 @@
                     >
                       <img src="${RESTAURANTS_DATA[0].heroImage}" alt="Padonmar" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4 text-white font-headline text-sm font-bold">The Gilded Fork</div>
+                      <div class="absolute bottom-4 left-4">
+                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">The Gilded Fork</span>
+                      </div>
                     </div>
                     <div
                       data-card-select-id="rest-3"
@@ -187,7 +189,9 @@
                     >
                       <img src="${RESTAURANTS_DATA[2].heroImage}" alt="Rangoon Tea House" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4 text-white font-headline text-sm font-bold">Rangoon Tea House</div>
+                      <div class="absolute bottom-4 left-4">
+                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">Rangoon Tea House</span>
+                      </div>
                     </div>
                   </div>
 
@@ -198,7 +202,9 @@
                     >
                       <img src="${RESTAURANTS_DATA[1].heroImage}" alt="Seeds" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4 text-white font-headline text-sm font-bold">Seeds Lakefront</div>
+                      <div class="absolute bottom-4 left-4">
+                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">Seeds Lakefront</span>
+                      </div>
                     </div>
                     <div
                       data-card-select-id="rest-4"
@@ -206,7 +212,9 @@
                     >
                       <img src="${RESTAURANTS_DATA[3].heroImage}" alt="L'Alchimiste" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4 text-white font-headline text-sm font-bold">L’Alchimiste French</div>
+                      <div class="absolute bottom-4 left-4">
+                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">L’Alchimiste French</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -411,14 +419,16 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
                 <!-- Card Content -->
-                <div class="relative z-10 space-y-1.5">
-                  <div class="inline-block bg-[#D08E1C] text-white font-label text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
-                    ${isMm ? col.categoryTagMM : col.categoryTag}
+                <div class="relative z-10 space-y-2">
+                  <div>
+                    <span class="inline-block bg-[#D08E1C]/95 backdrop-blur-md text-white font-label text-[10px] sm:text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                      ${isMm ? col.categoryTagMM : col.categoryTag}
+                    </span>
                   </div>
                   <h3 class="font-headline text-lg sm:text-xl lg:text-2xl font-extrabold text-white leading-tight">
                     ${isMm ? col.titleMM : col.title}
                   </h3>
-                  <p class="font-body text-xs sm:text-sm text-white/80 line-clamp-2 leading-relaxed">
+                  <p class="font-body text-xs sm:text-sm text-white/90 line-clamp-2 leading-relaxed">
                     ${isMm ? col.subtitleMM : col.subtitle}
                   </p>
                 </div>
@@ -485,13 +495,32 @@
                     onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div class="absolute top-3 right-3 bg-[#840f16] text-white px-3 py-1 rounded-full font-label text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                    ${r.cuisine}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+
+                  <!-- Favorite Button Top Right -->
+                  <button
+                    data-card-fav-id="${r.id}"
+                    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
+                    title="Favorite"
+                    aria-label="Add to Favorites"
+                  >
+                    <span class="material-symbols-outlined text-lg ${state.favorites.includes(r.id) ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
+                  </button>
+
+                  <!-- Cuisine Tag Top Left -->
+                  <div class="absolute top-3 left-3 z-10">
+                    <span class="inline-block bg-[#840f16]/95 backdrop-blur-md text-white px-3 py-1 rounded-xl font-label text-[10px] font-bold uppercase tracking-wider shadow-md">
+                      ${r.cuisine}
+                    </span>
                   </div>
-                  <div class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 text-[11px] font-label font-bold text-[#231916]">
-                    <span class="material-symbols-outlined text-xs text-[#D08E1C] fill-1">star</span>
-                    <span>${r.rating}</span>
+
+                  <!-- Rating & Reviews Span Box Bottom Left -->
+                  <div class="absolute bottom-3 left-3 z-10">
+                    <span class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl shadow-md text-xs font-label font-bold text-[#231916]">
+                      <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+                      <span class="leading-none">${r.rating}</span>
+                      <span class="text-[#58413f] font-medium leading-none text-[11px]">(${r.reviewCount || 120})</span>
+                    </span>
                   </div>
                 </div>
 
@@ -546,9 +575,9 @@
             </div>
           </div>
 
-          <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
+          <div class="mobile-horizontal-scroll px-0 pt-3 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
             ${RESTAURANTS_DATA.map(restaurant => `
-              <div class="shrink-0 w-[290px] sm:w-[340px] lg:w-auto snap-start flex">
+              <div class="shrink-0 w-[320px] h-[370px] lg:w-auto lg:h-auto snap-start flex">
                 ${renderRestaurantCard(restaurant, state)}
               </div>
             `).join('')}
