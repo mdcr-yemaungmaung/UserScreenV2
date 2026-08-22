@@ -289,8 +289,80 @@
     });
   }
 
+  // Trending Venues Style Card (used in Home trending section, Hot Promotions, Reservation History)
+  function renderTrendingCard(restaurant, state, options = {}) {
+    const isFavorite = state.favorites.includes(restaurant.id);
+    const isMm = state.currentLanguage === 'MM';
+    const showVenueName = options.showVenueName !== false;
+    const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
+    const restaurantTitle = isMm ? (restaurant.nameMM || restaurant.name) : restaurant.name;
+    const locationText = restaurant.location || restaurant.area || 'Yangon';
+    const rawStart = restaurant.priceRange ? restaurant.priceRange.split('-')[0].trim() : '150,000 MMK';
+    const fitPrice = rawStart.endsWith('MMK') ? rawStart : `${rawStart} MMK`;
+    const customAction = options.customAction || null;
+
+    return `
+      <div
+        data-card-select-id="${restaurant.id}"
+        class="shrink-0 w-[240px] h-[370px] sm:w-[280px] sm:h-[380px] lg:w-auto lg:h-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+      >
+        <!-- Image Container -->
+        <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
+          <img
+            src="${restaurant.heroImage}"
+            alt="${venueTitle}"
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          ${renderImageGradient()}
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
+          ${showVenueName ? renderCuisineTagOnImage(restaurant.cuisine) : ''}
+          ${renderRatingBadge(restaurant)}
+        </div>
+
+        <!-- Card Content Area -->
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+          <div class="space-y-1.5 sm:space-y-2">
+            ${showVenueName ? `
+            <!-- Venue Name (MAIN HIGHLIGHT) -->
+            <h3 class="font-headline text-base sm:text-lg font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1">
+              ${venueTitle}
+            </h3>
+            ` : ''}
+
+            <!-- Restaurant Name & Location -->
+            <div class="space-y-1">
+              <!-- Restaurant Name -->
+              <div class="flex items-center gap-1.5 text-xs text-[#58413f] font-semibold">
+                <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">storefront</span>
+                <span class="truncate">${restaurantTitle}</span>
+              </div>
+
+              <!-- Location -->
+              <div class="flex items-center gap-1.5 text-xs text-[#7A6B65]">
+                <span class="material-symbols-outlined text-sm text-[#7A6B65] shrink-0">location_on</span>
+                <span class="truncate">${locationText}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Row or Custom Action -->
+          <div class="pt-2 border-t border-[#EADFD1] flex items-center justify-between">
+            ${customAction ? customAction(restaurant, isMm) : `
+            <span class="font-label text-xs text-[#58413f] font-medium">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
+            <span class="font-label text-xs font-extrabold text-[#840f16]">${fitPrice}</span>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   window.YoyakuComponents.renderRestaurantCard = renderRestaurantCard;
   window.YoyakuComponents.renderSearchResultCard = renderSearchResultCard;
+  window.YoyakuComponents.renderTrendingCard = renderTrendingCard;
   window.YoyakuComponents.attachRestaurantCardEvents = attachRestaurantCardEvents;
   window.YoyakuComponents.renderImageGradient = renderImageGradient;
   window.YoyakuComponents.renderFavoriteButton = renderFavoriteButton;

@@ -1,7 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
-  const { renderRatingBadge, renderCuisineTag } = window.YoyakuComponents || {};
+  const { renderRatingBadge, renderCuisineTag, renderTrendingCard } = window.YoyakuComponents || {};
 
   function renderDiningPlateIcon() {
     return `
@@ -153,7 +153,7 @@
                     const isCompleted = statusLower === 'completed';
 
                     return `
-                      <div class="luxe-card bg-[#FFF8EE] rounded-2xl border border-[#EADECB] p-4 sm:p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all flex flex-col gap-3.5 sm:gap-4" style="border-radius: 16px;">
+                      <div class="luxe-card bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4" style="border-radius: 16px;">
                         
                         <!-- Top Row: Restaurant Name & Location (Left), Status Badge (Right) -->
                         <div class="flex items-start justify-between gap-3 w-full">
@@ -174,11 +174,11 @@
                           </div>
                           <div class="shrink-0 pt-0.5 flex items-center">
                             <!-- Desktop/Tablet: Full status pill with text -->
-                            <span class="hidden sm:inline-block">
+                            <span class="hidden sm:inline-flex">
                               ${renderStatusPill(item.status, isMm)}
                             </span>
                             <!-- Mobile: Icon only, no text, no box -->
-                            <span class="sm:hidden">
+                            <span class="inline-flex sm:hidden">
                               ${renderStatusIcon(item.status)}
                             </span>
                           </div>

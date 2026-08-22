@@ -450,8 +450,8 @@
 
     setActiveTab(tab) {
       this.state.activeTab = tab;
-      if (tab !== 'resultlist') {
-        // Keep search keyword intact if desired
+      if (tab === 'mypage' && window.innerWidth < 1024) {
+        this.state.myPageActiveMenu = 'menu';
       }
       this.notify();
     }

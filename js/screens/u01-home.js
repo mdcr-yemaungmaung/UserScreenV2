@@ -2,7 +2,7 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA } = window.YoyakuData;
-  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag } = window.YoyakuComponents;
+  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
 
@@ -553,7 +553,7 @@
           <div class="mobile-horizontal-scroll px-0 pt-3 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
             ${RESTAURANTS_DATA.map(restaurant => `
               <div class="shrink-0 w-[320px] h-[370px] lg:w-auto lg:h-auto snap-start">
-                ${renderRestaurantCard(restaurant, state)}
+                ${renderTrendingCard(restaurant, state, { showVenueName: true })}
               </div>
             `).join('')}
           </div>

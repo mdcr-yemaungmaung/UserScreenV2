@@ -771,5 +771,11 @@ input[type="radio"] {
   }
 }
 
+/* sm:hidden utility - missing from compiled Tailwind */
+@media (min-width: 640px) {
+  .sm\:hidden {
+    display: none !important;
+  }
+}
 
 
