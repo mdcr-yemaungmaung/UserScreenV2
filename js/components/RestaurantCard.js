@@ -304,7 +304,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[240px] h-[370px] sm:w-[280px] sm:h-[380px] lg:w-auto lg:h-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
       >
         <!-- Image Container -->
         <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
