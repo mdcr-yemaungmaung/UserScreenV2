@@ -451,10 +451,6 @@
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
-              <div class="inline-flex items-center gap-1.5 bg-[#840f16]/10 text-[#840f16] px-3 py-1 rounded-full text-xs font-label font-bold uppercase tracking-wider mb-2 border border-[#840f16]/20">
-                <span class="material-symbols-outlined text-sm">trending_up</span>
-                <span>${isMm ? 'ရေပန်းစားသော စားသောက်ဆိုင်များ' : 'Trending Selection'}</span>
-              </div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
                 ${isMm ? 'ရေပန်းစားသော စားသောက်ဆိုင်များ' : 'Trending Venues'}
               </h2>
