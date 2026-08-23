@@ -340,7 +340,7 @@
            =================================================================== -->
       ${regState.showSsoTermsModal ? `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn" id="sso-terms-modal-backdrop">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 relative text-left">
+          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 relative text-left max-h-[90vh] overflow-y-auto">
             
             <button id="btn-close-sso-terms" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
@@ -407,7 +407,7 @@
            =================================================================== -->
       ${regState.showMail01Modal ? `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn" id="mail01-modal-backdrop">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 relative text-left">
+          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 relative text-left max-h-[90vh] overflow-y-auto">
             
             <button id="btn-close-mail01-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>

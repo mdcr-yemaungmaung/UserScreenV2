@@ -3,3 +3,8 @@ node_modules/
 .DS_Store
 *.log
 css/styles.css.bak
+
+# Spec Kit (tracked): .specify/ holds templates + opencode slash-command files.
+# No secrets are stored here for this project. If opencode later writes private
+# artifacts (settings/auth) under .opencode/, add them to gitignore then.
+

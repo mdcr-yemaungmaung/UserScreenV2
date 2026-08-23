@@ -127,24 +127,13 @@
           ${
             displayedReservations.length === 0
               ? `
-                <div class="bg-[#FFFDF9] rounded-xl border border-[#EADFD1] p-10 text-center space-y-4 shadow-xs">
-                  <div class="w-14 h-14 bg-[#840f16]/10 text-[#840f16] rounded-full flex items-center justify-center mx-auto">
-                    <span class="material-symbols-outlined text-2xl">event_busy</span>
-                  </div>
-                  <h3 class="font-headline text-xl font-bold text-[#231916]">
-                    ${isMm ? 'စိုတ်ထားမှု မှတ်တမ်း မရှိသေးပါ' : `No ${currentSubTab} reservations found`}
-                  </h3>
-                  <p class="font-body text-xs sm:text-sm text-[#58413f] max-w-sm mx-auto">
-                    ${isMm ? 'ရန်ကုန်မြို့ရှိ အဆင့်မြင့် စားသောက်ဆိုင်များကို ရှာဖွေပြီး စားပွဲဝိုင်း ချက်ချင်း စိုတ်ယူလိုက်ပါ' : `You have no ${currentSubTab} reservations. Browse our curated dining catalog to book your next experience.`}
-                  </p>
-                  <button
-                    id="mypage-explore-btn"
-                    class="btn-primary px-6 py-2.5 rounded-full font-label text-xs font-semibold shadow-md inline-flex items-center gap-2 cursor-pointer mt-2"
-                  >
-                    <span>${isMm ? 'ဆိုင်များ ရှာဖွေရန်' : 'Explore Restaurants'}</span>
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                  </button>
-                </div>
+                ${window.YoyakuComponents.renderEmptyState({
+                  icon: 'event_busy',
+                  title: isMm ? 'စိုတ်ထားမှု မှတ်တမ်း မရှိသေးပါ' : `No ${currentSubTab} reservations found`,
+                  message: isMm ? 'ရန်ကုန်မြို့ရှိ အဆင့်မြင့် စားသောက်ဆိုင်များကို ရှာဖွေပြီး စားပွဲဝိုင်း ချက်ချင်း စိုတ်ယူလိုက်ပါ' : `You have no ${currentSubTab} reservations. Browse our curated dining catalog to book your next experience.`,
+                  actionLabel: isMm ? 'ဆိုင်များ ရှာဖွေရန်' : 'Explore Restaurants',
+                  actionId: 'mypage-explore-btn'
+                })}
               `
               : displayedReservations
                   .map(item => {
@@ -153,7 +142,7 @@
                     const isCompleted = statusLower === 'completed';
 
                     return `
-                      <div class="luxe-card bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4" style="border-radius: 16px;">
+                      <div class="luxe-card bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4">
                         
                         <!-- Top Row: Restaurant Name & Location (Left), Status Badge (Right) -->
                         <div class="flex items-start justify-between gap-3 w-full">
@@ -306,7 +295,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           ${favoriteRestaurants
             .map(r => `
-              <div class="bg-[#FFF8F6] rounded-xl border border-[#EADFD1] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
                 <div class="relative h-44 overflow-hidden">
                   <img
                     src="${r.image || (r.images && r.images[0]) || 'assets/images/shop_theglasspavilion_1.jpg'}"
@@ -384,16 +373,16 @@
           ${
             waitlists.length === 0
               ? `
-                <div class="bg-[#FFF8F6] rounded-xl border border-[#EADFD1] p-10 text-center space-y-3">
-                  <span class="material-symbols-outlined text-3xl text-[#8d7b75]">hourglass_empty</span>
-                  <div class="font-headline font-bold text-base text-[#231916]">${isMm ? 'လက်ရှိ စောင့်ဆိုင်းစာရင်း မရှိပါ' : 'No active waitlist queues'}</div>
-                  <p class="font-body text-xs text-[#58413f]">${isMm ? 'လူပြည့်နေသော ဆိုင်များတွင် Waitlist စာရင်းသွင်းနိုင်ပါသည်' : 'You can join a waitlist when a restaurant is fully booked on your chosen date.'}</p>
-                </div>
+                ${window.YoyakuComponents.renderEmptyState({
+                  icon: 'hourglass_empty',
+                  title: isMm ? 'လက်ရှိ စောင့်ဆိုင်းစာရင်း မရှိပါ' : 'No active waitlist queues',
+                  message: isMm ? 'လူပြည့်နေသော ဆိုင်များတွင် Waitlist စာရင်းသွင်းနိုင်ပါသည်' : 'You can join a waitlist when a restaurant is fully booked on your chosen date.'
+                })}
               `
               : waitlists
                   .map(
                     w => `
-                      <div class="bg-[#FFF8F6] p-5 rounded-xl border border-[#EADFD1] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
+                      <div class="bg-[#FFF9EE] p-5 rounded-3xl border border-[#EADFD1] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
                         <div class="space-y-1">
                           <div class="font-headline font-bold text-base text-[#231916]">${w.restaurantName}</div>
                           <div class="font-body text-xs text-[#58413f] flex items-center gap-3">
@@ -559,10 +548,10 @@
           ${
             notifications.length === 0
               ? `
-                <div class="bg-[#FFF8F6] rounded-xl border border-[#EADFD1] p-10 text-center">
-                  <span class="material-symbols-outlined text-3xl text-[#8d7b75]">notifications_off</span>
-                  <div class="font-headline font-bold text-base text-[#231916] mt-2">${isMm ? 'အသိပေးချက် မရှိသေးပါ' : 'No notifications'}</div>
-                </div>
+                ${window.YoyakuComponents.renderEmptyState({
+                  icon: 'notifications_off',
+                  title: isMm ? 'အသိပေးချက် မရှိသေးပါ' : 'No notifications'
+                })}
               `
               : notifications
                   .map(
@@ -656,7 +645,8 @@
       { id: 'notifications', label: isMm ? 'အသိပေးချက် စင်တာ' : 'Notification Center', icon: 'notifications' },
       { id: 'notif-settings', label: isMm ? 'အသိပေးချက် ဆက်တင်' : 'Notification Settings', icon: 'tune' },
       { id: 'announcements', label: isMm ? 'အထူး ကြေညာချက်များ' : 'Announcements', icon: 'campaign' },
-      { id: 'account', label: isMm ? 'အကောင့် ဆက်တင်' : 'Account Settings', icon: 'manage_accounts' }
+      { id: 'account', label: isMm ? 'အကောင့် ဆက်တင်' : 'Account Settings', icon: 'manage_accounts' },
+      { id: 'design-system', label: isMm ? 'ဒီဇိုင်း စနစ်' : 'Design System', icon: 'palette' }
     ];
 
     // Helper to render the active screen in the right container
@@ -684,6 +674,11 @@
       }
       if (activeMenu === 'announcements') {
         return renderAnnouncementsPanel(state, isMm);
+      }
+      if (activeMenu === 'design-system') {
+        return window.YoyakuComponents.renderComponentGallery
+          ? window.YoyakuComponents.renderComponentGallery(state)
+          : '';
       }
       // Default: reservations
       return renderReservationsPanel(state, isMm);
@@ -1360,6 +1355,12 @@
     }
     if (activeMenu === 'notif-settings' && window.YoyakuComponents.attachNotificationSettingsEvents) {
       window.YoyakuComponents.attachNotificationSettingsEvents(containerElement);
+    }
+    if (activeMenu === 'design-system' && window.YoyakuComponents.attachComponentGalleryEvents) {
+      window.YoyakuComponents.attachComponentGalleryEvents(containerElement);
+      if (window.YoyakuComponents.attachRestaurantCardEvents) {
+        window.YoyakuComponents.attachRestaurantCardEvents(containerElement);
+      }
     }
 
     // OTP Modal events

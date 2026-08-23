@@ -272,10 +272,12 @@
                   filtered.length > 0
                     ? filtered.map(rest => renderSearchResultCard(rest, state)).join('')
                     : `
-                      <div class="col-span-full py-16 text-center bg-[#FBF3E2] rounded-3xl border border-[#EADFD1] space-y-3">
-                        <span class="material-symbols-outlined text-4xl text-[#58413f]">search_off</span>
-                        <h3 class="font-headline text-xl font-bold text-[#231916]">No matching restaurants found</h3>
-                        <p class="font-body text-xs text-[#58413f]">Try clearing filters or search keywords.</p>
+                      <div class="col-span-full flex justify-center">
+                        ${window.YoyakuComponents.renderEmptyState({
+                          icon: 'search_off',
+                          title: 'No matching restaurants found',
+                          message: 'Try clearing filters or search keywords.'
+                        })}
                       </div>
                     `
                 }

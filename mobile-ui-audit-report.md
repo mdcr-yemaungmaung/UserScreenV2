@@ -51,23 +51,22 @@
 - **Where:** `u01-home.js:334,354` — promo banners with `whitespace-nowrap shrink-0` CTA buttons.
 - **Fix applied:** Both banners now stack vertically on mobile (`flex-col sm:flex-row items-start sm:items-center`), so the CTA sits below the text at full available width instead of squeezing the Burmese headline. Row layout restored from `sm:` up.
 
-#### O6. Card style inconsistencies (design debt)
-| Element | Location | Current | Standard should be |
-|---|---|---|---|
-| MyPage Favorites panel card | `u08-mypage.js:309` | `bg-[#FFF8F6] rounded-xl` | `bg-[#FFF9EE] border-[#EADFD1] rounded-3xl` |
-| Waitlist queue item | `u08-mypage.js:396` | `bg-[#FFF8F6] rounded-xl` | same as above |
-| Reservation history card radius | `u08-mypage.js:156` | `rounded-3xl` **overridden by** inline `style="border-radius:16px"` | Remove inline style, keep `rounded-3xl` |
+#### O6. Card style inconsistencies (design debt) — ✅ FIXED 2026-08-23
+| Element | Location | Fix Applied |
+|---|---|---|
+| MyPage Favorites panel card | `u08-mypage.js:309` | `bg-[#FFF8F6] rounded-xl` → `bg-[#FFF9EE] rounded-3xl border border-[#EADFD1]` |
+| Waitlist queue item | `u08-mypage.js:396` | `bg-[#FFF8F6] p-5 rounded-xl` → `bg-[#FFF9EE] p-5 rounded-3xl` |
+| Reservation history card radius | `u08-mypage.js:156` | Removed inline `style="border-radius:16px"`, now uses `rounded-3xl` per design standard |
 
 ### 🟢 Minor
 
-#### O7. `renderTrendingCard` fixed heights can clip future content
-- **Where:** `js/components/RestaurantCard.js:307` — `h-[370px] sm:h-[380px]`.
-- **Note:** Currently safe because names are `line-clamp-1`. If content grows (extra row, longer MM venue names), bottom price row clips.
-- **Fix suggestion:** Replace fixed heights with `min-h-[370px]` if clipping ever observed.
+#### O7. `renderTrendingCard` fixed heights can clip future content — ✅ ADDRESSED 2026-08-22
+- **Where:** `js/components/RestaurantCard.js` — `h-[370px] sm:h-[380px]`.
+- **Fix applied:** Removed fixed heights (kept flex-stretch equalization); cards now size to content. `min-h-[370px]` no longer needed.
 
-#### O8. Register screen modals not verified for scroll containment
-- **Where:** `u11-register.js:342,409` (SSO terms modal, MAIL-01 modal).
-- **Action:** Verify on small screen; add `max-h-[90vh] overflow-y-auto` if needed (same pattern as O3).
+#### O8. Register screen modals not verified for scroll containment — ✅ FIXED 2026-08-23
+- **Where:** `u11-register.js:343,410` (SSO terms modal, MAIL-01 modal).
+- **Fix applied:** Added `max-h-[90vh] overflow-y-auto` to both modal panels (same pattern as O3). Utilities already present in `css/overrides.css`.
 
 #### O9. Hero calendar popover near viewport edge
 - **Where:** `u01-home.js` hero search date popover — `absolute bottom-full left-0 w-72 sm:w-80`.

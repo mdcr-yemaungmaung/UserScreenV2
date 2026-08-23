@@ -30,21 +30,14 @@
         ${
           favRestaurants.length === 0
             ? `
-              <div class="bg-[#FBF3E2] rounded-3xl p-12 border border-[#EADFD1] text-center space-y-4 my-8">
-                <div class="w-16 h-16 bg-[#840f16]/10 text-[#840f16] rounded-full flex items-center justify-center mx-auto">
-                  <span class="material-symbols-outlined text-3xl">favorite_border</span>
-                </div>
-                <h3 class="font-headline text-2xl font-bold text-[#231916]">No saved venues yet</h3>
-                <p class="font-body text-xs sm:text-sm text-[#58413f] max-w-md mx-auto">
-                  Click the heart icon on any restaurant card to save it to your wishlist.
-                </p>
-                <button
-                  id="fav-empty-discover-btn"
-                  class="btn-primary px-8 py-3.5 rounded-full font-label text-xs font-semibold shadow-md inline-flex items-center gap-2 cursor-pointer mt-2"
-                >
-                  <span>Explore Venues</span>
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
+              <div class="flex justify-center my-8">
+                ${window.YoyakuComponents.renderEmptyState({
+                  icon: 'favorite_border',
+                  title: 'No saved venues yet',
+                  message: 'Click the heart icon on any restaurant card to save it to your wishlist.',
+                  actionLabel: 'Explore Venues',
+                  actionId: 'fav-empty-discover-btn'
+                })}
               </div>
             `
             : `
