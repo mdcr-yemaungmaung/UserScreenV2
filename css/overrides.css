@@ -798,4 +798,17 @@ input[type="radio"] {
   }
 }
 
+/* Favorite heart bounce + pop animation */
+@keyframes heartBounce {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.3); }
+  50%  { transform: scale(0.95); }
+  75%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.heart-bounce .material-symbols-outlined {
+  animation: heartBounce 0.45s cubic-bezier(0.17, 0.89, 0.32, 1.28);
+}
+
 

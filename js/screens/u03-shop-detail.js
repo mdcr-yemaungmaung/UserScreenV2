@@ -29,14 +29,13 @@
 
           <button
             id="detail-favorite-btn"
-            class="flex items-center gap-2 px-4 py-2 rounded-full border transition-all cursor-pointer shadow-2xs ${
+            class="w-10 h-10 flex items-center justify-center rounded-full border transition-all cursor-pointer shadow-2xs ${
               isFavorite
                 ? 'bg-[#840f16] text-white border-[#840f16]'
                 : 'bg-[#FBF3E2] text-[#840f16] border-[#EADFD1] hover:border-[#840f16]'
             }"
           >
-            <span class="material-symbols-outlined text-sm ${isFavorite ? 'fill-1' : ''}">favorite</span>
-            <span class="font-label text-xs font-bold">${isFavorite ? (isMm ? 'သိမ်းဆည်းပြီး' : 'Saved') : (isMm ? 'သိမ်းဆည်းမည်' : 'Save Venue')}</span>
+            <span class="material-symbols-outlined text-lg ${isFavorite ? 'fill-1' : ''}">favorite</span>
           </button>
         </div>
 
@@ -611,7 +610,13 @@
     if (favBtn) {
       favBtn.addEventListener('click', () => {
         const selected = store.getState().selectedRestaurant;
-        if (selected) store.toggleFavorite(selected.id);
+        if (selected) {
+          store.toggleFavorite(selected.id);
+          favBtn.classList.remove('heart-bounce');
+          void favBtn.offsetWidth; // reflow to restart animation
+          favBtn.classList.add('heart-bounce');
+          setTimeout(() => favBtn.classList.remove('heart-bounce'), 500);
+        }
       });
     }
 
