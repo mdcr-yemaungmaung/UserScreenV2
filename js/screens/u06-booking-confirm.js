@@ -25,7 +25,7 @@
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-12 space-y-6 text-left animate-fadeIn">
         
         <!-- STEPPER PROGRESS BAR -->
-        <div class="bg-[#FFF8EE] border border-[#EADFD1] rounded-2xl p-4 sm:p-5 shadow-2xs">
+        <div class="px-1 sm:px-2">
           <div class="grid grid-cols-3 gap-3 text-left">
             <div class="flex flex-col justify-between">
               <div class="flex items-center gap-2.5">
@@ -61,7 +61,7 @@
         </div>
 
         <!-- STEP 3 CONTENT -->
-        <div class="bg-[#FFF7E8] rounded-3xl border border-[#EADFD1] shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+        <div class="bg-transparent sm:bg-[#FFF7E8] rounded-none sm:rounded-3xl border-0 sm:border sm:border-[#EADFD1] shadow-none sm:shadow-xl overflow-hidden p-0 sm:p-8 space-y-6">
           
           <div class="border-b border-[#EADFD1] pb-4">
             <h2 class="font-headline text-2xl sm:text-3xl text-[#231916] font-bold">
@@ -169,9 +169,9 @@
               <span>${isMm ? 'ဝန်ဆောင်ခ (၁၈%)' : 'Service Charge (18%)'}</span>
               <span class="font-bold text-[#231916]">${serviceCharge.toLocaleString()} MMK</span>
             </div>
-            <div class="pt-3 border-t border-[#EADFD1] flex justify-between items-center text-sm sm:text-base">
-              <span class="font-headline font-bold text-[#231916]">${isMm ? 'စုစုပေါင်း ခန့်မှန်းကုန်ကျစရိတ်' : 'Estimated Total'}</span>
-              <span class="font-headline font-bold text-[#840f16] text-sm sm:text-base">${totalAmount.toLocaleString()} MMK</span>
+            <div class="pt-3 border-t border-[#EADFD1] flex justify-between items-center">
+              <span class="font-bold text-[#231916]">${isMm ? 'စုစုပေါင်း ခန့်မှန်းကုန်ကျစရိတ်' : 'Estimated Total'}</span>
+              <span class="font-bold text-[#840f16]">${totalAmount.toLocaleString()} MMK</span>
             </div>
           </div>
 

@@ -18,7 +18,7 @@
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-12 space-y-6 text-left animate-fadeIn">
         
         <!-- STEPPER PROGRESS BAR -->
-        <div class="bg-[#FFF8EE] border border-[#EADFD1] rounded-2xl p-4 sm:p-5 shadow-2xs">
+        <div class="px-1 sm:px-2">
           <div class="grid grid-cols-3 gap-3 text-left">
             <div class="flex flex-col justify-between">
               <div class="flex items-center gap-2.5">
@@ -54,7 +54,7 @@
         </div>
 
         <!-- STEP 2 CONTENT -->
-        <div class="bg-[#FFF7E8] rounded-3xl border border-[#EADFD1] shadow-xl overflow-hidden p-6 sm:p-8">
+        <div class="bg-transparent sm:bg-[#FFF7E8] rounded-none sm:rounded-3xl border-0 sm:border sm:border-[#EADFD1] shadow-none sm:shadow-xl overflow-hidden p-0 sm:p-8">
           
           <div class="border-b border-[#EADFD1] pb-4 mb-6">
             <h2 class="font-headline text-2xl sm:text-3xl text-[#231916] font-bold">

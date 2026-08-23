@@ -28,7 +28,7 @@
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-12 space-y-6 text-left animate-fadeIn">
         
         <!-- STEPPER PROGRESS BAR -->
-        <div class="bg-[#FFF8EE] border border-[#EADFD1] rounded-2xl p-4 sm:p-5 shadow-2xs">
+        <div class="px-1 sm:px-2">
           <div class="grid grid-cols-3 gap-3 text-left">
             <div class="flex flex-col justify-between">
               <div class="flex items-center gap-2.5">
@@ -64,9 +64,9 @@
         </div>
 
         <!-- STEP 1 CONTENT -->
-        <div class="bg-[#FFF8EE] rounded-3xl border border-[#EADFD1] shadow-sm overflow-hidden p-6 sm:p-8 space-y-6 relative">
+        <div class="bg-transparent sm:bg-[#FFF8EE] rounded-none sm:rounded-3xl border-0 sm:border sm:border-[#EADFD1] shadow-none sm:shadow-sm overflow-hidden p-0 sm:p-8 space-y-6 relative">
           
-          <button id="booking-modal-close" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] transition-colors cursor-pointer shadow-2xs" title="Close">
+          <button id="booking-modal-close" class="absolute top-0 right-0 sm:top-6 sm:right-6 w-9 h-9 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] transition-colors cursor-pointer shadow-2xs" title="Close">
             <span class="material-symbols-outlined text-lg">close</span>
           </button>
 
@@ -169,11 +169,6 @@
               <div class="font-label text-[10px] font-bold text-[#8d7b75] uppercase tracking-wider">${isMm ? 'ရွေးချယ်ထားသော ဘိုကင်အချက်အလက်များ' : 'RESERVATION SUMMARY'}</div>
               <div class="font-headline text-base sm:text-lg font-bold text-[#231916] truncate">${restaurant.name}</div>
               <div class="font-body text-xs sm:text-sm text-[#5d4e48] flex flex-wrap items-center gap-x-2.5 gap-y-1.5 pt-0.5">
-                <span class="font-semibold text-[#840f16] flex items-center gap-1">
-                  <span class="material-symbols-outlined text-sm">group</span>
-                  <span>${bData.guests} ${bData.guests === 1 ? (isMm ? 'ဦး' : 'Guest') : (isMm ? 'ဦး' : 'Guests')}</span>
-                </span>
-                <span class="text-[#c4b5a5]">•</span>
                 <span class="flex items-center gap-1">
                   <span class="material-symbols-outlined text-sm text-[#840f16]">calendar_today</span>
                   <span>${bData.date}</span>
@@ -184,8 +179,13 @@
                   <span>${bData.time}</span>
                 </span>
                 <span class="text-[#c4b5a5]">•</span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#840f16]/10 text-[#840f16] font-semibold text-xs border border-[#840f16]/20">
-                  <span class="material-symbols-outlined text-xs">chair</span>
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-[#840f16]">group</span>
+                  <span>${bData.guests} ${bData.guests === 1 ? (isMm ? 'ဦး' : 'Guest') : (isMm ? 'ဦး' : 'Guests')}</span>
+                </span>
+                <span class="text-[#c4b5a5]">•</span>
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-[#840f16]">chair</span>
                   <span>${bData.seatingPreference}</span>
                 </span>
               </div>
