@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm install && chmod +x node_modules/.bin/*",
   "framework": null,
   "rewrites": [
     {
