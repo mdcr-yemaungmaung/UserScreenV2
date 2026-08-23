@@ -778,4 +778,24 @@ input[type="radio"] {
   }
 }
 
+/* lg:pb-0 utility - missing from compiled Tailwind */
+@media (min-width: 1024px) {
+  .lg\:pb-0 {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* max-h-[90vh] utility - missing from compiled Tailwind */
+.max-h-\[90vh\] {
+  max-height: 90vh !important;
+}
+
+/* Mobile readability: raise minimum 10px text to 11px on phones only.
+   Desktop/tablet keep original sizes to avoid layout regressions. */
+@media (max-width: 767px) {
+  .text-\[10px\] {
+    font-size: 11px !important;
+  }
+}
+
 

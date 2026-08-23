@@ -91,7 +91,7 @@
     const hideBottomNav = !!state.selectedRestaurant || !!(state.bookingModalState && state.bookingModalState.isOpen) || !!state.selectedReservationId;
 
     root.innerHTML = `
-      <div class="min-h-screen flex flex-col justify-between ${hideBottomNav ? 'pb-0' : 'pb-20 md:pb-0'}">
+      <div class="min-h-screen flex flex-col justify-between ${hideBottomNav ? 'pb-0' : 'pb-20 lg:pb-0'}">
         
         <!-- Top Navigation Header -->
         ${renderTopNavBar(state)}
@@ -173,6 +173,24 @@
   function startApp() {
     renderApp();
     store.subscribe(renderApp);
+
+    // Re-render when crossing the lg breakpoint (window resize / device rotation)
+    let lastIsDesktop = window.innerWidth >= 1024;
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop !== lastIsDesktop) {
+          lastIsDesktop = isDesktop;
+          if (!isDesktop && store.state.activeTab === 'mypage') {
+            store.setMyPageActiveMenu('menu');
+          } else {
+            store.notify();
+          }
+        }
+      }, 150);
+    });
   }
 
   if (document.readyState === 'loading') {

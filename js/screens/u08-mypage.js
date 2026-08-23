@@ -910,7 +910,7 @@
           activeModal === 'qr_pass'
             ? `
               <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-2xl border border-[#EADFD1] p-6 space-y-5 shadow-2xl text-center">
+                <div class="bg-[#FFF8F6] w-full max-w-md rounded-2xl border border-[#EADFD1] p-6 space-y-5 shadow-2xl text-center max-h-[90vh] overflow-y-auto">
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div class="flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16]">qr_code_2</span>
@@ -958,7 +958,7 @@
           activeModal === 'review'
             ? `
               <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-lg rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left">
+                <div class="bg-[#FFF8F6] w-full max-w-lg rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div>
                       <h3 class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'သုံးသပ်ချက် ရေးသားရန်' : 'Write a Review'}</h3>
@@ -1015,7 +1015,7 @@
           activeModal === 'phone_otp'
             ? `
               <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left">
+                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div class="flex items-center gap-2.5">
                       <div class="w-8 h-8 rounded-full bg-[#D08E1C]/10 text-[#D08E1C] flex items-center justify-center">
@@ -1078,7 +1078,7 @@
           activeModal === 'confirm_withdraw'
             ? `
               <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#840f16]/30 p-6 space-y-5 shadow-2xl text-left">
+                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#840f16]/30 p-6 space-y-5 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
                   <div class="w-12 h-12 rounded-full bg-[#840f16]/10 text-[#840f16] flex items-center justify-center mx-auto">
                     <span class="material-symbols-outlined text-2xl">warning</span>
                   </div>

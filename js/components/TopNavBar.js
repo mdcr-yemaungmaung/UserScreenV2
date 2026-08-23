@@ -294,7 +294,9 @@
         if (profileMenu) profileMenu.classList.add('hidden');
         store.setSelectedRestaurant(null);
         store.setActiveTab('mypage');
-        store.setMyPageActiveMenu('reservations');
+        if (window.innerWidth >= 1024) {
+          store.setMyPageActiveMenu('reservations');
+        }
       });
     }
 
