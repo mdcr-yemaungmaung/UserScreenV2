@@ -209,7 +209,7 @@
                     </div>
                   </div>
                   <div class="pt-2 flex justify-end">
-                    <button data-[#840f16] id="guest-view-qr" class="text-xs font-label font-bold text-[#840f16] hover:underline cursor-pointer flex items-center gap-1">
+                    <button id="guest-view-qr" class="text-xs font-label font-bold text-[#840f16] hover:underline cursor-pointer flex items-center gap-1">
                       <span class="material-symbols-outlined text-sm">qr_code_2</span>
                       <span>View Instant QR Dining Pass</span>
                     </button>

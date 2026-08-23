@@ -6,13 +6,16 @@
 **Scope:** Mobile (320–767px) and tablet (768–1023px) layouts, all screens U-01 ~ U-20
 **Purpose:** Reference document for future mobile UI fixes. Check off items as they are fixed.
 
+> ⚠️ **Maintenance rule (added 2026-08-22):** Tailwind classes in this project are compiled from JS template literals via `npm run build:css`. After adding/changing ANY class names, run `npm run build:css` or the styles will silently not exist.
+
 ---
 
 ## 1. Issues Fixed (this session)
 
 | # | Issue | Location | Fix Applied |
 |---|-------|----------|-------------|
-| F1 | `sm:hidden` utility missing from compiled Tailwind → status badge + icon both visible on desktop | `css/overrides.css` (added) | Added `@media (min-width:640px) .sm\:hidden { display:none !important }` |
+| F0 | **ROOT CAUSE of "cards not fitting on mobile"**: compiled `css/styles.css` was a stale Tailwind v4 build missing **95 utilities** used in JS — all card/banner sizing (`w-[240px]`, `h-[370px]`, `sm:w-[280px]`, `w-[calc(88vw-24px)]`, `snap-start`), several colors (`bg-[#FFF3D6]`, uppercase-hex variants like `text-[#840F16]`), shadows, and more. Cards/banners had no width/height → collapsed or misfit. | `css/styles.css` | Rebuilt with Tailwind CLI v4.3.3 (same version). Added `tailwind.input.css` (`@source ./js` + `./index.html`), installed `tailwindcss` + `@tailwindcss/cli` as devDependencies, added `npm run build:css`. Backup at `css/styles.css.bak`. Also removed invalid `data-[#840f16]` attribute in `InfoModals.js:212`. |
+| F1 | `sm:hidden` utility missing from compiled Tailwind → status badge + icon both visible on desktop | `css/overrides.css` (added) | Added `@media (min-width:640px) .sm\:hidden { display:none !important }` (now also native in rebuilt CSS) |
 | F2 | Hot Promotions cards: wrapper `w-[320px] h-[370px]` conflicted with inner card `w-[240px]/[280px] h-[380px]` → 80px dead gap + clipped bottom at sm | `js/screens/u01-home.js` (~L494) | Removed wrapper; cards render directly in `.mobile-horizontal-scroll` container |
 | F3 | Trending Venues inline card was a duplicate of `renderTrendingCard` → drift risk | `js/screens/u01-home.js` (~L475) | Replaced ~55 inline lines with `renderTrendingCard(r, state, {showVenueName:true})` |
 | F4 | MyPage showed Reservation History first on mobile/tablet instead of menu overview | `js/state.js` (`setActiveTab`) | On `setActiveTab('mypage')`, if `innerWidth < 1024` → reset `myPageActiveMenu = 'menu'` |

@@ -5,10 +5,15 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "node -e \"console.log('Build complete')\"",
+    "build": "tailwindcss -i ./tailwind.input.css -o ./css/styles.css --minify && node -e \"console.log('Build complete')\"",
+    "build:css": "tailwindcss -i ./tailwind.input.css -o ./css/styles.css --minify",
     "lint": "node -e \"console.log('Lint clean')\""
   },
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   }
 }
