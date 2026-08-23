@@ -71,9 +71,9 @@
         
         <!-- HEADER TITLE -->
         <div>
-          <h1 class="font-headline text-3xl sm:text-4xl font-extrabold text-[#231916]">
+          <h2 class="font-headline text-2xl sm:text-3xl font-bold text-[#231916]">
             ${isMm ? 'စားသောက်ဆိုင်များ ရှာဖွေရန်' : 'Search Dining Venues'}
-          </h1>
+          </h2>
         </div>
 
         <!-- SEARCH & FILTER CAPSULE BAR -->
