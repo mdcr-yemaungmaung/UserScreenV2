@@ -341,8 +341,8 @@
               </div>
 
               <!-- Location -->
-              <div class="flex items-center gap-1.5 text-xs text-[#7A6B65]">
-                <span class="material-symbols-outlined text-sm text-[#7A6B65] shrink-0">location_on</span>
+              <div class="flex items-center gap-1.5 text-xs text-[#58413f]">
+                <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">location_on</span>
                 <span class="truncate">${locationText}</span>
               </div>
             </div>

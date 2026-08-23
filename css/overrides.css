@@ -626,8 +626,8 @@ textarea {
 
 .mobile-horizontal-scroll::after {
   content: '';
-  flex: 0 0 24px;
-  width: 24px;
+  flex: 0 0 16px;
+  width: 16px;
   height: 1px;
   pointer-events: none;
 }
@@ -639,8 +639,8 @@ textarea {
   }
 
   .mobile-horizontal-scroll::after {
-    flex: 0 0 32px;
-    width: 32px;
+    flex: 0 0 24px;
+    width: 24px;
   }
 }
 
