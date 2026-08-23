@@ -225,7 +225,7 @@
             ${filtered.length} ${isMm ? 'ဆိုင်များ တွေ့ရှိပါသည်' : 'Restaurants found'}
           </div>
 
-          <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+          <div class="flex items-center flex-wrap gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
             
             <!-- View Mode Toggle -->
             <div class="flex items-center bg-[#FFF8F6] p-1 rounded-xl border border-[#EADFD1]">
