@@ -38,7 +38,58 @@
       specialNoticeEn: 'Special Note: Open on holidays with exclusive Royal Burmese Tasting Set Menus & live traditional harp performances.',
       offerTag: '20% OFF',
       openingHours: '11:00 AM - 10:30 PM Daily',
-      description: 'Housed in a lovingly restored 1920s colonial mansion surrounded by lush teakwood gardens, Padonmar delivers an unforgettably authentic royal Burmese tasting experience.',
+      description: 'Housed in a lovingly restored 1920s colonial mansion surrounded by lush teakwood gardens, The Gilded Fork delivers an unforgettably authentic royal Burmese tasting experience.',
+      overviewStory: 'Housed in a lovingly restored 1920s heritage teakwood estate in the historic Dagon Cultural District, The Gilded Fork brings century-old Burmese royal culinary heritage to life. Our master culinary team collaborates directly with organic micro-farms in the Shan highlands and local artisanal fishermen in the Andaman Sea to deliver an authentic, refined dining experience. From slow-simmered fragrant curries to artisanal hand-tossed salads, every creation celebrates Myanmar\'s rich gastronomic biodiversity in a serene, candlelit colonial setting.',
+      overviewStoryMM: 'ဒဂုံမြို့နယ်၏ သမိုင်းဝင် ၁၉၂၀ ကျွန်းသစ်စံအိမ်တော်တွင် ဖွင့်လှစ်ထားသော ဂီးလ်ဒက် ဖော့ခ်သည် ရှေးခေတ်မြန်မာ့နန်းတွင်း ဟင်းလျာချက်ပြုတ်နည်းများကို ခေတ်မီအဆင့်မြင့် လက်ရာများအဖြစ် ဖန်တီးတင်ဆက်ထားပါသည်။ ရှမ်းပြည်နယ်မှ သဘာဝအော်ဂဲနစ်စိုက်ခင်းထွက် ကုန်ကြမ်းများနှင့် ကပ္ပလီပင်လယ်ထွက် လတ်ဆတ်သော ပင်လယ်စာများကို ရွေးချယ်အသုံးပြုထားပြီး၊ မမေ့နိုင်သော မြန်မာ့ရိုးရာ အဆင့်မြင့် စားသောက်မှုအတွေ့အကြုံကို ပေးစွမ်းပါသည်။',
+      chefNote: '“Our cooking is a love letter to Myanmar\'s culinary heritage — preserving royal techniques while championing sustainable organic farming.” — Executive Chef U Myo Min Thein',
+      chefNoteMM: '“ကျွန်ုပ်တို့၏ ချက်ပြုတ်မှုသည် မြန်မာ့ရိုးရာ အမွေအနှစ်ကို လေးစားတန်ဖိုးထားပြီး သဘာဝအော်ဂဲနစ် စိုက်ပျိုးရေးကို အားပေးကာ နန်းတွင်းလက်ရာများကို တန်ဖိုးထား ဖန်တီးထားပါသည်” — အမှုဆောင် စားဖိုမှူး ဦးမျိုးမင်းသိန်း',
+      highlights: [
+        {
+          icon: 'workspace_premium',
+          title: 'Royal Heritage Recipes',
+          titleMM: 'နန်းတွင်း ရိုးရာ ချက်နည်းများ',
+          desc: 'Prepared with authentic slow-cooking techniques and clay-pot culinary methods.',
+          descMM: 'ရှေးမူမပျက် ရိုးရာမြေအိုးဖြင့် အနုစိတ် အချိန်ယူချက်ပြုတ်ထားပါသည်။'
+        },
+        {
+          icon: 'eco',
+          title: '100% Organic & Local',
+          titleMM: 'သဘာဝ အော်ဂဲနစ် ကုန်ကြမ်းစစ်စစ်',
+          desc: 'Sourced weekly from certified high-altitude organic farms in Shan State.',
+          descMM: 'ရှမ်းကုန်းပြင်မြင့် သဘာဝစိုက်ခင်းများမှ လတ်ဆတ်စွာ တိုက်ရိုက်ရယူပါသည်။'
+        },
+        {
+          icon: 'wine_bar',
+          title: 'Sommelier & Tea Pairing',
+          titleMM: 'အဆင့်မြင့် ဝိုင်နှင့် ရိုးရာလက်ဖက်ရည်',
+          desc: 'Curated Old World vintages paired with single-estate artisanal Shan teas.',
+          descMM: 'နိုင်ငံတကာအဆင့်မြင့် ဝိုင်များနှင့် ရှမ်းရိုးရာလက်ဖက်ရည်ကို တွဲဖက်သုံးဆောင်နိုင်ပါသည်။'
+        },
+        {
+          icon: 'deck',
+          title: 'Lush Colonial Garden',
+          titleMM: 'သဘာဝ ဥယျာဉ် သီးသန့်ထိုင်ခုံများ',
+          desc: 'Candlelit verandahs shaded by century-old teak trees and native orchids.',
+          descMM: 'ရာစုနှစ်ဝက် ကျွန်းပင်ရိပ်အောက်ရှိ အေးချမ်းလှပသော သဘာဝဝရံတာများ။'
+        }
+      ],
+      mealPeriods: [
+        { period: 'Lunch Degustation', periodMM: 'နေ့လယ်စာ အထူးဟင်းလျာ', time: '11:30 AM - 03:00 PM', lastOrder: '02:15 PM' },
+        { period: 'Afternoon Tea & Refreshments', periodMM: 'ညနေခင်း လက်ဖက်ရည်နှင့် မုန့်များ', time: '03:00 PM - 05:30 PM', lastOrder: '05:00 PM' },
+        { period: 'Royal Dinner Service', periodMM: 'ညစာ နန်းတွင်းဟင်းလျာများ', time: '06:00 PM - 10:30 PM', lastOrder: '09:45 PM' }
+      ],
+      diningInfo: {
+        capacity: '120 Guests (Main Hall: 70, VIP Private Rooms: 30, Garden Verandah: 20)',
+        capacityMM: 'လူဦးရေ ၁၂၀ ဦး (ပင်မခန်းမ ၇၀၊ VIP သီးသန့်ခန်း ၃၀၊ ဥယျာဉ် ၂၀)',
+        dressCode: 'Smart Casual (No beachwear or sleeveless gym shirts)',
+        dressCodeMM: 'ကျက်သရေရှိ ရိုးရိုးရှင်းရှင်း (Smart Casual)',
+        dietary: 'Vegetarian, Vegan, Halal-Friendly & Gluten-Free options available upon request',
+        dietaryMM: 'သက်သတ်လွတ်၊ ဟာလာလ်နှင့် ဂျုံမပါ ဟင်းလျာများကို ကြိုတင်မှာယူနိုင်ပါသည်',
+        payments: ['KBZPay', 'CB Pay', 'AYA Pay', 'WavePay', 'Visa', 'Mastercard', 'Cash'],
+        languages: ['Myanmar (မြန်မာ)', 'English', 'Japanese (日本語)', 'Chinese (中文)'],
+        cancellationPolicy: 'Free cancellation up to 2 hours before booking time.',
+        cancellationPolicyMM: 'ကြိုတင်စာရင်းသွင်းချိန် မတိုင်မီ ၂ နာရီအလိုအထိ အခမဲ့ ပယ်ဖျက်နိုင်ပါသည်။'
+      },
       menuCategories: [
         {
           id: 'cat-1',
@@ -212,6 +263,57 @@
       offerTag: 'Complimentary Welcome Champagne',
       openingHours: '12:00 PM - 11:00 PM (Tue - Sun)',
       description: 'Founded by Michelin-starred Swiss Chef Felix Eppisser, Seeds is a sanctuary of organic gourmet cuisine set directly over the calm waters of Inya Lake.',
+      overviewStory: 'Perched along the tranquil shores of Inya Lake, Seeds Restaurant & Lounge offers a world-class gastronomic retreat conceived by Michelin-starred Swiss Chef Felix Eppisser and his wife Lucia. Blending contemporary European culinary precision with Southeast Asian botanical freshness, the menu features micro-greens grown in our private on-site organic garden alongside ethically sourced international ingredients.',
+      overviewStoryMM: 'အင်းလျားကန်၏ သာယာလှပသော ကမ်းနဖူးတွင် တည်ရှိသည့် Seeds စားသောက်ဆိုင်သည် မီရှလင်းကြယ်ပွင့်ရ ဆွစ်ဇာလန် စားဖိုမှူးကြီး Felix Eppisser ၏ ခေတ်မီ ဥရောပ အဆင့်မြင့်ဟင်းလျာများကို သဘာဝအလှအပနှင့် ပေါင်းစပ်ဖန်တီးထားပါသည်။ ဆိုင်တွင်း ကိုယ်ပိုင် အော်ဂဲနစ်စိုက်ခင်းထွက် လတ်ဆတ်သော ဟင်းသီးဟင်းရွက်များနှင့် နိုင်ငံတကာ အဆင့်မြင့် ကုန်ကြမ်းများကို အသုံးပြုထားပြီး ကန်ရေပြင်ပေါ် နေဝင်ချိန် ရှုခင်းနှင့်အတူ ဇိမ်ကျကျ သုံးဆောင်နိုင်ပါသည်။',
+      chefNote: '“We create harmony between culinary art, mindful sustainability, and the soul of Inya Lake.” — Michelin-starred Chef Felix Eppisser',
+      chefNoteMM: '“အစားအစာ၏ အရသာ၊ သဘာဝပတ်ဝန်းကျင် တန်ဖိုးထားမှုနှင့် အင်းလျားကန်၏ သာယာမှုတို့ကို ဟန်ချက်ညီညီ ဖန်တီးတင်ဆက်ထားပါသည်” — မီရှလင်းစားဖိုမှူး Felix Eppisser',
+      highlights: [
+        {
+          icon: 'water',
+          title: 'Waterfront Sunset Terrace',
+          titleMM: 'အင်းလျားကန်ဘေး နေဝင်ချိန် ရှုခင်း',
+          desc: 'Panoramic overwater views with live acoustic jazz every weekend.',
+          descMM: 'အင်းလျားကန်ရေပြင်နှင့် နေဝင်ချိန်ရှုခင်းကို သာယာငြိမ့်ညောင်းသော တေးဂီတနှင့်အတူ ကြည့်ရှုနိုင်ပါသည်။'
+        },
+        {
+          icon: 'yard',
+          title: 'On-Site Organic Garden',
+          titleMM: 'ဆိုင်တွင်း ကိုယ်ပိုင် အော်ဂဲနစ်ဥယျာဉ်',
+          desc: 'Fresh edible flowers, microgreens, and herbs harvested daily before service.',
+          descMM: 'နေ့စဉ် လတ်ဆတ်စွာ ခူးဆွတ်အသုံးပြုသော သဘာဝ ဟင်းခတ်အမွှေးအကြိုင်များနှင့် အသီးအရွက်များ။'
+        },
+        {
+          icon: 'wine_bar',
+          title: 'Award-Winning Wine Cellar',
+          titleMM: 'ဆုရ နိုင်ငံတကာ ဝိုင်ပြခန်း',
+          desc: 'Over 300 curated vintage labels from boutique biodynamic vineyards.',
+          descMM: 'ကမ္ဘာ့အဆင့်မီ နာမည်ကျော် ဝိုင်အမျိုးအစားပေါင်း ၃၀၀ ကျော် စုံလင်စွာ ရရှိနိုင်ပါသည်။'
+        },
+        {
+          icon: 'countertops',
+          title: 'Interactive Chef Table',
+          titleMM: 'စားဖိုမှူး အထူး စားပွဲဝိုင်း (Chef Table)',
+          desc: 'Exclusive 8-seat tasting experience overlooking the open artisan kitchen.',
+          descMM: 'စားဖိုမှူးကြီး၏ အနုစိတ် ဟင်းလျာချက်ပြုတ်ပုံကို အနီးကပ်ကြည့်ရှုသုံးဆောင်နိုင်သော သီးသန့် ၈ ယောက်ဝိုင်း။'
+        }
+      ],
+      mealPeriods: [
+        { period: 'Lunch Service', periodMM: 'နေ့လယ်စာ ဝန်ဆောင်မှု', time: '12:00 PM - 03:00 PM', lastOrder: '02:30 PM' },
+        { period: 'Sunset Cocktail Hour', periodMM: 'နေဝင်ချိန် ကော့တေးနှင့် အဆာပြေ', time: '04:30 PM - 06:30 PM', lastOrder: '06:00 PM' },
+        { period: 'Fine Dining Dinner', periodMM: 'ညစာ အဆင့်မြင့် ဟင်းလျာများ', time: '06:30 PM - 11:00 PM', lastOrder: '10:00 PM' }
+      ],
+      diningInfo: {
+        capacity: '140 Guests (Indoor Dining: 60, Lake Overwater Deck: 50, Private Room: 30)',
+        capacityMM: 'လူဦးရေ ၁၄၀ ဦး (အတွင်းခန်းမ ၆၀၊ ကန်ပေါ်ဝရံတာ ၅၀၊ သီးသန့် VIP အခန်း ၃၀)',
+        dressCode: 'Elegant Casual (No slippers or swimwear)',
+        dressCodeMM: 'ကျက်သရေရှိ ရိုးရိုးရှင်းရှင်း (Elegant Casual)',
+        dietary: 'Full Vegetarian, Vegan Degustation, Gluten-Free & Dairy-Free menus available',
+        dietaryMM: 'သက်သတ်လွတ်၊ ဂျုံမပါ၊ နို့ထွက်ပစ္စည်းမပါ ဟင်းလျာများကို အထူးရရှိနိုင်ပါသည်',
+        payments: ['KBZPay', 'CB Pay', 'AYA Pay', 'Visa', 'Mastercard', 'JCB', 'Cash'],
+        languages: ['English', 'Myanmar (မြန်မာ)', 'German (Deutsch)', 'French (Français)'],
+        cancellationPolicy: 'Free cancellation up to 4 hours before booking time.',
+        cancellationPolicyMM: 'ကြိုတင်စာရင်းသွင်းချိန် မတိုင်မီ ၄ နာရီအလိုအထိ အခမဲ့ ပယ်ဖျက်နိုင်ပါသည်။'
+      },
       menuCategories: [
         {
           id: 'cat-2-1',

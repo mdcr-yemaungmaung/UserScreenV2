@@ -206,7 +206,7 @@
 
           <!-- Time Slots Selection Section -->
           <div class="pt-3 border-t border-[#EADFD1] space-y-2">
-            <div class="flex items-center justify-between">
+            <div class="hidden sm:flex items-center justify-between">
               <div class="flex items-center gap-1 font-label text-[10px] sm:text-[11px] font-bold text-[#58413f] uppercase tracking-wider">
                 <span class="material-symbols-outlined text-xs text-[#840f16]">schedule</span>
                 <span>${isMm ? 'ရရှိနိုင်သော အချိန်များ' : 'Available Time Slots'}</span>
