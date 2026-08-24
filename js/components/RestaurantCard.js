@@ -279,7 +279,7 @@
         const target = RESTAURANTS_DATA.find(r => r.id === restId);
         if (target) {
           const state = store.getState();
-          const selectedDate = state.resultsState?.selectedDate || 'Aug 14, 2026';
+          const selectedDate = state.resultsState?.selectedDate;
           const partySizeRaw = state.resultsState?.partySize;
           const guests = (partySizeRaw && partySizeRaw !== 'All Sizes') ? parseInt(partySizeRaw, 10) || 2 : 2;
           store.openBookingModal(target, selectedDate, time, guests);

@@ -1,6 +1,14 @@
 (() => {
   const INITIAL_FAVORITES = ['rest-1', 'rest-3'];
 
+  // Live booking-selection defaults anchor on "today" so they always fall
+  // inside the 60-day booking window (specs/002-booking-calendar-window).
+  function todayDisplayStr() {
+    const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const t = new Date();
+    return `${m[t.getMonth()]} ${t.getDate()}, ${t.getFullYear()}`;
+  }
+
   const INITIAL_RESERVATIONS = [
     {
       id: 'res-2026-001',
@@ -239,7 +247,7 @@
           restaurant: null,
           step: 1,
           bookingData: {
-            date: 'Aug 14, 2026',
+            date: todayDisplayStr(),
             time: '18:30',
             guests: 2,
             seatingPreference: 'Standard'
@@ -301,7 +309,7 @@
           area: 'All Areas',
           cuisine: 'All Cuisines',
           partySize: 'All Sizes',
-          selectedDate: 'Aug 14, 2026',
+          selectedDate: todayDisplayStr(),
           showMoreFilters: false,
           minPrice: '',
           maxPrice: '',
@@ -315,7 +323,7 @@
         // Restaurant Detail View State
         detailState: {
           activeTab: 'overview', // 'overview' | 'menu' | 'reviews'
-          date: 'Aug 14, 2026',
+          date: todayDisplayStr(),
           time: '18:30',
           guests: 2
         },
@@ -467,7 +475,7 @@
       if (restaurant) {
         this.state.detailState = {
           activeTab: 'overview',
-          date: 'Aug 14, 2026',
+          date: todayDisplayStr(),
           time: '18:30',
           guests: 2
         };
@@ -828,7 +836,7 @@
         restaurant,
         step: 1,
         bookingData: {
-          date: date || 'Aug 14, 2026',
+          date: date || todayDisplayStr(),
           time: time || '18:30',
           guests: guests || 2,
           seatingPreference: 'Standard'
