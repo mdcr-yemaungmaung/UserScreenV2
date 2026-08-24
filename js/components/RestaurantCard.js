@@ -29,10 +29,10 @@
   function renderRatingBadge(restaurant) {
     return `
       <div class="absolute bottom-3 left-3 z-10">
-        <span class="inline-flex items-center gap-1.5 bg-[#840f16]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
+        <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
           <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-          <span class="leading-none">${restaurant.rating}</span>
-          <span class="text-white/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+          <span class="leading-none text-white">${restaurant.rating}</span>
+          <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
         </span>
       </div>
     `;
@@ -43,10 +43,10 @@
     return `
       <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
         <!-- Review Tag (Left) -->
-        <span class="inline-flex items-center gap-1.5 bg-[#840f16]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-xl shadow-md font-label text-[11px] sm:text-xs font-bold text-white pointer-events-auto">
+        <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white pointer-events-auto">
           <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-          <span class="leading-none">${restaurant.rating}</span>
-          <span class="text-white/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+          <span class="leading-none text-white">${restaurant.rating}</span>
+          <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
         </span>
         <!-- Promotion Tag (Right) -->
         ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, true) : ''}
@@ -407,10 +407,10 @@
 
           <!-- Glass Rating Pill (top-left, per reference design) -->
           <div class="absolute top-3 left-3 z-10">
-            <span class="inline-flex items-center gap-1.5 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916]">
+            <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
               <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-              <span class="leading-none">${restaurant.rating}</span>
-              <span class="text-[#58413f]/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+              <span class="leading-none text-white">${restaurant.rating}</span>
+              <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
             </span>
           </div>
 

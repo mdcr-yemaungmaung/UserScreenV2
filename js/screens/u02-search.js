@@ -218,8 +218,8 @@
           }
         </div>
 
-        <!-- RESULTS TOOLBAR: COUNT, SORT, VIEW MODE -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#FBF3E2] p-4 rounded-2xl border border-[#EADFD1]">
+        <!-- RESULTS TOOLBAR: COUNT, SORT, VIEW MODE (Clean layout without box shape) -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-1">
           
           <div class="font-headline text-base font-bold text-[#231916]">
             ${filtered.length} ${isMm ? 'ဆိုင်များ တွေ့ရှိပါသည်' : 'Restaurants found'}
@@ -228,11 +228,11 @@
           <div class="flex items-center flex-wrap gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
             
             <!-- View Mode Toggle -->
-            <div class="flex items-center bg-[#FFF8F6] p-1 rounded-xl border border-[#EADFD1]">
+            <div class="flex items-center bg-white p-1 rounded-xl border border-[#EADFD1] shadow-2xs">
               <button
                 id="results-mode-list-btn"
                 class="px-3 py-1.5 rounded-lg font-label text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
-                  rState.viewMode === 'list' ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f]'
+                  rState.viewMode === 'list' ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f] hover:text-[#231916]'
                 }"
               >
                 <span class="material-symbols-outlined text-sm">grid_view</span>
@@ -241,7 +241,7 @@
               <button
                 id="results-mode-map-btn"
                 class="px-3 py-1.5 rounded-lg font-label text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
-                  rState.viewMode === 'map' ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f]'
+                  rState.viewMode === 'map' ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f] hover:text-[#231916]'
                 }"
               >
                 <span class="material-symbols-outlined text-sm">map</span>
@@ -250,7 +250,7 @@
             </div>
 
             <!-- Sort Select -->
-            <div class="flex items-center gap-2 bg-[#FFF8F6] px-3 py-1.5 rounded-xl border border-[#EADFD1]">
+            <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-[#EADFD1] shadow-2xs">
               <span class="font-label text-xs text-[#58413f] font-bold">Sort:</span>
               <select id="results-sort-select" class="bg-transparent font-label text-xs font-bold text-[#231916] focus:outline-none cursor-pointer">
                 <option value="popularity" ${rState.sortBy === 'popularity' ? 'selected' : ''}>Popularity</option>

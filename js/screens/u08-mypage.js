@@ -303,10 +303,8 @@
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div class="absolute top-3 right-3 z-10">
-                    ${renderRatingBadge(r)}
-                  </div>
-                  <div class="absolute bottom-3 left-3 z-10">
+                  ${renderRatingBadge(r)}
+                  <div class="absolute top-3 left-3 z-10">
                     ${renderCuisineTag(r.cuisine || 'Fine Dining', true)}
                   </div>
                 </div>
