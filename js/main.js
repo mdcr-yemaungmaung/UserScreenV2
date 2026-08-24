@@ -188,10 +188,7 @@
           } else {
             store.notify();
           }
-        }
-        if (window.YoyakuPrototype && window.YoyakuPrototype.initMarquees) {
-          window.YoyakuPrototype.initMarquees(document);
-        }
+          }
       }, 150);
     });
   }

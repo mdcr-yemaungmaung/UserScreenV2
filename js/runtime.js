@@ -214,38 +214,7 @@
     });
   };
 
-  prototype.initMarquees = function initMarquees(container) {
-    const scope = container || document;
-    const containers = scope.querySelectorAll('.marquee-container');
-    if (!containers.length) return;
-
-    requestAnimationFrame(() => {
-      containers.forEach((el) => {
-        const content = el.querySelector('.marquee-content');
-        if (!content) return;
-
-        // Check if text is long / overflows container
-        const isLong = content.scrollWidth > (el.clientWidth + 1);
-        if (isLong) {
-          el.classList.add('is-overflowing');
-          if (!el.querySelector('.marquee-duplicate')) {
-            const clone = content.cloneNode(true);
-            clone.classList.add('marquee-duplicate');
-            clone.removeAttribute('id');
-            clone.setAttribute('aria-hidden', 'true');
-            el.appendChild(clone);
-          }
-        } else {
-          el.classList.remove('is-overflowing');
-          const dup = el.querySelector('.marquee-duplicate');
-          if (dup) dup.remove();
-        }
-      });
-    });
-  };
-
   prototype.enhanceRuntime = function enhanceRuntime(container) {
     prototype.applyOfflineMedia(container);
-    prototype.initMarquees(container);
   };
 }());
