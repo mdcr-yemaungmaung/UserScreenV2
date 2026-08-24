@@ -445,12 +445,10 @@
             <span class="truncate" title="${restaurant.priceRange || ''}">${restaurant.priceRange || ''}</span>
           </div>
 
-          <!-- 4. Cuisine Type Pill Chip (visual closer above the CTA) -->
-          <div class="flex items-center gap-2 min-w-0">
+          <!-- 4. Cuisine Type Row (no box shape) -->
+          <div class="flex items-center gap-2 text-xs font-body text-[#58413f] font-medium min-w-0">
             <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">restaurant</span>
-            <span class="inline-block max-w-full bg-[#F3E2DC] text-[#58413f] rounded-full px-3 py-1.5 text-xs font-body font-medium truncate" title="${restaurant.cuisine}">
-              ${restaurant.cuisine}
-            </span>
+            <span class="truncate" title="${restaurant.cuisine}">${restaurant.cuisine}</span>
           </div>
 
           <!-- Reserve CTA: full-width BOOK NOW pill, opens booking flow -->
