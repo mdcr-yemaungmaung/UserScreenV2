@@ -14,6 +14,11 @@
     // Active gallery lightbox index
     const activeLightboxIndex = detailState.lightboxIndex; // null or number
 
+    // Shop description with language fallback (feature 004): MM -> descriptionMM ?? description, EN -> description
+    const descriptionText = isMm
+      ? restaurant.descriptionMM || restaurant.description || ''
+      : restaurant.description || '';
+
     return `
       <div class="space-y-8 pb-24 text-left max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 animate-fadeIn">
         
@@ -166,6 +171,20 @@
               detailState.activeTab === 'overview'
                 ? `
                 <div class="space-y-8 animate-fadeIn">
+                  <!-- Shop Description / About (feature 004: first block under Overview) -->
+                  ${
+                    descriptionText
+                      ? `
+                  <div class="space-y-3 pt-2">
+                    <h3 class="font-headline text-xl font-bold text-[#231916]">
+                      ${isMm ? 'ဆိုင်အကြောင်း (About)' : 'About This Shop'}
+                    </h3>
+                    <p class="font-body text-xs sm:text-sm text-[#58413f] leading-relaxed">${descriptionText}</p>
+                  </div>
+                `
+                      : ''
+                  }
+
                   <!-- Facilities & Amenities Icons (အဆောက်အအုံနှင့် ဝန်ဆောင်မှုဆိုင်ရာ အိုင်ကွန်များ) -->
                   <div class="space-y-3 pt-2">
                     <h3 class="font-headline text-xl font-bold text-[#231916]">
