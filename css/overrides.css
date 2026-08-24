@@ -1,5 +1,11 @@
+@import "components.css";
+
 :root {
   color-scheme: light;
+  --color-brand: #840f16;
+  --color-brand-hover: #6c0c11;
+  --color-brand-surface: #FFF9EE;
+  --color-brand-border: #EADFD1;
 }
 
 html {
