@@ -2,7 +2,7 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA } = window.YoyakuData;
-  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard } = window.YoyakuComponents;
+  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
 
@@ -15,6 +15,9 @@
 
     // Compute Popularity Ranking (#1, #2, #3, #4) based on rating & reviewCount
     const popularRestaurants = [...RESTAURANTS_DATA].sort((a, b) => (b.rating * b.reviewCount) - (a.rating * a.reviewCount));
+
+    // Hot Promotions qualification (feature 005): only shops with a non-empty promotion offer
+    const promoRestaurants = RESTAURANTS_DATA.filter(r => r.offerTag && r.offerTag.trim() !== '');
 
     return `
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">
@@ -471,7 +474,10 @@
         </section>
 
 
-        <!-- HOT PROMOTIONS VENUES GRID (အထူးပရိုမိုးရှင်း စားသောက်ဆိုင်များ) -->
+        <!-- HOT PROMOTIONS VENUES GRID (အထူးပရိုမိုးရှင်း စားသောက်ဆိုင်များ) - feature 005: only shops with an active promotion; section hidden entirely when none qualify -->
+        ${
+          promoRestaurants.length > 0
+            ? `
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
@@ -486,9 +492,12 @@
           </div>
 
           <div class="mobile-horizontal-scroll px-0 pt-3 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
-            ${RESTAURANTS_DATA.map(restaurant => renderTrendingCard(restaurant, state, { showVenueName: true })).join('')}
+            ${promoRestaurants.map(restaurant => renderPromoCard(restaurant, state)).join('')}
           </div>
         </section>
+        `
+            : ''
+        }
 
       </div>
     `;

@@ -360,9 +360,101 @@
     `;
   }
 
+  // Hot Promotions Exclusive Promo Card (feature 005) - fully custom promotional
+  // style reserved for the Home Hot Promotions section (justified Constitution III
+  // deviation per spec FR-008 / Clarification Q2). Matches the approved reference
+  // design (extra/hot promotion restaurant card.png): warm cream surface, glass
+  // rating pill, solid gold offer banner with dark-cocoa uppercase text, cuisine
+  // pill chip, and a full-width BOOK NOW pill that opens the booking flow.
+  // Reuses shared helpers and event hooks so navigation, favorites and reserve
+  // behave identically to other cards.
+  function renderPromoCard(restaurant, state) {
+    const isFavorite = state.favorites.includes(restaurant.id);
+    const isMm = state.currentLanguage === 'MM';
+    const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
+    const locationText = restaurant.location || restaurant.area || 'Yangon';
+
+    return `
+      <div
+        data-card-select-id="${restaurant.id}"
+        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFF8F6] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+      >
+
+        <!-- Card Image & Floating Badges -->
+        <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
+          <img
+            src="${restaurant.heroImage}"
+            alt="${venueTitle}"
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+
+          <!-- Glass Rating Pill (top-left, per reference design) -->
+          <div class="absolute top-3 left-3 z-10">
+            <span class="inline-flex items-center gap-1.5 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-[#231916]">
+              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+              <span class="leading-none">${restaurant.rating}</span>
+              <span class="text-[#58413f]/90 font-medium leading-none">(${restaurant.reviewCount})</span>
+            </span>
+          </div>
+
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
+        </div>
+
+        <!-- FOCAL OFFER BANNER (feature 005: solid gold, dark-cocoa uppercase text) -->
+        <div class="bg-[#D08E1C] px-4 py-3 flex items-center justify-center">
+          <p class="font-label text-xs sm:text-sm font-extrabold uppercase ${isMm ? '' : 'tracking-wider'} text-[#704e00] text-center leading-relaxed line-clamp-2" title="${restaurant.offerTag}">
+            ${restaurant.offerTag}
+          </p>
+        </div>
+
+        <!-- Card Content Area -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col space-y-2.5 sm:space-y-3">
+          <!-- Shop Name -->
+          <h3 class="font-headline text-xl sm:text-2xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-2">
+            ${venueTitle}
+          </h3>
+
+          <!-- Location Row -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium">
+            <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">location_on</span>
+            <span class="truncate">${locationText}</span>
+          </div>
+
+          <!-- Price Range Row -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium">
+            <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">payments</span>
+            <span class="truncate">${restaurant.priceRange || ''}</span>
+          </div>
+
+          <!-- Cuisine Pill Chip -->
+          <div class="flex">
+            <span class="inline-flex items-center gap-1.5 bg-[#F7E4DE] px-4 py-1.5 rounded-full font-label text-[11px] sm:text-xs font-semibold text-[#58413f]">
+              <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">restaurant</span>
+              <span class="truncate">${restaurant.cuisine}</span>
+            </span>
+          </div>
+
+          <!-- Reserve CTA: compact centered pill, opens booking flow -->
+          <div class="mt-auto flex justify-center pt-1">
+            <button
+              data-card-reserve-id="${restaurant.id}"
+              class="bg-[#840f16] hover:bg-[#6c0c11] active:scale-[0.98] text-white px-6 py-2.5 rounded-full font-label text-xs sm:text-sm font-extrabold uppercase tracking-widest shadow-md transition-all cursor-pointer text-center"
+            >
+              ${isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Reserve'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   window.YoyakuComponents.renderRestaurantCard = renderRestaurantCard;
   window.YoyakuComponents.renderSearchResultCard = renderSearchResultCard;
   window.YoyakuComponents.renderTrendingCard = renderTrendingCard;
+  window.YoyakuComponents.renderPromoCard = renderPromoCard;
   window.YoyakuComponents.attachRestaurantCardEvents = attachRestaurantCardEvents;
   window.YoyakuComponents.renderImageGradient = renderImageGradient;
   window.YoyakuComponents.renderFavoriteButton = renderFavoriteButton;
