@@ -1,5 +1,5 @@
 // Yoyaku PWA Service Worker
-const CACHE_NAME = 'yoyaku-pwa-v1';
+const CACHE_NAME = 'yoyaku-pwa-v2';
 const CORE_ASSETS = [
   '/',
   '/index.html',

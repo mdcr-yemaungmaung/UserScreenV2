@@ -684,15 +684,18 @@
     const dateDisplay = containerElement.querySelector('#detail-date-display');
     const calendarContainer = containerElement.querySelector('#detail-calendar-container');
 
-    let activeCalYear = 2026;
-    let activeCalMonth = 7; // Aug
+    // Anchor the view on the current month; bounds are computed inside
+    // generateCalendarGrid (FR-010).
+    const now = new Date();
+    let activeCalYear = now.getFullYear();
+    let activeCalMonth = now.getMonth();
 
     function renderDetailCalendar() {
       if (!calendarContainer) return;
       calendarContainer.innerHTML = generateCalendarGrid({
         year: activeCalYear,
         month: activeCalMonth,
-        selectedDateStr: store.getState().detailState.date || 'Aug 14, 2026',
+        selectedDateStr: store.getState().detailState.date || undefined,
         onDaySelectAttr: 'data-detail-calendar-day'
       });
       bindDetailCalendarEvents();
@@ -706,6 +709,7 @@
       if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (prevBtn.disabled) return; // window boundary: backward blocked
           activeCalMonth--;
           if (activeCalMonth < 0) {
             activeCalMonth = 11;
@@ -720,6 +724,7 @@
       if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (nextBtn.disabled) return; // window boundary: forward bounded
           activeCalMonth++;
           if (activeCalMonth > 11) {
             activeCalMonth = 0;

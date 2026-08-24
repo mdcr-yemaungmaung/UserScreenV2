@@ -100,7 +100,7 @@
                         <div class="flex items-center gap-2 min-w-0">
                           <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">calendar_month</span>
                           <span id="hero-date-display" class="font-label text-xs sm:text-sm text-[#231916] font-semibold truncate">
-                            ${state.resultsState?.selectedDate || 'Aug 14, 2026'}
+                            ${state.resultsState?.selectedDate || ''}
                           </span>
                         </div>
                         <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0">expand_more</span>
@@ -117,9 +117,7 @@
                         </div>
                         <div id="hero-calendar-container">
                           ${generateCalendarGrid({
-                            year: 2026,
-                            month: 7,
-                            selectedDateStr: state.resultsState?.selectedDate || 'Aug 14, 2026',
+                            selectedDateStr: state.resultsState?.selectedDate || undefined,
                             onDaySelectAttr: 'data-hero-calendar-day'
                           })}
                         </div>
@@ -660,15 +658,18 @@
     const dateDisplay = containerElement.querySelector('#hero-date-display');
     const calendarContainer = containerElement.querySelector('#hero-calendar-container');
 
-    let activeCalYear = 2026;
-    let activeCalMonth = 7; // Aug
+    // Anchor the view on the current month; bounds are computed inside
+    // generateCalendarGrid (FR-010).
+    const now = new Date();
+    let activeCalYear = now.getFullYear();
+    let activeCalMonth = now.getMonth();
 
     function renderHeroCalendar() {
       if (!calendarContainer) return;
       calendarContainer.innerHTML = generateCalendarGrid({
         year: activeCalYear,
         month: activeCalMonth,
-        selectedDateStr: store.state.resultsState?.selectedDate || 'Aug 14, 2026',
+        selectedDateStr: store.state.resultsState?.selectedDate || undefined,
         onDaySelectAttr: 'data-hero-calendar-day'
       });
       bindHeroCalendarEvents();
@@ -682,6 +683,7 @@
       if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (prevBtn.disabled) return; // window boundary: backward blocked
           activeCalMonth--;
           if (activeCalMonth < 0) {
             activeCalMonth = 11;
@@ -696,6 +698,7 @@
       if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (nextBtn.disabled) return; // window boundary: forward bounded
           activeCalMonth++;
           if (activeCalMonth > 11) {
             activeCalMonth = 0;

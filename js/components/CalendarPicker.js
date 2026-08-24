@@ -2,12 +2,63 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
 
+  // ---------------------------------------------------------------------------
+  // Date helpers (local time, day-granularity)
+  // ---------------------------------------------------------------------------
 
+  function startOfToday() {
+    const t = new Date();
+    return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  }
+
+  function addDays(date, n) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + n);
+  }
+
+  function toSerial(year, monthIndex, day) {
+    return year * 10000 + (monthIndex + 1) * 100 + day;
+  }
+
+  function formatDisplayDate(year, monthIndex, day, monthNames) {
+    return `${monthNames[monthIndex].substring(0, 3)} ${day}, ${year}`;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Mock availability (deterministic, per research.md R3 / constitution IV)
+  //
+  // - Deterministic hash rule marks ~15% of dates unavailable; the same date
+  //   always resolves identically across renders/sessions.
+  // - AVAILABILITY_OVERRIDES keys are whole-day offsets from today
+  //   (e.g. 3 => today+3) with `true` = forced unavailable, `false` = forced
+  //   available, for reproducible demo/quickstart scenarios (S5/S6).
+  // - DEMO_TODAY_UNAVAILABLE simulates "no bookable slots left today" (S6).
+  // ---------------------------------------------------------------------------
+
+  const AVAILABILITY_OVERRIDES = {
+    3: true,  // today+3 forced unavailable for demo
+    5: false, // today+5 forced available for demo
+  };
+
+  const DEMO_TODAY_UNAVAILABLE = false;
+
+  function defaultIsUnavailableFn(year, monthIndex, day, todayMid) {
+    const offset = Math.round(
+      (new Date(year, monthIndex, day).getTime() - todayMid.getTime()) / 86400000
+    );
+    if (Object.prototype.hasOwnProperty.call(AVAILABILITY_OVERRIDES, offset)) {
+      return AVAILABILITY_OVERRIDES[offset];
+    }
+    if (offset === 0 && DEMO_TODAY_UNAVAILABLE) {
+      return true;
+    }
+    const h = (year * 733 + (monthIndex + 1) * 37 + day * 13) % 100;
+    return h < 15;
+  }
 
   // Helper to compare if a specific calendar cell matches the selectedDateStr
   function isSameDate(year, month, day, selectedDateStr, monthNames) {
     if (!selectedDateStr) return false;
-    
+
     const monthShort = monthNames[month].substring(0, 3);
     const formatted1 = `${monthShort} ${day}, ${year}`;
     const formatted2 = `${monthNames[month]} ${day}, ${year}`;
@@ -42,16 +93,43 @@
   }
 
   /**
-   * Helper to generate calendar grid HTML for a specific year & month.
+   * Generate calendar grid HTML for a specific year & month.
+   *
+   * Booking window contract (specs/002-booking-calendar-window):
+   * - Selectable range defaults to [today, today+59] (60 days inclusive),
+   *   recomputed from the system clock on every call.
+   * - Backward navigation is blocked at the current month; forward navigation
+   *   stops at the month containing maxDate (controls render `disabled`).
+   * - Days outside the window or without availability render disabled and
+   *   non-selectable; visual precedence: selected > today > disabled.
    */
-  function generateCalendarGrid({ year, month, selectedDateStr = 'Aug 14, 2026', onDaySelectAttr = 'data-calendar-select-day' }) {
+  function generateCalendarGrid({
+    year,
+    month,
+    selectedDateStr,
+    onDaySelectAttr = 'data-calendar-select-day',
+    minDate,
+    maxDate,
+    isUnavailableFn = null,
+  }) {
     const monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
-    // If year or month are not valid numbers, derive from selectedDateStr
-    if (selectedDateStr) {
+    const todayMid = startOfToday();
+    const curYear = todayMid.getFullYear();
+    const curMonth = todayMid.getMonth();
+
+    // Booking window bounds (FR-001/FR-010): recomputed every call.
+    const winMin = minDate ? startOfDay(minDate) : todayMid;
+    const winMax = maxDate ? startOfDay(maxDate) : addDays(winMin, 59);
+    const minSerial = toSerial(winMin.getFullYear(), winMin.getMonth(), winMin.getDate());
+    const maxSerial = toSerial(winMax.getFullYear(), winMax.getMonth(), winMax.getDate());
+
+    // If year or month are not valid numbers, derive from selectedDateStr,
+    // falling back to the current month (never a hardcoded date).
+    if ((year === undefined || month === undefined) && selectedDateStr) {
       const parts = selectedDateStr.replace(/,/g, ' ').replace(/-/g, ' ').replace(/\//g, ' ').trim().split(/\s+/);
       if (parts.length >= 3) {
         if (parts[0].length === 4 && !isNaN(parts[0])) {
@@ -70,16 +148,20 @@
       }
     }
 
-    year = typeof year === 'number' ? year : 2026;
-    month = typeof month === 'number' ? month : 7;
+    year = typeof year === 'number' ? year : curYear;
+    month = typeof month === 'number' ? month : curMonth;
 
     const firstDayOfWeek = new Date(year, month, 1).getDay(); // 0 = Sun
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth();
-    const currentDate = today.getDate();
+    // Navigation gating (FR-002 backward blocked / FR-003 forward bounded).
+    const monthStartSerial = toSerial(year, month, 1);
+    const curMonthStartSerial = toSerial(curYear, curMonth, 1);
+    const prevDisabled = monthStartSerial <= curMonthStartSerial;
+    const nextDisabled = new Date(year, month + 1, 1) > winMax;
+
+    const navEnabledClass = 'hover:bg-[#840f16] hover:text-white cursor-pointer';
+    const navDisabledClass = 'opacity-40 cursor-not-allowed';
 
     let html = `
       <div class="calendar-widget font-body text-left">
@@ -89,7 +171,8 @@
             <button
               type="button"
               id="cal-prev-month"
-              class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] hover:bg-[#840f16] hover:text-white transition-colors cursor-pointer shadow-2xs"
+              ${prevDisabled ? 'disabled' : ''}
+              class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] transition-colors shadow-2xs ${prevDisabled ? navDisabledClass : navEnabledClass}"
               title="Previous Month"
             >
               <span class="material-symbols-outlined text-lg">chevron_left</span>
@@ -103,16 +186,18 @@
             <button
               type="button"
               id="cal-next-month"
-              class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] hover:bg-[#840f16] hover:text-white transition-colors cursor-pointer shadow-2xs"
+              ${nextDisabled ? 'disabled' : ''}
+              class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] transition-colors shadow-2xs ${nextDisabled ? navDisabledClass : navEnabledClass}"
               title="Next Month"
             >
               <span class="material-symbols-outlined text-lg">chevron_right</span>
             </button>
           </div>
 
+          ${selectedDateStr ? `
           <div class="font-label text-xs font-semibold text-[#840f16] bg-[#840f16]/10 px-3 py-1 rounded-full border border-[#840f16]/20">
-            Selected: ${selectedDateStr || 'Aug 14, 2026'}
-          </div>
+            Selected: ${selectedDateStr}
+          </div>` : ''}
         </div>
 
         <!-- Day of Week Headers -->
@@ -131,28 +216,25 @@
 
     // Day cells
     for (let day = 1; day <= daysInMonth; day++) {
-      const monthShort = monthNames[month].substring(0, 3);
-      const dateFormatted = `${monthShort} ${day}, ${year}`;
-      
+      const dateFormatted = formatDisplayDate(year, month, day, monthNames);
+
       // Check if selected
       const isSelected = isSameDate(year, month, day, selectedDateStr, monthNames);
-      
-      // Check if today (2026-08-14 or system date)
-      const isToday = (year === 2026 && month === 7 && day === 14) ||
-                      (year === currentYear && month === currentMonth && day === currentDate);
 
-      // Calculate if past date
-      let isPast = false;
-      if (year === 2026 && month === 7) {
-        isPast = day < 14;
-      } else if (year === currentYear && month === currentMonth) {
-        isPast = day < currentDate;
-      } else if (year < 2026 || (year === 2026 && month < 7)) {
-        isPast = true;
-      }
+      const isToday = (year === curYear && month === curMonth && day === todayMid.getDate());
 
-      // Selected dates are never disabled
-      const isDisabled = isPast && !isSelected;
+      // Window membership (FR-001..FR-003)
+      const serial = toSerial(year, month, day);
+      const inWindow = serial >= minSerial && serial <= maxSerial;
+
+      // Availability (FR-006): no slots => disabled, including today (no exemption)
+      const unavailableFn = isUnavailableFn || defaultIsUnavailableFn;
+      const hasAvailability = !unavailableFn(year, month, day, todayMid);
+
+      let isDisabled = !inWindow || !hasAvailability;
+
+      // Selected dates are never disabled (selection only lands on enabled days)
+      isDisabled = isDisabled && !isSelected;
 
       html += `
         <button
@@ -163,10 +245,10 @@
           class="h-10 w-full rounded-2xl font-label text-xs font-semibold transition-all flex items-center justify-center relative ${
             isSelected
               ? 'bg-[#840f16] text-white shadow-md font-bold ring-2 ring-[#840f16]/30 cursor-pointer scale-105 z-10'
+              : isDisabled
+              ? 'text-[#8d7b75] opacity-60 cursor-not-allowed bg-[#EADFD1]/30 border border-[#EADFD1]/50 rounded-2xl'
               : isToday
               ? 'bg-[#FFF8EE] text-[#840f16] font-bold border-2 border-[#840f16] hover:bg-[#840f16]/10 cursor-pointer shadow-2xs'
-              : isDisabled
-              ? 'text-[#EADFD1] opacity-40 cursor-not-allowed bg-transparent'
               : 'bg-white text-[#231916] hover:bg-[#840f16]/10 border border-[#EADFD1] cursor-pointer shadow-2xs'
           }"
         >
@@ -183,6 +265,9 @@
     return html;
   }
 
+  function startOfDay(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
 
   window.YoyakuComponents.generateCalendarGrid = generateCalendarGrid;
 })();

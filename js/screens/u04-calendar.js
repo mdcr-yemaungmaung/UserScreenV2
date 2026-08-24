@@ -78,7 +78,7 @@
 
           <div id="booking-modal-calendar-container" class="bg-[#F7EFE2] p-5 rounded-2xl border border-[#EADFD1]">
             ${generateCalendarGrid({
-              selectedDateStr: bData.date || 'Aug 14, 2026',
+              selectedDateStr: bData.date || undefined,
               onDaySelectAttr: 'data-modal-calendar-day'
             })}
           </div>
@@ -217,16 +217,21 @@
 
     const modalCalContainer = containerElement.querySelector('#booking-modal-calendar-container');
     if (modalCalContainer) {
-      const currentDateVal = store.getState().bookingModalState.bookingData.date || 'Aug 14, 2026';
+      // Anchor the initial view on the selected date, else the current month
+      // (window bounds are computed inside generateCalendarGrid per FR-010).
+      const currentDateVal = store.getState().bookingModalState.bookingData.date;
       const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const parts = currentDateVal.replace(',', '').split(' ');
-      let activeCalYear = 2026;
-      let activeCalMonth = 7;
-      if (parts.length >= 3) {
-        const mIdx = monthNamesShort.findIndex(m => m.toLowerCase().startsWith(parts[0].toLowerCase().substring(0, 3)));
-        if (mIdx !== -1) activeCalMonth = mIdx;
-        const parsedYear = parseInt(parts[2], 10);
-        if (!isNaN(parsedYear)) activeCalYear = parsedYear;
+      const now = new Date();
+      let activeCalYear = now.getFullYear();
+      let activeCalMonth = now.getMonth();
+      if (currentDateVal) {
+        const parts = currentDateVal.replace(',', '').split(' ');
+        if (parts.length >= 3) {
+          const mIdx = monthNamesShort.findIndex(m => m.toLowerCase().startsWith(parts[0].toLowerCase().substring(0, 3)));
+          if (mIdx !== -1) activeCalMonth = mIdx;
+          const parsedYear = parseInt(parts[2], 10);
+          if (!isNaN(parsedYear)) activeCalYear = parsedYear;
+        }
       }
 
       function renderModalCalendar() {
@@ -246,6 +251,7 @@
         if (prevBtn) {
           prevBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (prevBtn.disabled) return; // window boundary: backward blocked
             activeCalMonth--;
             if (activeCalMonth < 0) { activeCalMonth = 11; activeCalYear--; }
             renderModalCalendar();
@@ -255,6 +261,7 @@
         if (nextBtn) {
           nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (nextBtn.disabled) return; // window boundary: forward bounded
             activeCalMonth++;
             if (activeCalMonth > 11) { activeCalMonth = 0; activeCalYear++; }
             renderModalCalendar();
