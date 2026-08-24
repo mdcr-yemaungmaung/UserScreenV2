@@ -74,7 +74,13 @@
     const onImageClasses = 'bg-[#D08E1C]/95 backdrop-blur-md text-white shrink-0';
     const inContentClasses = 'bg-[#E59819] text-white'; // promo-badge-yellow
     
-    return `<span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}" title="${offerTag}"><span class="font-extrabold text-white truncate max-w-[120px] sm:max-w-none">${offerTag}</span></span>`;
+    return `
+      <span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}" title="${offerTag}">
+        <div class="marquee-container max-w-[130px] sm:max-w-[200px]">
+          <span class="marquee-content font-extrabold text-white whitespace-nowrap">${offerTag}</span>
+        </div>
+      </span>
+    `;
   }
 
   // U-01 Home Page Restaurant Card (Keeps standard Reserve Table button & footer promotion tag)
@@ -102,37 +108,45 @@
         </div>
 
         <!-- Card Content Body -->
-        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
-          <div class="space-y-1 sm:space-y-1.5">
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3 min-w-0">
+          <div class="space-y-1 sm:space-y-1.5 min-w-0">
             <!-- Cuisine Tag -->
             <div>
               ${renderCuisineTag(restaurant.cuisine, false)}
             </div>
 
             <!-- Restaurant Name -->
-            <h3
-              data-card-select-id="${restaurant.id}"
-              class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer line-clamp-1 leading-snug"
-            >
-              ${restaurant.name}
-            </h3>
+            <div class="marquee-container w-full">
+              <h3
+                data-card-select-id="${restaurant.id}"
+                class="marquee-content font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer whitespace-nowrap leading-snug"
+              >
+                ${restaurant.name}
+              </h3>
+            </div>
 
             <!-- Location Row -->
-            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium pt-0.5">
+            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium pt-0.5 min-w-0">
               <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">location_on</span>
-              <span class="truncate">${restaurant.location}</span>
+              <div class="marquee-container flex-1 min-w-0">
+                <span class="marquee-content inline-block whitespace-nowrap">${restaurant.location}</span>
+              </div>
             </div>
 
             <!-- Price Range Row -->
-            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916]">
+            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916] min-w-0">
               <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">payments</span>
-              <span>${restaurant.priceRange}</span>
+              <div class="marquee-container flex-1 min-w-0">
+                <span class="marquee-content inline-block whitespace-nowrap">${restaurant.priceRange}</span>
+              </div>
             </div>
           </div>
 
           <!-- Footer Row: Offer & Action Button -->
-          <div class="pt-3 border-t border-[#EADFD1] flex items-center justify-between gap-2">
-            ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, false) : renderPromoTag('20% OFF', false)}
+          <div class="pt-3 border-t border-[#EADFD1] flex items-center justify-between gap-2 min-w-0">
+            <div class="min-w-0 flex-1">
+              ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, false) : renderPromoTag('20% OFF', false)}
+            </div>
             <button
               data-card-reserve-id="${restaurant.id}"
               class="bg-[#840f16] hover:bg-[#6c0c11] active:scale-95 text-white px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full font-label text-xs font-bold shadow-md transition-all cursor-pointer whitespace-nowrap shrink-0"
@@ -176,31 +190,37 @@
         </div>
 
         <!-- Card Content Body -->
-        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
-          <div class="space-y-1 sm:space-y-1.5">
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3 min-w-0">
+          <div class="space-y-1 sm:space-y-1.5 min-w-0">
             <!-- Cuisine Tag -->
             <div>
               ${renderCuisineTag(restaurant.cuisine, false)}
             </div>
 
             <!-- Restaurant Name -->
-            <h3
-              data-card-select-id="${restaurant.id}"
-              class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer line-clamp-1 leading-snug"
-            >
-              ${restaurant.name}
-            </h3>
+            <div class="marquee-container w-full">
+              <h3
+                data-card-select-id="${restaurant.id}"
+                class="marquee-content font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer whitespace-nowrap leading-snug"
+              >
+                ${restaurant.name}
+              </h3>
+            </div>
 
             <!-- Location Row -->
-            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium">
+            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
               <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">location_on</span>
-              <span class="truncate">${restaurant.location}</span>
+              <div class="marquee-container flex-1 min-w-0">
+                <span class="marquee-content inline-block whitespace-nowrap">${restaurant.location}</span>
+              </div>
             </div>
 
             <!-- Price Range Row -->
-            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916]">
+            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916] min-w-0">
               <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">payments</span>
-              <span>${restaurant.priceRange}</span>
+              <div class="marquee-container flex-1 min-w-0">
+                <span class="marquee-content inline-block whitespace-nowrap">${restaurant.priceRange}</span>
+              </div>
             </div>
           </div>
 
@@ -323,36 +343,44 @@
         </div>
 
         <!-- Card Content Area -->
-        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
-          <div class="space-y-1.5 sm:space-y-2">
+        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3 min-w-0">
+          <div class="space-y-1.5 sm:space-y-2 min-w-0">
             ${showVenueName ? `
             <!-- Venue Name (MAIN HIGHLIGHT) -->
-            <h3 class="font-headline text-base sm:text-lg font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1">
-              ${venueTitle}
-            </h3>
+            <div class="marquee-container w-full">
+              <h3 class="marquee-content font-headline text-base sm:text-lg font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug whitespace-nowrap">
+                ${venueTitle}
+              </h3>
+            </div>
             ` : ''}
 
             <!-- Restaurant Name & Location -->
-            <div class="space-y-1">
+            <div class="space-y-1 min-w-0">
               <!-- Restaurant Name -->
-              <div class="flex items-center gap-1.5 text-xs text-[#58413f] font-semibold">
+              <div class="flex items-center gap-1.5 text-xs text-[#58413f] font-semibold min-w-0">
                 <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">storefront</span>
-                <span class="truncate">${restaurantTitle}</span>
+                <div class="marquee-container flex-1 min-w-0">
+                  <span class="marquee-content inline-block whitespace-nowrap">${restaurantTitle}</span>
+                </div>
               </div>
 
               <!-- Location -->
-              <div class="flex items-center gap-1.5 text-xs text-[#58413f]">
+              <div class="flex items-center gap-1.5 text-xs text-[#58413f] min-w-0">
                 <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">location_on</span>
-                <span class="truncate">${locationText}</span>
+                <div class="marquee-container flex-1 min-w-0">
+                  <span class="marquee-content inline-block whitespace-nowrap">${locationText}</span>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Price Row or Custom Action -->
-          <div class="pt-2 border-t border-[#EADFD1] flex items-center justify-between">
+          <div class="pt-2 border-t border-[#EADFD1] flex items-center justify-between min-w-0">
             ${customAction ? customAction(restaurant, isMm) : `
-            <span class="font-label text-xs text-[#58413f] font-medium">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
-            <span class="font-label text-xs font-extrabold text-[#840f16]">${fitPrice}</span>
+            <span class="font-label text-xs text-[#58413f] font-medium shrink-0">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
+            <div class="marquee-container flex-1 text-right min-w-0 ml-2">
+              <span class="marquee-content inline-block font-label text-xs font-extrabold text-[#840f16] whitespace-nowrap">${fitPrice}</span>
+            </div>
             `}
           </div>
         </div>
@@ -403,38 +431,46 @@
           ${renderFavoriteButton(restaurant.id, isFavorite)}
         </div>
 
-        <!-- FOCAL OFFER BANNER (feature 005: solid gold, dark-cocoa uppercase text) -->
-        <div class="bg-[#D08E1C] px-4 py-3 flex items-center justify-center">
-          <p class="font-label text-xs sm:text-sm font-extrabold uppercase ${isMm ? '' : 'tracking-wider'} text-[#704e00] text-center leading-relaxed line-clamp-2" title="${restaurant.offerTag}">
-            ${restaurant.offerTag}
-          </p>
+        <!-- FOCAL OFFER BANNER (feature 005: 1 line solid gold, dark-cocoa uppercase text with marquee if long) -->
+        <div class="bg-[#D08E1C] px-3.5 py-2.5 flex items-center justify-center overflow-hidden min-w-0">
+          <div class="marquee-container w-full text-center">
+            <span class="marquee-content font-label text-xs sm:text-sm font-extrabold uppercase ${isMm ? '' : 'tracking-wider'} text-[#704e00] whitespace-nowrap leading-tight" title="${restaurant.offerTag}">
+              ${restaurant.offerTag}
+            </span>
+          </div>
         </div>
 
-        <!-- Card Content Area -->
-        <div class="p-4 sm:p-5 flex-1 flex flex-col space-y-2.5 sm:space-y-3">
-          <!-- Shop Name -->
-          <h3 class="font-headline text-xl sm:text-2xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-2">
-            ${venueTitle}
-          </h3>
-
-          <!-- Location Row -->
-          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium">
-            <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">location_on</span>
-            <span class="truncate">${locationText}</span>
+        <!-- Card Content Area: Name, Cuisine Type, Price Range, Location (ordered per request) -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col space-y-2.5 sm:space-y-3 min-w-0">
+          <!-- 1. Shop Name (marquee when long) -->
+          <div class="marquee-container w-full">
+            <h3 class="marquee-content font-headline text-xl sm:text-2xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug whitespace-nowrap">
+              ${venueTitle}
+            </h3>
           </div>
 
-          <!-- Price Range Row -->
-          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium">
+          <!-- 2. Cuisine Type Row (no box shape, marquee when long) -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium min-w-0">
+            <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">restaurant</span>
+            <div class="marquee-container flex-1 min-w-0">
+              <span class="marquee-content inline-block whitespace-nowrap">${restaurant.cuisine}</span>
+            </div>
+          </div>
+
+          <!-- 3. Price Range Row (marquee when long) -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium min-w-0">
             <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">payments</span>
-            <span class="truncate">${restaurant.priceRange || ''}</span>
+            <div class="marquee-container flex-1 min-w-0">
+              <span class="marquee-content inline-block whitespace-nowrap">${restaurant.priceRange || ''}</span>
+            </div>
           </div>
 
-          <!-- Cuisine Pill Chip -->
-          <div class="flex">
-            <span class="inline-flex items-center gap-1.5 bg-[#F7E4DE] px-4 py-1.5 rounded-full font-label text-[11px] sm:text-xs font-semibold text-[#58413f]">
-              <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">restaurant</span>
-              <span class="truncate">${restaurant.cuisine}</span>
-            </span>
+          <!-- 4. Location Row (marquee when long) -->
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-body text-[#58413f] font-medium min-w-0">
+            <span class="material-symbols-outlined text-base text-[#58413f] shrink-0">location_on</span>
+            <div class="marquee-container flex-1 min-w-0">
+              <span class="marquee-content inline-block whitespace-nowrap">${locationText}</span>
+            </div>
           </div>
 
           <!-- Reserve CTA: compact centered pill, opens booking flow -->

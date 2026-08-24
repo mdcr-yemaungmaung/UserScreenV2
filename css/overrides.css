@@ -817,4 +817,59 @@ input[type="radio"] {
   animation: heartBounce 0.45s cubic-bezier(0.17, 0.89, 0.32, 1.28);
 }
 
+/* ============================================================
+   Marquee Text Behavior for Card Info & Promotion Tags
+   Single-line with smooth marquee animation when text is long
+   ============================================================ */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  display: block;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* When overflowing/long, enable the smooth marquee effect */
+.marquee-container.is-overflowing {
+  display: flex !important;
+  align-items: center;
+  gap: 1.5rem;
+  mask-image: linear-gradient(90deg, transparent 0, #000 6px, #000 calc(100% - 6px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6px, #000 calc(100% - 6px), transparent 100%);
+}
+
+.marquee-container.is-overflowing .marquee-content,
+.marquee-container.is-overflowing .marquee-duplicate {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  animation: cardMarqueeLoop 10s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover */
+.group:hover .marquee-container.is-overflowing .marquee-content,
+.group:hover .marquee-container.is-overflowing .marquee-duplicate,
+.marquee-container.is-overflowing:hover .marquee-content,
+.marquee-container.is-overflowing:hover .marquee-duplicate {
+  animation-play-state: paused;
+}
+
+@keyframes cardMarqueeLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 1.5rem));
+  }
+}
+
+
 
