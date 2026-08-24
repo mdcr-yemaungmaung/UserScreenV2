@@ -1,7 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
-  const { generateCalendarGrid, renderRatingBadge } = window.YoyakuComponents || {};
+  const { generateCalendarGrid } = window.YoyakuComponents || {};
 
 
 
@@ -21,7 +21,7 @@
         <div class="flex justify-between items-center">
           <button
             id="detail-back-btn"
-            class="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FBF3E2] border border-[#EADFD1] font-label text-xs font-bold text-[#58413f] hover:text-[#840f16] transition-colors cursor-pointer shadow-2xs"
+            class="flex items-center gap-2 font-label text-xs font-bold text-[#840f16] hover:text-[#600b10] transition-colors cursor-pointer"
           >
             <span class="material-symbols-outlined text-sm">arrow_back</span>
             <span>${isMm ? 'နောက်သို့ ပင်မစာမျက်နှာ' : 'Back to Discover'}</span>
@@ -59,18 +59,9 @@
           </div>
 
           <div class="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 text-white space-y-3 z-10">
-            <div>
-              ${renderRatingBadge(restaurant)}
-            </div>
-
             <h1 class="font-headline text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight drop-shadow-md">
               ${restaurant.name}
             </h1>
-            ${
-              restaurant.nameMM
-                ? `<div class="font-body text-sm sm:text-base text-amber-200/95 font-medium drop-shadow-sm">${restaurant.nameMM}</div>`
-                : ''
-            }
           </div>
         </div>
 
