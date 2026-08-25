@@ -433,8 +433,11 @@
 
     const promoLine = (p) => `
       <div class="min-w-0">
-        <div class="font-headline text-base sm:text-lg font-extrabold text-[#840f16] leading-tight truncate" title="${p.title}">${p.title}</div>
-        ${p.detail ? `<div class="text-xs sm:text-sm text-[#58413f] font-medium truncate">${p.detail}</div>` : ''}
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="material-symbols-outlined text-[#840f16] text-lg sm:text-xl shrink-0 leading-none">sell</span>
+          <div class="font-headline text-base sm:text-lg font-extrabold text-[#840f16] leading-tight truncate" title="${p.title}">${p.title}</div>
+        </div>
+        ${p.detail ? `<div class="text-xs sm:text-sm text-[#58413f] font-medium truncate mt-0.5">${p.detail}</div>` : ''}
         ${p.validity ? `<div class="flex items-center gap-1 text-[11px] sm:text-xs text-[#8a6f63] font-medium mt-0.5">
           <span class="material-symbols-outlined text-xs shrink-0">schedule</span>
           <span class="truncate">${p.validity}</span>
@@ -485,14 +488,9 @@
           ${renderFavoriteButton(restaurant.id, isFavorite)}
         </div>
 
-        <!-- Promotion Section (directly below image): promo icon + one promotion at a time + < > pager -->
+        <!-- Promotion Section (directly below image): one promotion at a time + < > pager -->
         <div class="bg-[#FFF8F6] border-b border-[#EADFD1] px-3.5 py-3 sm:px-4 sm:py-3.5">
-          <div class="flex items-center gap-3 sm:gap-4 min-w-0">
-            <!-- Promo Icon Badge -->
-            <div class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#840f16] flex items-center justify-center shadow-md">
-              <span class="material-symbols-outlined text-white text-xl sm:text-2xl">sell</span>
-            </div>
-
+          <div class="flex items-center justify-between gap-3 min-w-0">
             <!-- Promotion Slides (one visible at a time) -->
             <div class="min-w-0 flex-1">
               ${promotions.map((p, i) => `
@@ -501,9 +499,6 @@
                 </div>
               `).join('')}
             </div>
-
-            <!-- Vertical Divider -->
-            ${hasPager ? `<div class="shrink-0 self-stretch w-px bg-[#EADFD1]"></div>` : ''}
 
             <!-- < > Promotion Pager (no wrap-around) -->
             ${hasPager ? `
