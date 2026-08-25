@@ -27,12 +27,12 @@
       ],
       features: ['Private Garden Dining', 'Sommelier Selection', 'Valet Parking', 'Live Traditional Harp'],
       facilities: [
-        { id: 'wifi', icon: 'wifi', label: 'Free High-Speed Wi-Fi', labelMM: 'အခမဲ့ ဝိုင်ဖိုင်' },
-        { id: 'parking', icon: 'directions_car', label: 'Valet & Private Parking', labelMM: 'ကားပါကင် ဝန်ဆောင်မှု' },
-        { id: 'ac', icon: 'ac_unit', label: 'Full Air Conditioning', labelMM: 'လေအေးပေးစက်' },
-        { id: 'generator', icon: 'bolt', label: '24/7 Backup Generator', labelMM: 'ကိုယ်ပိုင် လျှပ်စစ်မီး (မီးစက်)' },
-        { id: 'private', icon: 'meeting_room', label: 'Private VIP Dining Rooms', labelMM: 'သီးသန့် VIP အခန်းများ' },
-        { id: 'outdoor', icon: 'deck', label: 'Lush Garden Outdoor Seating', labelMM: 'ပြင်ပ အပန်းဖြေ ထိုင်ခုံများ' }
+        { id: 'wifi', icon: 'wifi', label: 'Wi-Fi', labelMM: 'ဝိုင်ဖိုင်' },
+        { id: 'parking', icon: 'directions_car', label: 'Valet Parking', labelMM: 'ကားပါကင်' },
+        { id: 'ac', icon: 'ac_unit', label: 'Air Conditioning', labelMM: 'လေအေးပေးစက်' },
+        { id: 'generator', icon: 'bolt', label: 'Backup Generator', labelMM: 'မီးစက်' },
+        { id: 'private', icon: 'meeting_room', label: 'VIP Rooms', labelMM: 'သီးသန့်ခန်း' },
+        { id: 'outdoor', icon: 'deck', label: 'Garden Seating', labelMM: 'ပြင်ပထိုင်ခုံ' }
       ],
       specialNotice: 'အထူးအသိပေးချက်: ပွဲလမ်းသဘင်နှင့် ရုံးပိတ်ရက်များတွင် အထူးနန်းတွင်းဟင်းလျာ Set Menu များနှင့်အတူ ပုံမှန်အတိုင်း ဖွင့်လှစ်ထားပါမည်။',
       specialNoticeEn: 'Special Note: Open on holidays with exclusive Royal Burmese Tasting Set Menus & live traditional harp performances.',
@@ -258,11 +258,11 @@
       ],
       features: ['Sunset Lake Views', 'Organic Garden', 'Chef Table', 'Cocktail Lounge'],
       facilities: [
-        { id: 'wifi', icon: 'wifi', label: 'Free High-Speed Wi-Fi', labelMM: 'အခမဲ့ ဝိုင်ဖိုင်' },
-        { id: 'parking', icon: 'directions_car', label: 'Valet & Private Parking', labelMM: 'ကားပါကင် ဝန်ဆောင်မှု' },
-        { id: 'ac', icon: 'ac_unit', label: 'Full Air Conditioning', labelMM: 'လေအေးပေးစက်' },
-        { id: 'generator', icon: 'bolt', label: '24/7 Backup Generator', labelMM: 'ကိုယ်ပိုင် လျှပ်စစ်မီး (မီးစက်)' },
-        { id: 'outdoor', icon: 'deck', label: 'Overwater Sunset Lounge', labelMM: 'အင်းလျားကန်ဘေး ပြင်ပ ထိုင်ခုံများ' }
+        { id: 'wifi', icon: 'wifi', label: 'Wi-Fi', labelMM: 'ဝိုင်ဖိုင်' },
+        { id: 'parking', icon: 'directions_car', label: 'Valet Parking', labelMM: 'ကားပါကင်' },
+        { id: 'ac', icon: 'ac_unit', label: 'Air Conditioning', labelMM: 'လေအေးပေးစက်' },
+        { id: 'generator', icon: 'bolt', label: 'Backup Generator', labelMM: 'မီးစက်' },
+        { id: 'outdoor', icon: 'deck', label: 'Sunset Lounge', labelMM: 'ကန်ဘေးထိုင်ခုံ' }
       ],
       specialNotice: 'အထူးအသိပေးချက်: သောကြာနှင့် စနေနေ့ ညနေခင်းများတွင် နေဝင်ချိန် တေးဂီတ ဖျော်ဖြေပွဲ ပါရှိမည်ဖြစ်၍ ကြိုတင် နေရာယူထားရန် တိုက်တွန်းပါသည်။',
       specialNoticeEn: 'Special Note: Live acoustic sunset lounge music every Friday & Saturday evening. Advance booking recommended.',

@@ -194,10 +194,10 @@
                       ${(restaurant.facilities && restaurant.facilities.length > 0
                         ? restaurant.facilities
                         : [
-                            { id: 'wifi', icon: 'wifi', label: 'Free High-Speed Wi-Fi', labelMM: 'အခမဲ့ ဝိုင်ဖိုင်' },
-                            { id: 'parking', icon: 'directions_car', label: 'Valet & Private Parking', labelMM: 'ကားပါကင် ဝန်ဆောင်မှု' },
-                            { id: 'ac', icon: 'ac_unit', label: 'Full Air Conditioning', labelMM: 'လေအေးပေးစက်' },
-                            { id: 'generator', icon: 'bolt', label: '24/7 Backup Generator', labelMM: 'ကိုယ်ပိုင် လျှပ်စစ်မီး (မီးစက်)' }
+                            { id: 'wifi', icon: 'wifi', label: 'Wi-Fi', labelMM: 'ဝိုင်ဖိုင်' },
+                            { id: 'parking', icon: 'directions_car', label: 'Valet Parking', labelMM: 'ကားပါကင်' },
+                            { id: 'ac', icon: 'ac_unit', label: 'Air Conditioning', labelMM: 'လေအေးပေးစက်' },
+                            { id: 'generator', icon: 'bolt', label: 'Backup Generator', labelMM: 'မီးစက်' }
                           ]
                       )
                         .map(
