@@ -308,22 +308,6 @@
                           ${EYE_ICON_SHOW}
                         </button>
                       </div>
-
-                      <!-- Password format requirements (applies to New Password) -->
-                      <div class="grid grid-cols-3 gap-2 pt-1 text-[11px] font-label">
-                        <div id="u20-req-len" class="flex items-center gap-1.5 p-2 rounded-xl bg-white border border-[#EADFD1] text-[#8d7b75]">
-                          <span class="material-symbols-outlined text-xs">radio_button_unchecked</span>
-                          <span>8+ chars</span>
-                        </div>
-                        <div id="u20-req-letter" class="flex items-center gap-1.5 p-2 rounded-xl bg-white border border-[#EADFD1] text-[#8d7b75]">
-                          <span class="material-symbols-outlined text-xs">radio_button_unchecked</span>
-                          <span>Letters (A-Z)</span>
-                        </div>
-                        <div id="u20-req-num" class="flex items-center gap-1.5 p-2 rounded-xl bg-white border border-[#EADFD1] text-[#8d7b75]">
-                          <span class="material-symbols-outlined text-xs">radio_button_unchecked</span>
-                          <span>Numbers (0-9)</span>
-                        </div>
-                      </div>
                     </div>
 
                     <!-- Confirm New Password -->
@@ -349,14 +333,6 @@
                         </button>
                       </div>
                     </div>
-
-                      <!-- Confirm match indicator -->
-                      <div class="pt-1 text-[11px] font-label">
-                        <div id="u20-req-match" class="flex items-center gap-1.5 p-2 w-fit rounded-xl bg-white border border-[#EADFD1] text-[#8d7b75]">
-                          <span class="material-symbols-outlined text-xs">radio_button_unchecked</span>
-                          <span>Match</span>
-                        </div>
-                      </div>
 
                     <button
                       type="submit"
