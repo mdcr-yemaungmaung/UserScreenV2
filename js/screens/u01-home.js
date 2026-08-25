@@ -491,7 +491,7 @@
             </div>
           </div>
 
-          <div class="mobile-horizontal-scroll scroll-all -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 gap-4 sm:gap-5 lg:gap-6 pt-3 pb-4">
+          <div class="mobile-horizontal-scroll scroll-all mx-0 px-0 gap-4 sm:gap-5 lg:gap-6 pt-3 pb-4">
             ${promoRestaurants.map(restaurant => renderPromoCard(restaurant, state)).join('')}
           </div>
         </section>

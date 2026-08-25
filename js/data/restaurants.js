@@ -41,7 +41,7 @@
         { title: '20% OFF', detail: 'À la carte Menu', validity: 'Until 10:00 PM' },
         { title: 'Free Dessert', detail: 'Royal Tea Leaf Set', validity: 'Until 9:00 PM' },
         { title: '10% OFF', detail: 'Sommelier Wine Pairing', validity: 'All Day' },
-        { title: '10% OFF Bill for Group Reservations of 6 or More Guests', detail: 'Dine-in Only', validity: 'Weekends' }
+        { title: '10% OFF Groups', detail: '6+ Guests · Dine-in', validity: 'Weekends' }
       ],
       openingHours: '11:00 AM - 10:30 PM Daily',
       description: 'Housed in a lovingly restored 1920s colonial mansion surrounded by lush teakwood gardens, The Gilded Fork delivers an unforgettably authentic royal Burmese tasting experience.',
