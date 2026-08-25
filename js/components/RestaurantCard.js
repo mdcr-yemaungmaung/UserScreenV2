@@ -25,10 +25,10 @@
     `;
   }
 
-  // Rating badge (bottom-left on image)
+  // Rating badge (top-left on image, standard across all card types)
   function renderRatingBadge(restaurant) {
     return `
-      <div class="absolute bottom-3 left-3 z-10">
+      <div class="absolute top-3 left-3 z-10">
         <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
           <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
           <span class="leading-none text-white">${restaurant.rating}</span>
@@ -41,16 +41,14 @@
   // Rating badge with promo tag on right (for Search Result cards)
   function renderRatingBadgeWithPromo(restaurant) {
     return `
-      <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
-        <!-- Review Tag (Left) -->
-        <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white pointer-events-auto">
+      <div class="absolute top-3 left-3 z-10 pointer-events-auto">
+        <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
           <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
           <span class="leading-none text-white">${restaurant.rating}</span>
           <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
         </span>
-        <!-- Promotion Tag (Right) -->
-        ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, true) : ''}
       </div>
+      ${restaurant.offerTag ? `<div class="absolute bottom-3 right-3 z-10 pointer-events-auto">${renderPromoTag(restaurant.offerTag, true)}</div>` : ''}
     `;
   }
 
@@ -360,9 +358,8 @@
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           ${renderImageGradient()}
-          ${renderFavoriteButton(restaurant.id, isFavorite)}
-          ${showVenueName ? renderCuisineTagOnImage(restaurant.cuisine) : ''}
           ${renderRatingBadge(restaurant)}
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
         </div>
 
         <!-- Card Content Area -->
@@ -464,7 +461,7 @@
         class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
 
-        <!-- Card Image & Floating Badges (rating pill top-left, favorite top-right; no promo badge over image) -->
+        <!-- Card Image & Floating Badges (standard rating pill top-left, favorite top-right) -->
         <div class="relative h-44 sm:h-52 lg:h-56 overflow-hidden">
           <img
             src="${restaurant.heroImage}"
@@ -475,16 +472,7 @@
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           ${renderImageGradient()}
-
-          <!-- Glass Rating Pill (top-left, over image) -->
-          <div class="absolute top-3 left-3 z-10">
-            <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
-              <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
-              <span class="leading-none text-white">${restaurant.rating}</span>
-              <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
-            </span>
-          </div>
-
+          ${renderRatingBadge(restaurant)}
           ${renderFavoriteButton(restaurant.id, isFavorite)}
         </div>
 

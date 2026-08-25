@@ -304,13 +304,13 @@
                     loading="lazy"
                   />
                   ${renderRatingBadge(r)}
-                  <div class="absolute top-3 left-3 z-10">
-                    ${renderCuisineTag(r.cuisine || 'Fine Dining', true)}
-                  </div>
                 </div>
 
                 <div class="p-4 sm:p-5 space-y-3 flex-1 flex flex-col justify-between">
-                  <div class="space-y-1">
+                  <div class="space-y-1.5">
+                    <div>
+                      ${renderCuisineTag(r.cuisine || 'Fine Dining', false)}
+                    </div>
                     <h3 class="font-headline font-bold text-base text-[#231916] line-clamp-1 hover:text-[#840f16] cursor-pointer" data-resv-select-id="${r.id}">
                       ${r.name}
                     </h3>
