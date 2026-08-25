@@ -478,7 +478,7 @@
         ${
           promoRestaurants.length > 0
             ? `
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+        <section class="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left))] sm:px-6 lg:px-8 text-left">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916] flex items-center gap-2">
@@ -491,7 +491,7 @@
             </div>
           </div>
 
-          <div class="mobile-horizontal-scroll px-0 pt-3 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
+          <div class="mobile-horizontal-scroll scroll-all -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 gap-4 sm:gap-5 lg:gap-6 pt-3 pb-4">
             ${promoRestaurants.map(restaurant => renderPromoCard(restaurant, state)).join('')}
           </div>
         </section>

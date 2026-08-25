@@ -669,6 +669,24 @@ textarea {
   .mobile-horizontal-scroll::after {
     display: none;
   }
+
+  /* Modifier: keep the swipeable scroll row at desktop too (e.g., Hot Promotions) */
+  .mobile-horizontal-scroll.scroll-all {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.75rem;
+  }
+
+  .mobile-horizontal-scroll.scroll-all > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  .mobile-horizontal-scroll.scroll-all::after {
+    display: block;
+  }
 }
 
 /* Promotion Badge Styling */

@@ -37,6 +37,12 @@
       specialNotice: 'အထူးအသိပေးချက်: ပွဲလမ်းသဘင်နှင့် ရုံးပိတ်ရက်များတွင် အထူးနန်းတွင်းဟင်းလျာ Set Menu များနှင့်အတူ ပုံမှန်အတိုင်း ဖွင့်လှစ်ထားပါမည်။',
       specialNoticeEn: 'Special Note: Open on holidays with exclusive Royal Burmese Tasting Set Menus & live traditional harp performances.',
       offerTag: '20% OFF',
+      promotions: [
+        { title: '20% OFF', detail: 'À la carte Menu', validity: 'Until 10:00 PM' },
+        { title: 'Free Dessert', detail: 'Royal Tea Leaf Set', validity: 'Until 9:00 PM' },
+        { title: '10% OFF', detail: 'Sommelier Wine Pairing', validity: 'All Day' },
+        { title: '10% OFF Bill for Group Reservations of 6 or More Guests', detail: 'Dine-in Only', validity: 'Weekends' }
+      ],
       openingHours: '11:00 AM - 10:30 PM Daily',
       description: 'Housed in a lovingly restored 1920s colonial mansion surrounded by lush teakwood gardens, The Gilded Fork delivers an unforgettably authentic royal Burmese tasting experience.',
       overviewStory: 'Housed in a lovingly restored 1920s heritage teakwood estate in the historic Dagon Cultural District, The Gilded Fork brings century-old Burmese royal culinary heritage to life. Our master culinary team collaborates directly with organic micro-farms in the Shan highlands and local artisanal fishermen in the Andaman Sea to deliver an authentic, refined dining experience. From slow-simmered fragrant curries to artisanal hand-tossed salads, every creation celebrates Myanmar\'s rich gastronomic biodiversity in a serene, candlelit colonial setting.',
@@ -261,6 +267,11 @@
       specialNotice: 'အထူးအသိပေးချက်: သောကြာနှင့် စနေနေ့ ညနေခင်းများတွင် နေဝင်ချိန် တေးဂီတ ဖျော်ဖြေပွဲ ပါရှိမည်ဖြစ်၍ ကြိုတင် နေရာယူထားရန် တိုက်တွန်းပါသည်။',
       specialNoticeEn: 'Special Note: Live acoustic sunset lounge music every Friday & Saturday evening. Advance booking recommended.',
       offerTag: 'Complimentary Welcome Champagne',
+      promotions: [
+        { title: 'Free Champagne', detail: 'Welcome Drink on Arrival', validity: 'Until 11:00 PM' },
+        { title: '15% OFF', detail: 'Organic Tasting Menu', validity: 'Until 9:30 PM' },
+        { title: 'Sunset Set Menu', detail: '3 Courses + Mocktail', validity: '5:00 - 6:30 PM' }
+      ],
       openingHours: '12:00 PM - 11:00 PM (Tue - Sun)',
       description: 'Founded by Michelin-starred Swiss Chef Felix Eppisser, Seeds is a sanctuary of organic gourmet cuisine set directly over the calm waters of Inya Lake.',
       overviewStory: 'Perched along the tranquil shores of Inya Lake, Seeds Restaurant & Lounge offers a world-class gastronomic retreat conceived by Michelin-starred Swiss Chef Felix Eppisser and his wife Lucia. Blending contemporary European culinary precision with Southeast Asian botanical freshness, the menu features micro-greens grown in our private on-site organic garden alongside ethically sourced international ingredients.',
@@ -427,6 +438,10 @@
       specialNotice: 'အထူးအသိပေးချက်: မနက်စာ မုန့်ဟင်းခါး အချိန်များတွင် လူကြိုက်များသဖြင့် စောစော ကြိုတင် Booking ယူထားနိုင်ပါသည်။',
       specialNoticeEn: 'Special Note: Peak morning breakfast hours get busy. Online reservation secures immediate table entry.',
       offerTag: 'Chef Tasting Menu Special',
+      promotions: [
+        { title: 'Chef Tasting Menu', detail: '5-Course Discovery Set', validity: 'Until 9:00 PM' },
+        { title: 'Free Tea Cup', detail: 'With Breakfast Booking', validity: 'Until 11:00 AM' }
+      ],
       openingHours: '7:00 AM - 10:00 PM Daily',
       description: 'Celebrated internationally by CNN & Time Magazine, Rangoon Tea House reinvents colonial-era tea culture with elevated traditional recipes and artisanal gin infusions.',
       menuCategories: [
@@ -555,6 +570,10 @@
       specialNotice: 'Special Note: Closed on Sundays. Dinner service begins at 6:00 PM.',
       specialNoticeEn: 'Special Note: Closed on Sundays. Dinner service begins at 6:00 PM.',
       offerTag: 'Chef 5-Course Experience Available',
+      promotions: [
+        { title: 'Chef 5-Course', detail: 'Signature Experience', validity: 'Until 10:00 PM' },
+        { title: 'Free Glass of Wine', detail: 'On À la carte Order', validity: 'Until 9:30 PM' }
+      ],
       openingHours: '6:00 PM - 10:30 PM (Mon - Sat)',
       description: 'An elegant retreat presenting time-honored French culinary techniques infused with delicate local herbs.',
       menuCategories: [
@@ -648,6 +667,10 @@
       specialNotice: 'အထူးအသိပေးချက်: Fresh Toyosu air-flown seafood arrives every Tuesday & Friday.',
       specialNoticeEn: 'Special Note: Fresh Toyosu air-flown seafood arrives every Tuesday & Friday.',
       offerTag: 'Fresh Toyosu Air-flown Seafood',
+      promotions: [
+        { title: 'Toyosu Seafood', detail: 'Fresh Air-flown Catch', validity: 'Until 10:30 PM' },
+        { title: 'Omakase 20% OFF', detail: 'Early Bird (5:30 - 7:00 PM)', validity: 'Until 7:00 PM' }
+      ],
       openingHours: '5:30 PM - 11:00 PM Daily',
       description: 'Set in a 1906 Heritage building, Gekko serves exquisite Omakase sushi, yakitori charcoal grills, and rare Japanese single malts.',
       menuCategories: [
@@ -761,6 +784,11 @@
       specialNotice: 'Special Note: Live Jazz band performance every Saturday evening from 7:00 PM.',
       specialNoticeEn: 'Special Note: Live Jazz band performance every Saturday evening from 7:00 PM.',
       offerTag: 'Complimentary Tiramisu',
+      promotions: [
+        { title: 'Free Tiramisu', detail: 'With Any Main Course', validity: 'Until 10:00 PM' },
+        { title: '10% OFF', detail: 'Wood-fired Pizza', validity: 'Until 8:00 PM' },
+        { title: 'Free Dessert', detail: 'On Group of 4+', validity: 'All Day' }
+      ],
       openingHours: '11:30 AM - 10:30 PM Daily',
       description: 'Surrounded by ancient tropical trees on the edge of Inya Lake, L’Opera has served authentic regional Italian cuisine for over two decades.',
       menuCategories: [
@@ -864,6 +892,10 @@
       specialNotice: 'အထူးအသိပေးချက်: အဖွဲ့လိုက် လာရောက်မည့် ဧည့်သည်များအတွက် သီးသန့် စားပွဲများကို အလွယ်တကူ ကြိုတင် Booking ပြုလုပ်နိုင်ပါသည်။',
       specialNoticeEn: 'Special Note: Group table reservations get 10% discount on total dining bill.',
       offerTag: '10% OFF Bill for Group Reservations',
+      promotions: [
+        { title: '10% OFF', detail: 'Group Bill (6+ Guests)', validity: 'Until 10:00 PM' },
+        { title: 'Free Dessert', detail: 'Celebration Plate', validity: 'All Day' }
+      ],
       openingHours: '6:30 AM - 9:00 PM Daily',
       description: 'Yangon’s favorite everyday spot for authentic home-style Burmese curries, fresh salads, traditional desserts, and vibrant local atmosphere.',
       menuCategories: [
@@ -991,6 +1023,9 @@
       specialNotice: 'Special Note: Open from 6:00 AM daily for traditional breakfast & dim sum.',
       specialNoticeEn: 'Special Note: Open from 6:00 AM daily for traditional breakfast & dim sum.',
       offerTag: 'Free Extra Tea Cup with Breakfast Booking',
+      promotions: [
+        { title: 'Free Extra Tea', detail: 'With Breakfast Booking', validity: 'Until 11:30 AM' }
+      ],
       openingHours: '6:00 AM - 6:00 PM Daily',
       description: 'A beloved Yangon teahouse staple serving creamy sweet steamed milk tea, piping hot samosa soup, crispy fried snacks, and traditional noodles.',
       menuCategories: [

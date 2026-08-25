@@ -256,6 +256,37 @@
       });
     });
 
+    // Promotion pager (< >): step through promotions one at a time, no wrap-around
+    const stepPromo = (btn, delta) => {
+      const card = btn.closest('[data-card-select-id]');
+      if (!card) return;
+      const slides = Array.from(card.querySelectorAll('[data-promo-slide]'));
+      if (slides.length < 2) return;
+      const current = slides.findIndex(s => !s.classList.contains('hidden'));
+      const next = Math.min(slides.length - 1, Math.max(0, current + delta));
+      if (next === current) return;
+      slides[current].classList.add('hidden');
+      slides[next].classList.remove('hidden');
+      const prevBtn = card.querySelector('[data-promo-prev]');
+      const nextBtn = card.querySelector('[data-promo-next]');
+      if (prevBtn) prevBtn.disabled = next === 0;
+      if (nextBtn) nextBtn.disabled = next === slides.length - 1;
+    };
+
+    containerElement.querySelectorAll('[data-promo-prev]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        stepPromo(e.currentTarget, -1);
+      });
+    });
+
+    containerElement.querySelectorAll('[data-promo-next]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        stepPromo(e.currentTarget, 1);
+      });
+    });
+
     // Select restaurant detail
     containerElement.querySelectorAll('[data-card-select-id]').forEach(el => {
       el.addEventListener('click', (e) => {
@@ -374,28 +405,64 @@
     `;
   }
 
-  // Hot Promotions Exclusive Promo Card (feature 005) - fully custom promotional
-  // style reserved for the Home Hot Promotions section (justified Constitution III
-  // deviation per spec FR-008 / Clarification Q2). Matches the approved reference
-  // design (extra/hot promotion restaurant card.png): warm cream surface, glass
-  // rating pill, solid gold offer banner with dark-cocoa uppercase text wrapping
-  // up to 2 centered lines, cuisine pill chip, and a full-width BOOK NOW pill
-  // that opens the booking flow. Reuses shared helpers and event hooks so
-  // navigation, favorites and reserve behave identically to other cards.
+  // Hot Promotions Restaurant Card — responsive, promotion-focused PWA card.
+  // The promotion sits directly below the image as a clean, scannable block:
+  // one promotion shown at a time, with < > arrows to step through the rest
+  // (no wrap-around; arrows disable at the ends).
+  // Reuses shared helpers and event hooks so navigation, favorites and reserve
+  // behave identically to other cards. Fixed widths + snap-start make the card
+  // swipeable inside the Home Hot Promotions horizontal scroll row (mobile/tablet),
+  // matching Trending Venues behavior.
   function renderPromoCard(restaurant, state) {
     const isFavorite = state.favorites.includes(restaurant.id);
     const isMm = state.currentLanguage === 'MM';
     const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
     const locationText = restaurant.location || restaurant.area || 'Yangon';
 
+    // Normalize promotions into { title, detail, validity }. Falls back to the
+    // legacy single offerTag so existing data keeps working unchanged.
+    const promotions = (Array.isArray(restaurant.promotions) && restaurant.promotions.length)
+      ? restaurant.promotions.map(p => ({
+          title: p.title || p.offerTag || restaurant.offerTag || 'Special Offer',
+          detail: p.detail || '',
+          validity: p.validity || ''
+        }))
+      : [{ title: restaurant.offerTag || 'Special Offer', detail: '', validity: '' }];
+    const promoCount = promotions.length;
+    const hasPager = promoCount > 1;
+
+    const promoLine = (p) => `
+      <div class="min-w-0">
+        <div class="font-headline text-base sm:text-lg font-extrabold text-[#840f16] leading-tight truncate" title="${p.title}">${p.title}</div>
+        ${p.detail ? `<div class="text-xs sm:text-sm text-[#58413f] font-medium truncate">${p.detail}</div>` : ''}
+        ${p.validity ? `<div class="flex items-center gap-1 text-[11px] sm:text-xs text-[#8a6f63] font-medium mt-0.5">
+          <span class="material-symbols-outlined text-xs shrink-0">schedule</span>
+          <span class="truncate">${p.validity}</span>
+        </div>` : ''}
+      </div>
+    `;
+
+    const pagerBtn = (dir) => `
+      <button
+        type="button"
+        data-promo-${dir}
+        ${dir === 'prev' ? 'disabled' : ''}
+        class="promo-pager-btn shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#EADFD1] bg-white flex items-center justify-center text-[#840f16] shadow-sm hover:bg-[#840f16] hover:text-white hover:border-[#840f16] active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
+        title="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
+        aria-label="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
+      >
+        <span class="material-symbols-outlined text-lg sm:text-xl leading-none">chevron_${dir === 'prev' ? 'left' : 'right'}</span>
+      </button>
+    `;
+
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFF8F6] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
 
-        <!-- Card Image & Floating Badges -->
-        <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
+        <!-- Card Image & Floating Badges (rating pill top-left, favorite top-right; no promo badge over image) -->
+        <div class="relative h-44 sm:h-52 lg:h-56 overflow-hidden">
           <img
             src="${restaurant.heroImage}"
             alt="${venueTitle}"
@@ -404,8 +471,9 @@
             onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
+          ${renderImageGradient()}
 
-          <!-- Glass Rating Pill (top-left, per reference design) -->
+          <!-- Glass Rating Pill (top-left, over image) -->
           <div class="absolute top-3 left-3 z-10">
             <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
               <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
@@ -417,47 +485,65 @@
           ${renderFavoriteButton(restaurant.id, isFavorite)}
         </div>
 
-        <!-- FOCAL OFFER BANNER (feature 005: solid gold, dark-cocoa uppercase text, wraps up to 2 centered lines for at-a-glance scannability) -->
-        <div class="bg-[#D08E1C] px-3.5 py-2.5 flex items-center justify-center min-w-0">
-          <span class="font-label text-[11px] sm:text-xs font-extrabold uppercase ${isMm ? '' : 'tracking-wider'} text-[#5a3f00] line-clamp-2 text-center leading-snug" title="${restaurant.offerTag}">
-            ${restaurant.offerTag}
-          </span>
+        <!-- Promotion Section (directly below image): promo icon + one promotion at a time + < > pager -->
+        <div class="bg-[#FFF8F6] border-b border-[#EADFD1] px-3.5 py-3 sm:px-4 sm:py-3.5">
+          <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+            <!-- Promo Icon Badge -->
+            <div class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#840f16] flex items-center justify-center shadow-md">
+              <span class="material-symbols-outlined text-white text-xl sm:text-2xl">sell</span>
+            </div>
+
+            <!-- Promotion Slides (one visible at a time) -->
+            <div class="min-w-0 flex-1">
+              ${promotions.map((p, i) => `
+                <div class="promo-slide min-w-0" data-promo-slide ${i > 0 ? 'hidden' : ''}>
+                  ${promoLine(p)}
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Vertical Divider -->
+            ${hasPager ? `<div class="shrink-0 self-stretch w-px bg-[#EADFD1]"></div>` : ''}
+
+            <!-- < > Promotion Pager (no wrap-around) -->
+            ${hasPager ? `
+              <div class="shrink-0 flex items-center gap-1.5">
+                ${pagerBtn('prev')}
+                ${pagerBtn('next')}
+              </div>
+            ` : ''}
+          </div>
         </div>
 
-        <!-- Card Content Area: Name, Location, Price Range, Cuisine pill (ordered per request; cuisine pill sits above CTA).
-             Long-text strategy: focal offer wraps (line-clamp-2); name clamps to 1 line; supporting rows truncate.
-             No marquee on promo cards - keeps the section calm and scannable (SC-003), motion-free. -->
-        <div class="p-4 sm:p-5 flex-1 flex flex-col space-y-2.5 sm:space-y-3 min-w-0">
-          <!-- 1. Shop Name (clamp to 1 line; full name on detail page) -->
-          <h3 class="font-headline text-base sm:text-lg md:text-2xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1 break-words" title="${venueTitle}">
+        <!-- Card Content Area: Name, Location, Price Range, Cuisine -->
+        <div class="p-3.5 sm:p-4 flex-1 flex flex-col space-y-2 sm:space-y-2.5 min-w-0">
+          <h3 class="font-headline text-base sm:text-lg md:text-xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1 break-words" title="${venueTitle}">
             ${venueTitle}
           </h3>
 
-          <!-- 2. Location Row (truncate) -->
-          <div class="flex items-center gap-2 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">location_on</span>
+          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
+            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">location_on</span>
             <span class="truncate" title="${locationText}">${locationText}</span>
           </div>
 
-          <!-- 3. Price Range Row (truncate) -->
-          <div class="flex items-center gap-2 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">payments</span>
+          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
+            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">payments</span>
             <span class="truncate" title="${restaurant.priceRange || ''}">${restaurant.priceRange || ''}</span>
           </div>
 
-          <!-- 4. Cuisine Type Row (no box shape) -->
-          <div class="flex items-center gap-2 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#58413f] shrink-0">restaurant</span>
+          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
+            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">restaurant</span>
             <span class="truncate" title="${restaurant.cuisine}">${restaurant.cuisine}</span>
           </div>
 
           <!-- Reserve CTA: full-width BOOK NOW pill, opens booking flow -->
-          <div class="mt-auto pt-2">
+          <div class="mt-auto pt-3 border-t border-[#EADFD1]">
             <button
               data-card-reserve-id="${restaurant.id}"
-              class="w-full bg-[#840f16] hover:bg-[#6c0c11] active:scale-[0.98] text-white px-6 py-3 rounded-full font-label text-xs sm:text-sm font-extrabold uppercase tracking-widest shadow-md transition-all cursor-pointer text-center"
+              class="w-full mt-1 bg-[#840f16] hover:bg-[#6c0c11] active:scale-[0.98] text-white px-6 py-3.5 rounded-full font-label text-sm sm:text-base font-extrabold uppercase tracking-widest shadow-md transition-all cursor-pointer text-center min-h-[44px] flex items-center justify-center gap-2"
             >
-              ${isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Book Now'}
+              <span>${isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Book Now'}</span>
+              <span class="material-symbols-outlined text-lg sm:text-xl leading-none">arrow_forward</span>
             </button>
           </div>
         </div>
