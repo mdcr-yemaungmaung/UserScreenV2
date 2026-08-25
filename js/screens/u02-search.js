@@ -77,22 +77,22 @@
         </div>
 
         <!-- SEARCH & FILTER CAPSULE BAR -->
-        <div class="bg-[#FBF3E2] p-4 sm:p-5 rounded-3xl border border-[#EADFD1] shadow-lg space-y-4">
+        <div class="bg-[#FBF3E2] p-4 sm:p-5 rounded-3xl border border-[#EADFD1] shadow-sm sm:shadow-[0_4px_24px_rgba(43,33,29,.06)] space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
             
             <!-- Keyword input -->
-            <div class="md:col-span-4 bg-[#FFF8F6] border border-[#EADFD1] focus-within:border-[#840f16] rounded-2xl px-3.5 py-2.5 flex items-center gap-2">
+            <div class="md:col-span-4 bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/15 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 transition-all duration-200 active:scale-[.99]">
               <span class="material-symbols-outlined text-[#840f16]">search</span>
               <input
                 type="text"
                 id="results-keyword-input"
                 placeholder="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် နေရာ...' : 'Search venue or keyword...'}"
                 value="${rState.keyword || ''}"
-                class="w-full bg-transparent font-body text-xs sm:text-sm text-[#231916] focus:outline-none"
+                class="w-full bg-transparent font-body text-xs sm:text-sm text-[#231916] placeholder:text-[#8d7b75] focus:outline-none"
               />
               ${
                 rState.keyword
-                  ? `<button id="results-clear-kw" class="text-[#58413f] hover:text-[#840f16] cursor-pointer">
+                  ? `<button id="results-clear-kw" class="text-[#58413f] hover:text-[#840f16] transition-transform duration-200 hover:scale-110 active:scale-95 animate-fadeIn cursor-pointer">
                       <span class="material-symbols-outlined text-sm">close</span>
                     </button>`
                   : ''
@@ -100,26 +100,28 @@
             </div>
 
             <!-- Area Select -->
-            <div class="md:col-span-3 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl px-3.5 py-2.5 flex items-center gap-2">
+            <div class="relative md:col-span-3 bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/15 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 transition-all duration-200">
               <span class="material-symbols-outlined text-[#840f16]">location_on</span>
-              <select id="results-area-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+              <select id="results-area-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer appearance-none pr-6">
                 ${areasList.map(area => `<option value="${area}" ${rState.area === area ? 'selected' : ''}>${area}</option>`).join('')}
               </select>
+              <span class="material-symbols-outlined text-[#8d7b75] text-sm absolute right-3 pointer-events-none">expand_more</span>
             </div>
 
             <!-- Cuisine Select -->
-            <div class="md:col-span-3 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl px-3.5 py-2.5 flex items-center gap-2">
+            <div class="relative md:col-span-3 bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/15 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 transition-all duration-200">
               <span class="material-symbols-outlined text-[#840f16]">restaurant_menu</span>
-              <select id="results-cuisine-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+              <select id="results-cuisine-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer appearance-none pr-6">
                 ${cuisinesList.map(c => `<option value="${c}" ${rState.cuisine === c ? 'selected' : ''}>${c}</option>`).join('')}
               </select>
+              <span class="material-symbols-outlined text-[#8d7b75] text-sm absolute right-3 pointer-events-none">expand_more</span>
             </div>
 
             <!-- Filter Toggle & Reset Buttons -->
             <div class="md:col-span-2 flex items-center gap-2">
               <button
                 id="results-toggle-filters-btn"
-                class="flex-1 py-2.5 px-3 rounded-2xl border font-label text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 relative ${
+                class="flex-1 py-2.5 px-3 rounded-2xl border font-label text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 relative ${
                   rState.showMoreFilters || hasExtraFilters
                     ? 'bg-[#840f16] text-white border-[#840f16]'
                     : 'bg-[#FFF8F6] text-[#58413f] border-[#EADFD1] hover:text-[#231916]'
@@ -137,7 +139,7 @@
               <button
                 id="results-reset-btn"
                 title="Reset Filters"
-                class="p-2.5 rounded-2xl bg-[#FFF8F6] border border-[#EADFD1] text-[#58413f] hover:text-[#840f16] transition-colors cursor-pointer flex items-center justify-center"
+                class="p-2.5 rounded-2xl bg-[#FFF8F6] border border-[#EADFD1] text-[#58413f] hover:text-[#840f16] transition-all duration-200 active:scale-95 cursor-pointer flex items-center justify-center"
               >
                 <span class="material-symbols-outlined text-sm">restart_alt</span>
               </button>
@@ -154,9 +156,9 @@
                 <!-- Party Size -->
                 <div class="md:col-span-4 space-y-2">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider block">Party Size</label>
-                  <div class="flex items-center gap-2 bg-[#FFF8F6] border border-[#EADFD1] rounded-xl px-3 py-2">
+                  <div class="relative flex items-center gap-2 bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/15 rounded-2xl px-3 py-2 transition-all duration-200">
                     <span class="material-symbols-outlined text-sm text-[#840f16]">group</span>
-                    <select id="results-partysize-select" class="w-full bg-transparent font-label text-xs text-[#231916] focus:outline-none cursor-pointer">
+                    <select id="results-partysize-select" class="w-full bg-transparent font-label text-xs text-[#231916] focus:outline-none cursor-pointer appearance-none pr-6">
                       <option value="All Sizes">All Sizes</option>
                       <option value="1">1 Person</option>
                       <option value="2">2 Guests</option>
@@ -164,6 +166,7 @@
                       <option value="6">6 Guests</option>
                       <option value="8+">8+ Large Group</option>
                     </select>
+                    <span class="material-symbols-outlined text-[#8d7b75] text-sm absolute right-3 pointer-events-none">expand_more</span>
                   </div>
                 </div>
 
@@ -176,14 +179,14 @@
                       id="results-minprice-input"
                       placeholder="Min MMK"
                       value="${rState.minPrice || ''}"
-                      class="bg-[#FFF8F6] border border-[#EADFD1] rounded-xl px-3 py-2 font-body text-xs text-[#231916] focus:outline-none"
+                      class="bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus:border-[#840f16] focus:ring-2 focus:ring-[#840f16]/15 rounded-2xl px-3 py-2 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-all duration-200"
                     />
                     <input
                       type="number"
                       id="results-maxprice-input"
                       placeholder="Max MMK"
                       value="${rState.maxPrice || ''}"
-                      class="bg-[#FFF8F6] border border-[#EADFD1] rounded-xl px-3 py-2 font-body text-xs text-[#231916] focus:outline-none"
+                      class="bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus:border-[#840f16] focus:ring-2 focus:ring-[#840f16]/15 rounded-2xl px-3 py-2 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-all duration-200"
                     />
                   </div>
                 </div>
@@ -198,7 +201,7 @@
                         return `
                           <button
                             data-feature-toggle="${f}"
-                            class="px-3 py-1.5 rounded-full border text-xs font-label font-semibold transition-all cursor-pointer ${
+                            class="px-3 py-1.5 rounded-full border text-xs font-label font-semibold transition-all duration-200 active:scale-95 cursor-pointer ${
                               isSelected
                                 ? 'bg-[#840f16] text-white border-[#840f16]'
                                 : 'bg-[#FFF8F6] text-[#58413f] border-[#EADFD1] hover:border-[#840f16]'
