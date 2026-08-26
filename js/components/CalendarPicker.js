@@ -178,7 +178,7 @@
               <span class="material-symbols-outlined text-lg">chevron_left</span>
             </button>
 
-            <div class="flex items-center gap-1.5 font-headline text-base font-bold text-[#231916]">
+            <div id="calendar-month-label" class="flex items-center gap-1.5 font-headline text-base font-bold text-[#231916]">
               <span class="material-symbols-outlined text-lg text-[#840f16]">calendar_month</span>
               <span>${monthNames[month]} ${year}</span>
             </div>
@@ -206,7 +206,7 @@
         </div>
 
         <!-- Calendar Days Grid -->
-        <div class="grid grid-cols-7 gap-2">
+        <div class="grid grid-cols-7 gap-2" role="grid" aria-labelledby="calendar-month-label">
     `;
 
     // Empty cells before 1st day of month
@@ -242,6 +242,9 @@
           ${isDisabled ? 'disabled' : ''}
           ${onDaySelectAttr}="${year}-${month + 1}-${day}"
           data-date-str="${dateFormatted}"
+          aria-label="${new Date(year, month, day).toDateString()}"
+          aria-selected="${isSelected ? 'true' : 'false'}"
+          ${isToday ? 'aria-current="date"' : ''}
           class="h-10 w-full rounded-2xl font-label text-xs font-semibold transition-all flex items-center justify-center relative ${
             isSelected
               ? 'bg-[#840f16] text-white shadow-md font-bold ring-2 ring-[#840f16]/30 cursor-pointer scale-105 z-10'

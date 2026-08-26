@@ -60,6 +60,7 @@
                       <input
                         type="text"
                         id="hero-keyword-input"
+                        aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် သော့ချက်စာလုံးဖြင့် ရှာဖွေပါ' : 'Search by venue name or keywords'}"
                         placeholder="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် သော့ချက်စာလုံး (Keywords)...' : 'Search by venue name or keywords...'}"
                         value="${state.searchKeyword || ''}"
                         class="w-full bg-transparent font-body text-xs sm:text-sm text-[#231916] focus:outline-none"
@@ -69,7 +70,7 @@
                     <!-- Area Dropdown (နေရာဒေသ) -->
                     <div class="sm:col-span-6 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16] text-lg">location_on</span>
-                      <select id="hero-area-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+                      <select id="hero-area-select" aria-label="${isMm ? 'နေရာဒေသ ရွေးချယ်ပါ' : 'Select area'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
                         <option value="All Areas">${isMm ? 'နေရာဒေသ (အားလုံး)' : 'All Areas'}</option>
                         <option value="Bahan Township">Bahan Township (ဗဟန်း)</option>
                         <option value="Dagon Township">Dagon Township (ဒဂုံ)</option>
@@ -82,7 +83,7 @@
                     <!-- Cuisine Genre Dropdown (အစားအစာအမျိုးအစား) -->
                     <div class="sm:col-span-6 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16] text-lg">restaurant_menu</span>
-                      <select id="hero-cuisine-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+                      <select id="hero-cuisine-select" aria-label="${isMm ? 'အစားအစာအမျိုးအစား ရွေးချယ်ပါ' : 'Select cuisine genre'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
                         <option value="All Cuisines">${isMm ? 'အစားအစာအမျိုးအစား (အားလုံး)' : 'All Cuisine Genres'}</option>
                         <option value="Burmese">Burmese (မြန်မာအစားအစာ)</option>
                         <option value="Teahouse & Snacks">Teahouse & Snacks (လက်ဖက်ရည်ဆိုင်)</option>
@@ -98,6 +99,10 @@
                       <button
                         type="button"
                         id="hero-date-trigger"
+                        aria-label="${isMm ? 'ရက်စွဲ ရွေးချယ်ပါ' : 'Select dining date'}"
+                        aria-haspopup="dialog"
+                        aria-expanded="false"
+                        aria-controls="hero-calendar-popover"
                         class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-2xl p-2.5 flex items-center justify-between gap-2 text-left cursor-pointer hover:border-[#840f16] transition-colors"
                       >
                         <div class="flex items-center gap-2 min-w-0">
@@ -112,11 +117,22 @@
                       <!-- Popover Calendar Grid View -->
                       <div
                         id="hero-calendar-popover"
-                        class="hidden absolute bottom-full left-0 mb-2 z-50 w-72 sm:w-80 bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl p-4 shadow-2xl animate-fadeIn"
+                        role="dialog"
+                        aria-modal="false"
+                        aria-labelledby="hero-calendar-heading"
+                        tabindex="-1"
+                        class="hidden fixed inset-x-4 top-24 bottom-6 z-50 overflow-y-auto rounded-3xl border border-[#EADFD1] bg-[#FFF7E8] p-4 shadow-2xl animate-fadeIn sm:inset-x-10 md:inset-x-16 lg:absolute lg:top-auto lg:bottom-full lg:left-0 lg:right-auto lg:bottom-full lg:mb-2 lg:w-80 lg:max-h-[90vh]"
                       >
                         <div class="text-xs font-label font-bold text-[#840f16] uppercase tracking-wider mb-2 flex items-center justify-between">
-                          <span>${isMm ? 'ရက်စွဲ ရွေးချယ်ပါ' : 'Select Dining Date'}</span>
-                          <span class="material-symbols-outlined text-sm cursor-pointer text-[#8d7b75] hover:text-[#840f16]" id="hero-calendar-close">close</span>
+                          <span id="hero-calendar-heading">${isMm ? 'ရက်စွဲ ရွေးချယ်ပါ' : 'Select Dining Date'}</span>
+                          <button
+                            type="button"
+                            id="hero-calendar-close"
+                            aria-label="${isMm ? 'ရက်စွဲရွေးချယ်မှု ပိတ်မည်' : 'Close date picker'}"
+                            class="flex h-8 w-8 items-center justify-center rounded-full text-[#8d7b75] transition-colors hover:bg-[#FFFDFC] hover:text-[#840f16]"
+                          >
+                            <span class="material-symbols-outlined text-sm">close</span>
+                          </button>
                         </div>
                         <div id="hero-calendar-container">
                           ${generateCalendarGrid({
@@ -130,7 +146,7 @@
                     <!-- Time Selector -->
                     <div class="sm:col-span-4 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16] text-lg">schedule</span>
-                      <select id="hero-time-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+                      <select id="hero-time-select" aria-label="${isMm ? 'အချိန် ရွေးချယ်ပါ' : 'Select time'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
                         <option value="18:30">6:30 PM (ညနေ)</option>
                         <option value="12:00">12:00 PM (နေ့လယ်)</option>
                         <option value="13:00">1:00 PM (နေ့လယ်)</option>
@@ -143,7 +159,7 @@
                     <!-- Guests / Party Size Selector -->
                     <div class="sm:col-span-3 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16] text-lg">group</span>
-                      <select id="hero-guests-select" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
+                      <select id="hero-guests-select" aria-label="${isMm ? 'ဧည့်သည်အရေအတွက် ရွေးချယ်ပါ' : 'Select guest count'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
                         <option value="2">2 Guests</option>
                         <option value="1">1 Guest</option>
                         <option value="3">3 Guests</option>
@@ -666,6 +682,7 @@
     const dateClose = containerElement.querySelector('#hero-calendar-close');
     const dateDisplay = containerElement.querySelector('#hero-date-display');
     const calendarContainer = containerElement.querySelector('#hero-calendar-container');
+    let lastCalendarInvoker = null;
 
     // Anchor the view on the current month; bounds are computed inside
     // generateCalendarGrid (FR-010).
@@ -673,7 +690,35 @@
     let activeCalYear = now.getFullYear();
     let activeCalMonth = now.getMonth();
 
-    function renderHeroCalendar() {
+    function getCalendarFocusTarget(selector) {
+      if (!calendarContainer) return null;
+
+      if (selector) {
+        const preferred = calendarContainer.querySelector(selector);
+        if (preferred && !preferred.disabled) {
+          return preferred;
+        }
+      }
+
+      return calendarContainer.querySelector(
+        '[data-hero-calendar-day][aria-selected="true"], [data-hero-calendar-day]:not([disabled]), #cal-next-month:not([disabled]), #cal-prev-month:not([disabled])'
+      );
+    }
+
+    function closeDatePopover({ returnFocus = true } = {}) {
+      if (!datePopover || datePopover.classList.contains('hidden')) return;
+
+      datePopover.classList.add('hidden');
+      if (dateTrigger) {
+        dateTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      if (returnFocus && lastCalendarInvoker && typeof lastCalendarInvoker.focus === 'function') {
+        lastCalendarInvoker.focus();
+      }
+    }
+
+    function renderHeroCalendar(focusSelector) {
       if (!calendarContainer) return;
       calendarContainer.innerHTML = generateCalendarGrid({
         year: activeCalYear,
@@ -682,6 +727,22 @@
         onDaySelectAttr: 'data-hero-calendar-day'
       });
       bindHeroCalendarEvents();
+
+      const focusTarget = getCalendarFocusTarget(focusSelector);
+      if (focusTarget) {
+        setTimeout(() => focusTarget.focus(), 0);
+      }
+    }
+
+    function openDatePopover(invoker = dateTrigger) {
+      if (!datePopover) return;
+
+      lastCalendarInvoker = invoker || dateTrigger || null;
+      datePopover.classList.remove('hidden');
+      if (dateTrigger) {
+        dateTrigger.setAttribute('aria-expanded', 'true');
+      }
+      renderHeroCalendar();
     }
 
     function bindHeroCalendarEvents() {
@@ -698,7 +759,7 @@
             activeCalMonth = 11;
             activeCalYear--;
           }
-          renderHeroCalendar();
+          renderHeroCalendar('#cal-prev-month');
         });
       }
 
@@ -713,7 +774,7 @@
             activeCalMonth = 0;
             activeCalYear++;
           }
-          renderHeroCalendar();
+          renderHeroCalendar('#cal-next-month');
         });
       }
 
@@ -725,7 +786,7 @@
           if (dateStr) {
             store.updateResultsState({ selectedDate: dateStr });
             if (dateDisplay) dateDisplay.textContent = dateStr;
-            if (datePopover) datePopover.classList.add('hidden');
+            closeDatePopover();
           }
         });
       });
@@ -734,17 +795,29 @@
     if (dateTrigger && datePopover) {
       dateTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
-        datePopover.classList.toggle('hidden');
-        if (!datePopover.classList.contains('hidden')) {
-          renderHeroCalendar();
+        if (datePopover.classList.contains('hidden')) {
+          openDatePopover(e.currentTarget);
+          return;
         }
+
+        closeDatePopover({ returnFocus: false });
       });
     }
 
     if (dateClose && datePopover) {
       dateClose.addEventListener('click', (e) => {
         e.stopPropagation();
-        datePopover.classList.add('hidden');
+        closeDatePopover();
+      });
+    }
+
+    if (datePopover) {
+      datePopover.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeDatePopover();
+        }
       });
     }
 
@@ -752,7 +825,7 @@
     document.addEventListener('click', (e) => {
       if (datePopover && !datePopover.classList.contains('hidden')) {
         if (!datePopover.contains(e.target) && !dateTrigger.contains(e.target)) {
-          datePopover.classList.add('hidden');
+          closeDatePopover({ returnFocus: false });
         }
       }
     });
