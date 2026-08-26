@@ -60,7 +60,7 @@
             <!-- Restaurant Owners Application Link -->
             <button
               id="nav-owner-link"
-              class="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#F3DFD5] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#9B1C25] hover:bg-[#9B1C25] hover:text-white transition-all cursor-pointer"
+              class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F3DFD5] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#9B1C25] hover:bg-[#9B1C25] hover:text-white active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
               title="${isMm ? 'ဆိုင်ပိုင်ရှင်များ' : 'For Restaurant Owners'}"
             >
               <span class="material-symbols-outlined text-sm">storefront</span>
@@ -70,7 +70,7 @@
             <!-- Check Guest Booking Link -->
             <button
               id="nav-check-booking-link"
-              class="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#6D6561] hover:text-[#9B1C25] hover:border-[#9B1C25] transition-all cursor-pointer"
+              class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#6D6561] hover:text-[#9B1C25] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
               title="${isMm ? 'စိုတ်ထားမှု စစ်ဆေးရန်' : 'Check Reservation'}"
             >
               <span class="material-symbols-outlined text-sm">confirmation_number</span>
@@ -81,7 +81,7 @@
             <div class="relative hidden md:inline-block text-left">
               <button
                 id="lang-dropdown-btn"
-                class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:border-[#9B1C25] transition-colors cursor-pointer"
+                class="flex items-center gap-1 px-3 py-1.5 sm:py-2 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs"
               >
                 <span class="material-symbols-outlined text-base text-[#9B1C25]">language</span>
                 <span>${state.currentLanguage === 'EN' ? 'EN' : 'မြန်မာ'}</span>
@@ -91,25 +91,31 @@
               <!-- Dropdown Menu -->
               <div
                 id="lang-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-36 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-xl z-50 overflow-hidden py-1"
+                class="hidden absolute right-0 mt-2 w-40 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-xl z-50 overflow-hidden py-1.5 animate-fadeIn"
               >
                 <button
                   data-lang="EN"
-                  class="w-full text-left px-4 py-2 font-label text-xs font-bold flex items-center justify-between cursor-pointer hover:bg-[#F8EFE5] ${
-                    state.currentLanguage === 'EN' ? 'text-[#9B1C25]' : 'text-[#6D6561]'
+                  class="w-full text-left px-4 py-2.5 font-label text-xs font-bold flex items-center justify-between cursor-pointer hover:bg-[#F8EFE5] active:bg-[#F3DFD5] transition-colors ${
+                    state.currentLanguage === 'EN' ? 'text-[#9B1C25] bg-[#F3DFD5]/50' : 'text-[#6D6561]'
                   }"
                 >
-                  <span>English (EN)</span>
-                  ${state.currentLanguage === 'EN' ? '<span class="material-symbols-outlined text-sm">check</span>' : ''}
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full ${state.currentLanguage === 'EN' ? 'bg-[#9B1C25]' : 'bg-transparent'}"></span>
+                    <span>English (EN)</span>
+                  </span>
+                  ${state.currentLanguage === 'EN' ? '<span class="material-symbols-outlined text-sm text-[#9B1C25]">check</span>' : ''}
                 </button>
                 <button
                   data-lang="MM"
-                  class="w-full text-left px-4 py-2 font-label text-xs font-bold flex items-center justify-between cursor-pointer hover:bg-[#F8EFE5] ${
-                    state.currentLanguage === 'MM' ? 'text-[#9B1C25]' : 'text-[#6D6561]'
+                  class="w-full text-left px-4 py-2.5 font-label text-xs font-bold flex items-center justify-between cursor-pointer hover:bg-[#F8EFE5] active:bg-[#F3DFD5] transition-colors ${
+                    state.currentLanguage === 'MM' ? 'text-[#9B1C25] bg-[#F3DFD5]/50' : 'text-[#6D6561]'
                   }"
                 >
-                  <span>မြန်မာ (MM)</span>
-                  ${state.currentLanguage === 'MM' ? '<span class="material-symbols-outlined text-sm">check</span>' : ''}
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full ${state.currentLanguage === 'MM' ? 'bg-[#9B1C25]' : 'bg-transparent'}"></span>
+                    <span>မြန်မာ (MM)</span>
+                  </span>
+                  ${state.currentLanguage === 'MM' ? '<span class="material-symbols-outlined text-sm text-[#9B1C25]">check</span>' : ''}
                 </button>
               </div>
             </div>
@@ -118,12 +124,12 @@
               <!-- Notifications Bell Icon -->
               <button
                 id="nav-notif-btn"
-                class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] hover:border-[#9B1C25] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] transition-colors cursor-pointer shrink-0"
+                class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] hover:border-[#9B1C25] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shrink-0 shadow-2xs"
                 title="${isMm ? 'အသိပေးချက်များ' : 'Notifications'}"
               >
                 <span class="material-symbols-outlined text-xl">notifications</span>
                 ${unreadNotifsCount > 0 ? `
-                  <span class="absolute -top-1 -right-1 w-4 h-4 bg-[#9B1C25] text-white rounded-full text-[10px] font-bold flex items-center justify-center">
+                  <span class="absolute -top-1 -right-1 w-4 h-4 bg-[#9B1C25] text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs animate-pulse">
                     ${unreadNotifsCount}
                   </span>
                 ` : ''}
@@ -133,7 +139,7 @@
               <div class="relative inline-block text-left">
                 <button
                   id="nav-profile-menu-btn"
-                  class="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 transition-all cursor-pointer shrink-0 flex items-center justify-center font-headline font-bold text-sm bg-[#9B1C25] text-white ${
+                  class="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 active:scale-95 transition-all duration-150 cursor-pointer shrink-0 flex items-center justify-center font-headline font-bold text-sm bg-[#9B1C25] text-white shadow-2xs ${
                     isMyPageActive
                       ? 'border-[#9B1C25] ring-2 ring-[#9B1C25]/25 shadow-md'
                       : 'border-[#E8DDD0] hover:border-[#9B1C25]'
@@ -146,52 +152,59 @@
                 <!-- Profile Dropdown Popup Menu -->
                 <div
                   id="nav-profile-dropdown-menu"
-                  class="hidden absolute right-0 mt-2.5 w-60 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-2xl z-50 overflow-hidden py-2 text-left"
+                  class="hidden absolute right-0 mt-2.5 w-64 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-2xl z-50 overflow-hidden py-2 text-left animate-fadeIn"
                 >
                   <!-- User Header -->
-                  <div class="px-4 py-2.5">
-                    <div class="font-headline font-bold text-sm text-[#241A18] truncate">
-                      ${isMm ? (state.myPageData.userNameMM || state.myPageData.userName || 'alex') : (state.myPageData.userName || 'alex')}
+                  <div class="px-4 py-3 bg-[#FBF4E8]/60 border-b border-[#E8DDD0]">
+                    <div class="flex items-center gap-2">
+                      <span class="font-headline font-bold text-sm text-[#241A18] truncate">
+                        ${isMm ? (state.myPageData.userNameMM || state.myPageData.userName || 'alex') : (state.myPageData.userName || 'alex')}
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full bg-[#C69A2B]/15 text-[#8D6B19] font-label text-[10px] font-bold shrink-0">VIP Member</span>
                     </div>
                     <div class="font-body text-xs text-[#6D6561] truncate mt-0.5">
                       ${state.myPageData.userEmail || 'alex@example.com'}
                     </div>
                   </div>
 
-                  <div class="border-t border-[#E8DDD0] my-1.5"></div>
-
                   <!-- My Page Option -->
-                  <button
-                    id="profile-dropdown-mypage-btn"
-                    class="w-full text-left px-4 py-2.5 font-label text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] hover:text-[#9B1C25] flex items-center gap-3 transition-colors cursor-pointer"
-                  >
-                    <span class="material-symbols-outlined text-lg text-[#6D6561]">person</span>
-                    <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ' : 'My Page'}</span>
-                  </button>
+                  <div class="py-1">
+                    <button
+                      id="profile-dropdown-mypage-btn"
+                      class="w-full text-left px-4 py-2.5 font-label text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] hover:text-[#9B1C25] active:bg-[#F3DFD5] flex items-center gap-3 transition-colors cursor-pointer"
+                    >
+                      <div class="w-7 h-7 rounded-lg bg-[#9B1C25]/10 text-[#9B1C25] flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-base">person</span>
+                      </div>
+                      <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ' : 'My Page'}</span>
+                    </button>
+                  </div>
 
-                  <div class="border-t border-[#E8DDD0] my-1.5"></div>
+                  <div class="border-t border-[#E8DDD0] my-1"></div>
 
                   <!-- Logout Option -->
-                  <button
-                    id="profile-dropdown-logout-btn"
-                    class="w-full text-left px-4 py-2.5 font-label text-xs font-bold text-[#9B1C25] hover:bg-[#F3DFD5] flex items-center gap-3 transition-colors cursor-pointer"
-                  >
-                    <span class="material-symbols-outlined text-lg">logout</span>
-                    <span>${isMm ? 'အကောင့်ထွက်ရန်' : 'Logout'}</span>
-                  </button>
+                  <div class="px-2 pb-1">
+                    <button
+                      id="profile-dropdown-logout-btn"
+                      class="w-full text-left px-3 py-2 rounded-xl font-label text-xs font-bold text-[#9B1C25] hover:bg-[#F3DFD5] active:scale-95 flex items-center gap-2.5 transition-all cursor-pointer"
+                    >
+                      <span class="material-symbols-outlined text-base">logout</span>
+                      <span>${isMm ? 'အကောင့်ထွက်ရန်' : 'Logout'}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ` : `
               <!-- Login / Sign Up buttons when unauthenticated -->
               <button
                 id="nav-login-btn"
-                class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[#9B1C25] text-[#9B1C25] font-label text-xs font-bold hover:bg-[#9B1C25] hover:text-white transition-all cursor-pointer"
+                class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[#9B1C25] text-[#9B1C25] font-label text-xs font-bold hover:bg-[#9B1C25] hover:text-white active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs"
               >
                 ${isMm ? 'အကောင့်ဝင်ရန်' : 'Login'}
               </button>
               <button
                 id="nav-signup-btn"
-                class="hidden sm:inline-block px-4 py-2 rounded-full bg-[#9B1C25] text-white font-label text-xs font-bold hover:bg-[#7F161E] shadow-sm transition-all cursor-pointer"
+                class="hidden sm:inline-block px-4 py-2 rounded-full bg-[#9B1C25] text-white font-label text-xs font-bold hover:bg-[#7F161E] active:scale-95 shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer"
               >
                 ${isMm ? 'အကောင့်ဖွင့်ရန်' : 'Sign Up'}
               </button>

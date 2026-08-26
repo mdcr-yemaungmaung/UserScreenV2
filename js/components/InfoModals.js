@@ -32,30 +32,30 @@
             </div>
 
             <form id="auth-form" class="space-y-4 text-left">
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <label class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wider">${isMm ? 'ဖုန်းနံပါတ် သို့မဟုတ် အီးမေးလ်' : 'Phone or Email'}</label>
                 <input
                   type="text"
                   required
                   placeholder="+95 9 791 234 567"
                   value="evelyn.clair@example.com"
-                  class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-2xl p-3 font-body text-sm text-[#241A18] focus:outline-none"
+                  class="w-full bg-[#FFFDFC] border border-[#E0D2C3] focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 rounded-2xl p-3.5 font-body text-sm text-[#241A18] outline-none transition-all"
                 />
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <label class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wider">${isMm ? 'စကားဝှက်' : 'Password'}</label>
                 <input
                   type="password"
                   required
                   value="••••••••••••"
-                  class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-2xl p-3 font-body text-sm text-[#241A18] focus:outline-none"
+                  class="w-full bg-[#FFFDFC] border border-[#E0D2C3] focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 rounded-2xl p-3.5 font-body text-sm text-[#241A18] outline-none transition-all"
                 />
               </div>
 
               <button
                 type="submit"
-                class="w-full btn-primary py-3.5 rounded-2xl font-label text-sm font-semibold shadow-md cursor-pointer"
+                class="w-full btn-primary py-3.5 rounded-2xl font-label text-sm font-bold shadow-md hover:shadow-lg active:scale-[0.98] transition-all cursor-pointer"
               >
                 ${isMm ? 'အကောင့်ဝင်မည် (Login)' : 'Sign In to Account'}
               </button>
@@ -95,15 +95,15 @@
             </div>
 
             <form id="owner-app-form" class="space-y-4 text-left">
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'ဆိုင်အမည် (Restaurant Name)' : 'Restaurant Name *'}</label>
-                <input type="text" required placeholder="e.g. Golden Leaf Teahouse" class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-sm focus:outline-none focus:border-[#840f16]" />
+                <input type="text" required placeholder="e.g. Golden Leaf Teahouse" class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all" />
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="space-y-1">
+                <div class="space-y-1.5">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'မြို့နယ် (Township/Area)' : 'Township Area *'}</label>
-                  <select class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-xs sm:text-sm focus:outline-none focus:border-[#840f16]">
+                  <select class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-xs sm:text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all cursor-pointer">
                     <option>Bahan Township</option>
                     <option>Dagon Township</option>
                     <option>Yangon Downtown</option>
@@ -112,9 +112,9 @@
                   </select>
                 </div>
 
-                <div class="space-y-1">
+                <div class="space-y-1.5">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'အစားအစာအမျိုးအစား' : 'Cuisine Category *'}</label>
-                  <select class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-xs sm:text-sm focus:outline-none focus:border-[#840f16]">
+                  <select class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-xs sm:text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all cursor-pointer">
                     <option>Burmese</option>
                     <option>Teahouse & Snacks</option>
                     <option>Japanese & Sushi</option>
@@ -125,23 +125,23 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="space-y-1">
+                <div class="space-y-1.5">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'ဆက်သွယ်ရန် ဖုန်းနံပါတ်' : 'Contact Phone Number *'}</label>
-                  <input type="tel" required placeholder="+95 9 ..." class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-sm focus:outline-none focus:border-[#840f16]" />
+                  <input type="tel" required placeholder="+95 9 ..." class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all" />
                 </div>
 
-                <div class="space-y-1">
+                <div class="space-y-1.5">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'စားပွဲဝိုင်း စုစုပေါင်း' : 'Total Seating Capacity'}</label>
-                  <input type="number" min="10" value="40" class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-sm focus:outline-none focus:border-[#840f16]" />
+                  <input type="number" min="10" value="40" class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all" />
                 </div>
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'အခြား အသေးစိတ် အချက်အလက်များ' : 'Additional Venue Notes'}</label>
-                <textarea rows="2" placeholder="${isMm ? 'ဝိုင်ဆိုင်၊ ပါကင်၊ ပရိုမိုးရှင်း အစီအစဉ်များ...' : 'Special seating options, parking availability...'}" class="w-full bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-3 text-sm focus:outline-none focus:border-[#840f16]"></textarea>
+                <textarea rows="2" placeholder="${isMm ? 'ဝိုင်ဆိုင်၊ ပါကင်၊ ပရိုမိုးရှင်း အစီအစဉ်များ...' : 'Special seating options, parking availability...'}" class="w-full bg-[#FFFDFC] border border-[#E0D2C3] rounded-2xl p-3.5 text-sm outline-none focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 transition-all"></textarea>
               </div>
 
-              <button type="submit" class="w-full btn-primary py-3.5 rounded-2xl font-label text-sm font-semibold shadow-md cursor-pointer">
+              <button type="submit" class="w-full btn-primary py-3.5 rounded-2xl font-label text-sm font-bold shadow-md hover:shadow-lg active:scale-[0.98] transition-all cursor-pointer">
                 ${isMm ? 'လျှောက်လွှာ တင်သွင်းမည် (Submit Application)' : 'Submit Partner Application'}
               </button>
             </form>
@@ -156,20 +156,20 @@
 
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
 
-            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
+            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F8EFE5] border border-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] active:scale-90 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
 
-            <div class="space-y-2 text-left border-b border-[#EADFD1] pb-4">
-              <div class="inline-flex items-center gap-1.5 bg-[#840f16]/10 text-[#840f16] px-3 py-1 rounded-full text-xs font-label font-bold uppercase tracking-wider">
+            <div class="space-y-2 text-left border-b border-[#E8DDD0] pb-4">
+              <div class="inline-flex items-center gap-1.5 bg-[#9B1C25]/10 text-[#9B1C25] px-3 py-1 rounded-full text-xs font-label font-bold uppercase tracking-wider">
                 <span>${isMm ? 'စိုတ်ထားမှု စစ်ဆေးရန်' : 'Check Reservation'}</span>
               </div>
-              <h3 class="font-headline text-2xl font-extrabold text-[#231916]">
+              <h3 class="font-headline text-2xl font-extrabold text-[#241A18]">
                 ${isMm ? 'ဧည့်သည် စိုတ်ထားမှု စစ်ဆေးရန်' : 'Verify Guest Reservation'}
               </h3>
-              <p class="font-body text-xs sm:text-sm text-[#58413f]">
+              <p class="font-body text-xs sm:text-sm text-[#6D6561]">
                 ${isMm ? 'အကောင့်မရှိဘဲ စိုတ်ယူထားပါက စိုတ်ယူမှုနံပါတ် သို့မဟုတ် ဖုန်းနံပါတ်ဖြင့် ရှာဖွေစစ်ဆေးပါ' : 'Lookup your table reservation using your booking code (e.g. RSV-849201) or phone number.'}
               </p>
             </div>
@@ -182,40 +182,40 @@
                   required
                   placeholder="RSV-849201 or +95 9 791..."
                   value="${result?.query || 'RSV-849201'}"
-                  class="flex-1 bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-2xl p-3 font-body text-sm text-[#231916] focus:outline-none"
+                  class="flex-1 bg-[#FFFDFC] border border-[#E0D2C3] focus:border-[#9B1C25] focus:ring-3 focus:ring-[#9B1C25]/15 rounded-2xl p-3.5 font-body text-sm text-[#241A18] outline-none transition-all"
                 />
-                <button type="submit" class="btn-primary px-5 py-3 rounded-2xl font-label text-sm font-bold shadow-md cursor-pointer shrink-0">
+                <button type="submit" class="btn-primary px-6 py-3.5 rounded-2xl font-label text-sm font-bold shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer shrink-0">
                   ${isMm ? 'ရှာမည်' : 'Verify'}
                 </button>
               </div>
             </form>
 
             ${result ? `
-              <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] text-left space-y-3 animate-fadeIn">
+              <div class="p-4 rounded-2xl bg-[#FBF4E8]/60 border border-[#E8DDD0] text-left space-y-3 animate-fadeIn">
                 ${result.found ? `
                   <div class="flex items-center justify-between">
-                    <span class="font-label text-xs font-bold text-[#840f16] uppercase tracking-wider">✅ Reservation Verified</span>
-                    <span class="px-2.5 py-0.5 rounded-full bg-[#840f16]/10 text-[#840f16] font-label text-xs font-bold">${result.booking.status}</span>
+                    <span class="font-label text-xs font-bold text-[#9B1C25] uppercase tracking-wider">✅ Reservation Verified</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#9B1C25]/10 text-[#9B1C25] font-label text-xs font-bold">${result.booking.status}</span>
                   </div>
                   <div class="space-y-1">
-                    <h4 class="font-headline text-lg font-bold text-[#231916]">${result.booking.restaurantName}</h4>
-                    <div class="font-label text-xs text-[#58413f] flex items-center gap-2">
-                      <span class="material-symbols-outlined text-sm text-[#840f16]">calendar_today</span>
+                    <h4 class="font-headline text-lg font-bold text-[#241A18]">${result.booking.restaurantName}</h4>
+                    <div class="font-label text-xs text-[#6D6561] flex items-center gap-2">
+                      <span class="material-symbols-outlined text-sm text-[#9B1C25]">calendar_today</span>
                       <span>${result.booking.date} at ${result.booking.time} (${result.booking.guests} Guests)</span>
                     </div>
-                    <div class="font-label text-xs text-[#58413f] flex items-center gap-2">
-                      <span class="material-symbols-outlined text-sm text-[#840f16]">person</span>
+                    <div class="font-label text-xs text-[#6D6561] flex items-center gap-2">
+                      <span class="material-symbols-outlined text-sm text-[#9B1C25]">person</span>
                       <span>Guest: ${result.booking.guestName} (${result.booking.guestPhone})</span>
                     </div>
                   </div>
                   <div class="pt-2 flex justify-end">
-                    <button id="guest-view-qr" class="text-xs font-label font-bold text-[#840f16] hover:underline cursor-pointer flex items-center gap-1">
+                    <button id="guest-view-qr" class="text-xs font-label font-bold text-[#9B1C25] hover:underline cursor-pointer flex items-center gap-1">
                       <span class="material-symbols-outlined text-sm">qr_code_2</span>
                       <span>View Instant QR Dining Pass</span>
                     </button>
                   </div>
                 ` : `
-                  <div class="text-xs font-label text-[#840f16] font-bold">
+                  <div class="text-xs font-label text-[#9B1C25] font-bold">
                     ❌ No booking found matching "${result.query}". Please check your reservation code.
                   </div>
                 `}
@@ -328,26 +328,26 @@
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn text-left">
           <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
 
-            <button id="close-pwa-modal-btn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
+            <button id="close-pwa-modal-btn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F8EFE5] border border-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] active:scale-90 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
 
             <!-- App Badge & Header -->
             <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#840f16] to-[#231916] p-0.5 shadow-md flex items-center justify-center">
-                <div class="w-full h-full rounded-[14px] bg-[#840f16] flex items-center justify-center text-white">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#9B1C25] to-[#241A18] p-0.5 shadow-md flex items-center justify-center">
+                <div class="w-full h-full rounded-[14px] bg-[#9B1C25] flex items-center justify-center text-white">
                   <span class="material-symbols-outlined text-2xl">restaurant</span>
                 </div>
               </div>
 
               <div>
-                <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#840f16]/10 text-[#840f16] font-label text-[10px] font-bold uppercase tracking-wider mb-1">
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#9B1C25]/10 text-[#9B1C25] font-label text-[10px] font-bold uppercase tracking-wider mb-1">
                   Progressive Web App (PWA)
                 </span>
-                <h3 class="font-headline text-2xl font-extrabold text-[#231916]">
+                <h3 class="font-headline text-2xl font-extrabold text-[#241A18]">
                   ${isMm ? 'Yoyaku အက်ပ်ကို ထည့်သွင်းပါ' : 'Install Yoyaku App'}
                 </h3>
-                <p class="font-body text-xs text-[#58413f] mt-1 leading-relaxed">
+                <p class="font-body text-xs text-[#6D6561] mt-1 leading-relaxed">
                   ${
                     isMm
                       ? 'ဖုန်းတွင် အက်ပ်အနေဖြင့် ထည့်သွင်းထားပါက အင်တာနက် မရှိချိန်တွင်လည်း သင်၏ QR Pass နှင့် စားပွဲဝိုင်းများကို အချိန်မရွေး ကြည့်ရှုနိုင်ပါသည်'
@@ -358,17 +358,17 @@
             </div>
 
             <!-- Highlights -->
-            <div class="space-y-2.5 bg-[#FFFDFC] p-4 rounded-2xl border border-[#E8DDD0]">
-              <div class="flex items-center gap-3 text-xs text-[#231916]">
-                <span class="material-symbols-outlined text-[#840f16] text-base shrink-0">offline_pin</span>
+            <div class="space-y-2.5 bg-[#FBF4E8]/60 p-4 rounded-2xl border border-[#E8DDD0]">
+              <div class="flex items-center gap-3 text-xs text-[#241A18]">
+                <span class="material-symbols-outlined text-[#9B1C25] text-base shrink-0">offline_pin</span>
                 <span class="font-bold">${isMm ? 'အော့ဖ်လိုင်း QR Pass ရယူနိုင်ခြင်း' : 'Offline Access to QR Dining Passes'}</span>
               </div>
-              <div class="flex items-center gap-3 text-xs text-[#231916]">
-                <span class="material-symbols-outlined text-[#840f16] text-base shrink-0">speed</span>
+              <div class="flex items-center gap-3 text-xs text-[#241A18]">
+                <span class="material-symbols-outlined text-[#9B1C25] text-base shrink-0">speed</span>
                 <span class="font-bold">${isMm ? 'လျင်မြန် ချောမွေ့သော မျက်နှာပြင်' : 'Instant Loading & Fullscreen Experience'}</span>
               </div>
-              <div class="flex items-center gap-3 text-xs text-[#231916]">
-                <span class="material-symbols-outlined text-[#840f16] text-base shrink-0">notifications_active</span>
+              <div class="flex items-center gap-3 text-xs text-[#241A18]">
+                <span class="material-symbols-outlined text-[#9B1C25] text-base shrink-0">notifications_active</span>
                 <span class="font-bold">${isMm ? 'ဘွတ်ကင် အချိန်မီ သတိပေးချက်များ' : 'Real-Time Table Reminder Alerts'}</span>
               </div>
             </div>
@@ -380,7 +380,7 @@
               <button
                 type="button"
                 id="pwa-prompt-install-action-btn"
-                class="w-full py-3.5 bg-[#840f16] hover:bg-[#680b11] text-white rounded-2xl font-label text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
+                class="w-full py-3.5 bg-[#9B1C25] hover:bg-[#840f16] active:scale-[0.98] text-white rounded-2xl font-label text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
                 <span class="material-symbols-outlined text-lg">download</span>
                 <span>${isMm ? 'ဖုန်းတွင် အက်ပ် ထည့်သွင်းမည်' : 'Install Yoyaku App Now'}</span>
@@ -389,16 +389,16 @@
                 : isIos
                   ? `
               <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-3">
-                <div class="font-headline font-bold text-xs text-[#231916] uppercase tracking-wider">
+                <div class="font-headline font-bold text-xs text-[#241A18] uppercase tracking-wider">
                   ${isMm ? 'iOS Safari တွင် ထည့်သွင်းနည်း' : 'Instructions for iPhone / iPad'}
                 </div>
-                <div class="space-y-2 text-xs text-[#58413f]">
+                <div class="space-y-2 text-xs text-[#6D6561]">
                   <div class="flex items-start gap-2.5">
-                    <span class="w-5 h-5 rounded-full bg-[#840f16] text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                    <span class="w-5 h-5 rounded-full bg-[#9B1C25] text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
                     <span>${isMm ? 'Safari ဘရောက်ဆာ အောက်ခြေရှိ <b>Share (မျှဝေရန်)</b> ခလုတ်ကို နှိပ်ပါ' : 'Tap the <b>Share</b> button <span class="material-symbols-outlined text-xs align-middle">ios_share</span> in Safari’s toolbar.'}</span>
                   </div>
                   <div class="flex items-start gap-2.5">
-                    <span class="w-5 h-5 rounded-full bg-[#840f16] text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                    <span class="w-5 h-5 rounded-full bg-[#9B1C25] text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
                     <span>${isMm ? 'အောက်သို့ ဆွဲချပြီး <b>"Add to Home Screen"</b> ကို ရွေးချယ်ပါ' : 'Scroll down and tap <b>"Add to Home Screen"</b> <span class="material-symbols-outlined text-xs align-middle">add_box</span>.'}</span>
                   </div>
                 </div>
@@ -406,10 +406,10 @@
             `
                   : `
               <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-2">
-                <div class="font-headline font-bold text-xs text-[#231916]">
+                <div class="font-headline font-bold text-xs text-[#241A18]">
                   ${isMm ? 'ဘရောက်ဆာ ဆက်တင်မှ ထည့်သွင်းရန်' : 'Install via Browser Menu'}
                 </div>
-                <p class="font-body text-xs text-[#58413f] leading-relaxed">
+                <p class="font-body text-xs text-[#6D6561] leading-relaxed">
                   ${
                     isMm
                       ? 'ဘရောက်ဆာ၏ ညာဘက်အပေါ်ထောင့်ရှိ Menu (⋮) ကို နှိပ်ပြီး <b>"Install app"</b> သို့မဟုတ် <b>"Add to Home screen"</b> ကို ရွေးချယ်ပါ'
@@ -424,7 +424,7 @@
               <button
                 type="button"
                 id="pwa-dismiss-modal-btn"
-                class="font-label text-xs font-bold text-[#8d7b75] hover:text-[#231916] cursor-pointer"
+                class="font-label text-xs font-bold text-[#8d7b75] hover:text-[#241A18] active:scale-95 transition-all cursor-pointer"
               >
                 ${isMm ? 'နောက်မှ ပြုလုပ်မည်' : 'Maybe Later'}
               </button>
