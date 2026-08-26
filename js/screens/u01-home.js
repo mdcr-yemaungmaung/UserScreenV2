@@ -1,7 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
-  const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA } = window.YoyakuData;
+  const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA, DINING_OCCASIONS_DATA = [] } = window.YoyakuData;
   const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard, hasPromoCardOffer } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
@@ -10,8 +10,36 @@
 
 
 
+  const HERO_LOCATIONS = [
+    { value: 'All Areas', labelEn: 'All Locations', labelMm: 'နေရာဒေသ (အားလုံး)', icon: 'explore', sub: 'Across Yangon' },
+    { value: 'Bahan Township', labelEn: 'Bahan', labelMm: 'ဗဟန်းမြို့နယ်', icon: 'pin_drop', sub: 'Golden Valley & Diplomatic' },
+    { value: 'Dagon Township', labelEn: 'Dagon', labelMm: 'ဒဂုံမြို့နယ်', icon: 'pin_drop', sub: 'Heritage & Pagoda' },
+    { value: 'Yangon Downtown', labelEn: 'Downtown', labelMm: 'မြို့ထဲ', icon: 'apartment', sub: 'Colonial & Heritage' },
+    { value: 'Inya Lake Waterfront', labelEn: 'Inya Lake', labelMm: 'အင်းလျားကန်စပ်', icon: 'water', sub: 'Scenic Lakefront Dining' },
+    { value: 'Ahlone Township', labelEn: 'Ahlone', labelMm: 'အလုံမြို့နယ်', icon: 'pin_drop', sub: 'Riverside Sanctuary' },
+  ];
+
+  const HERO_CUISINES = [
+    { value: 'All Cuisines', labelEn: 'All Cuisines', labelMm: 'အစားအစာ (အားလုံး)', icon: 'restaurant_menu', sub: 'Any Culinary Genre' },
+    { value: 'Burmese', labelEn: 'Burmese Traditional', labelMm: 'မြန်မာအစားအစာ', icon: 'rice_bowl', sub: 'Authentic Heritage Cuisine' },
+    { value: 'Teahouse & Snacks', labelEn: 'Teahouse & Snacks', labelMm: 'လက်ဖက်ရည်ဆိုင်', icon: 'local_cafe', sub: 'Classic Yangon Culture' },
+    { value: 'Japanese', labelEn: 'Japanese & Sushi', labelMm: 'ဂျပန်အစားအစာ', icon: 'ramen_dining', sub: 'Sushi, Ramen & Omakase' },
+    { value: 'Casual Dining', labelEn: 'Casual Dining', labelMm: 'မိသားစု စားသောက်ဆိုင်', icon: 'local_dining', sub: 'Comfort & Family-Friendly' },
+    { value: 'European', labelEn: 'European Fusion', labelMm: 'ဥရောပ ဟင်းလျာ', icon: 'wine_bar', sub: 'Modern Continental' },
+    { value: 'French', labelEn: 'French Fine Dining', labelMm: 'ပြင်သစ် အဆင့်မြင့်', icon: 'dinner_dining', sub: 'Gourmet Gastronomy' },
+  ];
+
   function renderDiscoverView(state) {
     const isMm = state.currentLanguage === 'MM';
+
+    const currentAreaVal = state.resultsState?.area || 'All Areas';
+    const currentCuisineVal = state.resultsState?.cuisine || 'All Cuisines';
+
+    const selectedAreaObj = HERO_LOCATIONS.find(l => l.value === currentAreaVal) || HERO_LOCATIONS[0];
+    const selectedCuisineObj = HERO_CUISINES.find(c => c.value === currentCuisineVal) || HERO_CUISINES[0];
+
+    const selectedAreaLabel = isMm ? selectedAreaObj.labelMm : selectedAreaObj.labelEn;
+    const selectedCuisineLabel = isMm ? selectedCuisineObj.labelMm : selectedCuisineObj.labelEn;
 
     // Compute Popularity Ranking (#1, #2, #3, #4) based on rating & reviewCount
     const popularRestaurants = [...RESTAURANTS_DATA].sort((a, b) => (b.rating * b.reviewCount) - (a.rating * a.reviewCount));
@@ -22,234 +50,215 @@
     return `
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">
 
-        <!-- HERO SEARCH SECTION -->
-        <section class="relative pt-4 sm:pt-6 pb-2 sm:pb-4 overflow-hidden">
+        <!-- HERO SECTION (LUXURY EDITORIAL CONCIERGE & SHOWCASE) -->
+        <section class="relative pt-3 sm:pt-6 pb-6 sm:pb-10 overflow-hidden">
+          <!-- Ambient Luxury Lighting Glows -->
+          <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#840f16]/8 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
+          <div class="absolute top-1/3 -right-20 w-80 h-80 bg-[#C59B27]/6 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
-              <!-- Left Hero Content & Search Glass Panel -->
-              <div class="lg:col-span-7 space-y-6 text-left">
-                <div class="hidden lg:inline-flex items-center gap-2 bg-[#840f16]/10 text-[#840f16] px-4 py-1.5 rounded-full font-label text-xs font-bold uppercase tracking-widest border border-[#840f16]/20">
-                  <span class="material-symbols-outlined text-sm">restaurant</span>
-                  <span>${isMm ? 'မည်သည့် ဘတ်ဂျက်မဆို စားပွဲဝိုင်းများကို အလွယ်တကူ စိုတ်ယူပါ' : 'Table Bookings For Every Budget & Occasion'}</span>
-                </div>
+            <!-- Editorial Header Block -->
+            <div class="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+              <!-- Prestigious Eyebrow Pill -->
+              <div class="hidden lg:inline-flex items-center gap-2 bg-[#840f16]/[0.06] border border-[#840f16]/20 px-4 py-1.5 rounded-full shadow-2xs backdrop-blur-xs">
+                <span class="material-symbols-outlined text-xs sm:text-sm text-[#840f16]">hotel_class</span>
+                <span class="font-label text-[11px] sm:text-xs font-bold text-[#840f16] tracking-widest uppercase">
+                  ${isMm ? 'ရန်ကုန်မြို့၏ အဆင့်မြင့် စားသောက်ဆိုင် စားပွဲဝိုင်းများ' : 'Curated Table Reservations • Yangon'}
+                </span>
+              </div>
 
-                <h1 class="font-headline text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#231916] leading-[1.15]">
-                  ${
-                    isMm
-                      ? 'ဒီနေ့ ဘာ <span class="text-[#840f16] relative inline-block">စားချင်ပါသလဲ။</span>'
-                      : 'What are you <span class="text-[#840f16] relative inline-block">craving today?</span>'
-                  }
-                </h1>
+              <!-- Main Hero Headline -->
+              <h1 class="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-[#231916] leading-[1.12] tracking-tight">
+                ${
+                  isMm
+                    ? 'အမှတ်တရ ညစာစားပွဲနှင့် <span class="font-serif italic font-normal text-[#840f16]">ထူးခြားသော အတွေ့အကြုံများ</span>'
+                    : 'Reserve extraordinary dining, <br class="hidden sm:inline" /><span class="font-serif italic font-normal text-[#840f16]">effortlessly perfected.</span>'
+                }
+              </h1>
 
-                <p class="hidden lg:block font-body text-base sm:text-lg text-[#58413f] max-w-2xl leading-relaxed font-medium">
-                  ${
-                    isMm
-                      ? 'ရန်ကုန်မြို့၏ နာမည်ကြီး လက်ဖက်ရည်ဆိုင်များ၊ မိသားစု စားသောက်ဆိုင်များနှင့် သီးသန့် အဆင့်မြင့် စားသောက်ဆိုင်များတွင် စားပွဲဝိုင်းများကို အလွယ်တကူ ချက်ချင်း စိုတ်ယူလိုက်ပါ။'
-                      : 'Reserve your table instantly — from local teahouses and casual family eateries to romantic lakefronts and fine dining.'
-                  }
-                </p>
+              <p class="hidden lg:block font-body text-xs sm:text-base text-[#68554F] max-w-xl mx-auto leading-relaxed">
+                ${
+                  isMm
+                    ? 'နာမည်ကြီး ရိုးရာလက်ဖက်ရည်ဆိုင်များ၊ သာယာသော အင်းလျားကန်စပ် ညစာနှင့် သီးသန့် အဆင့်မြင့် စားသောက်ဆိုင်များတွင် စားပွဲဝိုင်းများကို အချိန်မရွေး ချက်ချင်း စိုတ်ယူလိုက်ပါ။'
+                    : 'Instant table access at Yangon’s most celebrated venues — from heritage tea houses to scenic lakefront sanctuaries.'
+                }
+              </p>
+            </div>
 
-                <!-- Glass Multi-Parameter Search Panel -->
-                <div class="glass-panel p-4 sm:p-6 rounded-3xl space-y-4 border border-[#EADFD1] shadow-2xl">
-                  <form id="hero-search-form" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+            <!-- Sleek Integrated Concierge Search Bar / Card -->
+            <div class="max-w-5xl mx-auto">
+              <div class="bg-[#FFFDFC] border border-[#E5D9CC] rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-[0_20px_50px_-20px_rgba(132,15,22,0.12)] transition-all">
+                <form id="hero-search-form" class="space-y-3 md:space-y-0 md:flex md:items-center md:gap-2.5">
 
-                    <!-- Keyword Search Input -->
-                    <div class="sm:col-span-12 bg-[#FFF8F6] border border-[#EADFD1] focus-within:border-[#840f16] rounded-2xl p-3 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-[#840f16]">search</span>
+                  <!-- 1. Search Query Input -->
+                  <div class="flex-1 bg-[#FAF6F0] hover:bg-white focus-within:bg-white border border-[#E8DDD0] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/10 rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center gap-2.5 transition-all">
+                    <span class="material-symbols-outlined text-[#840f16] text-xl shrink-0">search</span>
+                    <div class="min-w-0 flex-1 text-left">
+                      <label for="hero-keyword-input" class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'ဆိုင်အမည် / ဟင်းလျာ' : 'Restaurant or Dish'}</label>
                       <input
                         type="text"
                         id="hero-keyword-input"
-                        aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် သော့ချက်စာလုံးဖြင့် ရှာဖွေပါ' : 'Search by venue name or keywords'}"
-                        placeholder="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် သော့ချက်စာလုံး (Keywords)...' : 'Search by venue name or keywords...'}"
+                        aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် ဟင်းလျာဖြင့် ရှာဖွေပါ' : 'Search by restaurant or dish'}"
+                        placeholder="${isMm ? 'ဥပမာ- The Gilded Fork, ရှမ်းခေါက်ဆွဲ...' : 'e.g. The Gilded Fork, Shan Noodle, Sushi...'}"
                         value="${state.searchKeyword || ''}"
-                        class="w-full bg-transparent font-body text-xs sm:text-sm text-[#231916] focus:outline-none"
+                        class="w-full bg-transparent font-body text-xs sm:text-sm font-semibold text-[#231916] placeholder:text-[#9B8C87] placeholder:font-normal focus:outline-none"
                       />
                     </div>
+                  </div>
 
-                    <!-- Area Dropdown (နေရာဒေသ) -->
-                    <div class="sm:col-span-6 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-[#840f16] text-lg">location_on</span>
-                      <select id="hero-area-select" aria-label="${isMm ? 'နေရာဒေသ ရွေးချယ်ပါ' : 'Select area'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
-                        <option value="All Areas">${isMm ? 'နေရာဒေသ (အားလုံး)' : 'All Areas'}</option>
-                        <option value="Bahan Township">Bahan Township (ဗဟန်း)</option>
-                        <option value="Dagon Township">Dagon Township (ဒဂုံ)</option>
-                        <option value="Yangon Downtown">Yangon Downtown (မြို့ထဲ)</option>
-                        <option value="Inya Lake Waterfront">Inya Lake Waterfront (အင်းလျား)</option>
-                        <option value="Ahlone Township">Ahlone Township (အလုံ)</option>
-                      </select>
-                    </div>
-
-                    <!-- Cuisine Genre Dropdown (အစားအစာအမျိုးအစား) -->
-                    <div class="sm:col-span-6 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-[#840f16] text-lg">restaurant_menu</span>
-                      <select id="hero-cuisine-select" aria-label="${isMm ? 'အစားအစာအမျိုးအစား ရွေးချယ်ပါ' : 'Select cuisine genre'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
-                        <option value="All Cuisines">${isMm ? 'အစားအစာအမျိုးအစား (အားလုံး)' : 'All Cuisine Genres'}</option>
-                        <option value="Burmese">Burmese (မြန်မာအစားအစာ)</option>
-                        <option value="Teahouse & Snacks">Teahouse & Snacks (လက်ဖက်ရည်ဆိုင်)</option>
-                        <option value="Japanese">Japanese (ဂျပန်)</option>
-                        <option value="Casual Dining">Casual Dining (မိသားစု)</option>
-                        <option value="European">European (ဥရောပ)</option>
-                        <option value="French">French Fine Dining (ပြင်သစ်)</option>
-                      </select>
-                    </div>
-
-                    <!-- Date Selector with Calendar View Popover -->
-                    <div class="sm:col-span-5 relative">
-                      <button
-                        type="button"
-                        id="hero-date-trigger"
-                        aria-label="${isMm ? 'ရက်စွဲ ရွေးချယ်ပါ' : 'Select dining date'}"
-                        aria-haspopup="dialog"
-                        aria-expanded="false"
-                        aria-controls="hero-calendar-popover"
-                        class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-2xl p-2.5 flex items-center justify-between gap-2 text-left cursor-pointer hover:border-[#840f16] transition-colors"
-                      >
-                        <div class="flex items-center gap-2 min-w-0">
-                          <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">calendar_month</span>
-                          <span id="hero-date-display" class="font-label text-xs sm:text-sm text-[#231916] font-semibold truncate">
-                            ${state.resultsState?.selectedDate || ''}
+                  <!-- 2. Location Area Custom Selector -->
+                  <div class="relative w-full md:w-52 lg:w-56" id="hero-area-dropdown-container">
+                    <input type="hidden" id="hero-area-select" value="${currentAreaVal}" />
+                    <button
+                      type="button"
+                      id="hero-area-trigger"
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                      class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
+                    >
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">${selectedAreaObj.icon}</span>
+                        <div class="min-w-0">
+                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'တည်နေရာ' : 'Location'}</span>
+                          <span id="hero-area-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">
+                            ${selectedAreaLabel}
                           </span>
                         </div>
-                        <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0">expand_more</span>
-                      </button>
+                      </div>
+                      <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0 transition-transform duration-200" id="hero-area-chevron">expand_more</span>
+                    </button>
 
-                      <!-- Popover Calendar Grid View -->
-                      <div
-                        id="hero-calendar-popover"
-                        role="dialog"
-                        aria-modal="false"
-                        aria-labelledby="hero-calendar-heading"
-                        tabindex="-1"
-                        class="hidden fixed inset-x-4 top-24 bottom-6 z-50 overflow-y-auto rounded-3xl border border-[#EADFD1] bg-[#FFF7E8] p-4 shadow-2xl animate-fadeIn sm:inset-x-10 md:inset-x-16 lg:absolute lg:top-auto lg:bottom-full lg:left-0 lg:right-auto lg:bottom-full lg:mb-2 lg:w-80 lg:max-h-[90vh]"
-                      >
-                        <div class="text-xs font-label font-bold text-[#840f16] uppercase tracking-wider mb-2 flex items-center justify-between">
-                          <span id="hero-calendar-heading">${isMm ? 'ရက်စွဲ ရွေးချယ်ပါ' : 'Select Dining Date'}</span>
+                    <!-- Custom Luxury Popover Menu for Location -->
+                    <div
+                      id="hero-area-popover"
+                      role="listbox"
+                      tabindex="-1"
+                      class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
+                    >
+                      <div class="px-2 py-1 text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider border-b border-[#F0E6DA] mb-1">
+                        ${isMm ? 'နေရာဒေသ ရွေးချယ်ပါ' : 'Select Location'}
+                      </div>
+                      ${HERO_LOCATIONS.map(loc => {
+                        const isSelected = loc.value === currentAreaVal;
+                        return `
                           <button
                             type="button"
-                            id="hero-calendar-close"
-                            aria-label="${isMm ? 'ရက်စွဲရွေးချယ်မှု ပိတ်မည်' : 'Close date picker'}"
-                            class="flex h-8 w-8 items-center justify-center rounded-full text-[#8d7b75] transition-colors hover:bg-[#FFFDFC] hover:text-[#840f16]"
+                            role="option"
+                            aria-selected="${isSelected}"
+                            data-hero-area-option="${loc.value}"
+                            class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
+                                : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+                            }"
                           >
-                            <span class="material-symbols-outlined text-sm">close</span>
+                            <div class="flex items-center gap-2 min-w-0">
+                              <span class="material-symbols-outlined text-base ${isSelected ? 'text-[#840f16]' : 'text-[#8D7B75]'} shrink-0">${loc.icon}</span>
+                              <div class="min-w-0">
+                                <span class="block truncate font-label">${isMm ? loc.labelMm : loc.labelEn}</span>
+                                <span class="block text-[10px] ${isSelected ? 'text-[#840f16]/80' : 'text-[#8A7B76]'} font-normal truncate">${loc.sub}</span>
+                              </div>
+                            </div>
+                            ${isSelected ? '<span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">check</span>' : ''}
                           </button>
-                        </div>
-                        <div id="hero-calendar-container">
-                          ${generateCalendarGrid({
-                            selectedDateStr: state.resultsState?.selectedDate || undefined,
-                            onDaySelectAttr: 'data-hero-calendar-day'
-                          })}
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Time Selector -->
-                    <div class="sm:col-span-4 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-[#840f16] text-lg">schedule</span>
-                      <select id="hero-time-select" aria-label="${isMm ? 'အချိန် ရွေးချယ်ပါ' : 'Select time'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
-                        <option value="18:30">6:30 PM (ညနေ)</option>
-                        <option value="12:00">12:00 PM (နေ့လယ်)</option>
-                        <option value="13:00">1:00 PM (နေ့လယ်)</option>
-                        <option value="18:00">6:00 PM (ညနေ)</option>
-                        <option value="19:00">7:00 PM (ညနေ)</option>
-                        <option value="20:00">8:00 PM (ညနေ)</option>
-                      </select>
-                    </div>
-
-                    <!-- Guests / Party Size Selector -->
-                    <div class="sm:col-span-3 bg-[#FFF8F6] border border-[#EADFD1] rounded-2xl p-2.5 flex items-center gap-2">
-                      <span class="material-symbols-outlined text-[#840f16] text-lg">group</span>
-                      <select id="hero-guests-select" aria-label="${isMm ? 'ဧည့်သည်အရေအတွက် ရွေးချယ်ပါ' : 'Select guest count'}" class="w-full bg-transparent font-label text-xs sm:text-sm text-[#231916] focus:outline-none cursor-pointer">
-                        <option value="2">2 Guests</option>
-                        <option value="1">1 Guest</option>
-                        <option value="3">3 Guests</option>
-                        <option value="4">4 Guests</option>
-                        <option value="6">6 Guests</option>
-                        <option value="8">8+ Guests</option>
-                      </select>
-                    </div>
-
-                    <!-- Submit Search CTA -->
-                    <div class="sm:col-span-12 pt-1">
-                      <button
-                        type="submit"
-                        class="w-full btn-primary py-3.5 rounded-2xl font-label text-sm font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
-                      >
-                        <span class="material-symbols-outlined text-lg">table_restaurant</span>
-                        <span>${isMm ? 'စားပွဲဝိုင်း အသေးစိတ် ရှာဖွေမည်' : 'Search Tables'}</span>
-                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                      </button>
-                    </div>
-
-                  </form>
-                </div>
-
-              </div>
-
-              <!-- Right Hero Image Collage -->
-              <div class="lg:col-span-5 relative hidden lg:block">
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="space-y-4">
-                    <div
-                      data-card-select-id="rest-1"
-                      class="collage-img h-64 rounded-3xl overflow-hidden shadow-xl border border-[#EADFD1] cursor-pointer relative group"
-                    >
-                      <img src="${RESTAURANTS_DATA[0].heroImage}" alt="Padonmar" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4">
-                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">The Gilded Fork</span>
-                      </div>
-                    </div>
-                    <div
-                      data-card-select-id="rest-3"
-                      class="collage-img h-48 rounded-3xl overflow-hidden shadow-xl border border-[#EADFD1] cursor-pointer relative group"
-                    >
-                      <img src="${RESTAURANTS_DATA[2].heroImage}" alt="Rangoon Tea House" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4">
-                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">Rangoon Tea House</span>
-                      </div>
+                        `;
+                      }).join('')}
                     </div>
                   </div>
 
-                  <div class="space-y-4 pt-8">
-                    <div
-                      data-card-select-id="rest-2"
-                      class="collage-img h-48 rounded-3xl overflow-hidden shadow-xl border border-[#EADFD1] cursor-pointer relative group"
+                  <!-- 3. Cuisine Type Custom Selector -->
+                  <div class="relative w-full md:w-52 lg:w-56" id="hero-cuisine-dropdown-container">
+                    <input type="hidden" id="hero-cuisine-select" value="${currentCuisineVal}" />
+                    <button
+                      type="button"
+                      id="hero-cuisine-trigger"
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                      class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
                     >
-                      <img src="${RESTAURANTS_DATA[1].heroImage}" alt="Seeds" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4">
-                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">Seeds Lakefront</span>
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">${selectedCuisineObj.icon}</span>
+                        <div class="min-w-0">
+                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'အစားအစာ အမျိုးအစား' : 'Cuisine Type'}</span>
+                          <span id="hero-cuisine-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">
+                            ${selectedCuisineLabel}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                      <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0 transition-transform duration-200" id="hero-cuisine-chevron">expand_more</span>
+                    </button>
+
+                    <!-- Custom Luxury Popover Menu for Cuisine -->
                     <div
-                      data-card-select-id="rest-4"
-                      class="collage-img h-64 rounded-3xl overflow-hidden shadow-xl border border-[#EADFD1] cursor-pointer relative group"
+                      id="hero-cuisine-popover"
+                      role="listbox"
+                      tabindex="-1"
+                      class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
                     >
-                      <img src="${RESTAURANTS_DATA[3].heroImage}" alt="L'Alchimiste" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div class="absolute bottom-4 left-4">
-                        <span class="inline-block bg-[#1c1311]/90 backdrop-blur-md text-white font-headline text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-md">L’Alchimiste French</span>
+                      <div class="px-2 py-1 text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider border-b border-[#F0E6DA] mb-1">
+                        ${isMm ? 'အစားအစာ အမျိုးအစား ရွေးချယ်ပါ' : 'Select Cuisine'}
                       </div>
+                      ${HERO_CUISINES.map(c => {
+                        const isSelected = c.value === currentCuisineVal;
+                        return `
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected="${isSelected}"
+                            data-hero-cuisine-option="${c.value}"
+                            class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
+                                : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+                            }"
+                          >
+                            <div class="flex items-center gap-2 min-w-0">
+                              <span class="material-symbols-outlined text-base ${isSelected ? 'text-[#840f16]' : 'text-[#8D7B75]'} shrink-0">${c.icon}</span>
+                              <div class="min-w-0">
+                                <span class="block truncate font-label">${isMm ? c.labelMm : c.labelEn}</span>
+                                <span class="block text-[10px] ${isSelected ? 'text-[#840f16]/80' : 'text-[#8A7B76]'} font-normal truncate">${c.sub}</span>
+                              </div>
+                            </div>
+                            ${isSelected ? '<span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">check</span>' : ''}
+                          </button>
+                        `;
+                      }).join('')}
                     </div>
                   </div>
-                </div>
-              </div>
 
+                  <!-- 4. Primary Action Button -->
+                  <div class="w-full md:w-auto shrink-0 pt-1 md:pt-0">
+                    <button
+                      type="submit"
+                      class="w-full md:w-auto bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-7 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
+                    >
+                      <span class="material-symbols-outlined text-lg sm:text-xl">search</span>
+                      <span class="whitespace-nowrap">${isMm ? 'ရှာဖွေပါ' : 'Find Tables'}</span>
+                      <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+                    </button>
+                  </div>
+
+                </form>
+              </div>
             </div>
+
           </div>
         </section>
 
-        <!-- EXPLORE BY CUISINE -->
+        <!-- EXPLORE BY DINING OCCASIONS & VIBES -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left relative">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
+              <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                <span>${isMm ? 'ရွေးချယ်ထားသော စားသောက်မှု အခိုက်အတန့်များ' : 'Curated Dining Atmospheres'}</span>
+              </div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'အစားအစာ အမျိုးအစားများ' : 'Explore by Cuisine'}
+                ${isMm ? 'စားသောက်မှု အခိုက်အတန့်နှင့် ပတ်ဝန်းကျင်များ' : 'Explore by Experience & Occasion'}
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'မိမိနှစ်သက်သော ဟင်းလျာအလိုက် စားသောက်ဆိုင်များကို ရွေးချယ်ပါ' : 'Select from traditional heritage recipes to contemporary international fusion.'}
+                ${isMm ? 'နေဝင်ဆည်းဆာ ကန်စပ်ညစာ၊ ရိုမန်းတစ် စားပွဲဝိုင်း သို့မဟုတ် VIP သီးသန့်ခန်းများ စိတ်ကြိုက်ရှာဖွေပါ' : 'From serene sunset lakefronts to intimate candlelit tables and executive VIP suites.'}
               </p>
             </div>
             <div class="flex items-center gap-3">
@@ -263,11 +272,11 @@
             </div>
           </div>
 
-          <!-- Explore by Cuisine Carousel Container with Pressable Floating Arrow Controls -->
-          <div class="relative group/cuisine-carousel">
+          <!-- Occasions Carousel Container with Floating Scroll Buttons -->
+          <div class="relative group/occasion-carousel">
             <!-- Left Pressable Scroll Arrow -->
             <button
-              id="cuisine-float-prev"
+              id="occasion-float-prev"
               aria-label="Scroll left"
               title="Scroll left"
               class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
@@ -275,25 +284,52 @@
               <span class="material-symbols-outlined text-xl leading-none select-none">chevron_left</span>
             </button>
 
-            <!-- Scrollable Cuisine Items Row -->
+            <!-- Scrollable Occasions Row -->
             <div
-              id="cuisine-scroll-container"
-              class="horizontal-scroll-row flex flex-nowrap items-center overflow-x-auto overflow-y-hidden scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 gap-3 sm:gap-3.5 pb-2 pt-1"
+              id="occasion-scroll-container"
+              class="horizontal-scroll-row flex flex-nowrap items-stretch overflow-x-auto overflow-y-hidden scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 gap-3.5 sm:gap-4 pb-2 pt-1"
             >
-              ${CUISINES_DATA.map(c => `
+              ${DINING_OCCASIONS_DATA.map(occ => `
                 <button
-                  data-cuisine-filter="${c.name}"
-                  class="shrink-0 snap-start w-auto min-w-max group bg-[#FFFDFC] hover:bg-[#F8EFE5] active:scale-98 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-[#E8DDD0] hover:border-[#840f16] hover:shadow-md transition-all text-left flex items-center gap-3 cursor-pointer"
+                  type="button"
+                  data-occasion-filter="${occ.id}"
+                  data-filter-keyword="${occ.filterKeyword}"
+                  data-filter-area="${occ.filterArea || 'All Areas'}"
+                  class="group shrink-0 snap-start w-64 sm:w-72 md:w-80 relative rounded-3xl overflow-hidden text-left border border-[#E8DDD0] hover:border-[#840f16]/60 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col justify-between hover:-translate-y-1 aspect-[16/10] bg-[#1C1311]"
                 >
-                  <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border border-[#EADFD1] shrink-0 shadow-xs">
-                    <img src="${c.image}" alt="${c.name}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                  <!-- Background Image with Ambient Gradient Overlays -->
+                  <img
+                    src="${occ.image}"
+                    alt="${occ.name}"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#1C1311]/95 via-[#1C1311]/50 to-black/30 group-hover:from-[#1C1311]/90 transition-colors duration-500"></div>
+
+                  <!-- Top Bar: Category Icon Badge & Venue Count -->
+                  <div class="relative z-10 p-3.5 sm:p-4 flex items-center justify-between">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/25 shadow-xs">
+                      <span class="material-symbols-outlined text-base">${occ.icon}</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1 bg-[#1C1311]/70 backdrop-blur-md text-white/90 font-label text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/15 shadow-xs">
+                      <span>${occ.count}</span>
+                      <span class="text-[10px] text-white/70 font-normal">${isMm ? 'ဆိုင်များ' : 'Venues'}</span>
+                    </span>
                   </div>
-                  <div class="pr-1">
-                    <div class="font-headline text-xs sm:text-sm font-bold text-[#231916] group-hover:text-[#840f16] transition-colors whitespace-nowrap">
-                      ${isMm ? c.nameMM : c.name}
-                    </div>
-                    <div class="font-label text-[10px] sm:text-[11px] text-[#58413f] whitespace-nowrap mt-0.5">
-                      ${c.count} ${isMm ? 'ဆိုင်များ' : 'Venues'}
+
+                  <!-- Bottom Bar: Title, Atmosphere Description & Direct Prompt -->
+                  <div class="relative z-10 p-3.5 sm:p-4 text-white">
+                    <h3 class="font-headline text-base sm:text-lg font-bold text-white group-hover:text-[#F3D5B5] transition-colors leading-tight">
+                      ${isMm ? occ.nameMM : occ.name}
+                    </h3>
+                    <p class="font-body text-[11px] sm:text-xs text-white/80 mt-1 line-clamp-1">
+                      ${isMm ? occ.subtitleMM : occ.subtitle}
+                    </p>
+                    <div class="mt-2.5 flex items-center gap-1 text-[11px] font-label font-bold text-[#F3D5B5] group-hover:text-white transition-colors">
+                      <span>${isMm ? 'စားပွဲဝိုင်းများ ကြည့်မည်' : 'Explore Tables'}</span>
+                      <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -302,7 +338,7 @@
 
             <!-- Right Pressable Scroll Arrow -->
             <button
-              id="cuisine-float-next"
+              id="occasion-float-next"
               aria-label="Scroll right"
               title="Scroll right"
               class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
@@ -526,7 +562,137 @@
       });
     }
 
-    // Cuisine filter buttons
+    // Custom Popover logic for Area
+    const areaTrigger = containerElement.querySelector('#hero-area-trigger');
+    const areaPopover = containerElement.querySelector('#hero-area-popover');
+    const areaDisplay = containerElement.querySelector('#hero-area-display');
+    const areaInput = containerElement.querySelector('#hero-area-select');
+    const areaChevron = containerElement.querySelector('#hero-area-chevron');
+
+    // Custom Popover logic for Cuisine
+    const cuisineTrigger = containerElement.querySelector('#hero-cuisine-trigger');
+    const cuisinePopover = containerElement.querySelector('#hero-cuisine-popover');
+    const cuisineDisplay = containerElement.querySelector('#hero-cuisine-display');
+    const cuisineInput = containerElement.querySelector('#hero-cuisine-select');
+    const cuisineChevron = containerElement.querySelector('#hero-cuisine-chevron');
+
+    const closeAreaPopover = () => {
+      if (!areaPopover) return;
+      areaPopover.classList.add('hidden');
+      if (areaTrigger) areaTrigger.setAttribute('aria-expanded', 'false');
+      if (areaChevron) areaChevron.classList.remove('rotate-180');
+    };
+
+    const closeCuisinePopover = () => {
+      if (!cuisinePopover) return;
+      cuisinePopover.classList.add('hidden');
+      if (cuisineTrigger) cuisineTrigger.setAttribute('aria-expanded', 'false');
+      if (cuisineChevron) cuisineChevron.classList.remove('rotate-180');
+    };
+
+    if (areaTrigger && areaPopover) {
+      areaTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeCuisinePopover();
+        const isHidden = areaPopover.classList.contains('hidden');
+        if (isHidden) {
+          areaPopover.classList.remove('hidden');
+          areaTrigger.setAttribute('aria-expanded', 'true');
+          if (areaChevron) areaChevron.classList.add('rotate-180');
+        } else {
+          closeAreaPopover();
+        }
+      });
+    }
+
+    if (cuisineTrigger && cuisinePopover) {
+      cuisineTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAreaPopover();
+        const isHidden = cuisinePopover.classList.contains('hidden');
+        if (isHidden) {
+          cuisinePopover.classList.remove('hidden');
+          cuisineTrigger.setAttribute('aria-expanded', 'true');
+          if (cuisineChevron) cuisineChevron.classList.add('rotate-180');
+        } else {
+          closeCuisinePopover();
+        }
+      });
+    }
+
+    // Option selection for Area
+    containerElement.querySelectorAll('[data-hero-area-option]').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = e.currentTarget.getAttribute('data-hero-area-option');
+        if (areaInput) areaInput.value = val;
+        const matched = HERO_LOCATIONS.find(l => l.value === val);
+        if (matched && areaDisplay) {
+          areaDisplay.textContent = store.state.currentLanguage === 'MM' ? matched.labelMm : matched.labelEn;
+        }
+        // Update active UI styles on option buttons
+        containerElement.querySelectorAll('[data-hero-area-option]').forEach(b => {
+          const isAct = b.getAttribute('data-hero-area-option') === val;
+          b.setAttribute('aria-selected', isAct);
+          b.className = `w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+            isAct ? 'bg-[#840f16]/10 text-[#840f16] font-bold' : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+          }`;
+        });
+        closeAreaPopover();
+      });
+    });
+
+    // Option selection for Cuisine
+    containerElement.querySelectorAll('[data-hero-cuisine-option]').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = e.currentTarget.getAttribute('data-hero-cuisine-option');
+        if (cuisineInput) cuisineInput.value = val;
+        const matched = HERO_CUISINES.find(c => c.value === val);
+        if (matched && cuisineDisplay) {
+          cuisineDisplay.textContent = store.state.currentLanguage === 'MM' ? matched.labelMm : matched.labelEn;
+        }
+        // Update active UI styles on option buttons
+        containerElement.querySelectorAll('[data-hero-cuisine-option]').forEach(b => {
+          const isAct = b.getAttribute('data-hero-cuisine-option') === val;
+          b.setAttribute('aria-selected', isAct);
+          b.className = `w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+            isAct ? 'bg-[#840f16]/10 text-[#840f16] font-bold' : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+          }`;
+        });
+        closeCuisinePopover();
+      });
+    });
+
+    // Close area & cuisine popovers on outside click
+    document.addEventListener('click', (e) => {
+      if (areaPopover && !areaPopover.classList.contains('hidden') && !areaPopover.contains(e.target) && !areaTrigger?.contains(e.target)) {
+        closeAreaPopover();
+      }
+      if (cuisinePopover && !cuisinePopover.classList.contains('hidden') && !cuisinePopover.contains(e.target) && !cuisineTrigger?.contains(e.target)) {
+        closeCuisinePopover();
+      }
+    });
+
+    // Close area & cuisine popovers on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAreaPopover();
+        closeCuisinePopover();
+      }
+    });
+
+    // Occasion filter buttons
+    containerElement.querySelectorAll('[data-occasion-filter]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const keyword = e.currentTarget.getAttribute('data-filter-keyword') || '';
+        const area = e.currentTarget.getAttribute('data-filter-area') || 'All Areas';
+        store.updateResultsState({ keyword, area, cuisine: 'All Cuisines' });
+        store.setActiveTab('resultlist');
+      });
+    });
+
+    // Cuisine filter buttons (fallback)
     containerElement.querySelectorAll('[data-cuisine-filter]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const cuisine = e.currentTarget.getAttribute('data-cuisine-filter');
@@ -535,60 +701,47 @@
       });
     });
 
-    // Cuisine horizontal slide controls (header buttons + floating buttons)
-    const cuisineScrollContainer = containerElement.querySelector('#cuisine-scroll-container');
-    const cuisinePrevBtn = containerElement.querySelector('#cuisine-slide-prev');
-    const cuisineNextBtn = containerElement.querySelector('#cuisine-slide-next');
-    const cuisineFloatPrev = containerElement.querySelector('#cuisine-float-prev');
-    const cuisineFloatNext = containerElement.querySelector('#cuisine-float-next');
+    // Occasion horizontal slide controls (floating buttons)
+    const occasionScrollContainer = containerElement.querySelector('#occasion-scroll-container');
+    const occasionFloatPrev = containerElement.querySelector('#occasion-float-prev');
+    const occasionFloatNext = containerElement.querySelector('#occasion-float-next');
 
-    const updateCuisineScrollButtons = () => {
-      if (!cuisineScrollContainer) return;
-      const { scrollLeft, scrollWidth, clientWidth } = cuisineScrollContainer;
+    const updateOccasionScrollButtons = () => {
+      if (!occasionScrollContainer) return;
+      const { scrollLeft, scrollWidth, clientWidth } = occasionScrollContainer;
       const isAtStart = scrollLeft <= 10;
       const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
 
-      if (cuisineFloatPrev) {
-        cuisineFloatPrev.style.opacity = isAtStart ? '0' : '1';
-        cuisineFloatPrev.style.pointerEvents = isAtStart ? 'none' : 'auto';
+      if (occasionFloatPrev) {
+        occasionFloatPrev.style.opacity = isAtStart ? '0' : '1';
+        occasionFloatPrev.style.pointerEvents = isAtStart ? 'none' : 'auto';
       }
-      if (cuisineFloatNext) {
-        cuisineFloatNext.style.opacity = isAtEnd ? '0' : '1';
-        cuisineFloatNext.style.pointerEvents = isAtEnd ? 'none' : 'auto';
-      }
-      if (cuisinePrevBtn) {
-        cuisinePrevBtn.disabled = isAtStart;
-        cuisinePrevBtn.style.opacity = isAtStart ? '0.4' : '1';
-      }
-      if (cuisineNextBtn) {
-        cuisineNextBtn.disabled = isAtEnd;
-        cuisineNextBtn.style.opacity = isAtEnd ? '0.4' : '1';
+      if (occasionFloatNext) {
+        occasionFloatNext.style.opacity = isAtEnd ? '0' : '1';
+        occasionFloatNext.style.pointerEvents = isAtEnd ? 'none' : 'auto';
       }
     };
 
-    const handleScrollLeft = (e) => {
+    const handleOccasionScrollLeft = (e) => {
       if (e) e.preventDefault();
-      if (cuisineScrollContainer) {
-        cuisineScrollContainer.scrollBy({ left: -280, behavior: 'smooth' });
+      if (occasionScrollContainer) {
+        occasionScrollContainer.scrollBy({ left: -320, behavior: 'smooth' });
       }
     };
 
-    const handleScrollRight = (e) => {
+    const handleOccasionScrollRight = (e) => {
       if (e) e.preventDefault();
-      if (cuisineScrollContainer) {
-        cuisineScrollContainer.scrollBy({ left: 280, behavior: 'smooth' });
+      if (occasionScrollContainer) {
+        occasionScrollContainer.scrollBy({ left: 320, behavior: 'smooth' });
       }
     };
 
-    if (cuisinePrevBtn) cuisinePrevBtn.addEventListener('click', handleScrollLeft);
-    if (cuisineNextBtn) cuisineNextBtn.addEventListener('click', handleScrollRight);
-    if (cuisineFloatPrev) cuisineFloatPrev.addEventListener('click', handleScrollLeft);
-    if (cuisineFloatNext) cuisineFloatNext.addEventListener('click', handleScrollRight);
+    if (occasionFloatPrev) occasionFloatPrev.addEventListener('click', handleOccasionScrollLeft);
+    if (occasionFloatNext) occasionFloatNext.addEventListener('click', handleOccasionScrollRight);
 
-    if (cuisineScrollContainer) {
-      cuisineScrollContainer.addEventListener('scroll', updateCuisineScrollButtons, { passive: true });
-      // Initialize states after paint
-      setTimeout(updateCuisineScrollButtons, 50);
+    if (occasionScrollContainer) {
+      occasionScrollContainer.addEventListener('scroll', updateOccasionScrollButtons, { passive: true });
+      setTimeout(updateOccasionScrollButtons, 50);
     }
 
     // Promotion banners horizontal slide controls & indicators
