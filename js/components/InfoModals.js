@@ -13,43 +13,43 @@
     if (activeModal === 'auth') {
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative">
-            
-            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative">
+
+            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F8EFE5] border border-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
 
             <div class="text-center space-y-2">
-              <div class="w-12 h-12 rounded-2xl bg-[#840f16] text-white flex items-center justify-center mx-auto shadow-md">
+              <div class="w-12 h-12 rounded-2xl bg-[#9B1C25] text-white flex items-center justify-center mx-auto shadow-md">
                 <span class="material-symbols-outlined text-2xl">account_circle</span>
               </div>
-              <h3 class="font-headline text-2xl font-extrabold text-[#231916]">
+              <h3 class="font-headline text-2xl font-extrabold text-[#241A18]">
                 ${isMm ? 'Yoyaku အကောင့်ဝင်ရန်' : 'Welcome to Yoyaku'}
               </h3>
-              <p class="font-body text-xs sm:text-sm text-[#58413f]">
+              <p class="font-body text-xs sm:text-sm text-[#6D6561]">
                 ${isMm ? 'ကြိုတင်စိုတ်ယူထားသော စားပွဲဝိုင်းများကို စီမံခန့်ခွဲရန် အကောင့်ဝင်ပါ' : 'Sign in to access VIP bookings, points rewards, and saved favorites.'}
               </p>
             </div>
 
             <form id="auth-form" class="space-y-4 text-left">
               <div class="space-y-1">
-                <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'ဖုန်းနံပါတ် သို့မဟုတ် အီးမေးလ်' : 'Phone or Email'}</label>
+                <label class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wider">${isMm ? 'ဖုန်းနံပါတ် သို့မဟုတ် အီးမေးလ်' : 'Phone or Email'}</label>
                 <input
                   type="text"
                   required
                   placeholder="+95 9 791 234 567"
                   value="evelyn.clair@example.com"
-                  class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-2xl p-3 font-body text-sm text-[#231916] focus:outline-none"
+                  class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-2xl p-3 font-body text-sm text-[#241A18] focus:outline-none"
                 />
               </div>
 
               <div class="space-y-1">
-                <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'စကားဝှက်' : 'Password'}</label>
+                <label class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wider">${isMm ? 'စကားဝှက်' : 'Password'}</label>
                 <input
                   type="password"
                   required
                   value="••••••••••••"
-                  class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-2xl p-3 font-body text-sm text-[#231916] focus:outline-none"
+                  class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-2xl p-3 font-body text-sm text-[#241A18] focus:outline-none"
                 />
               </div>
 
@@ -61,9 +61,9 @@
               </button>
             </form>
 
-            <div class="pt-2 border-t border-[#EADFD1] text-center text-xs text-[#58413f]">
+            <div class="pt-2 border-t border-[#E8DDD0] text-center text-xs text-[#6D6561]">
               <span>${isMm ? 'အကောင့်မရှိသေးပါက' : "Don't have an account?"}</span>
-              <button id="auth-toggle-signup" class="font-bold text-[#840f16] hover:underline ml-1 cursor-pointer">
+              <button id="auth-toggle-signup" class="font-bold text-[#9B1C25] hover:underline ml-1 cursor-pointer">
                 ${isMm ? 'အကောင့်သစ်ဖွင့်ပါ (Sign Up)' : 'Create New Account'}
               </button>
             </div>
@@ -76,20 +76,20 @@
     if (activeModal === 'owner_application') {
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
-            
-            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+
+            <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F8EFE5] border border-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
 
-            <div class="space-y-2 text-left border-b border-[#EADFD1] pb-4">
-              <div class="inline-flex items-center gap-1.5 bg-[#840f16]/10 text-[#840f16] px-3 py-1 rounded-full text-xs font-label font-bold uppercase tracking-wider">
+            <div class="space-y-2 text-left border-b border-[#E8DDD0] pb-4">
+              <div class="inline-flex items-center gap-1.5 bg-[#F3DFD5] text-[#9B1C25] px-3 py-1 rounded-full text-xs font-label font-bold uppercase tracking-wider">
                 <span>${isMm ? 'ဆိုင်ပိုင်ရှင်များ' : 'For Restaurant Owners'}</span>
               </div>
-              <h3 class="font-headline text-2xl font-extrabold text-[#231916]">
+              <h3 class="font-headline text-2xl font-extrabold text-[#241A18]">
                 ${isMm ? 'ဆိုင်သစ် စာရင်းသွင်း လျှောက်ထားရန်' : 'Partner Venue Application'}
               </h3>
-              <p class="font-body text-xs sm:text-sm text-[#58413f]">
+              <p class="font-body text-xs sm:text-sm text-[#6D6561]">
                 ${isMm ? 'သင့်စားသောက်ဆိုင်ကို Yoyaku တွင် စာရင်းသွင်း၍ စားပွဲဝိုင်း ကြိုတင်မှာယူမှုများကို လက်ခံလိုက်ပါ' : 'Join Yangon’s premier restaurant reservation platform. Submit your venue details below.'}
               </p>
             </div>
@@ -157,7 +157,7 @@
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
-            
+
             <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -191,7 +191,7 @@
             </form>
 
             ${result ? `
-              <div class="p-4 rounded-2xl bg-[#FBF3E2] border border-[#EADFD1] text-left space-y-3 animate-fadeIn">
+              <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] text-left space-y-3 animate-fadeIn">
                 ${result.found ? `
                   <div class="flex items-center justify-between">
                     <span class="font-label text-xs font-bold text-[#840f16] uppercase tracking-wider">✅ Reservation Verified</span>
@@ -230,8 +230,8 @@
     if (activeModal === 'terms') {
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto text-left">
-            
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto text-left">
+
             <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -261,8 +261,8 @@
     if (activeModal === 'privacy') {
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto text-left">
-            
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto text-left">
+
             <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -293,8 +293,8 @@
 
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 relative text-left">
-            
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 relative text-left">
+
             <button id="close-info-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -308,7 +308,7 @@
 
             <div class="space-y-2 max-h-64 overflow-y-auto">
               ${notifs.map(n => `
-                <div class="p-3 rounded-2xl bg-[#FFF8F6] border border-[#EADFD1] space-y-1">
+                <div class="p-3 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                   <div class="font-headline text-sm font-bold text-[#231916]">${n.title}</div>
                   <div class="font-label text-[10px] text-[#58413f]">${n.time}</div>
                 </div>
@@ -326,8 +326,8 @@
 
       return `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn text-left">
-          <div class="bg-[#FFF7E8] border border-[#EADFD1] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
-            
+          <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+
             <button id="close-pwa-modal-btn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FBF3E2] border border-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer">
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -358,7 +358,7 @@
             </div>
 
             <!-- Highlights -->
-            <div class="space-y-2.5 bg-[#FFF8F6] p-4 rounded-2xl border border-[#EADFD1]">
+            <div class="space-y-2.5 bg-[#FFFDFC] p-4 rounded-2xl border border-[#E8DDD0]">
               <div class="flex items-center gap-3 text-xs text-[#231916]">
                 <span class="material-symbols-outlined text-[#840f16] text-base shrink-0">offline_pin</span>
                 <span class="font-bold">${isMm ? 'အော့ဖ်လိုင်း QR Pass ရယူနိုင်ခြင်း' : 'Offline Access to QR Dining Passes'}</span>
@@ -388,7 +388,7 @@
             `
                 : isIos
                   ? `
-              <div class="p-4 rounded-2xl bg-[#FBF3E2] border border-[#EADFD1] space-y-3">
+              <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-3">
                 <div class="font-headline font-bold text-xs text-[#231916] uppercase tracking-wider">
                   ${isMm ? 'iOS Safari တွင် ထည့်သွင်းနည်း' : 'Instructions for iPhone / iPad'}
                 </div>
@@ -405,7 +405,7 @@
               </div>
             `
                   : `
-              <div class="p-4 rounded-2xl bg-[#FBF3E2] border border-[#EADFD1] space-y-2">
+              <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-2">
                 <div class="font-headline font-bold text-xs text-[#231916]">
                   ${isMm ? 'ဘရောက်ဆာ ဆက်တင်မှ ထည့်သွင်းရန်' : 'Install via Browser Menu'}
                 </div>

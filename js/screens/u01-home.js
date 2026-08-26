@@ -21,12 +21,12 @@
 
     return `
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">
-        
+
         <!-- HERO SEARCH SECTION -->
         <section class="relative pt-4 sm:pt-6 pb-2 sm:pb-4 overflow-hidden">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
+
               <!-- Left Hero Content & Search Glass Panel -->
               <div class="lg:col-span-7 space-y-6 text-left">
                 <div class="hidden lg:inline-flex items-center gap-2 bg-[#840f16]/10 text-[#840f16] px-4 py-1.5 rounded-full font-label text-xs font-bold uppercase tracking-widest border border-[#840f16]/20">
@@ -53,7 +53,7 @@
                 <!-- Glass Multi-Parameter Search Panel -->
                 <div class="glass-panel p-4 sm:p-6 rounded-3xl space-y-4 border border-[#EADFD1] shadow-2xl">
                   <form id="hero-search-form" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                    
+
                     <!-- Keyword Search Input -->
                     <div class="sm:col-span-12 bg-[#FFF8F6] border border-[#EADFD1] focus-within:border-[#840f16] rounded-2xl p-3 flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16]">search</span>
@@ -285,7 +285,7 @@
               ${CUISINES_DATA.map(c => `
                 <button
                   data-cuisine-filter="${c.name}"
-                  class="shrink-0 snap-start w-auto min-w-max group bg-[#FBF3E2] hover:bg-[#F5E8D3] active:scale-98 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-[#EADFD1] hover:border-[#840f16] hover:shadow-md transition-all text-left flex items-center gap-3 cursor-pointer"
+                  class="shrink-0 snap-start w-auto min-w-max group bg-[#FFFDFC] hover:bg-[#F8EFE5] active:scale-98 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-[#E8DDD0] hover:border-[#840f16] hover:shadow-md transition-all text-left flex items-center gap-3 cursor-pointer"
                 >
                   <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border border-[#EADFD1] shrink-0 shadow-xs">
                     <img src="${c.image}" alt="${c.name}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />

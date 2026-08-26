@@ -2,10 +2,24 @@
 
 :root {
   color-scheme: light;
-  --color-brand: #840f16;
-  --color-brand-hover: #6c0c11;
-  --color-brand-surface: #FFF9EE;
-  --color-brand-border: #EADFD1;
+  --color-brand: #9B1C25;
+  --color-brand-hover: #7F161E;
+  --color-brand-surface: #FFFDFC;
+  --color-brand-border: #E8DDD0;
+  --color-brand-soft: #F3DFD5;
+  --color-body-bg: #FBF4E8;
+  --color-surface: #FFFDFC;
+  --color-surface-muted: #F8EFE5;
+  --color-text-primary: #241A18;
+  --color-text-secondary: #6D6561;
+  --color-outline: #A19690;
+  --color-outline-variant: #E8DDD0;
+  --color-primary: #9B1C25;
+  --color-on-primary: #ffffff;
+  --color-on-surface: #241A18;
+  --color-on-surface-variant: #6D6561;
+  --color-surface-container-low: #F8EFE5;
+  --color-secondary: #607A62;
 }
 
 html {
@@ -15,7 +29,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
+  background-color: #FBF4E8;
+  color: #241A18;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
 }
 
 img {
@@ -27,7 +43,11 @@ img {
 h1,
 h2,
 h3 {
-  font-family: 'Epilogue', 'Be Vietnam Pro', sans-serif;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
+}
+
+.font-body {
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
 }
 
 .font-label,
@@ -35,7 +55,7 @@ button,
 input,
 select,
 textarea {
-  font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
 }
 
 .prototype-symbol {
@@ -90,13 +110,13 @@ textarea {
   transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .toggle-switch-input:checked + .toggle-switch-slider {
-  background-color: #840f16;
+  background-color: #9B1C25;
 }
 .toggle-switch-input:checked + .toggle-switch-slider::before {
   transform: translateX(22px);
 }
 .toggle-switch-input:focus-visible + .toggle-switch-slider {
-  outline: 2px solid #840f16;
+  outline: 2px solid #9B1C25;
   outline-offset: 2px;
 }
 
@@ -104,7 +124,7 @@ textarea {
    LOGIN & LOOKUP SCREEN STYLES (HOME PAGE DESIGN SYSTEM)
    ========================================================================= */
 .login-screen-bg {
-  background-color: #FFF7E8;
+  background-color: #FBF4E8;
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -118,20 +138,20 @@ textarea {
 .login-brand-icon-box {
   width: 52px;
   height: 52px;
-  background-color: #ffffff;
-  border: 1px solid #EADFD1;
+  background-color: #FFFDFC;
+  border: 1px solid #E8DDD0;
   border-radius: 18px;
   box-shadow: 0 4px 14px rgba(43, 33, 29, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #840f16;
+  color: #9B1C25;
   margin-bottom: 0.6rem;
 }
 
 .login-brand-title {
-  color: #840f16;
-  font-family: 'Epilogue', 'Be Vietnam Pro', sans-serif;
+  color: #241A18;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
   font-size: 1.875rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -141,8 +161,8 @@ textarea {
 }
 
 .login-brand-tagline {
-  color: #58413f;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #6D6561;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.45;
@@ -153,8 +173,8 @@ textarea {
 .login-card-container {
   width: 100%;
   max-width: 360px;
-  background-color: #ffffff;
-  border: 1px solid #EADFD1;
+  background-color: #FFFDFC;
+  border: 1px solid #E8DDD0;
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(43, 33, 29, 0.07);
   overflow: hidden;
@@ -166,8 +186,8 @@ textarea {
 
 .login-tabs-header {
   display: flex;
-  border-bottom: 1px solid #EADFD1;
-  background-color: #ffffff;
+  border-bottom: 1px solid #E8DDD0;
+  background-color: #FFFDFC;
 }
 
 .login-tab-button {
@@ -181,15 +201,15 @@ textarea {
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
-  color: #58413f;
+  color: #6D6561;
 }
 
 .login-tab-button:hover {
-  color: #840f16;
+  color: #9B1C25;
 }
 
 .login-tab-button.active {
-  color: #840f16;
+  color: #9B1C25;
 }
 
 .login-tab-button.active::after {
@@ -199,13 +219,13 @@ textarea {
   left: 10%;
   right: 10%;
   height: 3px;
-  background: linear-gradient(90deg, #840f16, #D08E1C);
+  background: linear-gradient(90deg, #9B1C25, #C69A2B);
   border-radius: 3px;
 }
 
 .login-card-content {
   padding: 1.5rem 1.25rem;
-  background-color: #ffffff;
+  background-color: #FFFDFC;
 }
 
 /* Auth Buttons */

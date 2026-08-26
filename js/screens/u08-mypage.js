@@ -142,8 +142,8 @@
                     const isCompleted = statusLower === 'completed';
 
                     return `
-                      <div class="luxe-card bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4">
-                        
+                      <div class="luxe-card bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4">
+
                         <!-- Top Row: Restaurant Name & Location (Left), Status Badge (Right) -->
                         <div class="flex items-start justify-between gap-3 w-full">
                           <div class="min-w-0 flex-1 space-y-1">
@@ -208,7 +208,7 @@
                         </div>
 
                         <!-- Bottom Action Bar -->
-                        <div class="pt-3 border-t border-[#EADFD1]/70 flex flex-wrap items-center justify-between gap-2.5 w-full">
+                        <div class="pt-3 border-t border-[#E8DDD0]/70 flex flex-wrap items-center justify-between gap-2.5 w-full">
                           <div class="text-[11px] font-mono text-[#8d7b75] hidden sm:inline-block">
                             ID: <span class="font-bold text-[#58413f]">#${item.id}</span>
                           </div>
@@ -295,7 +295,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           ${favoriteRestaurants
             .map(r => `
-              <div class="bg-[#FFF9EE] rounded-3xl border border-[#EADFD1] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
                 <div class="relative h-44 overflow-hidden">
                   <img
                     src="${r.image || (r.images && r.images[0]) || 'assets/images/shop_theglasspavilion_1.jpg'}"
@@ -323,7 +323,7 @@
                     </div>
                   </div>
 
-                  <div class="flex items-center gap-2 pt-2 border-t border-[#EADFD1]">
+                  <div class="flex items-center gap-2 pt-2 border-t border-[#E8DDD0]">
                     <button
                       data-favorite-book-id="${r.id}"
                       class="btn-primary flex-1 py-2 rounded-full font-label text-xs font-bold text-center cursor-pointer shadow-2xs"
@@ -380,7 +380,7 @@
               : waitlists
                   .map(
                     w => `
-                      <div class="bg-[#FFF9EE] p-5 rounded-3xl border border-[#EADFD1] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
+                      <div class="bg-[#FFFDFC] p-5 rounded-3xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
                         <div class="space-y-1">
                           <div class="font-headline font-bold text-base text-[#231916]">${w.restaurantName}</div>
                           <div class="font-body text-xs text-[#58413f] flex items-center gap-3">
@@ -426,9 +426,9 @@
           ${coupons
             .map(
               c => `
-                <div class="bg-[#FFF8F6] p-5 rounded-xl border border-[#EADFD1] flex flex-col justify-between space-y-4 shadow-xs relative overflow-hidden">
+                <div class="bg-[#FFFDFC] p-5 rounded-xl border border-[#E8DDD0] flex flex-col justify-between space-y-4 shadow-xs relative overflow-hidden">
                   <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-[#840f16]/5 rounded-full pointer-events-none"></div>
-                  
+
                   <div class="space-y-1">
                     <div class="inline-flex items-center gap-1 text-[10px] font-label font-bold uppercase tracking-wider text-[#D08E1C] bg-[#FFF3D6] px-2 py-0.5 rounded-md">
                       <span>PROMO</span>
@@ -686,7 +686,7 @@
 
     return `
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 space-y-6 lg:space-y-8 text-left">
-        
+
         <!-- DESKTOP HEADER -->
         <div class="hidden lg:flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#EADFD1] pb-4">
           <div>
@@ -708,7 +708,7 @@
         <!-- TWO-COLUMN LAYOUT (DESKTOP width ≥ 1024px: SIDE BY SIDE IN ONE VIEWPORT) -->
         <!-- ========================================================================= -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           <!-- MOBILE/TABLET VIEW (< 1024px) -->
           <div class="lg:hidden col-span-1 space-y-4">
             ${
@@ -794,8 +794,8 @@
           <!-- ========================================================================= -->
           <!-- LEFT SIDEBAR: MY PAGE MENU (DESKTOP ONLY width ≥ 1024px) -->
           <!-- ========================================================================= -->
-          <div class="hidden lg:block lg:col-span-4 xl:col-span-3 bg-[#FBF3E2] rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-sm sticky top-24">
-            
+          <div class="hidden lg:block lg:col-span-4 xl:col-span-3 bg-[#FFFDFC] rounded-xl border border-[#E8DDD0] p-6 space-y-6 shadow-sm sticky top-24">
+
             <!-- User Profile Summary -->
             <div class="flex items-center gap-3.5 pb-4 border-b border-[#EADFD1]/80">
               <img
@@ -917,7 +917,7 @@
                   <!-- Restaurant & Reservation ID -->
                   <div class="space-y-2">
                     <div class="font-headline font-bold text-base text-[#231916]">${activePassRestName || (isMm ? 'စားသောက်ဆိုင်' : 'Restaurant')}</div>
-                    
+
                     <!-- Reservation ID Display without Box Shape -->
                     <div class="flex items-center justify-center gap-1.5">
                       <span class="text-[11px] font-bold text-[#7A6B65] uppercase tracking-wider">${isMm ? 'ဘွတ်ကင် နံပါတ်' : 'Reservation ID'}:</span>

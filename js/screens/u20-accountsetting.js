@@ -23,7 +23,7 @@
 
     return `
       <div id="u20-account-settings-container" class="space-y-4 animate-fadeIn text-left">
-        
+
         <!-- SECTION HEADER -->
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
@@ -42,8 +42,8 @@
                       ${isMm ? 'ဤအကောင့်ကို ဖျက်သိမ်းထားပါသည်' : 'This Account Has Been Withdrawn'}
                     </h3>
                     <p class="font-body text-xs text-red-700 mt-1">
-                      ${isMm 
-                        ? 'ရက်ပေါင်း ၃၀ အတွင်း ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း လုပ်ဆောင်နေပါသည်။' 
+                      ${isMm
+                        ? 'ရက်ပေါင်း ၃၀ အတွင်း ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း လုပ်ဆောင်နေပါသည်။'
                         : 'Your account is scheduled for permanent deletion and PDPA anonymization within 30 days.'}
                     </p>
                   </div>
@@ -60,7 +60,7 @@
         }
 
         <!-- 1. EMAIL ADDRESS CHANGE (COLLAPSIBLE ACCORDION) -->
-        <div class="bg-[#FBF3E2] rounded-2xl border border-[#EADFD1] shadow-xs overflow-hidden transition-all">
+        <div class="bg-[#FFFDFC] rounded-2xl border border-[#E8DDD0] shadow-xs overflow-hidden transition-all">
           <!-- Accordion Header Button -->
           <button
             type="button"
@@ -111,7 +111,7 @@
           ${
             isEmailOpen
               ? `
-                <div class="p-5 sm:p-6 pt-2 border-t border-[#EADFD1] space-y-6 animate-fadeIn">
+                <div class="p-5 sm:p-6 pt-2 border-t border-[#E8DDD0] space-y-6 animate-fadeIn">
                   <!-- Pending Email Alert (If Any) -->
                   ${
                     myData.pendingNewEmail
@@ -228,7 +228,7 @@
 
 
         <!-- 2. PASSWORD CHANGE (COLLAPSIBLE ACCORDION) -->
-        <div class="bg-[#FBF3E2] rounded-2xl border border-[#EADFD1] shadow-xs overflow-hidden transition-all">
+        <div class="bg-[#FFFDFC] rounded-2xl border border-[#E8DDD0] shadow-xs overflow-hidden transition-all">
           <!-- Accordion Header Button -->
           <button
             type="button"
@@ -260,7 +260,7 @@
           ${
             isPasswordOpen
               ? `
-                <div class="p-5 sm:p-6 pt-2 border-t border-[#EADFD1] space-y-6 animate-fadeIn">
+                <div class="p-5 sm:p-6 pt-2 border-t border-[#E8DDD0] space-y-6 animate-fadeIn">
                   <form id="u20-password-change-form" class="space-y-4">
                     <!-- Current Password -->
                     <div>
@@ -350,7 +350,7 @@
 
 
         <!-- 3. PHONE NUMBER CHANGE (COLLAPSIBLE ACCORDION) -->
-        <div class="bg-[#FBF3E2] rounded-2xl border border-[#EADFD1] shadow-xs overflow-hidden transition-all">
+        <div class="bg-[#FFFDFC] rounded-2xl border border-[#E8DDD0] shadow-xs overflow-hidden transition-all">
           <!-- Accordion Header Button -->
           <button
             type="button"
@@ -400,7 +400,7 @@
           ${
             isPhoneOpen
               ? `
-                <div class="p-5 sm:p-6 pt-2 border-t border-[#EADFD1] space-y-6 animate-fadeIn">
+                <div class="p-5 sm:p-6 pt-2 border-t border-[#E8DDD0] space-y-6 animate-fadeIn">
                   <!-- Phone Number Policy Note -->
                   <div class="bg-amber-50/70 rounded-xl p-4 border border-amber-200 text-xs font-body text-amber-900 space-y-1">
                     <div class="font-bold flex items-center gap-1.5 text-amber-950">
@@ -408,8 +408,8 @@
                       <span>${isMm ? 'အရေးကြီး သတိပေးချက်' : 'Important Note on Phone Verification'}</span>
                     </div>
                     <p>
-                      ${isMm 
-                        ? 'ဖုန်းနံပါတ် ပြောင်းလဲလိုက်ပါက <code class="bg-amber-100 font-mono px-1.5 py-0.5 rounded text-amber-950 font-bold">phone_verified</code> အခြေအနေသည် "FALSE" (အတည်မပြုရသေး) အဖြစ် အလိုအလျောက် ပြန်လည်ပြောင်းလဲသွားမည်ဖြစ်ပြီး OTP ဖြင့် ပြန်လည်အတည်ပြုရန် လိုအပ်ပါသည်။' 
+                      ${isMm
+                        ? 'ဖုန်းနံပါတ် ပြောင်းလဲလိုက်ပါက <code class="bg-amber-100 font-mono px-1.5 py-0.5 rounded text-amber-950 font-bold">phone_verified</code> အခြေအနေသည် "FALSE" (အတည်မပြုရသေး) အဖြစ် အလိုအလျောက် ပြန်လည်ပြောင်းလဲသွားမည်ဖြစ်ပြီး OTP ဖြင့် ပြန်လည်အတည်ပြုရန် လိုအပ်ပါသည်။'
                         : 'When the phone number is changed, the `phone_verified` status will automatically reset to "FALSE" (Unverified) until confirmed via SMS OTP verification.'}
                     </p>
                   </div>
@@ -478,7 +478,7 @@
 
 
         <!-- 4. ACCOUNT WITHDRAWAL (COLLAPSIBLE ACCORDION) -->
-        <div class="bg-[#FFF8F6] rounded-2xl border border-[#840f16]/30 shadow-xs overflow-hidden transition-all">
+        <div class="bg-[#FFFDFC] rounded-2xl border border-[#840f16]/30 shadow-xs overflow-hidden transition-all">
           <!-- Accordion Header Button -->
           <button
             type="button"
@@ -514,7 +514,7 @@
                 <div class="p-5 sm:p-6 pt-2 border-t border-[#840f16]/20 space-y-6 animate-fadeIn">
                   <!-- Comprehensive Withdrawal Terms Grid -->
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    
+
                     <!-- Irreversible Warning -->
                     <div class="bg-white p-4 rounded-xl border border-[#EADFD1] space-y-2">
                       <div class="flex items-center gap-2 text-xs font-label font-bold text-[#840f16]">
@@ -522,8 +522,8 @@
                         <span>${isMm ? 'သတိပေးချက်' : 'Irreversible'}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm 
-                          ? 'အကောင့်ဖျက်သိမ်းပြီးပါက မည်သည့်နည်းနှင့်မျှ ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။ စုဆောင်းထားသော Points များနှင့် VIP အခွင့်အရေးများ ဆုံးရှုံးပါမည်။' 
+                        ${isMm
+                          ? 'အကောင့်ဖျက်သိမ်းပြီးပါက မည်သည့်နည်းနှင့်မျှ ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။ စုဆောင်းထားသော Points များနှင့် VIP အခွင့်အရေးများ ဆုံးရှုံးပါမည်။'
                           : 'Account deletion is permanent. Once withdrawn, member points and VIP perks cannot be restored.'}
                       </p>
                     </div>
@@ -535,8 +535,8 @@
                         <span>${isMm ? 'ကြိုတင်မှာယူမှုများ' : 'Upcoming Bookings'}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm 
-                          ? `အကောင့်ဖျက်လိုက်တာနှင့် လာရောက်ရန်ကျန်ရှိသော စိုတ်ထားမှုများ (${upcomingReservations.length} ခု) အလိုအလျောက် ပယ်ဖျက်သွားပါမည်။ ဆိုင်၏ Cancellation Policy အရ ပယ်ဖျက်ခ ရှိနိုင်ပါသည်။` 
+                        ${isMm
+                          ? `အကောင့်ဖျက်လိုက်တာနှင့် လာရောက်ရန်ကျန်ရှိသော စိုတ်ထားမှုများ (${upcomingReservations.length} ခု) အလိုအလျောက် ပယ်ဖျက်သွားပါမည်။ ဆိုင်၏ Cancellation Policy အရ ပယ်ဖျက်ခ ရှိနိုင်ပါသည်။`
                           : `All active upcoming reservations (${upcomingReservations.length}) will be auto-cancelled. Restaurant cancellation policies/fees may still apply.`}
                       </p>
                     </div>
@@ -548,8 +548,8 @@
                         <span>${isMm ? 'ကိုယ်ရေးအချက်အလက် (PDPA)' : 'PDPA Anonymization'}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm 
-                          ? 'အကောင့်ဖျက်ပြီး ရက်ပေါင်း ၃၀ အတွင်း သင်၏ ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း သို့မဟုတ် Anonymization ဆောင်ရွက်ပေးပါမည်။' 
+                        ${isMm
+                          ? 'အကောင့်ဖျက်ပြီး ရက်ပေါင်း ၃၀ အတွင်း သင်၏ ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း သို့မဟုတ် Anonymization ဆောင်ရွက်ပေးပါမည်။'
                           : 'Personal records are purged or anonymized within 30 days in strict accordance with PDPA regulations.'}
                       </p>
                     </div>
@@ -592,8 +592,8 @@
                     <label class="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-red-200 cursor-pointer select-none">
                       <input type="checkbox" id="u20-withdraw-confirm-checkbox" class="mt-0.5 rounded text-[#840f16] focus:ring-[#840f16] w-4 h-4" required />
                       <span class="font-body text-xs text-[#231916] font-medium leading-relaxed">
-                        ${isMm 
-                          ? 'အထက်ဖော်ပြပါ သတိပေးချက်များ၊ လာမည့် စားပွဲဝိုင်း စိုတ်ထားမှုများ အလိုအလျောက် ပယ်ဖျက်ခံရမည့် စည်းကမ်းများနှင့် ရက်ပေါင်း ၃၀ အတွင်း PDPA ဒေတာဖျက်သိမ်းမှုတို့ကို သဘောတူလက်ခံပါသည်။' 
+                        ${isMm
+                          ? 'အထက်ဖော်ပြပါ သတိပေးချက်များ၊ လာမည့် စားပွဲဝိုင်း စိုတ်ထားမှုများ အလိုအလျောက် ပယ်ဖျက်ခံရမည့် စည်းကမ်းများနှင့် ရက်ပေါင်း ၃၀ အတွင်း PDPA ဒေတာဖျက်သိမ်းမှုတို့ကို သဘောတူလက်ခံပါသည်။'
                           : 'I understand that this action is irreversible, my upcoming reservations will be automatically cancelled, and my personal data will be processed per PDPA 30-day deletion.'}
                       </span>
                     </label>
@@ -662,8 +662,8 @@
 
         store.requestEmailChange(newEmail);
         store.showToast(
-          isMm 
-            ? `အတည်ပြုလင့်ခ်ကို ${newEmail} သို့ ပေးပို့ထားပါသည်။` 
+          isMm
+            ? `အတည်ပြုလင့်ခ်ကို ${newEmail} သို့ ပေးပို့ထားပါသည်။`
             : `Verification link sent to ${newEmail}!`
         );
       });
@@ -676,8 +676,8 @@
         const isMm = store.getState().currentLanguage === 'MM';
         store.confirmPendingEmail();
         store.showToast(
-          isMm 
-            ? 'အီးမေးလ်လိပ်စာ အသစ် အောင်မြင်စွာ အတည်ပြုပြီးပါပြီ။' 
+          isMm
+            ? 'အီးမေးလ်လိပ်စာ အသစ် အောင်မြင်စွာ အတည်ပြုပြီးပါပြီ။'
             : 'Email address updated and verified successfully!'
         );
       });
@@ -739,8 +739,8 @@
 
         if (!isAllValid) {
           store.showToast(
-            isMm 
-              ? 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး၊ အင်္ဂလိပ်စာလုံးနှင့် ဂဏန်း ပါဝင်ပြီး တူညီရပါမည်။' 
+            isMm
+              ? 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး၊ အင်္ဂလိပ်စာလုံးနှင့် ဂဏန်း ပါဝင်ပြီး တူညီရပါမည်။'
               : 'Password must have 8+ characters, letters, numbers, and match.'
           );
           return;
@@ -750,8 +750,8 @@
         pwForm.reset();
         checkPasswordStrength();
         store.showToast(
-          isMm 
-            ? 'စကားဝှက်အသစ် ပြောင်းလဲပြီးပါပြီ။' 
+          isMm
+            ? 'စကားဝှက်အသစ် ပြောင်းလဲပြီးပါပြီ။'
             : 'Password updated successfully!'
         );
       });
@@ -780,8 +780,8 @@
 
         store.updatePhoneNumber(newPhone);
         store.showToast(
-          isMm 
-            ? `ဖုန်းနံပါတ် ${newPhone} သို့ ပြောင်းလဲထားပါသည်။ OTP ဖြင့် အတည်ပြုပါ (phone_verified: FALSE)` 
+          isMm
+            ? `ဖုန်းနံပါတ် ${newPhone} သို့ ပြောင်းလဲထားပါသည်။ OTP ဖြင့် အတည်ပြုပါ (phone_verified: FALSE)`
             : `Phone updated to ${newPhone}. Verification status reset to FALSE.`
         );
 

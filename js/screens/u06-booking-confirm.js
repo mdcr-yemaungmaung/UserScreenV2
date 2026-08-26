@@ -23,7 +23,7 @@
 
     return `
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-12 space-y-6 text-left animate-fadeIn">
-        
+
         <!-- STEPPER PROGRESS BAR -->
         <div class="px-1 sm:px-2">
           <div class="grid grid-cols-3 gap-3 text-left">
@@ -62,7 +62,7 @@
 
         <!-- STEP 3 CONTENT -->
         <div class="bg-transparent sm:bg-[#FFF7E8] rounded-none sm:rounded-3xl border-0 sm:border sm:border-[#EADFD1] shadow-none sm:shadow-xl overflow-hidden p-0 sm:p-8 space-y-6">
-          
+
           <div class="border-b border-[#EADFD1] pb-4">
             <h2 class="font-headline text-2xl sm:text-3xl text-[#231916] font-bold">
               ${isMm ? 'အတည်ပြုချက်' : 'Confirm Reservation'}
@@ -114,19 +114,19 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="bg-[#FBF3E2] p-3 rounded-xl border border-[#EADFD1]">
+              <div class="bg-[#FFFDFC] p-3 rounded-xl border border-[#E8DDD0]">
                 <div class="text-[#8d7b75] text-[10px] uppercase font-bold tracking-wider">${isMm ? 'ဧည့်သည် အမည်' : 'Guest Name'}</div>
                 <div class="text-[#231916] text-sm font-bold font-body mt-0.5">${gData.guestName || '—'}</div>
               </div>
-              <div class="bg-[#FBF3E2] p-3 rounded-xl border border-[#EADFD1]">
+              <div class="bg-[#FFFDFC] p-3 rounded-xl border border-[#E8DDD0]">
                 <div class="text-[#8d7b75] text-[10px] uppercase font-bold tracking-wider">${isMm ? 'ဖုန်းနံပါတ်' : 'Phone Number'}</div>
                 <div class="text-[#231916] text-sm font-bold font-body mt-0.5">${gData.guestPhone || '—'}</div>
               </div>
-              <div class="bg-[#FBF3E2] p-3 rounded-xl border border-[#EADFD1]">
+              <div class="bg-[#FFFDFC] p-3 rounded-xl border border-[#E8DDD0]">
                 <div class="text-[#8d7b75] text-[10px] uppercase font-bold tracking-wider">${isMm ? 'အီးမေးလ်' : 'Email Address'}</div>
                 <div class="text-[#231916] text-sm font-bold font-body mt-0.5 truncate">${gData.guestEmail || '—'}</div>
               </div>
-              <div class="bg-[#FBF3E2] p-3 rounded-xl border border-[#EADFD1]">
+              <div class="bg-[#FFFDFC] p-3 rounded-xl border border-[#E8DDD0]">
                 <div class="text-[#8d7b75] text-[10px] uppercase font-bold tracking-wider">${isMm ? 'ငွေပေးချေမှု ပုံစံ' : 'Payment Preference'}</div>
                 <div class="text-[#840f16] text-sm font-bold font-body mt-0.5 flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm">${gData.paymentMethod === 'qr' ? 'qr_code_2' : 'payments'}</span>
@@ -136,7 +136,7 @@
             </div>
 
             ${gData.specialRequests ? `
-              <div class="bg-[#FBF3E2] p-3 rounded-xl border border-[#EADFD1]">
+              <div class="bg-[#FFFDFC] p-3 rounded-xl border border-[#E8DDD0]">
                 <div class="text-[#8d7b75] text-[10px] uppercase font-bold tracking-wider">${isMm ? 'အထူး တောင်းဆိုချက် / မှတ်ချက်' : 'Special Requests / Dietary Notes'}</div>
                 <div class="text-[#231916] text-xs font-body mt-0.5">${gData.specialRequests}</div>
               </div>
@@ -175,7 +175,7 @@
             </div>
           </div>
 
-          <label class="flex items-center gap-3 cursor-pointer bg-[#FBF3E2] p-4 rounded-xl border border-[#EADFD1]">
+          <label class="flex items-center gap-3 cursor-pointer bg-[#FFFDFC] p-4 rounded-xl border border-[#E8DDD0]">
             <input type="checkbox" id="step3-terms" checked class="w-5 h-5 rounded border-[#EADFD1] accent-[#840f16] cursor-pointer" />
             <span class="font-body text-xs text-[#231916] font-semibold">
               ${isMm ? 'ပယ်ဖျက်ခြင်းဆိုင်ရာ စည်းမျဉ်းများနှင့် စည်းကမ်းချက်များကို သဘောတူပါသည်။' : 'I agree to the cancellation policy and restaurant terms of service.'}

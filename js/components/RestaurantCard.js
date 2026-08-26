@@ -16,11 +16,11 @@
     return `
       <button
         data-card-fav-id="${restaurantId}"
-        class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
+        class="absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFFDFC]/90 backdrop-blur-md text-[#9B1C25] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10"
         title="Favorite"
         aria-label="Add to Favorites"
       >
-        <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#840f16]' : 'text-[#840f16]'}">favorite</span>
+        <span class="material-symbols-outlined text-lg sm:text-xl ${isFavorite ? 'fill-1 text-[#9B1C25]' : 'text-[#9B1C25]'}">favorite</span>
       </button>
     `;
   }
@@ -30,7 +30,7 @@
     return `
       <div class="absolute top-3 left-3 z-10">
         <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 sm:py-1.5 rounded-full shadow-md font-label text-[11px] sm:text-xs font-bold text-white">
-          <span class="material-symbols-outlined text-xs sm:text-sm text-[#D08E1C] fill-1 leading-none">star</span>
+          <span class="material-symbols-outlined text-xs sm:text-sm text-[#C69A2B] fill-1 leading-none">star</span>
           <span class="leading-none text-white">${restaurant.rating}</span>
           <span class="text-white/80 font-medium leading-none">(${restaurant.reviewCount})</span>
         </span>
@@ -60,21 +60,22 @@
   // Shared cuisine/category tag - works both on-image and in-content
   function renderCuisineTag(cuisine, onImage = false) {
     const baseClasses = 'inline-flex items-center font-label text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-xl shadow-md text-white';
-    const onImageClasses = 'bg-[#840f16]/95 backdrop-blur-md';
-    const inContentClasses = 'bg-[#840f16]';
-    
+    const onImageClasses = 'bg-[#9B1C25]/92 backdrop-blur-md';
+    const inContentClasses = 'bg-[#9B1C25]';
+
     return `<span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}">${cuisine}</span>`;
   }
 
   // Shared promo/offer tag
   function renderPromoTag(offerTag, onImage = false) {
     const baseClasses = 'inline-flex items-center font-label text-[11px] sm:text-xs font-extrabold tracking-wide px-3 py-1 sm:py-1.5 rounded-xl shadow-md';
-    const onImageClasses = 'bg-[#D08E1C]/95 backdrop-blur-md text-white shrink-0';
-    const inContentClasses = 'bg-[#E59819] text-white'; // promo-badge-yellow
-    
+    const onImageClasses = 'bg-[#C69A2B]/95 backdrop-blur-md text-white shrink-0';
+    const inContentClasses = 'bg-[#F3DFD5] text-[#9B1C25]';
+    const labelClasses = onImage ? 'text-white' : 'text-[#9B1C25]';
+
     return `
       <span class="${baseClasses} ${onImage ? onImageClasses : inContentClasses}" title="${offerTag}">
-        <span class="font-extrabold text-white whitespace-nowrap truncate max-w-[130px] sm:max-w-[200px]">${offerTag}</span>
+        <span class="font-extrabold ${labelClasses} whitespace-nowrap truncate max-w-[130px] sm:max-w-[200px]">${offerTag}</span>
       </span>
     `;
   }
@@ -85,8 +86,8 @@
     const isMm = state.currentLanguage === 'MM';
 
     return `
-      <div class="w-full luxe-card group relative bg-[#FFF9EE] rounded-2xl sm:rounded-3xl border border-[#EADFD1] overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-left">
-        
+      <div class="w-full luxe-card group relative bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-left">
+
         <!-- Card Image & Floating Badges -->
         <div class="relative h-44 sm:h-52 md:h-56 overflow-hidden cursor-pointer" data-card-select-id="${restaurant.id}">
           <img
@@ -115,7 +116,7 @@
             <div class="w-full">
               <h3
                 data-card-select-id="${restaurant.id}"
-                class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer leading-snug truncate"
+                class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#241A18] hover:text-[#9B1C25] transition-colors cursor-pointer leading-snug truncate"
                 title="${restaurant.name}"
               >
                 ${restaurant.name}
@@ -123,26 +124,26 @@
             </div>
 
             <!-- Location Row -->
-            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium pt-0.5 min-w-0">
-              <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">location_on</span>
+            <div class="flex items-center gap-1.5 text-xs font-body text-[#6D6561] font-medium pt-0.5 min-w-0">
+              <span class="material-symbols-outlined text-base text-[#9B1C25] shrink-0">location_on</span>
               <span class="truncate" title="${restaurant.location}">${restaurant.location}</span>
             </div>
 
             <!-- Price Range Row -->
-            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916] min-w-0">
-              <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">payments</span>
+            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#241A18] min-w-0">
+              <span class="material-symbols-outlined text-base text-[#9B1C25] shrink-0">payments</span>
               <span class="truncate" title="${restaurant.priceRange}">${restaurant.priceRange}</span>
             </div>
           </div>
 
           <!-- Footer Row: Offer & Action Button -->
-          <div class="pt-3 border-t border-[#EADFD1] flex items-center justify-between gap-2 min-w-0">
+          <div class="pt-3 border-t border-[#E8DDD0] flex items-center justify-between gap-2 min-w-0">
             <div class="min-w-0 flex-1">
               ${restaurant.offerTag ? renderPromoTag(restaurant.offerTag, false) : renderPromoTag('20% OFF', false)}
             </div>
             <button
               data-card-reserve-id="${restaurant.id}"
-              class="bg-[#840f16] hover:bg-[#6c0c11] active:scale-95 text-white px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full font-label text-xs font-bold shadow-md transition-all cursor-pointer whitespace-nowrap shrink-0"
+              class="bg-[#9B1C25] hover:bg-[#7F161E] active:scale-95 text-white px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full font-label text-xs font-bold shadow-md transition-all cursor-pointer whitespace-nowrap shrink-0"
             >
               ${isMm ? 'ဝိုင်းစိုတ်ရန်' : 'Reserve Table'}
             </button>
@@ -157,14 +158,14 @@
   function renderSearchResultCard(restaurant, state) {
     const isFavorite = state.favorites.includes(restaurant.id);
     const isMm = state.currentLanguage === 'MM';
-    
+
     // Available time slots for fast booking
     const defaultSlots = ['12:00', '13:00', '18:00', '18:30', '19:00', '20:00'];
     const slots = restaurant.timeSlots || defaultSlots;
 
     return `
-      <div class="w-full luxe-card group relative bg-[#FFF9EE] rounded-2xl sm:rounded-3xl border border-[#EADFD1] overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-left">
-        
+      <div class="w-full luxe-card group relative bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-left">
+
         <!-- Card Image & Floating Badges -->
         <div class="relative h-44 sm:h-52 md:h-56 overflow-hidden cursor-pointer" data-card-select-id="${restaurant.id}">
           <img
@@ -194,7 +195,7 @@
             <div class="w-full">
               <h3
                 data-card-select-id="${restaurant.id}"
-                class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#840f16] hover:text-[#6c0c11] transition-colors cursor-pointer leading-snug truncate"
+                class="font-headline text-lg sm:text-xl md:text-2xl font-bold text-[#241A18] hover:text-[#9B1C25] transition-colors cursor-pointer leading-snug truncate"
                 title="${restaurant.name}"
               >
                 ${restaurant.name}
@@ -202,23 +203,23 @@
             </div>
 
             <!-- Location Row -->
-            <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
-              <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">location_on</span>
+            <div class="flex items-center gap-1.5 text-xs font-body text-[#6D6561] font-medium min-w-0">
+              <span class="material-symbols-outlined text-base text-[#9B1C25] shrink-0">location_on</span>
               <span class="truncate" title="${restaurant.location}">${restaurant.location}</span>
             </div>
 
             <!-- Price Range Row -->
-            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#231916] min-w-0">
-              <span class="material-symbols-outlined text-base text-[#840f16] shrink-0">payments</span>
+            <div class="flex items-center gap-1.5 text-xs font-label font-bold text-[#241A18] min-w-0">
+              <span class="material-symbols-outlined text-base text-[#9B1C25] shrink-0">payments</span>
               <span class="truncate" title="${restaurant.priceRange}">${restaurant.priceRange}</span>
             </div>
           </div>
 
           <!-- Time Slots Selection Section -->
-          <div class="pt-3 border-t border-[#EADFD1] space-y-2">
+          <div class="pt-3 border-t border-[#E8DDD0] space-y-2">
             <div class="hidden sm:flex items-center justify-between">
-              <div class="flex items-center gap-1 font-label text-[10px] sm:text-[11px] font-bold text-[#58413f] uppercase tracking-wider">
-                <span class="material-symbols-outlined text-xs text-[#840f16]">schedule</span>
+              <div class="flex items-center gap-1 font-label text-[10px] sm:text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">
+                <span class="material-symbols-outlined text-xs text-[#9B1C25]">schedule</span>
                 <span>${isMm ? 'ရရှိနိုင်သော အချိန်များ' : 'Available Time Slots'}</span>
               </div>
             </div>
@@ -230,7 +231,7 @@
                   type="button"
                   data-card-time-slot="${time}"
                   data-card-restaurant-id="${restaurant.id}"
-                  class="py-1.5 sm:py-2 px-1 sm:px-2.5 rounded-xl font-label text-xs font-bold transition-all duration-200 cursor-pointer text-center bg-[#FFF8F6] text-[#840f16] border border-[#EADFD1] hover:bg-[#840f16] hover:text-white hover:border-[#840f16] hover:shadow-md active:scale-95 flex items-center justify-center gap-1 group/time whitespace-nowrap"
+                  class="py-1.5 sm:py-2 px-1 sm:px-2.5 rounded-xl font-label text-xs font-bold transition-all duration-200 cursor-pointer text-center bg-[#FFFDFC] text-[#9B1C25] border border-[#E8DDD0] hover:bg-[#9B1C25] hover:text-white hover:border-[#9B1C25] hover:shadow-md active:scale-95 flex items-center justify-center gap-1 group/time whitespace-nowrap"
                   title="${isMm ? `${time} တွင် စားပွဲဝိုင်း စိုတ်ယူမည်` : `Book table for ${time}`}"
                 >
                   <span>${time}</span>
@@ -345,7 +346,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
       >
         <!-- Image Container -->
         <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
@@ -391,7 +392,7 @@
             </div>
 
           <!-- Price Row or Custom Action -->
-          <div class="pt-2 border-t border-[#EADFD1] flex items-center justify-between min-w-0">
+          <div class="pt-2 border-t border-[#E8DDD0] flex items-center justify-between min-w-0">
             ${customAction ? customAction(restaurant, isMm) : `
             <span class="font-label text-xs text-[#58413f] font-medium shrink-0">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
             <span class="font-label text-xs font-extrabold text-[#840f16] truncate text-right min-w-0 ml-2" title="${fitPrice}">${fitPrice}</span>
@@ -447,7 +448,7 @@
         type="button"
         data-promo-${dir}
         ${dir === 'prev' ? 'disabled' : ''}
-        class="promo-pager-btn shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#EADFD1] bg-white flex items-center justify-center text-[#840f16] shadow-sm hover:bg-[#840f16] hover:text-white hover:border-[#840f16] active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
+        class="promo-pager-btn shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] flex items-center justify-center text-[#9B1C25] shadow-sm hover:bg-[#9B1C25] hover:text-white hover:border-[#9B1C25] active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
         title="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
         aria-label="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
       >
@@ -458,7 +459,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFF9EE] border border-[#EADFD1] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
 
         <!-- Card Image & Floating Badges (standard rating pill top-left, favorite top-right) -->
@@ -477,7 +478,7 @@
         </div>
 
         <!-- Promotion Section (directly below image): one promotion at a time + < > pager -->
-        <div class="bg-[#FFF8F6] border-b border-[#EADFD1] px-3.5 py-3 sm:px-4 sm:py-3.5">
+        <div class="bg-[#FFFDFC] border-b border-[#E8DDD0] px-3.5 py-3 sm:px-4 sm:py-3.5">
           <div class="flex items-center justify-between gap-3 min-w-0">
             <!-- Promotion Slides (one visible at a time) -->
             <div class="min-w-0 flex-1">
@@ -520,7 +521,7 @@
           </div>
 
           <!-- Reserve CTA: full-width BOOK NOW pill, opens booking flow -->
-          <div class="mt-auto pt-3 border-t border-[#EADFD1]">
+          <div class="mt-auto pt-3 border-t border-[#E8DDD0]">
             <button
               data-card-reserve-id="${restaurant.id}"
               class="w-full mt-1 bg-[#840f16] hover:bg-[#6c0c11] active:scale-[0.98] text-white px-6 py-3.5 rounded-full font-label text-sm sm:text-base font-extrabold uppercase tracking-widest shadow-md transition-all cursor-pointer text-center min-h-[44px] flex items-center justify-center gap-2"

@@ -21,7 +21,7 @@
 
     return `
       <div class="space-y-8 pb-24 text-left max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 animate-fadeIn">
-        
+
         <!-- Top Navigation & Actions -->
         <div class="flex justify-between items-center">
           <button
@@ -93,12 +93,12 @@
 
         <!-- MAIN CONTENT GRID (8 COLS DETAILS + 4 COLS STICKY BOOKING CARD) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           <!-- Left Column: Details, Tabs, Content -->
           <div class="lg:col-span-8 space-y-8">
-            
+
             <!-- Key Info Highlights Grid & Public Phone Contact -->
-            <div class="bg-[#FBF3E2] p-5 sm:p-6 rounded-3xl border border-[#EADFD1] space-y-4 shadow-xs">
+            <div class="bg-[#FFFDFC] p-5 sm:p-6 rounded-3xl border border-[#E8DDD0] space-y-4 shadow-xs">
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div class="space-y-1">
                   <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${isMm ? 'စျေးနှုန်း' : 'Price Range'}</div>
@@ -114,7 +114,7 @@
                 </div>
               </div>
 
-              <div class="pt-3 border-t border-[#EADFD1] flex flex-wrap items-center justify-between gap-3">
+              <div class="pt-3 border-t border-[#E8DDD0] flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-[#840f16] text-lg">call</span>
                   <span class="font-label text-xs font-bold text-[#58413f]">${isMm ? 'ဆက်သွယ်ရန် ဖုန်းနံပါတ်:' : 'Public Phone:'}</span>
@@ -269,7 +269,7 @@
                       </a>
                     </div>
 
-                    <div class="bg-[#FBF3E2] p-4 sm:p-5 rounded-3xl border border-[#EADFD1] space-y-4">
+                    <div class="bg-[#FFFDFC] p-4 sm:p-5 rounded-3xl border border-[#E8DDD0] space-y-4">
                       <!-- Interactive Embedded Google Map -->
                       <div class="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-[#EADFD1] shadow-inner bg-[#f0e8d8]">
                         <iframe
@@ -310,7 +310,7 @@
                               ${cat.items
                                 .map(
                                   item => `
-                                <div class="bg-[#FBF3E2] p-4 sm:p-5 rounded-2xl border border-[#EADFD1] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-[#840f16]/30 transition-all">
+                                <div class="bg-[#FFFDFC] p-4 sm:p-5 rounded-2xl border border-[#E8DDD0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-[#840f16]/30 transition-all">
                                   <div class="flex items-start gap-4 min-w-0">
                                     ${
                                       item.image
@@ -366,7 +366,7 @@
                         ${(restaurant.menuHighlights || [])
                           .map(
                             m => `
-                          <div class="bg-[#FBF3E2] p-5 rounded-2xl border border-[#EADFD1] flex flex-col sm:flex-row justify-between gap-4">
+                          <div class="bg-[#FFFDFC] p-5 rounded-2xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between gap-4">
                             <div class="space-y-1">
                               <div class="flex items-center gap-2">
                                 <h4 class="font-headline text-base font-bold text-[#231916]">${m.name}</h4>
@@ -398,9 +398,9 @@
               detailState.activeTab === 'reviews'
                 ? `
                 <div class="space-y-6 animate-fadeIn">
-                  
+
                   <!-- Overall Breakdown Ratings Panel -->
-                  <div class="bg-[#FBF3E2] p-6 rounded-3xl border border-[#EADFD1] space-y-4">
+                  <div class="bg-[#FFFDFC] p-6 rounded-3xl border border-[#E8DDD0] space-y-4">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#EADFD1] pb-4">
                       <div>
                         <h3 class="font-headline text-2xl font-extrabold text-[#231916]">
@@ -463,7 +463,7 @@
                         ? restaurant.reviews
                             .map(
                               r => `
-                            <div class="bg-[#FBF3E2] p-5 rounded-2xl border border-[#EADFD1] space-y-3">
+                            <div class="bg-[#FFFDFC] p-5 rounded-2xl border border-[#E8DDD0] space-y-3">
                               <div class="flex justify-between items-center">
                                 <div class="flex items-center gap-2">
                                   <div class="w-8 h-8 rounded-full bg-[#840f16] text-white font-bold text-xs flex items-center justify-center">
@@ -520,8 +520,8 @@
 
           <!-- Right Column: Sticky Booking Widget (Desktop) -->
           <div class="lg:col-span-4 sticky top-24 hidden lg:block">
-            <div class="bg-[#FBF3E2] p-6 rounded-3xl border border-[#EADFD1] shadow-xl space-y-6">
-              
+            <div class="bg-[#FFFDFC] p-6 rounded-3xl border border-[#E8DDD0] shadow-xl space-y-6">
+
               <div class="border-b border-[#EADFD1] pb-4">
                 <div class="text-[#840f16] font-label text-xs font-bold uppercase tracking-wider">
                   ${isMm ? 'ချက်ချင်း စာပွဲ ကြိုတင်ယူခြင်း' : 'Instant Reservation'}

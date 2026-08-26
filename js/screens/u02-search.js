@@ -68,7 +68,7 @@
 
     return `
       <div class="space-y-8 pb-16 text-left max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        
+
         <!-- HEADER TITLE -->
         <div>
           <h2 class="font-headline text-2xl sm:text-3xl font-bold text-[#231916]">
@@ -77,9 +77,9 @@
         </div>
 
         <!-- SEARCH & FILTER CAPSULE BAR -->
-        <div class="bg-[#FBF3E2] p-4 sm:p-5 rounded-3xl border border-[#EADFD1] shadow-sm sm:shadow-[0_4px_24px_rgba(43,33,29,.06)] space-y-4">
+        <div class="bg-[#FFFDFC] p-4 sm:p-5 rounded-3xl border border-[#E8DDD0] shadow-sm sm:shadow-[0_4px_24px_rgba(43,33,29,.06)] space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-            
+
             <!-- Keyword input -->
             <div class="md:col-span-4 bg-[#FFF8F6] hover:bg-white border border-[#EADFD1] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/15 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 transition-all duration-200 active:scale-[.99]">
               <span class="material-symbols-outlined text-[#840f16]">search</span>
@@ -152,7 +152,7 @@
             rState.showMoreFilters
               ? `
               <div class="pt-4 border-t border-[#EADFD1] grid grid-cols-1 md:grid-cols-12 gap-6 animate-fadeIn">
-                
+
                 <!-- Party Size -->
                 <div class="md:col-span-4 space-y-2">
                   <label class="font-label text-xs font-bold text-[#58413f] uppercase tracking-wider block">Party Size</label>
@@ -223,13 +223,13 @@
 
         <!-- RESULTS TOOLBAR: COUNT, SORT, VIEW MODE (Clean layout without box shape) -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-1">
-          
+
           <div class="font-headline text-base font-bold text-[#231916]">
             ${filtered.length} ${isMm ? 'ဆိုင်များ တွေ့ရှိပါသည်' : 'Restaurants found'}
           </div>
 
           <div class="flex items-center flex-wrap gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
-            
+
             <!-- View Mode Toggle -->
             <div class="flex items-center bg-white p-1 rounded-xl border border-[#EADFD1] shadow-2xs">
               <button
@@ -289,7 +289,7 @@
             : `
               <!-- MAP VIEW MOCKUP -->
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
+
                 <div class="lg:col-span-8 bg-[#231916] rounded-3xl border border-[#EADFD1] h-[500px] relative overflow-hidden flex items-center justify-center p-6 shadow-xl">
                   <!-- SVG Map Layout -->
                   <svg class="w-full h-full opacity-20" viewBox="0 0 800 500" fill="none">

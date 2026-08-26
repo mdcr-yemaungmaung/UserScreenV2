@@ -16,7 +16,7 @@
 
     return `
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-12 space-y-6 text-left animate-fadeIn">
-        
+
         <!-- STEPPER PROGRESS BAR -->
         <div class="px-1 sm:px-2">
           <div class="grid grid-cols-3 gap-3 text-left">
@@ -55,7 +55,7 @@
 
         <!-- STEP 2 CONTENT -->
         <div class="bg-transparent sm:bg-[#FFF7E8] rounded-none sm:rounded-3xl border-0 sm:border sm:border-[#EADFD1] shadow-none sm:shadow-xl overflow-hidden p-0 sm:p-8">
-          
+
           <div class="border-b border-[#EADFD1] pb-4 mb-6">
             <h2 class="font-headline text-2xl sm:text-3xl text-[#231916] font-bold">
               ${isMm ? 'ဧည့်သည် အချက်အလက်' : 'Guest Details'}
@@ -63,12 +63,12 @@
           </div>
 
           <form id="step2-form" class="space-y-6">
-            
+
             <div class="space-y-4">
               <h3 class="font-headline text-lg text-[#231916] font-bold border-b border-[#EADFD1] pb-2">
                 ${isMm ? 'ဧည့်သည် အချက်အလက်များ' : 'Guest Information'}
               </h3>
-              
+
               <div>
                 <label class="font-label text-xs font-bold text-[#58413f] uppercase block mb-1">${isMm ? 'အမည် အပြည့်အစုံ *' : 'Full Name *'}</label>
                 <input type="text" id="step2-name" required value="${gData.guestName}" class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] rounded-xl px-4 py-3 font-body text-sm text-[#231916]" />
@@ -96,14 +96,14 @@
                 ${isMm ? 'ငွေပေးချေမှု ပုံစံ ရွေးချယ်ပါ' : 'Payment Preference'}
               </h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button type="button" data-select-payment="qr" class="p-4 rounded-2xl border text-left flex flex-col gap-2 cursor-pointer ${gData.paymentMethod === 'qr' ? 'bg-[#840f16]/10 border-[#840f16] ring-2 ring-[#840f16]/20' : 'bg-[#FBF3E2] border-[#EADFD1]'}">
+                <button type="button" data-select-payment="qr" class="p-4 rounded-2xl border text-left flex flex-col gap-2 cursor-pointer ${gData.paymentMethod === 'qr' ? 'bg-[#840f16]/10 border-[#840f16] ring-2 ring-[#840f16]/20' : 'bg-[#FFFDFC] border-[#E8DDD0]'}">
                   <div class="flex justify-between items-center font-headline text-sm font-bold text-[#231916]">
                     <span>KBZPay / AYA Pay QR</span>
                     <span class="material-symbols-outlined text-[#840f16]">qr_code_2</span>
                   </div>
                   <p class="font-body text-xs text-[#58413f]">${isMm ? 'QR ဖျောက်ခတ်ပြီး ချက်ချင်း ၅၀,၀၀၀ ကျပ် လျှော့ဈေး ရယူပါ။' : 'Instant QR payment with 50,000 MMK promo discount applied.'}</p>
                 </button>
-                <button type="button" data-select-payment="store" class="p-4 rounded-2xl border text-left flex flex-col gap-2 cursor-pointer ${gData.paymentMethod === 'store' ? 'bg-[#840f16]/10 border-[#840f16] ring-2 ring-[#840f16]/20' : 'bg-[#FBF3E2] border-[#EADFD1]'}">
+                <button type="button" data-select-payment="store" class="p-4 rounded-2xl border text-left flex flex-col gap-2 cursor-pointer ${gData.paymentMethod === 'store' ? 'bg-[#840f16]/10 border-[#840f16] ring-2 ring-[#840f16]/20' : 'bg-[#FFFDFC] border-[#E8DDD0]'}">
                   <div class="flex justify-between items-center font-headline text-sm font-bold text-[#231916]">
                     <span>${isMm ? 'ဆိုင်တွင် ပေးချေမည်' : 'Pay at Restaurant'}</span>
                     <span class="material-symbols-outlined text-[#58413f]">payments</span>

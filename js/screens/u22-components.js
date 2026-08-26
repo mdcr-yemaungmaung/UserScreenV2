@@ -5,17 +5,16 @@
   const C = window.YoyakuComponents;
 
   const TOKENS = [
-    { name: 'Primary', value: '#840f16' },
-    { name: 'Gold Accent', value: '#D08E1C' },
-    { name: 'Card Surface', value: '#FFF9EE' },
-    { name: 'Card Border', value: '#EADFD1' },
-    { name: 'App Bg', value: '#FFF7E8' },
-    { name: 'Tint', value: '#FFF8F6' },
-    { name: 'Sand', value: '#FBF3E2' },
-    { name: 'Cream', value: '#FAF3E8' },
-    { name: 'Promo', value: '#FFF3D6' },
-    { name: 'Ink', value: '#231916' },
-    { name: 'Muted', value: '#58413f' }
+    { name: 'Primary Accent', value: '#9B1C25' },
+    { name: 'Accent Light', value: '#F3DFD5' },
+    { name: 'Rating Accent', value: '#C69A2B' },
+    { name: 'App Bg', value: '#FBF4E8' },
+    { name: 'Surface', value: '#FFFDFC' },
+    { name: 'Surface Muted', value: '#F8EFE5' },
+    { name: 'Border', value: '#E8DDD0' },
+    { name: 'Text Primary', value: '#241A18' },
+    { name: 'Text Secondary', value: '#6D6561' },
+    { name: 'Success', value: '#607A62' }
   ];
 
   function sectionHeader(titleEn, titleMm) {
@@ -23,15 +22,15 @@
     const title = isMm ? titleMm : titleEn;
     return `
       <div class="mb-4 flex items-center gap-2">
-        <span class="w-1.5 h-6 rounded-full bg-[#840f16]"></span>
-        <h2 class="font-headline text-xl sm:text-2xl font-bold text-[#1E1B13]">${title}</h2>
+        <span class="w-1.5 h-6 rounded-full bg-[#9B1C25]"></span>
+        <h2 class="font-headline text-xl sm:text-2xl font-bold text-[#241A18]">${title}</h2>
       </div>
     `;
   }
 
   function section(titleEn, titleMm, bodyHtml) {
     return `
-      <section class="bg-white rounded-2xl sm:rounded-3xl border border-[#EADFD1] p-4 sm:p-6 shadow-sm space-y-1">
+      <section class="bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] p-4 sm:p-6 shadow-sm space-y-1">
         ${sectionHeader(titleEn, titleMm)}
         ${bodyHtml}
       </section>
@@ -41,10 +40,10 @@
   function renderColors() {
     const swatches = TOKENS.map(t => `
       <div class="flex flex-col items-center gap-2">
-        <div class="w-full h-16 rounded-xl border border-[#EADFD1] shadow-inner" style="background-color: ${t.value};"></div>
+        <div class="w-full h-16 rounded-xl border border-[#E8DDD0] shadow-inner" style="background-color: ${t.value};"></div>
         <div class="text-center">
-          <div class="font-label text-xs font-bold text-[#231916]">${t.name}</div>
-          <div class="font-body text-[10px] text-[#58413f]">${t.value}</div>
+          <div class="font-label text-xs font-bold text-[#241A18]">${t.name}</div>
+          <div class="font-body text-[10px] text-[#6D6561]">${t.value}</div>
         </div>
       </div>
     `).join('');
@@ -58,17 +57,17 @@
   function renderTypography() {
     return `
       <div class="space-y-4">
-        <div class="p-4 rounded-xl bg-[#FBF3E2] border border-[#EADFD1]">
-          <div class="font-headline text-2xl sm:text-3xl font-bold text-[#840f16]">Headline Font</div>
-          <div class="font-headline text-base text-[#58413f]">The Gilded Fork · ရွှေရက်သွေးအိုး</div>
+        <div class="p-4 rounded-xl bg-[#F8EFE5] border border-[#E8DDD0]">
+          <div class="font-headline text-2xl sm:text-3xl font-bold text-[#241A18]">Headline Font</div>
+          <div class="font-headline text-base text-[#6D6561]">Great food. Good moments.</div>
         </div>
-        <div class="p-4 rounded-xl bg-[#FBF3E2] border border-[#EADFD1]">
-          <div class="font-label text-xl font-extrabold uppercase tracking-wide text-[#840f16]">Label Font</div>
-          <div class="font-label text-sm text-[#58413f]">RESERVE · နေ့စဉ်</div>
+        <div class="p-4 rounded-xl bg-[#F8EFE5] border border-[#E8DDD0]">
+          <div class="font-label text-xl font-extrabold uppercase tracking-wide text-[#9B1C25]">Label Font</div>
+          <div class="font-label text-sm text-[#6D6561]">Find Tables · နေ့စဉ်</div>
         </div>
-        <div class="p-4 rounded-xl bg-[#FBF3E2] border border-[#EADFD1]">
-          <div class="font-body text-base text-[#231916]">Body Font — comfortable reading at 16px for Burmese and Latin scripts.</div>
-          <div class="font-body text-sm text-[#58413f]">မြန်မာစာသားများကို ဖတ်ရှုရလွယ်ကူပါသည်။</div>
+        <div class="p-4 rounded-xl bg-[#F8EFE5] border border-[#E8DDD0]">
+          <div class="font-body text-base text-[#241A18]">Body Font — calm, premium, and readable for restaurant discovery on mobile.</div>
+          <div class="font-body text-sm text-[#6D6561]">မြန်မာစာသားများကို ဖတ်ရှုရလွယ်ကူစေရန် fallback များကို ထိန်းသိမ်းထားပါသည်။</div>
         </div>
       </div>
     `;
@@ -78,16 +77,16 @@
     return `
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
         <button class="btn-primary px-5 py-2.5 rounded-xl font-label text-sm font-bold shadow-md cursor-pointer">Primary</button>
-        <button class="px-5 py-2.5 rounded-xl font-label text-sm font-bold border border-[#840f16] text-[#840f16] bg-white hover:bg-[#840f16]/10 transition-colors cursor-pointer">Secondary</button>
-        <button class="px-5 py-2.5 rounded-xl font-label text-sm font-bold border border-[#EADFD1] text-[#58413f] bg-[#FFF8F6] hover:border-[#840f16] transition-colors cursor-pointer">Outline</button>
+        <button class="px-5 py-2.5 rounded-xl font-label text-sm font-bold border border-[#9B1C25] text-[#9B1C25] bg-white hover:bg-[#F3DFD5] transition-colors cursor-pointer">Secondary</button>
+        <button class="px-5 py-2.5 rounded-xl font-label text-sm font-bold border border-[#E8DDD0] text-[#6D6561] bg-[#FFFDFC] hover:border-[#9B1C25] transition-colors cursor-pointer">Outline</button>
         <button
           id="gallery-fav-btn"
-          class="w-11 h-11 rounded-full bg-white border border-[#EADFD1] shadow-md flex items-center justify-center text-[#840f16] cursor-pointer transition-all active:scale-95"
+          class="w-11 h-11 rounded-full bg-white border border-[#E8DDD0] shadow-md flex items-center justify-center text-[#9B1C25] cursor-pointer transition-all active:scale-95"
           title="Favorite (tap for bounce)"
         >
           <span class="material-symbols-outlined text-xl">favorite</span>
         </button>
-        <button class="w-11 h-11 rounded-full bg-[#840f16] text-white flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-95">
+        <button class="w-11 h-11 rounded-full bg-[#9B1C25] text-white flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-95">
           <span class="material-symbols-outlined text-xl">arrow_forward</span>
         </button>
       </div>
@@ -146,12 +145,12 @@
       </div>`;
     const statusPills = `
       <div class="flex flex-wrap gap-2">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#EAF3EB] text-[#2f7a3f] border border-[#C5DEC8]">Completed</span>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#FBF3E2] text-[#8f5d0b] border border-[#EADFD1]">Pending</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#EEF4EE] text-[#607A62] border border-[#C8D7C9]">Completed</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#F8EFE5] text-[#8F6A21] border border-[#E8DDD0]">Pending</span>
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-rose-50 text-rose-600 border border-rose-200">Cancelled</span>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#FFF3D6] text-[#8f5d0b] border border-[#EADFD1]">Waitlisted</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold bg-[#F6ECD8] text-[#8F6A21] border border-[#E8DDD0]">Waitlisted</span>
       </div>`;
-    const subhead = (t) => `<h3 class="font-label text-xs font-bold uppercase tracking-wide text-[#840f16]">${t}</h3>`;
+    const subhead = (t) => `<h3 class="font-label text-xs font-bold uppercase tracking-wide text-[#9B1C25]">${t}</h3>`;
     return `
       <div class="space-y-5">
         <div class="space-y-3">
@@ -332,7 +331,7 @@
     };
 
     return `
-      <div id="suggestion-card-quick-book" class="bg-[#FFF9EE] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
+      <div id="suggestion-card-quick-book" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
         <!-- ID Badge Header -->
         <div class="bg-[#231916] text-[#EADFD1] px-3.5 py-1.5 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
           <span class="font-bold text-[#D08E1C]">ID: #suggestion-card-quick-book</span>
@@ -504,7 +503,7 @@
     };
 
     return `
-      <div id="suggestion-card-compact-row" class="bg-[#FFF9EE] border border-[#EADFD1] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col max-w-sm w-full">
+      <div id="suggestion-card-compact-row" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col max-w-sm w-full">
         <!-- ID Badge Header -->
         <div class="bg-[#231916] text-[#EADFD1] px-3 py-1 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
           <span class="font-bold text-[#D08E1C]">ID: #suggestion-card-compact-row</span>
@@ -570,7 +569,7 @@
     };
 
     return `
-      <div id="suggestion-card-social-proof" class="bg-[#FFF8F6] border border-[#EADFD1] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
+      <div id="suggestion-card-social-proof" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
         <!-- ID Badge Header -->
         <div class="bg-[#231916] text-[#EADFD1] px-3.5 py-1.5 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
           <span class="font-bold text-[#D08E1C]">ID: #suggestion-card-social-proof</span>

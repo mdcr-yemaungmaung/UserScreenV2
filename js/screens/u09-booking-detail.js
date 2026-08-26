@@ -101,11 +101,11 @@
 
     return `
       <div id="u09-booking-detail-page" class="min-h-screen bg-[#FFF7E8] text-[#231916] pb-24 font-body antialiased">
-        
+
         <!-- TOP BREADCRUMB & BACK HEADER -->
         <div class="bg-[#FFFDF9] sticky top-16 z-20">
           <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-            
+
             <div class="flex items-center gap-3">
               <button
                 id="u09-back-btn"
@@ -135,8 +135,8 @@
                   <span class="text-[11px] font-semibold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full">${isMm ? 'ကန့်သတ်ချက်ရှိသည်' : 'Limited Actions'}</span>
                 </div>
                 <p class="text-amber-800 leading-relaxed text-xs sm:text-sm">
-                  ${isMm 
-                    ? 'သင်သည် ကြိုတင်စာရင်း အမှတ်စဉ်နှင့် ဖုန်းနံပါတ်ဖြင့် ဧည့်သည်အဖြစ် ကြည့်ရှုနေပါသည်။ အသင်းဝင်အမှတ်များနှင့် အကောင့်မှတ်တမ်းများကို ရယူနိုင်ရန် အကောင့်ဝင်ရောက်ပါ။' 
+                  ${isMm
+                    ? 'သင်သည် ကြိုတင်စာရင်း အမှတ်စဉ်နှင့် ဖုန်းနံပါတ်ဖြင့် ဧည့်သည်အဖြစ် ကြည့်ရှုနေပါသည်။ အသင်းဝင်အမှတ်များနှင့် အကောင့်မှတ်တမ်းများကို ရယူနိုင်ရန် အကောင့်ဝင်ရောက်ပါ။'
                     : 'You are viewing this reservation via guest lookup. Some member benefits, point rewards, and profile sync are limited.'}
                 </p>
                 <div class="pt-1">
@@ -151,7 +151,7 @@
 
           <!-- SECTION 1: RESERVATION SUMMARY HEADER CARD -->
           <div class="bg-transparent lg:bg-[#FFFDF9] rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#EADFD1] p-0 lg:p-8 shadow-none lg:shadow-sm space-y-6">
-            
+
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div class="space-y-1.5">
                 <h1 class="font-headline text-lg sm:text-xl font-bold text-[#231916]">
@@ -200,12 +200,12 @@
 
           <!-- ACTION TILES: CALL, CALENDAR, MAP (ABOVE SPECIFICATIONS) -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            
+
             <!-- Call Shop Concierge -->
             <button
               id="u09-call-shop-btn"
               data-phone="${res.phone || '+95 1 541 997'}"
-              class="p-4 rounded-2xl bg-[#FAF3E8] hover:bg-[#F2E5D4] border border-[#EADFD1] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
+              class="p-4 rounded-2xl bg-[#FFFDFC] hover:bg-[#F8EFE5] border border-[#E8DDD0] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
             >
               <div class="w-11 h-11 rounded-xl bg-white border border-[#EADFD1] group-hover:border-[#840F16]/30 group-hover:bg-[#FFF8F6] text-[#840F16] flex items-center justify-center transition-colors shrink-0 shadow-2xs">
                 <span class="material-symbols-outlined text-xl text-[#840F16]">call</span>
@@ -219,7 +219,7 @@
             <!-- Add to Calendar -->
             <button
               id="u09-calendar-btn"
-              class="p-4 rounded-2xl bg-[#FAF3E8] hover:bg-[#F2E5D4] border border-[#EADFD1] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
+              class="p-4 rounded-2xl bg-[#FFFDFC] hover:bg-[#F8EFE5] border border-[#E8DDD0] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
             >
               <div class="w-11 h-11 rounded-xl bg-white border border-[#EADFD1] group-hover:border-[#840F16]/30 group-hover:bg-[#FFF8F6] text-[#840F16] flex items-center justify-center transition-colors shrink-0 shadow-2xs">
                 <span class="material-symbols-outlined text-xl text-[#840F16]">event</span>
@@ -234,7 +234,7 @@
             <button
               id="u09-map-btn"
               data-address="${res.address || res.location || 'Yangon'}"
-              class="p-4 rounded-2xl bg-[#FAF3E8] hover:bg-[#F2E5D4] border border-[#EADFD1] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
+              class="p-4 rounded-2xl bg-[#FFFDFC] hover:bg-[#F8EFE5] border border-[#E8DDD0] hover:border-[#840F16]/40 text-left transition-all flex items-center gap-3.5 cursor-pointer group shadow-2xs"
             >
               <div class="w-11 h-11 rounded-xl bg-white border border-[#EADFD1] group-hover:border-[#840F16]/30 group-hover:bg-[#FFF8F6] text-[#840F16] flex items-center justify-center transition-colors shrink-0 shadow-2xs">
                 <span class="material-symbols-outlined text-xl text-[#840F16]">map</span>
@@ -248,8 +248,8 @@
           </div>
 
           <!-- SECTION 2: DETAILED RESERVATION SPECIFICATIONS -->
-          <div class="bg-transparent lg:bg-[#FFFDF9] rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#EADFD1] p-0 lg:p-8 shadow-none lg:shadow-sm space-y-6">
-            
+          <div class="bg-transparent lg:bg-[#FFFDFC] rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#E8DDD0] p-0 lg:p-8 shadow-none lg:shadow-sm space-y-6">
+
             <div class="flex items-center justify-between border-b border-[#F0E5D8] pb-3">
               <h2 class="font-headline text-lg sm:text-xl font-bold text-[#231916] flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#840F16]">receipt_long</span>
@@ -259,9 +259,9 @@
 
             <!-- KEY ATTRIBUTE HIGHLIGHTS (Date, Time, Guests) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-              
+
               <!-- Date Tile -->
-              <div class="bg-[#FAF3E8] rounded-xl p-4 border border-[#EADFD1] flex items-center gap-3.5">
+              <div class="bg-[#FFFDFC] rounded-xl p-4 border border-[#E8DDD0] flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-[#840F16]/10 flex items-center justify-center text-[#840F16] shrink-0">
                   <span class="material-symbols-outlined text-2xl">calendar_month</span>
                 </div>
@@ -272,7 +272,7 @@
               </div>
 
               <!-- Time Tile -->
-              <div class="bg-[#FAF3E8] rounded-xl p-4 border border-[#EADFD1] flex items-center gap-3.5">
+              <div class="bg-[#FFFDFC] rounded-xl p-4 border border-[#E8DDD0] flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-[#840F16]/10 flex items-center justify-center text-[#840F16] shrink-0">
                   <span class="material-symbols-outlined text-2xl">schedule</span>
                 </div>
@@ -283,7 +283,7 @@
               </div>
 
               <!-- Guests Tile -->
-              <div class="bg-[#FAF3E8] rounded-xl p-4 border border-[#EADFD1] flex items-center gap-3.5">
+              <div class="bg-[#FFFDFC] rounded-xl p-4 border border-[#E8DDD0] flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-[#840F16]/10 flex items-center justify-center text-[#840F16] shrink-0">
                   <span class="material-symbols-outlined text-2xl">group</span>
                 </div>
@@ -298,9 +298,9 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-              
+
               <!-- Customer Name -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">person</span>
                   <span>${isMm ? 'မှာယူသူ အမည်' : 'Primary Guest Name'}</span>
@@ -309,7 +309,7 @@
               </div>
 
               <!-- Phone Number -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">call</span>
                   <span>${isMm ? 'ဆက်သွယ်ရန် ဖုန်းနံပါတ်' : 'Contact Phone'}</span>
@@ -318,7 +318,7 @@
               </div>
 
               <!-- Seating Preference -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">table_restaurant</span>
                   <span>${isMm ? 'စားပွဲဝိုင်း အမျိုးအစား' : 'Seating / Area Preference'}</span>
@@ -327,7 +327,7 @@
               </div>
 
               <!-- Selected Menu/Course -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">restaurant_menu</span>
                   <span>${isMm ? 'ရွေးချယ်ထားသော မီနူး / ကော်စ်' : 'Selected Course / Menu'}</span>
@@ -336,7 +336,7 @@
               </div>
 
               <!-- Payment Method & Estimate -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">payments</span>
                   <span>${isMm ? 'ငွေပေးချေမှု အခြေအနေ' : 'Payment Status & Estimate'}</span>
@@ -348,7 +348,7 @@
               </div>
 
               <!-- Booking Channel & Created Date -->
-              <div class="p-4 rounded-xl bg-[#FFFDF9] border border-[#EADFD1] space-y-1">
+              <div class="p-4 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1">
                 <div class="text-xs font-semibold text-[#7A6B65] flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-[#840F16]">devices</span>
                   <span>${isMm ? 'မှာယူခဲ့သည့် ချန်နယ်' : 'Booking Channel'}</span>
@@ -362,7 +362,7 @@
             </div>
 
             <!-- Notes & Special Requests -->
-            <div class="p-4 sm:p-5 rounded-xl bg-[#FAF3E8] border border-[#EADFD1] space-y-1.5">
+            <div class="p-4 sm:p-5 rounded-xl bg-[#FFFDFC] border border-[#E8DDD0] space-y-1.5">
               <div class="text-xs font-bold text-[#58413f] flex items-center gap-1.5 uppercase tracking-wider">
                 <span class="material-symbols-outlined text-base text-[#840F16]">note_alt</span>
                 <span>${isMm ? 'အထူးမှာကြားချက်နှင့် ဓာတ်မတည့်မှုများ' : 'Special Requests & Dietary Notes'}</span>
@@ -375,8 +375,8 @@
           </div>
 
           <!-- SECTION 3: CHANGE AND CANCELLATION ACTIONS -->
-          <div class="bg-transparent lg:bg-[#FFFDF9] rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#EADFD1] p-0 lg:p-8 shadow-none lg:shadow-sm space-y-6">
-            
+          <div class="bg-transparent lg:bg-[#FFFDFC] rounded-none lg:rounded-2xl border-0 lg:border lg:border-[#E8DDD0] p-0 lg:p-8 shadow-none lg:shadow-sm space-y-6">
+
             <div class="flex items-center justify-between border-b border-[#F0E5D8] pb-3">
               <h2 class="font-headline text-lg sm:text-xl font-bold text-[#231916] flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#840F16]">edit_calendar</span>
@@ -385,7 +385,7 @@
             </div>
 
             <!-- Cancellation Policy & Deadline Notice Box -->
-            <div class="p-4 sm:p-5 rounded-xl ${isCancelled ? 'bg-rose-50 border-rose-200' : 'bg-[#FAF3E8] border-[#EADFD1]'} border flex items-start gap-3.5">
+            <div class="p-4 sm:p-5 rounded-xl ${isCancelled ? 'bg-rose-50 border-rose-200' : 'bg-[#FFFDFC] border-[#E8DDD0]'} border flex items-start gap-3.5">
               <span class="material-symbols-outlined ${isCancelled ? 'text-rose-600' : 'text-[#840F16]'} text-2xl shrink-0 mt-0.5">
                 ${isCancelled ? 'cancel' : 'verified_user'}
               </span>
@@ -398,8 +398,8 @@
                 ` : `
                   <div class="font-bold text-[#231916]">${isMm ? 'အခမဲ့ ပယ်ဖျက်နိုင်မှု စည်းမျဉ်းသတ်မှတ်ချက်' : 'Cancellation & Change Policy'}</div>
                   <p class="text-[#58413f]">
-                    ${isMm 
-                      ? 'သတ်မှတ်ရက်ချိန်း မတိုင်မီ ၂ နာရီအလိုအထိ အခမဲ့ ပြင်ဆင်ခြင်းနှင့် ပယ်ဖျက်ခြင်း ပြုလုပ်နိုင်ပါသည်။ သတ်မှတ်ချိန်ကျော်လွန်ပါက ဆိုင်သို့ တိုက်ရိုက်ဖုန်းဆက် အကြောင်းကြားပေးပါ။' 
+                    ${isMm
+                      ? 'သတ်မှတ်ရက်ချိန်း မတိုင်မီ ၂ နာရီအလိုအထိ အခမဲ့ ပြင်ဆင်ခြင်းနှင့် ပယ်ဖျက်ခြင်း ပြုလုပ်နိုင်ပါသည်။ သတ်မှတ်ချိန်ကျော်လွန်ပါက ဆိုင်သို့ တိုက်ရိုက်ဖုန်းဆက် အကြောင်းကြားပေးပါ။'
                       : 'Free cancellation and modification available up to 2 hours before reservation time. For changes within 2 hours of arrival, please contact the restaurant directly.'}
                   </p>
                 `}
@@ -408,7 +408,7 @@
 
             <!-- Action Buttons Grid -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-              
+
               <!-- Change Reservation Button -->
               <button
                 id="u09-change-btn"
@@ -462,7 +462,7 @@
         <!-- =================================================================== -->
         <div id="u09-change-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
           <div class="bg-[#FFF8F6] rounded-3xl border-2 border-[#EADFD1] shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 relative z-10 opacity-100 animate-in fade-in zoom-in-95 duration-200">
-            
+
             <div class="flex items-center justify-between border-b-2 border-[#EADFD1] pb-3.5">
               <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-[#840F16]/10 flex items-center justify-center text-[#840F16]">
@@ -478,7 +478,7 @@
             </div>
 
             <form id="u09-change-form" class="space-y-4 text-left">
-              
+
               <!-- Date Input -->
               <div class="space-y-1">
                 <label class="text-xs font-bold text-[#58413f] uppercase tracking-wider">${isMm ? 'ရက်စွဲ အသစ်' : 'New Date'}</label>
@@ -536,7 +536,7 @@
               </div>
 
               <!-- Recalculated Amount Preview -->
-              <div class="p-4 rounded-2xl bg-[#FAF3E8] border border-[#EADFD1] flex items-center justify-between text-xs sm:text-sm shadow-2xs">
+              <div class="p-4 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] flex items-center justify-between text-xs sm:text-sm shadow-2xs">
                 <span class="font-bold text-[#58413f]">${isMm ? 'ခန့်မှန်း ကုန်ကျငွေ စုစုပေါင်း:' : 'Estimated Total:'}</span>
                 <span id="u09-change-total-preview" class="font-headline font-extrabold text-[#840F16] text-base">${formatMMK(res.totalAmountMMK)}</span>
               </div>
@@ -568,7 +568,7 @@
         <!-- =================================================================== -->
         <div id="u09-cancel-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
           <div class="bg-[#FFF8F6] rounded-3xl border-2 border-rose-200 shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 relative z-10 opacity-100 animate-in fade-in zoom-in-95 duration-200">
-            
+
             <div class="flex items-center justify-between border-b-2 border-rose-100 pb-3.5">
               <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-rose-100 flex items-center justify-center text-rose-700">
@@ -585,13 +585,13 @@
 
             <div class="space-y-4 text-left text-sm">
               <p class="text-[#58413f] leading-relaxed">
-                ${isMm 
-                  ? 'သင်၏ စားပွဲဝိုင်း စိုတ်ထားမှုကို ပယ်ဖျက်လိုပါသလား။ ပယ်ဖျက်ရသည့် အကြောင်းအရင်းကို ရွေးချယ်ပေးပါ။' 
+                ${isMm
+                  ? 'သင်၏ စားပွဲဝိုင်း စိုတ်ထားမှုကို ပယ်ဖျက်လိုပါသလား။ ပယ်ဖျက်ရသည့် အကြောင်းအရင်းကို ရွေးချယ်ပေးပါ။'
                   : 'Are you sure you want to cancel this booking? Please select the primary reason for cancellation.'}
               </p>
 
               <!-- Reason Radios -->
-              <div class="space-y-2.5 bg-[#FAF3E8] p-4 rounded-2xl border border-[#EADFD1] shadow-2xs">
+              <div class="space-y-2.5 bg-[#FFFDFC] p-4 rounded-2xl border border-[#E8DDD0] shadow-2xs">
                 <label class="flex items-center gap-3 text-xs sm:text-sm text-[#231916] font-medium cursor-pointer">
                   <input type="radio" name="u09-cancel-reason" value="schedule_change" checked class="text-[#840F16] focus:ring-[#840F16] w-4 h-4">
                   <span>${isMm ? 'အစီအစဉ် ရက်စွဲ/အချိန် ပြောင်းလဲသွားခြင်း' : 'Change in personal schedule or date'}</span>
@@ -644,7 +644,7 @@
         <!-- =================================================================== -->
         <div id="u09-qr-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
           <div class="bg-[#FFF8F6] rounded-3xl border-2 border-[#EADFD1] shadow-2xl max-w-sm w-full p-6 text-center space-y-5 relative z-10 opacity-100 animate-in fade-in zoom-in-95 duration-200">
-            
+
             <div class="flex items-center justify-between border-b-2 border-[#EADFD1] pb-3.5">
               <div class="font-headline font-bold text-base text-[#231916] flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#840F16]">qr_code_2</span>
@@ -657,7 +657,7 @@
 
             <div class="space-y-2">
               <div class="text-xs font-semibold text-[#7A6B65]">${restName}</div>
-              
+
               <!-- Reservation ID Display without Box Shape -->
               <div class="flex items-center justify-center gap-1.5">
                 <span class="text-[11px] font-bold text-[#7A6B65] uppercase tracking-wider">${isMm ? 'ဘွတ်ကင် နံပါတ်' : 'Reservation ID'}:</span>
