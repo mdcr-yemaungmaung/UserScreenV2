@@ -440,7 +440,7 @@
                       <div class="flex items-center gap-2.5 min-w-0">
                         <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">${selectedCuisineObj.icon}</span>
                         <div class="min-w-0">
-                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'အစားအစာ အမျိုးအစား' : 'Cuisine Type'}</span>
+                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'အစားအစာ' : 'Cuisine'}</span>
                           <span id="hero-cuisine-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">
                             ${selectedCuisineLabel}
                           </span>
@@ -529,10 +529,7 @@
                         tabindex="-1"
                         class="hidden fixed z-50 inset-x-4 bottom-4 sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:-ml-40 sm:top-full sm:mt-2 sm:w-[320px] bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-4 animate-fadeIn text-left"
                       >
-                        <div class="flex items-center justify-between mb-2">
-                          <div class="text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider">
-                            ${isMm ? 'ရက်စွဲနှင့် အချိန်' : 'Date & Time'}
-                          </div>
+                        <div class="flex items-center justify-end mb-1">
                           <button
                             type="button"
                             id="hero-calendar-close"
@@ -635,7 +632,6 @@
                     >
                       <span class="material-symbols-outlined text-lg sm:text-xl">search</span>
                       <span class="whitespace-nowrap">${isMm ? 'ရှာဖွေပါ' : 'Find Tables'}</span>
-                      <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
                     </button>
                   </div>
 
@@ -684,127 +680,25 @@
           </div>
         </section>
 
-        <!-- EXPLORE BY DINING OCCASIONS & VIBES -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left relative">
-          <div class="flex justify-between items-end mb-4 lg:mb-6">
-            <div>
-              <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
-                <span class="material-symbols-outlined text-sm">auto_awesome</span>
-                <span>${isMm ? 'ရွေးချယ်ထားသော စားသောက်မှု အခိုက်အတန့်များ' : 'Curated Dining Atmospheres'}</span>
-              </div>
-              <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'စားသောက်မှု အခိုက်အတန့်နှင့် ပတ်ဝန်းကျင်များ' : 'Explore by Experience & Occasion'}
-              </h2>
-              <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'နေဝင်ဆည်းဆာ ကန်စပ်ညစာ၊ ရိုမန်းတစ် စားပွဲဝိုင်း သို့မဟုတ် VIP သီးသန့်ခန်းများ စိတ်ကြိုက်ရှာဖွေပါ' : 'From serene sunset lakefronts to intimate candlelit tables and executive VIP suites.'}
-              </p>
-            </div>
-            <div class="flex items-center gap-3 shrink-0">
-              <button
-                data-nav-tab="resultlist"
-                class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
-                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Occasions Carousel Container with Floating Scroll Buttons -->
-          <div class="relative group/occasion-carousel">
-            <!-- Left Pressable Scroll Arrow -->
-            <button
-              id="occasion-float-prev"
-              aria-label="Scroll left"
-              title="Scroll left"
-              class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
-            >
-              <span class="material-symbols-outlined text-xl leading-none select-none">chevron_left</span>
-            </button>
-
-            <!-- Scrollable Occasions Row -->
-            <div
-              id="occasion-scroll-container"
-              class="horizontal-scroll-row flex flex-nowrap items-stretch overflow-x-auto overflow-y-hidden scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 gap-3.5 sm:gap-4 pb-2 pt-1"
-            >
-              ${DINING_OCCASIONS_DATA.map(occ => `
-                <button
-                  type="button"
-                  data-occasion-filter="${occ.id}"
-                  data-filter-keyword="${occ.filterKeyword}"
-                  data-filter-area="${occ.filterArea || 'All Areas'}"
-                  class="group shrink-0 snap-start w-64 sm:w-72 md:w-80 relative rounded-3xl overflow-hidden text-left border border-[#E8DDD0] hover:border-[#840f16]/60 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col justify-between hover:-translate-y-1 aspect-[16/10] bg-[#1C1311]"
-                >
-                  <!-- Background Image with Ambient Gradient Overlays -->
-                  <img
-                    src="${occ.image}"
-                    alt="${occ.name}"
-                    referrerpolicy="no-referrer"
-                    loading="lazy"
-                    onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#1C1311]/95 via-[#1C1311]/50 to-black/30 group-hover:from-[#1C1311]/90 transition-colors duration-500"></div>
-
-                  <!-- Top Bar: Category Icon Badge & Venue Count -->
-                  <div class="relative z-10 p-3.5 sm:p-4 flex items-center justify-between">
-                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/25 shadow-xs">
-                      <span class="material-symbols-outlined text-base">${occ.icon}</span>
-                    </span>
-                    <span class="inline-flex items-center gap-1 bg-[#1C1311]/70 backdrop-blur-md text-white/90 font-label text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/15 shadow-xs">
-                      <span>${occ.count}</span>
-                      <span class="text-[10px] text-white/70 font-normal">${isMm ? 'ဆိုင်များ' : 'Venues'}</span>
-                    </span>
-                  </div>
-
-                  <!-- Bottom Bar: Title, Atmosphere Description & Direct Prompt -->
-                  <div class="relative z-10 p-3.5 sm:p-4 text-white">
-                    <h3 class="font-headline text-base sm:text-lg font-bold text-white group-hover:text-[#F3D5B5] transition-colors leading-tight">
-                      ${isMm ? occ.nameMM : occ.name}
-                    </h3>
-                    <p class="font-body text-[11px] sm:text-xs text-white/80 mt-1 line-clamp-1">
-                      ${isMm ? occ.subtitleMM : occ.subtitle}
-                    </p>
-                    <div class="mt-2.5 flex items-center gap-1 text-[11px] font-label font-bold text-[#F3D5B5] group-hover:text-white transition-colors">
-                      <span>${isMm ? 'စားပွဲဝိုင်းများ ကြည့်မည်' : 'Explore Tables'}</span>
-                      <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
-                    </div>
-                  </div>
-                </button>
-              `).join('')}
-            </div>
-
-            <!-- Right Pressable Scroll Arrow -->
-            <button
-              id="occasion-float-next"
-              aria-label="Scroll right"
-              title="Scroll right"
-              class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
-            >
-              <span class="material-symbols-outlined text-xl leading-none select-none">chevron_right</span>
-            </button>
-          </div>
-        </section>
-
         <!-- PROMOTION & ANNOUNCEMENT BANNERS (ကြေညာချက်ဘန်နာများ - 1 Slidable Row with Indicators) -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-1 sm:my-2">
           <div class="relative group/promo-carousel">
             <!-- Left Pressable Scroll Arrow -->
             <button
               id="promo-float-prev"
               aria-label="Previous promo banner"
               title="Previous banner"
-              class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
+              class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
             >
               <span class="material-symbols-outlined text-xl leading-none select-none">chevron_left</span>
             </button>
 
             <div
               id="promo-scroll-container"
-              class="horizontal-scroll-row flex flex-nowrap items-stretch overflow-x-auto overflow-y-hidden scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 gap-3.5 sm:gap-4 pb-2 pt-1"
+              class="horizontal-scroll-row flex flex-nowrap items-stretch overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-0 gap-3.5 sm:gap-5 pb-2 pt-1"
             >
               <!-- Banner 1: KBZPay / WavePay Special Offer -->
-              <div class="shrink-0 w-[calc(88vw-24px)] sm:w-[500px] lg:w-[580px] snap-start relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#840f16] to-[#a52a2a] p-5 sm:p-6 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border border-[#840f16]/30">
+              <div class="shrink-0 w-[84vw] sm:w-[480px] md:w-[520px] lg:w-[580px] snap-start relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#840f16] to-[#a52a2a] p-5 sm:p-6 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border border-[#840f16]/30">
                 <div class="space-y-1.5 z-10 text-left min-w-0">
                   <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-wider text-amber-200">
                     <span class="material-symbols-outlined text-xs">local_activity</span>
@@ -821,7 +715,7 @@
               </div>
 
               <!-- Banner 2: Instant VIP Table Pass Info -->
-              <div class="shrink-0 w-[calc(88vw-24px)] sm:w-[500px] lg:w-[580px] snap-start relative overflow-hidden rounded-3xl bg-[#1c1311] p-5 sm:p-6 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border border-[#362723]">
+              <div class="shrink-0 w-[84vw] sm:w-[480px] md:w-[520px] lg:w-[580px] snap-start relative overflow-hidden rounded-3xl bg-[#1c1311] p-5 sm:p-6 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border border-[#362723]">
                 <div class="space-y-1.5 z-10 text-left min-w-0">
                   <div class="inline-flex items-center gap-1.5 bg-[#d08e1c]/20 px-3 py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-wider text-[#d08e1c]">
                     <span class="material-symbols-outlined text-xs">verified</span>
@@ -842,7 +736,7 @@
               id="promo-float-next"
               aria-label="Next promo banner"
               title="Next banner"
-              class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
+              class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
             >
               <span class="material-symbols-outlined text-xl leading-none select-none">chevron_right</span>
             </button>
@@ -860,10 +754,6 @@
           <!-- Header with View All Action -->
           <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 lg:mb-8 gap-3">
             <div>
-              <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-[#840f16] font-label mb-1">
-                <span class="material-symbols-outlined text-sm leading-none">auto_awesome</span>
-                ${isMm ? 'အယ်ဒီတာ့ အထူးရွေးချယ်မှု' : 'Curator’s Issue #12'}
-              </span>
               <h2 class="font-headline text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#231916]">
                 ${isMm ? 'အထူး စုစည်းမှုများ' : 'Curated Collections'}
               </h2>
@@ -1623,49 +1513,6 @@
       });
     });
 
-    // Occasion horizontal slide controls (floating buttons)
-    const occasionScrollContainer = containerElement.querySelector('#occasion-scroll-container');
-    const occasionFloatPrev = containerElement.querySelector('#occasion-float-prev');
-    const occasionFloatNext = containerElement.querySelector('#occasion-float-next');
-
-    const updateOccasionScrollButtons = () => {
-      if (!occasionScrollContainer) return;
-      const { scrollLeft, scrollWidth, clientWidth } = occasionScrollContainer;
-      const isAtStart = scrollLeft <= 10;
-      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
-
-      if (occasionFloatPrev) {
-        occasionFloatPrev.style.opacity = isAtStart ? '0' : '1';
-        occasionFloatPrev.style.pointerEvents = isAtStart ? 'none' : 'auto';
-      }
-      if (occasionFloatNext) {
-        occasionFloatNext.style.opacity = isAtEnd ? '0' : '1';
-        occasionFloatNext.style.pointerEvents = isAtEnd ? 'none' : 'auto';
-      }
-    };
-
-    const handleOccasionScrollLeft = (e) => {
-      if (e) e.preventDefault();
-      if (occasionScrollContainer) {
-        occasionScrollContainer.scrollBy({ left: -320, behavior: 'smooth' });
-      }
-    };
-
-    const handleOccasionScrollRight = (e) => {
-      if (e) e.preventDefault();
-      if (occasionScrollContainer) {
-        occasionScrollContainer.scrollBy({ left: 320, behavior: 'smooth' });
-      }
-    };
-
-    if (occasionFloatPrev) occasionFloatPrev.addEventListener('click', handleOccasionScrollLeft);
-    if (occasionFloatNext) occasionFloatNext.addEventListener('click', handleOccasionScrollRight);
-
-    if (occasionScrollContainer) {
-      occasionScrollContainer.addEventListener('scroll', updateOccasionScrollButtons, { passive: true });
-      setTimeout(updateOccasionScrollButtons, 50);
-    }
-
     // Promotion banners horizontal slide controls & indicators
     const promoScrollContainer = containerElement.querySelector('#promo-scroll-container');
     const promoFloatPrev = containerElement.querySelector('#promo-float-prev');
@@ -1703,7 +1550,8 @@
       promoFloatPrev.addEventListener('click', (e) => {
         e.preventDefault();
         if (promoScrollContainer) {
-          promoScrollContainer.scrollBy({ left: -340, behavior: 'smooth' });
+          const step = Math.round(promoScrollContainer.clientWidth * 0.85);
+          promoScrollContainer.scrollBy({ left: -step, behavior: 'smooth' });
         }
       });
     }
@@ -1712,7 +1560,8 @@
       promoFloatNext.addEventListener('click', (e) => {
         e.preventDefault();
         if (promoScrollContainer) {
-          promoScrollContainer.scrollBy({ left: 340, behavior: 'smooth' });
+          const step = Math.round(promoScrollContainer.clientWidth * 0.85);
+          promoScrollContainer.scrollBy({ left: step, behavior: 'smooth' });
         }
       });
     }
