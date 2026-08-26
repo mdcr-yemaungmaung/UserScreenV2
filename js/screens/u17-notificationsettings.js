@@ -16,7 +16,7 @@
 
     return `
       <div id="u17-notification-settings-container" class="space-y-4 animate-fadeIn text-left">
-        
+
         <!-- SECTION HEADER -->
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
@@ -26,7 +26,7 @@
 
         <!-- UNIFIED NOTIFICATION SETTINGS SECTION -->
         <div class="space-y-6">
-          
+
           <!-- SUBSECTION 1: NOTIFICATION CHANNELS -->
           <div class="space-y-2.5">
             <!-- Channel 1: In-App Notifications -->
@@ -186,7 +186,7 @@
                     </label>
                     <div class="flex items-center gap-2">
                       <div class="bg-[#EADFD1]/60 border border-[#EADFD1] rounded-xl px-3.5 py-2.5 font-label font-bold text-xs text-[#231916] shrink-0 flex items-center gap-1.5">
-                        <span>🇲🇲</span>
+                        <span class="material-symbols-outlined text-sm">flag</span>
                         <span>+95</span>
                       </div>
                       <input
@@ -237,8 +237,8 @@
                     }
                   </div>
                   <p class="font-body text-xs text-[#58413f]">
-                    ${isMm 
-                      ? 'ကြိုတင် သဘောတူညီချက် ပေးထားပါက ဝန်ဆောင်မှု စတင်သည်နှင့် အလိုအလျောက် ချိတ်ဆက်ပေးပါမည်။' 
+                    ${isMm
+                      ? 'ကြိုတင် သဘောတူညီချက် ပေးထားပါက ဝန်ဆောင်မှု စတင်သည်နှင့် အလိုအလျောက် ချိတ်ဆက်ပေးပါမည်။'
                       : 'Pre-granting consent ensures your account is bound automatically when the Viber service is deployed.'}
                   </p>
                 </div>

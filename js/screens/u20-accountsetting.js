@@ -433,7 +433,7 @@
                       </label>
                       <div class="flex items-center gap-2">
                         <div class="bg-[#EADFD1]/60 border border-[#EADFD1] rounded-xl px-3.5 py-2.5 font-label font-bold text-xs text-[#231916] shrink-0 flex items-center gap-1.5">
-                          <span>🇲🇲</span>
+                          <span class="material-symbols-outlined text-sm">flag</span>
                           <span>+95</span>
                         </div>
                         <input

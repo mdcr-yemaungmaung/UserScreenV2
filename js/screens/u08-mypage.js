@@ -2,6 +2,75 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { renderRatingBadge, renderCuisineTag, renderTrendingCard } = window.YoyakuComponents || {};
+  const MYPAGE_MODAL_FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let myPageModalFocusReturnTarget = null;
+  let myPageModalKeydownHandler = null;
+
+  function rememberMyPageModalTrigger(target = document.activeElement) {
+    if (target && typeof target.focus === 'function') {
+      myPageModalFocusReturnTarget = target;
+    }
+  }
+
+  function getMyPageModalFocusableElements(modalShell) {
+    if (!modalShell) return [];
+    return Array.from(modalShell.querySelectorAll(MYPAGE_MODAL_FOCUSABLE_SELECTOR)).filter(el => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true');
+  }
+
+  function syncMyPageModalAccessibility(containerElement) {
+    if (myPageModalKeydownHandler) {
+      document.removeEventListener('keydown', myPageModalKeydownHandler);
+      myPageModalKeydownHandler = null;
+    }
+
+    const modalShell = containerElement.querySelector('[data-mypage-modal-shell]');
+    if (!modalShell) {
+      if (myPageModalFocusReturnTarget && document.contains(myPageModalFocusReturnTarget)) {
+        myPageModalFocusReturnTarget.focus();
+      }
+      myPageModalFocusReturnTarget = null;
+      return;
+    }
+
+    const focusableElements = getMyPageModalFocusableElements(modalShell);
+    const initialFocusTarget = modalShell.querySelector('[data-mypage-modal-initial-focus]') || focusableElements[0] || modalShell;
+    if (!modalShell.contains(document.activeElement) && typeof initialFocusTarget.focus === 'function') {
+      initialFocusTarget.focus();
+    }
+
+    myPageModalKeydownHandler = (event) => {
+      const liveModalShell = document.querySelector('[data-mypage-modal-shell]');
+      if (!liveModalShell) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        store.closeMyPageModal();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const liveFocusableElements = getMyPageModalFocusableElements(liveModalShell);
+      if (!liveFocusableElements.length) {
+        event.preventDefault();
+        liveModalShell.focus();
+        return;
+      }
+
+      const firstFocusable = liveFocusableElements[0];
+      const lastFocusable = liveFocusableElements[liveFocusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstFocusable) {
+        event.preventDefault();
+        lastFocusable.focus();
+      } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+        event.preventDefault();
+        firstFocusable.focus();
+      }
+    };
+
+    document.addEventListener('keydown', myPageModalKeydownHandler);
+  }
 
   function renderDiningPlateIcon() {
     return `
@@ -902,14 +971,28 @@
         ${
           activeModal === 'qr_pass'
             ? `
-              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-2xl border border-[#EADFD1] p-6 space-y-5 shadow-2xl text-center max-h-[90vh] overflow-y-auto">
+              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4 animate-fadeIn">
+                <div
+                  data-mypage-modal-shell
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="mypage-qr-pass-title"
+                  aria-describedby="mypage-qr-pass-description"
+                  tabindex="-1"
+                  class="mt-auto w-full max-w-md rounded-[24px] border border-[#EADFD1] bg-[#FFF8F6] p-6 text-center shadow-2xl max-h-[90vh] overflow-y-auto sm:mt-0 sm:rounded-2xl"
+                >
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div class="flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16]">qr_code_2</span>
-                      <h3 class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'စားပွဲဝိုင်း Check-in QR' : 'Table Check-in Pass'}</h3>
+                      <h3 id="mypage-qr-pass-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'စားပွဲဝိုင်း Check-in QR' : 'Table Check-in Pass'}</h3>
                     </div>
-                    <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer transition-colors">
+                    <button
+                      type="button"
+                      data-mypage-modal-close
+                      data-mypage-modal-initial-focus
+                      aria-label="${isMm ? 'QR pass ကို ပိတ်မည်' : 'Close QR pass'}"
+                      class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer transition-colors"
+                    >
                       <span class="material-symbols-outlined text-base">close</span>
                     </button>
                   </div>
@@ -935,9 +1018,9 @@
                     />
                   </div>
 
-                  <p class="font-body text-xs text-[#58413f] leading-relaxed">${isMm ? 'စားသောက်ဆိုင်သို့ ရောက်ရှိပါက ဤ QR ကုဒ်ကို ပြသပါ' : 'Present this digital pass upon arrival for instant table seating.'}</p>
+                  <p id="mypage-qr-pass-description" class="font-body text-xs text-[#58413f] leading-relaxed">${isMm ? 'စားသောက်ဆိုင်သို့ ရောက်ရှိပါက ဤ QR ကုဒ်ကို ပြသပါ' : 'Present this digital pass upon arrival for instant table seating.'}</p>
 
-                  <button id="modal-close-btn" class="btn-primary w-full py-3 rounded-full font-label text-xs font-bold cursor-pointer">
+                  <button type="button" data-mypage-modal-close class="btn-primary w-full py-3 rounded-full font-label text-xs font-bold cursor-pointer">
                     ${isMm ? 'ပိတ်မည်' : 'Close Pass'}
                   </button>
                 </div>
@@ -950,14 +1033,27 @@
         ${
           activeModal === 'review'
             ? `
-              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-lg rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
+              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4 animate-fadeIn">
+                <div
+                  data-mypage-modal-shell
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="mypage-review-title"
+                  aria-describedby="review-modal-restaurant-name"
+                  tabindex="-1"
+                  class="mt-auto w-full max-w-lg rounded-[24px] border border-[#EADFD1] bg-[#FFF8F6] p-6 text-left shadow-2xl max-h-[90vh] overflow-y-auto sm:mt-0 sm:rounded-xl"
+                >
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div>
-                      <h3 class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'သုံးသပ်ချက် ရေးသားရန်' : 'Write a Review'}</h3>
+                      <h3 id="mypage-review-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'သုံးသပ်ချက် ရေးသားရန်' : 'Write a Review'}</h3>
                       <p class="font-body text-xs text-[#58413f]" id="review-modal-restaurant-name">${isMm ? 'သင်၏ စားသောက်မှု အတွေ့အကြုံကို မျှဝေပါ' : 'Share your dining experience with other guests'}</p>
                     </div>
-                    <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer">
+                    <button
+                      type="button"
+                      data-mypage-modal-close
+                      aria-label="${isMm ? 'သုံးသပ်ချက်ရေးရန် dialog ကို ပိတ်မည်' : 'Close review dialog'}"
+                      class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer"
+                    >
                       <span class="material-symbols-outlined text-base">close</span>
                     </button>
                   </div>
@@ -967,13 +1063,23 @@
                       <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-2">
                         ${isMm ? 'အလုံးစုံ အဆင့်သတ်မှတ်ချက်' : 'Overall Rating'}
                       </label>
-                      <div class="flex items-center gap-2" id="star-rating-selector">
-                        <button type="button" data-star="1" class="text-amber-400 text-2xl cursor-pointer">★</button>
-                        <button type="button" data-star="2" class="text-amber-400 text-2xl cursor-pointer">★</button>
-                        <button type="button" data-star="3" class="text-amber-400 text-2xl cursor-pointer">★</button>
-                        <button type="button" data-star="4" class="text-amber-400 text-2xl cursor-pointer">★</button>
-                        <button type="button" data-star="5" class="text-amber-400 text-2xl cursor-pointer">★</button>
-                        <span class="font-label text-xs font-bold text-[#D08E1C] ml-2" id="star-rating-label">5.0 - Exceptional</span>
+                      <div class="flex items-center gap-1.5" id="star-rating-selector" role="group" aria-label="${isMm ? 'သုံးသပ်ချက် အဆင့်သတ်မှတ်မှု' : 'Review rating selector'}">
+                        <button type="button" data-star="1" data-mypage-modal-initial-focus aria-label="${isMm ? '၁ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 1 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
+                        </button>
+                        <button type="button" data-star="2" aria-label="${isMm ? '၂ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 2 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
+                        </button>
+                        <button type="button" data-star="3" aria-label="${isMm ? '၃ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 3 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
+                        </button>
+                        <button type="button" data-star="4" aria-label="${isMm ? '၄ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 4 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
+                        </button>
+                        <button type="button" data-star="5" aria-label="${isMm ? '၅ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 5 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
+                        </button>
+                        <span class="ml-2 font-label text-xs font-bold text-[#D08E1C]" id="star-rating-label" aria-live="polite">5.0 - Exceptional</span>
                       </div>
                     </div>
 
@@ -1007,22 +1113,35 @@
         ${
           activeModal === 'phone_otp'
             ? `
-              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#EADFD1] p-6 space-y-6 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
+              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4 animate-fadeIn">
+                <div
+                  data-mypage-modal-shell
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="mypage-phone-otp-title"
+                  aria-describedby="mypage-phone-otp-description"
+                  tabindex="-1"
+                  class="mt-auto w-full max-w-md rounded-[24px] border border-[#EADFD1] bg-[#FFF8F6] p-6 text-left shadow-2xl max-h-[90vh] overflow-y-auto sm:mt-0 sm:rounded-xl"
+                >
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div class="flex items-center gap-2.5">
                       <div class="w-8 h-8 rounded-full bg-[#D08E1C]/10 text-[#D08E1C] flex items-center justify-center">
                         <span class="material-symbols-outlined text-lg">sms</span>
                       </div>
-                      <h3 class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'ဖုန်းနံပါတ် OTP အတည်ပြုခြင်း' : 'Verify Phone Number (OTP)'}</h3>
+                      <h3 id="mypage-phone-otp-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'ဖုန်းနံပါတ် OTP အတည်ပြုခြင်း' : 'Verify Phone Number (OTP)'}</h3>
                     </div>
-                    <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer">
+                    <button
+                      type="button"
+                      data-mypage-modal-close
+                      aria-label="${isMm ? 'OTP အတည်ပြု dialog ကို ပိတ်မည်' : 'Close OTP verification dialog'}"
+                      class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer"
+                    >
                       <span class="material-symbols-outlined text-base">close</span>
                     </button>
                   </div>
 
                   <div class="space-y-3">
-                    <p class="font-body text-xs text-[#58413f] leading-relaxed">
+                    <p id="mypage-phone-otp-description" class="font-body text-xs text-[#58413f] leading-relaxed">
                       ${isMm ? `လျှို့ဝှက် ဂဏန်း ၆ လုံးပါ SMS ကို <strong class="text-[#231916]">${myData.userPhone || ''}</strong> သို့ ပေးပို့ထားပါသည်။` : `We have sent a 6-digit verification code to <strong class="text-[#231916]">${myData.userPhone || ''}</strong> via SMS.`}
                     </p>
 
@@ -1038,6 +1157,7 @@
                         <input
                           type="text"
                           id="u20-otp-input"
+                          data-mypage-modal-initial-focus
                           maxlength="6"
                           placeholder="______"
                           class="w-full text-center tracking-[0.5em] font-mono text-2xl py-3 rounded-xl border border-[#EADFD1] focus:border-[#840f16] bg-white focus:outline-none"
@@ -1068,24 +1188,34 @@
 
         <!-- ACCOUNT WITHDRAWAL CONFIRMATION MODAL -->
         ${
-          activeModal === 'confirm_withdraw'
+          activeModal === 'confirm_withdrawal'
             ? `
-              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-                <div class="bg-[#FFF8F6] w-full max-w-md rounded-xl border border-[#840f16]/30 p-6 space-y-5 shadow-2xl text-left max-h-[90vh] overflow-y-auto">
+              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4 animate-fadeIn">
+                <div
+                  data-mypage-modal-shell
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="mypage-confirm-withdraw-title"
+                  aria-describedby="mypage-confirm-withdraw-description"
+                  tabindex="-1"
+                  class="mt-auto w-full max-w-md rounded-[24px] border border-[#840f16]/30 bg-[#FFF8F6] p-6 text-left shadow-2xl max-h-[90vh] overflow-y-auto sm:mt-0 sm:rounded-xl"
+                >
                   <div class="w-12 h-12 rounded-full bg-[#840f16]/10 text-[#840f16] flex items-center justify-center mx-auto">
                     <span class="material-symbols-outlined text-2xl">warning</span>
                   </div>
 
                   <div class="text-center space-y-1">
-                    <h3 class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'အကောင့် အပြီးတိုင် ဖျက်သိမ်းရန် သေချာပါသလား?' : 'Permanently Withdraw Account?'}</h3>
-                    <p class="font-body text-xs text-[#58413f]">
+                    <h3 id="mypage-confirm-withdraw-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'အကောင့် အပြီးတိုင် ဖျက်သိမ်းရန် သေချာပါသလား?' : 'Permanently Withdraw Account?'}</h3>
+                    <p id="mypage-confirm-withdraw-description" class="font-body text-xs text-[#58413f]">
                       ${isMm ? 'သင်၏ စားပွဲဝိုင်း မှတ်တမ်းများ၊ အကြိုက်ဆုံးဆိုင်များနှင့် Gourmet Points (2,450 PTS) များ အားလုံး ပျက်ပြယ်သွားပါမည်။' : 'All active reservations, saved favorites, and your accumulated 2,450 Gourmet Points will be permanently deleted.'}
                     </p>
                   </div>
 
                   <div class="flex items-center gap-3 pt-2">
                     <button
-                      id="modal-close-btn"
+                      type="button"
+                      data-mypage-modal-close
+                      data-mypage-modal-initial-focus
                       class="flex-1 py-2.5 rounded-full border border-[#EADFD1] text-[#58413f] hover:bg-[#FBF3E2] font-label text-xs font-semibold cursor-pointer"
                     >
                       ${isMm ? 'မဖျက်တော့ပါ' : 'Keep Account'}
@@ -1110,6 +1240,7 @@
   // ATTACH MY PAGE EVENTS
   function attachMyPageViewEvents(containerElement) {
     if (!containerElement) return;
+    const isMm = store.getState().currentLanguage === 'MM';
 
     // New reservation button in header
     const newResvBtn = containerElement.querySelector('#mypage-new-reservation-btn');
@@ -1212,6 +1343,7 @@
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const passId = e.currentTarget.getAttribute('data-mypage-view-pass-id');
+        rememberMyPageModalTrigger(e.currentTarget);
         store.openMyPageModal('qr_pass', passId);
       });
     });
@@ -1230,6 +1362,7 @@
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const restName = e.currentTarget.getAttribute('data-review-restaurant');
+        rememberMyPageModalTrigger(e.currentTarget);
         store.openMyPageModal('review');
         setTimeout(() => {
           const titleElem = document.getElementById('review-modal-restaurant-name');
@@ -1246,12 +1379,27 @@
         const rating = parseInt(e.currentTarget.getAttribute('data-star'), 10);
         const parent = document.getElementById('star-rating-selector');
         if (parent) {
+          const ratingLabels = isMm
+            ? {
+                1: '1.0 - အားနည်းသည်',
+                2: '2.0 - အသင့်အတင့်',
+                3: '3.0 - ကောင်းသည်',
+                4: '4.0 - အလွန်ကောင်းသည်',
+                5: '5.0 - အလွန်ထူးချွန်သည်'
+              }
+            : {
+                1: '1.0 - Poor',
+                2: '2.0 - Fair',
+                3: '3.0 - Good',
+                4: '4.0 - Very Good',
+                5: '5.0 - Exceptional'
+              };
           parent.querySelectorAll('[data-star]').forEach(b => {
             const starVal = parseInt(b.getAttribute('data-star'), 10);
-            b.className = starVal <= rating ? 'text-amber-400 text-2xl cursor-pointer' : 'text-gray-300 text-2xl cursor-pointer';
+            b.className = starVal <= rating ? 'text-[#D08E1C] cursor-pointer transition-colors' : 'text-[#CFC2B6] cursor-pointer transition-colors';
+            b.setAttribute('aria-pressed', starVal <= rating ? 'true' : 'false');
           });
           const lbl = document.getElementById('star-rating-label');
-          const ratingLabels = { 1: '1.0 - Poor', 2: '2.0 - Fair', 3: '3.0 - Good', 4: '4.0 - Very Good', 5: '5.0 - Exceptional' };
           if (lbl) lbl.innerText = ratingLabels[rating] || `${rating}.0`;
         }
       });
@@ -1339,7 +1487,7 @@
     }
 
     // Modal close button
-    containerElement.querySelectorAll('#modal-close-btn').forEach(btn => {
+    containerElement.querySelectorAll('[data-mypage-modal-close]').forEach(btn => {
       btn.addEventListener('click', () => {
         store.closeMyPageModal();
       });
@@ -1398,6 +1546,8 @@
         store.showToast(res.message);
       });
     }
+
+    syncMyPageModalAccessibility(containerElement);
   }
 
   window.YoyakuComponents.renderMyPageView = renderMyPageView;
