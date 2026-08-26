@@ -138,40 +138,53 @@
     const venueCount = `${RESTAURANTS_DATA.length}+`;
 
     const stats = [
-      { icon: 'local_fire_department', value: '340+', label: isMm ? 'ယနေ့ စိုတ်ယူထားသော စားပွဲဝိုင်း' : 'Tables booked today' },
-      { icon: 'star', value: `${avgRating}`, label: isMm ? 'ဧည့်သည်များ၏ ပျမ်းမျှ အဆင့်သတ်မှတ်ချက်' : 'Average guest rating' },
-      { icon: 'storefront', value: venueCount, label: isMm ? 'မိတ်ဖက် စားသောက်ဆိုင်များ' : 'Partner venues in Yangon' },
+      { 
+        icon: 'local_fire_department', 
+        value: '340+', 
+        label: isMm ? 'ယနေ့ဘွတ်ကင်' : 'Booked Today',
+        labelFull: isMm ? 'ယနေ့ စားပွဲဘွတ်ကင်' : 'Tables Booked Today'
+      },
+      { 
+        icon: 'star', 
+        value: `${avgRating}`, 
+        label: isMm ? 'ပျမ်းမျှရမှတ်' : 'Avg Rating',
+        labelFull: isMm ? 'ဧည့်သည် ပျမ်းမျှရမှတ်' : 'Average Guest Rating'
+      },
+      { 
+        icon: 'storefront', 
+        value: venueCount, 
+        label: isMm ? 'မိတ်ဖက်ဆိုင်များ' : 'Partner Venues',
+        labelFull: isMm ? 'ရန်ကုန် မိတ်ဖက်ဆိုင်များ' : 'Partner Venues'
+      },
     ];
 
     return `
-      <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="${isMm ? 'ယုံကြည်မှု အချက်အလက်' : 'Trust and social proof'}">
-        <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#EADFD1] bg-[#FFFDFC] shadow-[0_12px_32px_-18px_rgba(132,15,22,0.18)]">
-          <!-- Stat cells -->
-          <div class="grid grid-cols-3 divide-x divide-[#F0E6DA]">
-            ${stats.map(s => `
-              <div class="flex flex-col items-center justify-center gap-0.5 px-2 py-3 sm:py-4 text-center min-w-0">
-                <span class="flex items-center gap-1 font-headline text-lg sm:text-2xl font-extrabold text-[#840f16] leading-none">
-                  <span class="material-symbols-outlined text-base sm:text-xl text-[#C59B27] fill-1">${s.icon}</span>
-                  <span>${s.value}</span>
-                </span>
-                <span class="font-label text-[10px] sm:text-xs font-bold text-[#8A7B76] uppercase tracking-wide leading-tight">${s.label}</span>
-              </div>
-            `).join('')}
-          </div>
-
-          <!-- Live booking ticker -->
-          <div id="u01-proof-ticker" class="border-t border-[#F0E6DA] bg-[#FBF6EE] px-4 py-2 text-center">
-            <p class="inline-flex items-center gap-1.5 max-w-full font-body text-[11px] sm:text-xs text-[#68554F]">
-              <span class="material-symbols-outlined text-sm text-[#9B1C25] shrink-0">bolt</span>
-              <span
-                id="proof-ticker-text"
-                aria-live="polite"
-                class="truncate"
-              >${(isMm ? SOCIAL_PROOF_TICKER.MM : SOCIAL_PROOF_TICKER.EN)[0]}</span>
-            </p>
-          </div>
+      <div class="mt-3 sm:mt-4 pt-1" aria-label="${isMm ? 'ယုံကြည်မှု အချက်အလက်' : 'Trust and social proof'}">
+        <!-- Stat cells (integrated luxury inline presentation) -->
+        <div class="grid grid-cols-3 divide-x divide-[#E5D9CC]/75 py-1 max-w-2xl sm:max-w-3xl mx-auto">
+          ${stats.map(s => `
+            <div class="flex flex-col items-center justify-center gap-0.5 px-1 sm:px-2 text-center min-w-0">
+              <span class="flex items-center gap-1 font-headline text-sm sm:text-lg font-extrabold text-[#840f16] leading-none">
+                <span class="material-symbols-outlined text-xs sm:text-base text-[#C59B27] fill-1">${s.icon}</span>
+                <span>${s.value}</span>
+              </span>
+              <span class="font-label text-[10px] sm:text-xs font-bold text-[#8A7B76] uppercase tracking-wide leading-tight whitespace-nowrap">${s.label}</span>
+            </div>
+          `).join('')}
         </div>
-      </section>
+
+        <!-- Live booking ticker -->
+        <div id="u01-proof-ticker" class="pt-1.5 text-center">
+          <p class="inline-flex items-center justify-center gap-1.5 max-w-full font-body text-[11px] sm:text-xs text-[#68554F]">
+            <span class="material-symbols-outlined text-sm text-[#9B1C25] shrink-0">bolt</span>
+            <span
+              id="proof-ticker-text"
+              aria-live="polite"
+              class="truncate"
+            >${(isMm ? SOCIAL_PROOF_TICKER.MM : SOCIAL_PROOF_TICKER.EN)[0]}</span>
+          </p>
+        </div>
+      </div>
     `;
   }
 
@@ -605,13 +618,13 @@
 
                 </form>
               </div>
+
+              <!-- SOCIAL PROOF TRUST BAR (booked today / avg rating / venues + live ticker) -->
+              ${renderSocialProofBar(isMm)}
             </div>
 
           </div>
         </section>
-
-        <!-- SOCIAL PROOF TRUST BAR (booked today / avg rating / venues + live ticker) -->
-        ${renderSocialProofBar(isMm)}
 
         <!-- TONIGHT'S OPEN TABLES (live availability strip with instant-book chips) -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
