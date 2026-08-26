@@ -449,41 +449,27 @@
           </div>
         </div>
 
-        <div class="flex flex-1 flex-col bg-[var(--color-brand-surface)] px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-5">
-          <div class="flex items-start gap-3 min-w-0">
-            <div class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-white shadow-sm sm:h-14 sm:w-14">
-              <span class="material-symbols-outlined text-[1.45rem] leading-none">featured_seasonal_and_gifts</span>
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-start gap-2 min-w-0">
-                <p class="min-w-0 flex-1 font-headline text-[1.05rem] sm:text-[1.15rem] font-extrabold leading-tight text-[var(--color-text)] [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden" title="${primaryPromotion.title}">
+        <div class="flex flex-1 flex-col bg-[#FFFDFC] px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-5">
+          <div class="min-w-0">
+            <div class="flex items-start justify-between gap-2 min-w-0">
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">featured_seasonal_and_gifts</span>
+                <p class="font-headline text-[1.05rem] sm:text-[1.15rem] font-extrabold leading-tight text-[#241A18] truncate" title="${primaryPromotion.title}">
                   ${primaryPromotion.title}
                 </p>
-                ${additionalCount > 0 ? `
-                  <span class="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg border border-[var(--color-brand)] px-3 py-2 font-label text-sm font-extrabold text-[var(--color-brand)]">
-                    ${moreOffersLabel}
-                  </span>
-                ` : ''}
               </div>
-              ${primaryPromotion.detail ? `
-                <p class="mt-1 text-sm font-body font-medium text-[var(--color-text-secondary)] truncate" title="${primaryPromotion.detail}">
-                  ${primaryPromotion.detail}
-                </p>
-              ` : ''}
-              ${primaryPromotion.validity ? `
-                <div class="mt-1 flex items-center gap-1.5 text-xs font-label font-semibold text-[var(--color-text-secondary)] min-w-0">
-                  <span class="material-symbols-outlined text-sm shrink-0 text-[var(--color-brand)]">schedule</span>
-                  <span class="truncate" title="${primaryPromotion.validity}">${primaryPromotion.validity}</span>
-                </div>
+              ${additionalCount > 0 ? `
+                <span class="inline-flex min-h-[28px] shrink-0 items-center justify-center rounded-lg border border-[#9B1C25] px-2.5 py-0.5 font-label text-xs font-extrabold text-[#9B1C25]">
+                  ${moreOffersLabel}
+                </span>
               ` : ''}
             </div>
           </div>
 
-          <div class="mt-auto pt-5">
-            <div class="border-t border-[var(--color-brand-border)]"></div>
+          <div class="mt-auto pt-4">
             <button
               data-card-reserve-id="${restaurant.id}"
-              class="mt-5 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-6 py-3.5 font-label text-sm sm:text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-md transition-all active:scale-[0.98] hover:bg-[var(--color-brand-hover)] cursor-pointer text-center"
+              class="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[#9B1C25] px-6 py-3 font-label text-sm sm:text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-md transition-all active:scale-[0.98] hover:bg-[#7F161E] cursor-pointer text-center"
             >
               <span>${bookNowLabel}</span>
               <span class="material-symbols-outlined text-lg sm:text-xl leading-none">arrow_forward</span>
