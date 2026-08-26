@@ -82,6 +82,14 @@
     return `${m[t.getMonth()]} ${t.getDate()}, ${t.getFullYear()}`;
   }
 
+  function toOptionId(prefix, value) {
+    const normalized = String(value || 'option')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return `${prefix}-${normalized || 'option'}`;
+  }
+
   // Friendly When-pill label: today → "Tonight", otherwise short date
   // without year ("Aug 28") — the 60-day booking window makes the year noise.
   function formatDateDisplay(dateStr, isMm) {
@@ -355,13 +363,14 @@
                   </div>
 
                   <!-- 2. Location Area Custom Selector -->
-                  <div class="relative w-full xl:w-40" id="hero-area-dropdown-container">
+                  <div class="relative w-full xl:w-48" id="hero-area-dropdown-container">
                     <input type="hidden" id="hero-area-select" value="${currentAreaVal}" />
                     <button
                       type="button"
                       id="hero-area-trigger"
                       aria-haspopup="listbox"
                       aria-expanded="false"
+                      aria-controls="hero-area-popover"
                       class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
                     >
                       <div class="flex items-center gap-2.5 min-w-0">
@@ -380,6 +389,7 @@
                     <div
                       id="hero-area-popover"
                       role="listbox"
+                      aria-orientation="vertical"
                       tabindex="-1"
                       class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
                     >
@@ -393,7 +403,9 @@
                             type="button"
                             role="option"
                             aria-selected="${isSelected}"
+                            id="${toOptionId('hero-area-option', loc.value)}"
                             data-hero-area-option="${loc.value}"
+                            tabindex="-1"
                             class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
                               isSelected
                                 ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
@@ -415,13 +427,14 @@
                   </div>
 
                   <!-- 3. Cuisine Type Custom Selector -->
-                  <div class="relative w-full xl:w-40" id="hero-cuisine-dropdown-container">
+                  <div class="relative w-full xl:w-48" id="hero-cuisine-dropdown-container">
                     <input type="hidden" id="hero-cuisine-select" value="${currentCuisineVal}" />
                     <button
                       type="button"
                       id="hero-cuisine-trigger"
                       aria-haspopup="listbox"
                       aria-expanded="false"
+                      aria-controls="hero-cuisine-popover"
                       class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
                     >
                       <div class="flex items-center gap-2.5 min-w-0">
@@ -440,6 +453,7 @@
                     <div
                       id="hero-cuisine-popover"
                       role="listbox"
+                      aria-orientation="vertical"
                       tabindex="-1"
                       class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
                     >
@@ -453,7 +467,9 @@
                             type="button"
                             role="option"
                             aria-selected="${isSelected}"
+                            id="${toOptionId('hero-cuisine-option', c.value)}"
                             data-hero-cuisine-option="${c.value}"
+                            tabindex="-1"
                             class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
                               isSelected
                                 ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
@@ -485,6 +501,7 @@
                         id="hero-date-trigger"
                         aria-haspopup="dialog"
                         aria-expanded="false"
+                        aria-controls="hero-calendar-popover"
                         class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
                       >
                         <div class="flex items-center gap-2.5 min-w-0">
@@ -496,6 +513,12 @@
                         </div>
                         <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0 transition-transform duration-200" id="hero-date-chevron">expand_more</span>
                       </button>
+
+                      <div
+                        id="hero-calendar-backdrop"
+                        aria-hidden="true"
+                        class="hidden fixed inset-0 z-40 bg-[#241A18]/30 backdrop-blur-[2px] sm:hidden"
+                      ></div>
 
                       <!-- Calendar + Time Popover -->
                       <div
@@ -552,6 +575,7 @@
                         id="hero-guests-trigger"
                         aria-haspopup="listbox"
                         aria-expanded="false"
+                        aria-controls="hero-guests-popover"
                         class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
                       >
                         <div class="flex items-center gap-2.5 min-w-0">
@@ -568,6 +592,7 @@
                       <div
                         id="hero-guests-popover"
                         role="listbox"
+                        aria-orientation="vertical"
                         aria-label="${isMm ? 'လူအရေအတွက် ရွေးချယ်ပါ' : 'Select number of guests'}"
                         tabindex="-1"
                         class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
@@ -583,7 +608,9 @@
                               type="button"
                               role="option"
                               aria-selected="${isSelected}"
+                              id="${toOptionId('hero-guests-option', n)}"
                               data-hero-guests-option="${n}"
+                              tabindex="-1"
                               class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
                                 isSelected
                                   ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
@@ -1286,19 +1313,78 @@
     const cuisineDisplay = containerElement.querySelector('#hero-cuisine-display');
     const cuisineInput = containerElement.querySelector('#hero-cuisine-select');
     const cuisineChevron = containerElement.querySelector('#hero-cuisine-chevron');
+    const getListboxOptions = (popover) => Array.from(popover?.querySelectorAll('[role="option"]') || []);
+    const focusListboxOption = (popover, index) => {
+      const options = getListboxOptions(popover);
+      if (!options.length) return;
+      const safeIndex = Math.min(Math.max(index, 0), options.length - 1);
+      options[safeIndex].focus();
+      if (popover?.id) {
+        popover.setAttribute('aria-activedescendant', options[safeIndex].id);
+      }
+    };
+    const focusSelectedListboxOption = (popover) => {
+      const options = getListboxOptions(popover);
+      if (!options.length) return;
+      const selectedIndex = options.findIndex((option) => option.getAttribute('aria-selected') === 'true');
+      focusListboxOption(popover, selectedIndex >= 0 ? selectedIndex : 0);
+    };
+    const handleListboxKeydown = (event, popover, trigger, closePopover) => {
+      const options = getListboxOptions(popover);
+      if (!options.length) return;
 
-    const closeAreaPopover = () => {
+      const currentIndex = Math.max(options.indexOf(document.activeElement), 0);
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          focusListboxOption(popover, currentIndex + 1 >= options.length ? 0 : currentIndex + 1);
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          focusListboxOption(popover, currentIndex - 1 < 0 ? options.length - 1 : currentIndex - 1);
+          break;
+        case 'Home':
+          event.preventDefault();
+          focusListboxOption(popover, 0);
+          break;
+        case 'End':
+          event.preventDefault();
+          focusListboxOption(popover, options.length - 1);
+          break;
+        case 'Enter':
+        case ' ':
+          if (document.activeElement && options.includes(document.activeElement)) {
+            event.preventDefault();
+            document.activeElement.click();
+          }
+          break;
+        case 'Escape':
+          event.preventDefault();
+          closePopover({ returnFocus: true });
+          if (trigger) {
+            trigger.focus();
+          }
+          break;
+      }
+    };
+
+    const closeAreaPopover = ({ returnFocus = false } = {}) => {
       if (!areaPopover) return;
       areaPopover.classList.add('hidden');
       if (areaTrigger) areaTrigger.setAttribute('aria-expanded', 'false');
       if (areaChevron) areaChevron.classList.remove('rotate-180');
+      areaPopover.removeAttribute('aria-activedescendant');
+      if (returnFocus && areaTrigger) areaTrigger.focus();
     };
 
-    const closeCuisinePopover = () => {
+    const closeCuisinePopover = ({ returnFocus = false } = {}) => {
       if (!cuisinePopover) return;
       cuisinePopover.classList.add('hidden');
       if (cuisineTrigger) cuisineTrigger.setAttribute('aria-expanded', 'false');
       if (cuisineChevron) cuisineChevron.classList.remove('rotate-180');
+      cuisinePopover.removeAttribute('aria-activedescendant');
+      if (returnFocus && cuisineTrigger) cuisineTrigger.focus();
     };
 
     if (areaTrigger && areaPopover) {
@@ -1311,10 +1397,23 @@
           areaPopover.classList.remove('hidden');
           areaTrigger.setAttribute('aria-expanded', 'true');
           if (areaChevron) areaChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(areaPopover), 0);
         } else {
           closeAreaPopover();
         }
       });
+      areaTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          closeCuisinePopover();
+          closeGuestsPopover();
+          areaPopover.classList.remove('hidden');
+          areaTrigger.setAttribute('aria-expanded', 'true');
+          if (areaChevron) areaChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(areaPopover), 0);
+        }
+      });
+      areaPopover.addEventListener('keydown', (e) => handleListboxKeydown(e, areaPopover, areaTrigger, closeAreaPopover));
     }
 
     if (cuisineTrigger && cuisinePopover) {
@@ -1327,10 +1426,23 @@
           cuisinePopover.classList.remove('hidden');
           cuisineTrigger.setAttribute('aria-expanded', 'true');
           if (cuisineChevron) cuisineChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(cuisinePopover), 0);
         } else {
           closeCuisinePopover();
         }
       });
+      cuisineTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          closeAreaPopover();
+          closeGuestsPopover();
+          cuisinePopover.classList.remove('hidden');
+          cuisineTrigger.setAttribute('aria-expanded', 'true');
+          if (cuisineChevron) cuisineChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(cuisinePopover), 0);
+        }
+      });
+      cuisinePopover.addEventListener('keydown', (e) => handleListboxKeydown(e, cuisinePopover, cuisineTrigger, closeCuisinePopover));
     }
 
     // Option selection for Area
@@ -1384,11 +1496,13 @@
     const guestsInput = containerElement.querySelector('#hero-guests-select');
     const guestsChevron = containerElement.querySelector('#hero-guests-chevron');
 
-    const closeGuestsPopover = () => {
+    const closeGuestsPopover = ({ returnFocus = false } = {}) => {
       if (!guestsPopover) return;
       guestsPopover.classList.add('hidden');
       if (guestsTrigger) guestsTrigger.setAttribute('aria-expanded', 'false');
       if (guestsChevron) guestsChevron.classList.remove('rotate-180');
+      guestsPopover.removeAttribute('aria-activedescendant');
+      if (returnFocus && guestsTrigger) guestsTrigger.focus();
     };
 
     if (guestsTrigger && guestsPopover) {
@@ -1401,10 +1515,23 @@
           guestsPopover.classList.remove('hidden');
           guestsTrigger.setAttribute('aria-expanded', 'true');
           if (guestsChevron) guestsChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(guestsPopover), 0);
         } else {
           closeGuestsPopover();
         }
       });
+      guestsTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          closeAreaPopover();
+          closeCuisinePopover();
+          guestsPopover.classList.remove('hidden');
+          guestsTrigger.setAttribute('aria-expanded', 'true');
+          if (guestsChevron) guestsChevron.classList.add('rotate-180');
+          setTimeout(() => focusSelectedListboxOption(guestsPopover), 0);
+        }
+      });
+      guestsPopover.addEventListener('keydown', (e) => handleListboxKeydown(e, guestsPopover, guestsTrigger, closeGuestsPopover));
     }
 
     // Guests option selection
@@ -1651,6 +1778,7 @@
 
     // Hero Calendar View Popover Logic
     const dateTrigger = containerElement.querySelector('#hero-date-trigger');
+    const dateBackdrop = containerElement.querySelector('#hero-calendar-backdrop');
     const datePopover = containerElement.querySelector('#hero-calendar-popover');
     const dateClose = containerElement.querySelector('#hero-calendar-close');
     const dateDisplay = containerElement.querySelector('#hero-date-display');
@@ -1682,6 +1810,10 @@
       if (!datePopover || datePopover.classList.contains('hidden')) return;
 
       datePopover.classList.add('hidden');
+      if (dateBackdrop) {
+        dateBackdrop.classList.add('hidden');
+      }
+      document.body.classList.remove('overflow-hidden');
       if (dateTrigger) {
         dateTrigger.setAttribute('aria-expanded', 'false');
       }
@@ -1710,8 +1842,17 @@
     function openDatePopover(invoker = dateTrigger) {
       if (!datePopover) return;
 
+      const isMobileSheet = window.innerWidth < 640;
+
       lastCalendarInvoker = invoker || dateTrigger || null;
+      datePopover.setAttribute('aria-modal', isMobileSheet ? 'true' : 'false');
       datePopover.classList.remove('hidden');
+      if (dateBackdrop) {
+        dateBackdrop.classList.toggle('hidden', !isMobileSheet);
+      }
+      if (isMobileSheet) {
+        document.body.classList.add('overflow-hidden');
+      }
       if (dateTrigger) {
         dateTrigger.setAttribute('aria-expanded', 'true');
       }
@@ -1781,6 +1922,12 @@
       dateClose.addEventListener('click', (e) => {
         e.stopPropagation();
         closeDatePopover();
+      });
+    }
+
+    if (dateBackdrop) {
+      dateBackdrop.addEventListener('click', () => {
+        closeDatePopover({ returnFocus: false });
       });
     }
 
