@@ -37,6 +37,37 @@
   const HERO_TIME_SLOTS = ['17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '21:00'];
   const DEFAULT_TIME = '18:30';
 
+  // ─── Tonight's Open Tables (live availability strip) ─────────────────────
+  // Mock remaining dinner slots per venue — mirrors shop_schedules leftovers.
+  // Chips trigger the same instant-book modal as U-02 search result cards.
+  const TONIGHT_SLOT_MAP = {
+    'rest-1': ['17:30', '18:00', '19:30', '20:30'],
+    'rest-2': ['17:00', '17:30', '18:30', '19:00', '20:00'],
+    'rest-3': ['17:30', '18:00', '19:00', '19:30'],
+    'rest-4': ['18:00', '18:30', '19:30', '20:00'],
+    'rest-5': ['17:30', '18:30', '19:00', '20:30'],
+    'rest-6': ['17:00', '17:30', '18:30', '19:30', '20:00'],
+  };
+  const TONIGHT_VENUE_ORDER = ['rest-2', 'rest-6', 'rest-1', 'rest-5', 'rest-4', 'rest-3'];
+
+  // ─── Social proof ticker messages (EN / MM) ──────────────────────────────
+  const SOCIAL_PROOF_TICKER = {
+    EN: [
+      'A table for 4 at Seeds Restaurant & Lounge was just reserved · 2 min ago',
+      'Lakefront table for 2 booked at L’Opera · 6 min ago',
+      'Omakase counter for 3 reserved at Gekko Tokyo Lounge · 11 min ago',
+      'Garden table for 6 booked at The Heritage Teakwood Estate · 15 min ago',
+      'Heritage dining room for 2 reserved at Rangoon Tea House · 19 min ago',
+    ],
+    MM: [
+      'Seeds Restaurant & Lounge တွင် ၄ ဦးဝိုင်း စိုတ်ယူခံရပါသည် · ၂ မိနစ်အကြာ',
+      'L’Opera တွင် ကန်ဘေး ၂ ဦးဝိုင်း စိုတ်ယူခံရပါသည် · ၆ မိနစ်အကြာ',
+      'Gekko Tokyo Lounge တွင် အိုမာကာဆေ ၃ ဦးဝိုင်း စိုတ်ယူခံရပါသည် · ၁၁ မိနစ်အကြာ',
+      'The Heritage Teakwood Estate တွင် ဥယျာဉ် ၆ ဦးဝိုင်း စိုတ်ယူခံရပါသည် · ၁၅ မိနစ်အကြာ',
+      'Rangoon Tea House တွင် ၂ ဦးဝိုင်း စိုတ်ယူခံရပါသည် · ၁၉ မိနစ်အကြာ',
+    ],
+  };
+
   // "18:30" → "6:30PM" (compact display; stored value stays 24h)
   function formatTime12(hhmm) {
     const [h, m] = hhmm.split(':').map(Number);
@@ -98,6 +129,118 @@
     { value: 'European', labelEn: 'European Fusion', labelMm: 'ဥရောပ ဟင်းလျာ', icon: 'wine_bar', sub: 'Modern Continental' },
     { value: 'French', labelEn: 'French Fine Dining', labelMm: 'ပြင်သစ် အဆင့်မြင့်', icon: 'dinner_dining', sub: 'Gourmet Gastronomy' },
   ];
+
+  // ─── Social Proof Bar (trust stats + live booking ticker) ────────────────
+  function renderSocialProofBar(isMm) {
+    const avgRating = (
+      RESTAURANTS_DATA.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / Math.max(RESTAURANTS_DATA.length, 1)
+    ).toFixed(1);
+    const venueCount = `${RESTAURANTS_DATA.length}+`;
+
+    const stats = [
+      { icon: 'local_fire_department', value: '340+', label: isMm ? 'ယနေ့ စိုတ်ယူထားသော စားပွဲဝိုင်း' : 'Tables booked today' },
+      { icon: 'star', value: `${avgRating}`, label: isMm ? 'ဧည့်သည်များ၏ ပျမ်းမျှ အဆင့်သတ်မှတ်ချက်' : 'Average guest rating' },
+      { icon: 'storefront', value: venueCount, label: isMm ? 'မိတ်ဖက် စားသောက်ဆိုင်များ' : 'Partner venues in Yangon' },
+    ];
+
+    return `
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="${isMm ? 'ယုံကြည်မှု အချက်အလက်' : 'Trust and social proof'}">
+        <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#EADFD1] bg-[#FFFDFC] shadow-[0_12px_32px_-18px_rgba(132,15,22,0.18)]">
+          <!-- Stat cells -->
+          <div class="grid grid-cols-3 divide-x divide-[#F0E6DA]">
+            ${stats.map(s => `
+              <div class="flex flex-col items-center justify-center gap-0.5 px-2 py-3 sm:py-4 text-center min-w-0">
+                <span class="flex items-center gap-1 font-headline text-lg sm:text-2xl font-extrabold text-[#840f16] leading-none">
+                  <span class="material-symbols-outlined text-base sm:text-xl text-[#C59B27] fill-1">${s.icon}</span>
+                  <span>${s.value}</span>
+                </span>
+                <span class="font-label text-[10px] sm:text-xs font-bold text-[#8A7B76] uppercase tracking-wide leading-tight">${s.label}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Live booking ticker -->
+          <div id="u01-proof-ticker" class="border-t border-[#F0E6DA] bg-[#FBF6EE] px-4 py-2 text-center">
+            <p class="inline-flex items-center gap-1.5 max-w-full font-body text-[11px] sm:text-xs text-[#68554F]">
+              <span class="material-symbols-outlined text-sm text-[#9B1C25] shrink-0">bolt</span>
+              <span
+                id="proof-ticker-text"
+                aria-live="polite"
+                class="truncate"
+              >${(isMm ? SOCIAL_PROOF_TICKER.MM : SOCIAL_PROOF_TICKER.EN)[0]}</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // ─── Tonight's Open Tables card (compact venue + instant-book time chips) ─
+  function renderTonightCard(restaurant, state) {
+    const isFavorite = state.favorites.includes(restaurant.id);
+    const isMm = state.currentLanguage === 'MM';
+    const title = isMm ? (restaurant.nameMM || restaurant.name) : restaurant.name;
+    const locationText = restaurant.location || restaurant.area || 'Yangon';
+    const slots = TONIGHT_SLOT_MAP[restaurant.id] || [];
+
+    return `
+      <div
+        data-card-select-id="${restaurant.id}"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+      >
+        <!-- Image Container with Overlays -->
+        <div class="relative aspect-[16/9] min-h-[170px] sm:min-h-[190px] overflow-hidden">
+          <img
+            src="${restaurant.heroImage}"
+            alt="${title}"
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_35%,rgba(0,0,0,0.2)_60%,rgba(0,0,0,0.85)_100%)] pointer-events-none"></div>
+          ${renderRatingBadge(restaurant)}
+          ${renderFavoriteButton(restaurant.id, isFavorite)}
+
+          <!-- Venue info over image -->
+          <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-3.5 pt-10 sm:px-5 sm:pb-4">
+            <span class="inline-flex items-center gap-1 bg-[#840f16]/90 backdrop-blur-md text-white font-label text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full mb-1.5 shadow-md">
+              <span class="material-symbols-outlined text-xs">schedule</span>
+              <span>${isMm ? 'ယနေ့ည' : 'Tonight'}</span>
+            </span>
+            <h3 class="font-headline text-[1.15rem] sm:text-[1.25rem] font-extrabold text-white leading-tight truncate" title="${title}">
+              ${title}
+            </h3>
+            <p class="mt-0.5 font-body text-[11px] sm:text-xs font-medium text-white/90 truncate" title="${locationText}">
+              ${locationText}
+            </p>
+          </div>
+        </div>
+
+        <!-- Instant-book time chips -->
+        <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
+          <div class="flex items-center gap-1 font-label text-[10px] sm:text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">
+            <span class="material-symbols-outlined text-xs text-[#9B1C25]">event_available</span>
+            <span>${isMm ? 'ယနေ့ည ရရှိနိုင်သော အချိန်များ' : 'Available tonight'}</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2.5">
+            ${slots.map(time => `
+              <button
+                type="button"
+                data-card-time-slot="${time}"
+                data-card-restaurant-id="${restaurant.id}"
+                class="py-2 px-1 rounded-xl font-label text-xs font-bold transition-all duration-200 cursor-pointer text-center bg-[#FFFDFC] text-[#9B1C25] border border-[#E8DDD0] hover:bg-[#9B1C25] hover:text-white hover:border-[#9B1C25] hover:shadow-md active:scale-95 flex items-center justify-center whitespace-nowrap"
+                title="${isMm ? `${time} တွင် စားပွဲဝိုင်း စိုတ်ယူမည်` : `Book table for ${formatTime12(time)}`}"
+              >
+                ${formatTime12(time)}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
   function renderDiscoverView(state) {
     const isMm = state.currentLanguage === 'MM';
@@ -467,6 +610,44 @@
           </div>
         </section>
 
+        <!-- SOCIAL PROOF TRUST BAR (booked today / avg rating / venues + live ticker) -->
+        ${renderSocialProofBar(isMm)}
+
+        <!-- TONIGHT'S OPEN TABLES (live availability strip with instant-book chips) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+          <div class="flex justify-between items-end mb-4 lg:mb-6">
+            <div>
+              <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-sm">bolt</span>
+                <span>${isMm ? 'တစ်ချက်နှိပ်ရုံဖြင့် စိုတ်ယူပါ' : 'Live availability · One tap to book'}</span>
+              </div>
+              <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
+                ${isMm ? 'ယနေ့ည ဗလာစားပွဲဝိုင်းများ' : 'Tonight’s Open Tables'}
+              </h2>
+              <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
+                ${isMm ? 'ယနေ့ညအတွက် လစ်လပ်နေသော စားပွဲဝိုင်းများကို အချိန်ရွေးကာ ချက်ချင်း စိုတ်ယူနိုင်ပါသည်' : 'Skip the calendar — tap a free dinner slot tonight and reserve instantly.'}
+              </p>
+            </div>
+            <button
+              data-nav-tab="resultlist"
+              class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 pb-4 lg:pb-0">
+            ${
+              TONIGHT_VENUE_ORDER
+                .map(id => RESTAURANTS_DATA.find(r => r.id === id))
+                .filter(Boolean)
+                .map(r => renderTonightCard(r, state))
+                .join('')
+            }
+          </div>
+        </section>
+
         <!-- EXPLORE BY DINING OCCASIONS & VIBES -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left relative">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
@@ -482,10 +663,10 @@
                 ${isMm ? 'နေဝင်ဆည်းဆာ ကန်စပ်ညစာ၊ ရိုမန်းတစ် စားပွဲဝိုင်း သို့မဟုတ် VIP သီးသန့်ခန်းများ စိတ်ကြိုက်ရှာဖွေပါ' : 'From serene sunset lakefronts to intimate candlelit tables and executive VIP suites.'}
               </p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 shrink-0">
               <button
                 data-nav-tab="resultlist"
-                class="font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
+                class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -716,7 +897,7 @@
             </div>
             <button
               data-nav-tab="resultlist"
-              class="font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
+              class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -879,11 +1060,43 @@
     }
   }
 
+  // ─── Social proof: rotating recent-booking ticker ────────────────────────
+  function initSocialProofTicker(containerElement) {
+    const textEl = containerElement.querySelector('#proof-ticker-text');
+    if (!textEl) return;
+
+    let msgIdx = 0;
+    let tickerTimer = null;
+
+    const messages = () => (store.state.currentLanguage === 'MM' ? SOCIAL_PROOF_TICKER.MM : SOCIAL_PROOF_TICKER.EN);
+
+    if (!prefersReducedMotion()) {
+      tickerTimer = setInterval(() => {
+        if (!textEl.isConnected) {
+          clearInterval(tickerTimer);
+          return;
+        }
+        const msgs = messages();
+        msgIdx = (msgIdx + 1) % msgs.length;
+        textEl.classList.remove('proof-ticker-fade-in');
+        textEl.classList.add('proof-ticker-fade-out');
+        setTimeout(() => {
+          if (!textEl.isConnected) return;
+          textEl.textContent = msgs[msgIdx];
+          textEl.classList.remove('proof-ticker-fade-out');
+          textEl.classList.add('proof-ticker-fade-in');
+        }, 250);
+      }, 4200);
+      registerHeroFxCleanup(() => clearInterval(tickerTimer));
+    }
+  }
+
   function attachDiscoverViewEvents(containerElement = document) {
     runHeroFxCleanup();
     attachRestaurantCardEvents(containerElement);
     initHeroBackgroundFx(containerElement);
     initHeroKeywordHint(containerElement);
+    initSocialProofTicker(containerElement);
 
     // Hero Search Form
     const form = containerElement.querySelector('#hero-search-form');

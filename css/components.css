@@ -2381,9 +2381,15 @@
   opacity: 1;
 }
 
+/* U-01 social proof ticker — same fade pattern as the hero keyword hint */
+#proof-ticker-text { transition: opacity 250ms ease; }
+#proof-ticker-text.proof-ticker-fade-out { opacity: 0; }
+#proof-ticker-text.proof-ticker-fade-in { opacity: 1; }
+
 /* Reduced motion: static first slide, no zoom, instant hint swaps */
 @media (prefers-reduced-motion: reduce) {
   .hero-bg-slide { transition: none; }
   .hero-bg-slide.active img { animation: none; }
   .hero-keyword-hint { transition: none; }
+  #proof-ticker-text { transition: none; }
 }
