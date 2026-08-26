@@ -20,36 +20,37 @@
     const isAuth = !!state.isAuthenticated;
 
     const items = [
-      { id: 'discover', icon: 'explore', label: isMm ? 'ပင်မ' : 'Home' },
-      { id: 'resultlist', icon: 'search', label: isMm ? 'ရှာဖွေရန်' : 'Search' },
-      { id: 'reservations', icon: 'calendar_month', label: isMm ? 'စိုတ်ထားမှု' : 'Bookings', badge: reservationCount },
-      { id: 'favorites', icon: 'favorite', label: isMm ? 'သိမ်းဆည်း' : 'Saved' },
-      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person' : 'account_circle', label: isAuth ? (isMm ? 'မိုင်ပေ့ချ်' : 'My Page') : (isMm ? 'အကောင့်ဝင်' : 'Login') }
+      { id: 'discover', icon: 'explore', filledIcon: 'explore', label: isMm ? 'ပင်မ' : 'Home' },
+      { id: 'resultlist', icon: 'search', filledIcon: 'search', label: isMm ? 'ရှာဖွေရန်' : 'Search' },
+      { id: 'reservations', icon: 'calendar_month', filledIcon: 'calendar_month', label: isMm ? 'စိုတ်ထားမှု' : 'Bookings', badge: reservationCount },
+      { id: 'favorites', icon: 'favorite_border', filledIcon: 'favorite', label: isMm ? 'သိမ်းဆည်း' : 'Saved' },
+      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person_outline' : 'account_circle', filledIcon: isAuth ? 'person' : 'account_circle', label: isAuth ? (isMm ? 'မိုင်ပေ့ချ်' : 'My Page') : (isMm ? 'အကောင့်ဝင်' : 'Login') }
     ];
 
     return `
-      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFDFC]/95 backdrop-blur-xl border-t border-[#E8DDD0] px-3 pt-2 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))] sm:px-4 shadow-[0_-4px_24px_rgba(36,26,24,0.08)]">
-        <div class="flex items-center justify-around max-w-md mx-auto gap-1 bg-[#F8EFE5] border border-[#E8DDD0] rounded-2xl p-1 shadow-xs">
+      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F8EFE5] border-t border-[#E8DDD0] px-3 py-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))] shadow-[0_-2px_12px_rgba(36,26,24,0.06)]">
+        <div class="flex items-center justify-around max-w-lg mx-auto">
           ${items
             .map(item => {
               const isActive = state.activeTab === item.id;
+              const iconName = isActive ? item.filledIcon : item.icon;
               return `
                 <button
                   id="bottom-tab-${item.id}"
                   data-bottom-tab="${item.id}"
                   aria-label="${item.label}"
                   title="${item.label}"
-                  class="flex-1 flex items-center justify-center py-2.5 px-2 rounded-xl transition-all duration-150 cursor-pointer relative min-w-0 active:scale-90 ${
+                  class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 transition-all duration-150 cursor-pointer relative min-w-0 active:scale-90 ${
                     isActive
-                        ? 'text-[#9B1C25] font-bold bg-[#F3DFD5] shadow-xs'
-                        : 'text-[#6D6561] hover:text-[#241A18] hover:bg-[#FAF4EB] active:bg-[#F3DFD5]'
+                        ? 'text-[#840f16]'
+                        : 'text-[#6D6561] hover:text-[#241A18]'
                   }"
                 >
                   <div class="relative flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[24px] leading-none transition-transform duration-150 ${isActive ? 'scale-110' : ''}">${item.icon}</span>
+                    <span class="${isActive ? 'material-symbols-filled' : 'material-symbols-outlined'} text-[26px] leading-none transition-all duration-150 ${isActive ? 'scale-105' : ''}">${iconName}</span>
                     ${
                       item.badge && item.badge > 0
-                        ? `<span class="absolute -top-1 -right-2 bg-[#9B1C25] text-white font-label text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-[#FFFDFC] shadow-xs animate-pulse">
+                        ? `<span class="absolute -top-1.5 -right-2.5 bg-[#840f16] text-white font-label text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-[#F8EFE5] shadow-xs">
                             ${item.badge}
                           </span>`
                         : ''
