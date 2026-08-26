@@ -253,24 +253,6 @@
               </p>
             </div>
             <div class="flex items-center gap-3">
-              <!-- Slidable arrowhead navigation icons for web view -->
-              <div class="hidden sm:flex items-center gap-1.5 bg-[#FBF3E2] p-1 rounded-2xl border border-[#EADFD1]">
-                <button
-                  id="cuisine-slide-prev"
-                  aria-label="Previous cuisines"
-                  class="w-8 h-8 rounded-xl bg-white hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] hover:border-[#840f16] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-95"
-                >
-                  <span class="material-symbols-outlined text-lg leading-none select-none">chevron_left</span>
-                </button>
-                <button
-                  id="cuisine-slide-next"
-                  aria-label="Next cuisines"
-                  class="w-8 h-8 rounded-xl bg-white hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] hover:border-[#840f16] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-95"
-                >
-                  <span class="material-symbols-outlined text-lg leading-none select-none">chevron_right</span>
-                </button>
-              </div>
-
               <button
                 data-nav-tab="resultlist"
                 class="font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
@@ -464,15 +446,15 @@
         </section>
 
 
-        <!-- TRENDING VENUES SECTION -->
+        <!-- TRENDING DISHES SECTION -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'ရေပန်းစားသော စားသောက်ဆိုင်များ' : 'Trending Venues'}
+                ${isMm ? 'ရေပန်းစားသော ဟင်းလျာများ' : 'Trending Dishes'}
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'လက်ရှိ လူကြိုက်များပြီး စိုတ်ယူမှု အများဆုံး စားသောက်ဆိုင်များ' : 'Top trending dining destinations curated dynamically based on user bookings and high ratings.'}
+                ${isMm ? 'ဧည့်သည်များ အကြိုက်ဆုံးနှင့် လူကြိုက်အများဆုံး ထိပ်တန်း ဟင်းလျာများ' : 'Top trending signature dishes curated dynamically based on guest popularity and high ratings.'}
               </p>
             </div>
             <button
@@ -485,7 +467,7 @@
           </div>
 
           <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 pb-4 lg:pb-0">
-            ${popularRestaurants.slice(0, 4).map(r => renderTrendingCard(r, state, { showVenueName: true })).join('')}
+            ${popularRestaurants.slice(0, 4).map(r => renderTrendingCard(r, state)).join('')}
           </div>
         </section>
 

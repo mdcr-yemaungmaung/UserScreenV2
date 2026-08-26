@@ -325,72 +325,87 @@
     });
   }
 
-  // Trending Venues Style Card (used in Home trending section, Hot Promotions, Reservation History)
+  function getTrendingDish(restaurant) {
+    if (Array.isArray(restaurant.menuCategories)) {
+      for (const cat of restaurant.menuCategories) {
+        if (Array.isArray(cat.items)) {
+          const pop = cat.items.find(it => it.isPopular);
+          if (pop) return pop;
+        }
+      }
+      const firstCat = restaurant.menuCategories[0];
+      if (firstCat && Array.isArray(firstCat.items) && firstCat.items.length > 0) {
+        return firstCat.items[0];
+      }
+    }
+    return null;
+  }
+
+  // Trending Dishes Style Card (used in Home trending section, Component Gallery, etc.)
   function renderTrendingCard(restaurant, state, options = {}) {
     const isFavorite = state.favorites.includes(restaurant.id);
     const isMm = state.currentLanguage === 'MM';
-    const showVenueName = options.showVenueName !== false;
-    const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
     const restaurantTitle = isMm ? (restaurant.nameMM || restaurant.name) : restaurant.name;
     const locationText = restaurant.location || restaurant.area || 'Yangon';
-    const rawStart = restaurant.priceRange ? restaurant.priceRange.split('-')[0].trim() : '150,000 MMK';
-    const fitPrice = rawStart.endsWith('MMK') ? rawStart : `${rawStart} MMK`;
-    const customAction = options.customAction || null;
+    const cuisineText = restaurant.cuisine || (isMm ? 'အစားအစာမျိုးစုံ' : 'Signature Dining');
+
+    const dish = getTrendingDish(restaurant);
+    const dishTitle = dish ? (isMm ? (dish.nameMM || dish.name) : dish.name) : (isMm ? 'အထူး ဟင်းပွဲ' : 'Chef Signature Dish');
+    const dishPrice = dish?.price || (restaurant.priceRange ? restaurant.priceRange.split('-')[0].trim() : '25,000 MMK');
+    const dishDesc = dish ? (dish.description || '') : '';
+    const cardImage = dish?.image || restaurant.heroImage || 'assets/images/gilded_fork.jpg';
 
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[240px] sm:w-[280px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left"
+        class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
-        <!-- Image Container -->
-        <div class="relative h-44 sm:h-48 lg:h-52 overflow-hidden">
+        <!-- Image Container with Overlays -->
+        <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden">
           <img
-            src="${restaurant.heroImage}"
-            alt="${venueTitle}"
+            src="${cardImage}"
+            alt="${dishTitle}"
             referrerpolicy="no-referrer"
             loading="lazy"
-            onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+            onerror="this.onerror=null; this.src='${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}';"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          ${renderImageGradient()}
+          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_40%,rgba(0,0,0,0.15)_60%,rgba(0,0,0,0.85)_100%)] pointer-events-none"></div>
           ${renderRatingBadge(restaurant)}
           ${renderFavoriteButton(restaurant.id, isFavorite)}
+
+          <!-- Restaurant Info Over Image (No icon for shop info) -->
+          <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-3.5 pt-10 sm:px-5 sm:pb-4">
+            <h3 class="font-headline text-[1.15rem] sm:text-[1.3rem] font-extrabold text-white leading-tight truncate" title="${restaurantTitle}">
+              ${restaurantTitle}
+            </h3>
+            <p class="mt-0.5 font-body text-xs sm:text-[0.85rem] font-medium text-white/90 truncate" title="${locationText} • ${cuisineText}">
+              ${locationText} • ${cuisineText}
+            </p>
+          </div>
         </div>
 
-        <!-- Card Content Area -->
-        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3 min-w-0">
-          <div class="space-y-1.5 sm:space-y-2 min-w-0">
-            ${showVenueName ? `
-            <!-- Venue Name (MAIN HIGHLIGHT) -->
-            <div class="w-full">
-              <h3 class="font-headline text-base sm:text-lg font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug truncate" title="${venueTitle}">
-                ${venueTitle}
-              </h3>
+        <!-- Card Content Area (Dishes Menu and Price Under) -->
+        <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
+          <div class="min-w-0 space-y-1">
+            <!-- Food Menu Icon and Dish Title -->
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">restaurant_menu</span>
+              <p class="font-headline text-[1.02rem] sm:text-[1.1rem] font-extrabold leading-tight text-[#241A18] truncate" title="${dishTitle}">
+                ${dishTitle}
+              </p>
             </div>
+            ${dishDesc ? `
+              <p class="text-xs sm:text-sm font-body font-medium text-[#6D6561] line-clamp-1" title="${dishDesc}">
+                ${dishDesc}
+              </p>
             ` : ''}
+          </div>
 
-            <!-- Restaurant Name & Location -->
-            <div class="space-y-1 min-w-0">
-              <!-- Restaurant Name -->
-              <div class="flex items-center gap-1.5 text-xs text-[#58413f] font-semibold min-w-0">
-                <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">storefront</span>
-                <span class="truncate" title="${restaurantTitle}">${restaurantTitle}</span>
-              </div>
-
-              <!-- Location -->
-              <div class="flex items-center gap-1.5 text-xs text-[#58413f] min-w-0">
-                <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">location_on</span>
-                <span class="truncate" title="${locationText}">${locationText}</span>
-              </div>
-            </div>
-            </div>
-
-          <!-- Price Row or Custom Action -->
-          <div class="pt-2 border-t border-[#E8DDD0] flex items-center justify-between min-w-0">
-            ${customAction ? customAction(restaurant, isMm) : `
-            <span class="font-label text-xs text-[#58413f] font-medium shrink-0">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
-            <span class="font-label text-xs font-extrabold text-[#840f16] truncate text-right min-w-0 ml-2" title="${fitPrice}">${fitPrice}</span>
-            `}
+          <!-- Price Row -->
+          <div class="mt-3 pt-2.5 border-t border-[#E8DDD0] flex items-center justify-between min-w-0">
+            <span class="font-label text-xs font-semibold text-[#6D6561]">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
+            <span class="font-label text-sm sm:text-base font-extrabold text-[#9B1C25] truncate" title="${dishPrice}">${dishPrice}</span>
           </div>
         </div>
       </div>
@@ -453,7 +468,7 @@
           <div class="min-w-0">
             <div class="flex items-start justify-between gap-2 min-w-0">
               <div class="flex items-center gap-2 min-w-0 flex-1">
-                <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">featured_seasonal_and_gifts</span>
+                <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">local_offer</span>
                 <p class="font-headline text-[1.05rem] sm:text-[1.15rem] font-extrabold leading-tight text-[#241A18] truncate" title="${primaryPromotion.title}">
                   ${primaryPromotion.title}
                 </p>

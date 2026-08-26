@@ -372,25 +372,45 @@
             <!-- TAB CONTENT 2: FOOD MENUS (အစားအစာ မီနူးများ) -->
             ${
               detailState.activeTab === 'menu'
-                ? `
-                <div class="space-y-6 animate-fadeIn">
-                  ${
-                    restaurant.menuCategories && restaurant.menuCategories.length > 0
-                      ? restaurant.menuCategories
-                          .map(
-                            cat => `
-                          <div class="space-y-3 pt-2">
-                            <div class="font-headline text-base font-bold text-[#840f16] border-b border-[#EADFD1] pb-2 flex items-center gap-2">
-                              <span class="material-symbols-outlined text-lg">restaurant_menu</span>
-                              <span>${isMm ? (cat.titleMM || cat.title) : cat.title}</span>
+                ? (() => {
+                    const popularItems =
+                      restaurant.menuCategories && restaurant.menuCategories.length > 0
+                        ? restaurant.menuCategories.flatMap(cat =>
+                            (cat.items || [])
+                              .filter(item => item.isPopular)
+                              .map(item => ({
+                                ...item,
+                                categoryTitle: cat.title,
+                                categoryTitleMM: cat.titleMM
+                              }))
+                          )
+                        : (restaurant.menuHighlights || []).filter(
+                            m => m.isChefSpecial || m.isPopular
+                          );
+
+                    return `
+                    <div class="space-y-8 animate-fadeIn">
+                      ${
+                        popularItems && popularItems.length > 0
+                          ? `
+                          <!-- SEPARATE POPULAR SECTION (လူကြိုက်များသော ဟင်းလျာများ) -->
+                          <div class="space-y-3.5 pt-1">
+                            <div class="font-headline text-base sm:text-lg font-bold text-[#840f16] border-b-2 border-[#840f16]/30 pb-2.5 flex items-center justify-between">
+                              <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-xl sm:text-2xl text-[#840f16] fill-1">local_fire_department</span>
+                                <span>${isMm ? 'လူကြိုက်များသော ဟင်းလျာများ' : 'Popular Dishes'}</span>
+                              </div>
+                              <span class="font-label text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#840f16]/10 text-[#840f16]">
+                                ${popularItems.length} ${isMm ? 'ခု' : 'items'}
+                              </span>
                             </div>
 
-                            <div class="grid grid-cols-1 gap-4">
-                              ${cat.items
+                            <div class="grid grid-cols-1 gap-2 sm:gap-4 divide-y divide-[#E8DDD0]/70 sm:divide-y-0">
+                              ${popularItems
                                 .map(
                                   item => `
-                                <div class="bg-[#FFFDFC] p-4 sm:p-5 rounded-2xl border border-[#E8DDD0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-[#840f16]/30 transition-all">
-                                  <div class="flex items-start gap-4 min-w-0">
+                                <div class="bg-transparent sm:bg-[#FFFDFC] py-3.5 sm:p-5 sm:rounded-2xl border-0 sm:border-2 sm:border-[#840f16]/20 sm:bg-gradient-to-r sm:from-[#FFFDFC] sm:to-[#FAF3E8]/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 hover:border-[#840f16]/40 transition-all sm:shadow-xs">
+                                  <div class="flex items-start gap-3.5 sm:gap-4 min-w-0 w-full sm:w-auto">
                                     ${
                                       item.image
                                         ? `
@@ -400,26 +420,16 @@
                                           referrerpolicy="no-referrer"
                                           loading="lazy"
                                           onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
-                                          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 border border-[#EADFD1]"
+                                          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 border border-[#EADFD1] shadow-2xs"
                                         />
                                       `
                                         : ''
                                     }
-                                    <div class="space-y-1 min-w-0">
-                                      <div class="flex flex-wrap items-center gap-2">
-                                        <h4 class="font-headline text-base font-bold text-[#231916]">
+                                    <div class="space-y-1 min-w-0 flex-1">
+                                      <div class="flex items-center gap-2">
+                                        <h4 class="font-headline text-sm sm:text-base font-bold text-[#231916] leading-6">
                                           ${isMm ? (item.nameMM || item.name) : item.name}
                                         </h4>
-                                        ${
-                                          item.isPopular
-                                            ? `
-                                            <span class="bg-[#840f16] text-white font-label text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                                              <span class="material-symbols-outlined text-xs fill-1">local_fire_department</span>
-                                              <span>${isMm ? 'လူကြိုက်များ' : 'Popular'}</span>
-                                            </span>
-                                          `
-                                            : ''
-                                        }
                                       </div>
                                       <p class="font-body text-xs text-[#58413f] leading-relaxed">
                                         ${item.description}
@@ -427,7 +437,7 @@
                                     </div>
                                   </div>
 
-                                  <div class="font-headline font-extrabold text-[#840f16] text-base sm:text-lg whitespace-nowrap self-end sm:self-center bg-white px-3 py-1.5 rounded-xl border border-[#EADFD1]">
+                                  <div class="font-headline font-extrabold text-[#840f16] text-sm sm:text-lg whitespace-nowrap self-end sm:self-center bg-transparent sm:bg-white px-0 sm:px-3 py-0 sm:py-1.5 sm:rounded-xl sm:border sm:border-[#EADFD1] sm:shadow-2xs">
                                     ${item.price}
                                   </div>
                                 </div>
@@ -437,38 +447,90 @@
                             </div>
                           </div>
                         `
-                          )
-                          .join('')
-                      : `
-                      <!-- Fallback to Menu Highlights -->
-                      <div class="space-y-4">
-                        ${(restaurant.menuHighlights || [])
-                          .map(
-                            m => `
-                          <div class="bg-[#FFFDFC] p-5 rounded-2xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between gap-4">
-                            <div class="space-y-1">
-                              <div class="flex items-center gap-2">
-                                <h4 class="font-headline text-base font-bold text-[#231916]">${m.name}</h4>
-                                ${
-                                  m.isChefSpecial
-                                    ? `<span class="bg-[#840f16] text-white font-label text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">${isMm ? 'လူကြိုက်များ' : 'Popular'}</span>`
-                                    : ''
-                                }
+                          : ''
+                      }
+
+                      ${
+                        restaurant.menuCategories && restaurant.menuCategories.length > 0
+                          ? restaurant.menuCategories
+                              .map(
+                                cat => `
+                              <div class="space-y-3 pt-2">
+                                <div class="font-headline text-base font-bold text-[#840f16] border-b border-[#EADFD1] pb-2 flex items-center gap-2">
+                                  <span class="material-symbols-outlined text-lg">restaurant_menu</span>
+                                  <span>${isMm ? (cat.titleMM || cat.title) : cat.title}</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-2 sm:gap-4 divide-y divide-[#E8DDD0]/70 sm:divide-y-0">
+                                  ${cat.items
+                                    .map(
+                                      item => `
+                                    <div class="bg-transparent sm:bg-[#FFFDFC] py-3.5 sm:p-5 sm:rounded-2xl border-0 sm:border sm:border-[#E8DDD0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 hover:border-[#840f16]/30 transition-all">
+                                      <div class="flex items-start gap-3.5 sm:gap-4 min-w-0 w-full sm:w-auto">
+                                        ${
+                                          item.image
+                                            ? `
+                                            <img
+                                              src="${item.image}"
+                                              alt="${item.name}"
+                                              referrerpolicy="no-referrer"
+                                              loading="lazy"
+                                              onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+                                              class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 border border-[#EADFD1]"
+                                            />
+                                          `
+                                            : ''
+                                        }
+                                        <div class="space-y-1 min-w-0 flex-1">
+                                          <div class="flex items-center gap-2">
+                                            <h4 class="font-headline text-sm sm:text-base font-bold text-[#231916] leading-6">
+                                              ${isMm ? (item.nameMM || item.name) : item.name}
+                                            </h4>
+                                          </div>
+                                          <p class="font-body text-xs text-[#58413f] leading-relaxed">
+                                            ${item.description}
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div class="font-headline font-extrabold text-[#840f16] text-sm sm:text-lg whitespace-nowrap self-end sm:self-center bg-transparent sm:bg-white px-0 sm:px-3 py-0 sm:py-1.5 sm:rounded-xl sm:border sm:border-[#EADFD1]">
+                                        ${item.price}
+                                      </div>
+                                    </div>
+                                  `
+                                    )
+                                    .join('')}
+                                </div>
                               </div>
-                              <p class="font-body text-xs text-[#58413f]">${m.description}</p>
-                            </div>
-                            <div class="font-headline font-bold text-[#840f16] text-base whitespace-nowrap self-start sm:self-center">
-                              ${m.price}
-                            </div>
+                            `
+                              )
+                              .join('')
+                          : `
+                          <!-- Fallback to Menu Highlights -->
+                          <div class="space-y-3 sm:space-y-4 divide-y divide-[#E8DDD0]/70 sm:divide-y-0">
+                            ${(restaurant.menuHighlights || [])
+                              .map(
+                                m => `
+                              <div class="bg-transparent sm:bg-[#FFFDFC] py-3.5 sm:p-5 sm:rounded-2xl border-0 sm:border sm:border-[#E8DDD0] flex flex-col sm:flex-row justify-between gap-3 sm:gap-4">
+                                <div class="space-y-1">
+                                  <div class="flex items-center gap-2">
+                                    <h4 class="font-headline text-sm sm:text-base font-bold text-[#231916] leading-6">${m.name}</h4>
+                                  </div>
+                                  <p class="font-body text-xs text-[#58413f]">${m.description}</p>
+                                </div>
+                                <div class="font-headline font-bold text-[#840f16] text-sm sm:text-base whitespace-nowrap self-start sm:self-center">
+                                  ${m.price}
+                                </div>
+                              </div>
+                            `
+                              )
+                              .join('')}
                           </div>
                         `
-                          )
-                          .join('')}
-                      </div>
-                    `
-                  }
-                </div>
-              `
+                      }
+                    </div>
+                  `;
+                  })()
                 : ''
             }
 
