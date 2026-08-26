@@ -5,8 +5,78 @@
   const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard, hasPromoCardOffer } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
+  // ─── Hero Depth Background (crossfading venue slides + gold bokeh) ───────
+  // Local assets only (offline-friendly); token veil per DESIGN.md Warm Ivory.
+  const HERO_BG_IMAGES = [
+    { src: 'assets/images/seeds.jpg', alt: 'Seeds Lakefront Dining' },
+    { src: 'assets/images/lopera.jpg', alt: "L'Opera Trattoria" },
+    { src: 'assets/images/padonmar.jpg', alt: 'Padonmar Gourmet Cuisine' },
+    { src: 'assets/images/alchimiste.jpg', alt: "L'Alchimiste Fine Dining" },
+    { src: 'assets/images/rangoon.jpg', alt: 'Rangoon Heritage Tea House' },
+  ];
 
+  // Rotating concierge prompts (EN / MM) shown inside the keyword input.
+  const HERO_KEYWORD_PROMPTS = {
+    EN: [
+      "e.g. The Gilded Fork, Shan Noodle, Sushi...",
+      "Try 'Lakefront sunset dinner'…",
+      'Search Japanese omakase & sushi bars…',
+      "Try 'Heritage teahouse & snacks'…",
+      'Search rooftop dining & garden cafes…',
+    ],
+    MM: [
+      'ဥပမာ- The Gilded Fork, ရှမ်းခေါက်ဆွဲ...',
+      'ကန်စပ် နေဝင်ဆည်းဆာ ညစာ ရှာဖွေကြည့်ပါ...',
+      'ဂျပန်အစားအစာ (အိုမာကာဆေ) ရှာဖွေပါ...',
+      'ရိုးရာ လက်ဖက်ရည်ဆိုင် ရှာဖွေကြည့်ပါ...',
+      'အမိုက်စား စားသောက်ဆိုင်များ ရှာဖွေပါ...',
+    ],
+  };
 
+  // Standard reservation time slots offered in the When popover (4×2 grid).
+  const HERO_TIME_SLOTS = ['17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '21:00'];
+  const DEFAULT_TIME = '18:30';
+
+  // "18:30" → "6:30PM" (compact display; stored value stays 24h)
+  function formatTime12(hhmm) {
+    const [h, m] = hhmm.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const hour12 = h % 12 === 0 ? 12 : h % 12;
+    return `${hour12}:${String(m).padStart(2, '0')}${period}`;
+  }
+
+  function todayDisplayStr() {
+    const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const t = new Date();
+    return `${m[t.getMonth()]} ${t.getDate()}, ${t.getFullYear()}`;
+  }
+
+  // Friendly When-pill label: today → "Tonight", otherwise short date
+  // without year ("Aug 28") — the 60-day booking window makes the year noise.
+  function formatDateDisplay(dateStr, isMm) {
+    if (!dateStr || dateStr === todayDisplayStr()) {
+      return isMm ? 'ယနေ့' : 'Tonight';
+    }
+    return dateStr.split(',')[0] || dateStr;
+  }
+
+  // Hero FX lifecycle — cleared on every re-attach so timers/RAF never stack
+  // across store-driven re-renders of the discover view.
+  let heroFxCleanups = [];
+  function registerHeroFxCleanup(fn) {
+    heroFxCleanups.push(fn);
+  }
+  function runHeroFxCleanup() {
+    heroFxCleanups.forEach((fn) => {
+      try {
+        fn();
+      } catch (_e) {
+        /* noop */
+      }
+    });
+    heroFxCleanups = [];
+  }
+  const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
 
@@ -41,6 +111,10 @@
     const selectedAreaLabel = isMm ? selectedAreaObj.labelMm : selectedAreaObj.labelEn;
     const selectedCuisineLabel = isMm ? selectedCuisineObj.labelMm : selectedCuisineObj.labelEn;
 
+    // Guests pill state — 'All Sizes' (default) behaves as 2 guests
+    const rawParty = store.state.resultsState?.partySize;
+    const guestsValue = rawParty && rawParty !== 'All Sizes' ? String(rawParty) : '2';
+
     // Compute Popularity Ranking (#1, #2, #3, #4) based on rating & reviewCount
     const popularRestaurants = [...RESTAURANTS_DATA].sort((a, b) => (b.rating * b.reviewCount) - (a.rating * a.reviewCount));
 
@@ -51,10 +125,24 @@
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">
 
         <!-- HERO SECTION (LUXURY EDITORIAL CONCIERGE & SHOWCASE) -->
-        <section class="relative pt-3 sm:pt-6 pb-6 sm:pb-10 overflow-hidden">
-          <!-- Ambient Luxury Lighting Glows -->
-          <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#840f16]/8 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
-          <div class="absolute top-1/3 -right-20 w-80 h-80 bg-[#C59B27]/6 rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <section class="relative pt-3 sm:pt-6 pb-6 sm:pb-10">
+          <!-- Depth Background: crossfading venue slides veiled in Warm Ivory -->
+          <div class="hero-bg-shell" aria-hidden="true">
+            <div class="hero-bg-track">
+              ${HERO_BG_IMAGES.map((img, i) => `\
+                <div class="hero-bg-slide${i === 0 ? ' active' : ''}" data-hero-bg-index="${i}">\
+                  <img src="${img.src}" alt="${img.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" referrerpolicy="no-referrer" onerror="this.closest('.hero-bg-slide').style.display='none';" />\
+                </div>`).join('')}
+            </div>
+            <div class="hero-bg-overlay"></div>
+            <canvas class="hero-bg-canvas"></canvas>
+          </div>
+
+          <!-- Ambient Luxury Lighting Glows (own clipping layer so popovers can escape the section) -->
+          <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#840f16]/8 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute top-1/3 -right-20 w-80 h-80 bg-[#C59B27]/6 rounded-full blur-3xl pointer-events-none"></div>
+          </div>
 
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -87,28 +175,35 @@
             </div>
 
             <!-- Sleek Integrated Concierge Search Bar / Card -->
-            <div class="max-w-5xl mx-auto">
+                    <div class="max-w-5xl xl:max-w-6xl mx-auto">
               <div class="bg-[#FFFDFC] border border-[#E5D9CC] rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-[0_20px_50px_-20px_rgba(132,15,22,0.12)] transition-all">
-                <form id="hero-search-form" class="space-y-3 md:space-y-0 md:flex md:items-center md:gap-2.5">
+                <form id="hero-search-form" class="space-y-3 xl:space-y-0 xl:flex xl:items-center xl:gap-2.5">
 
                   <!-- 1. Search Query Input -->
                   <div class="flex-1 bg-[#FAF6F0] hover:bg-white focus-within:bg-white border border-[#E8DDD0] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/10 rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center gap-2.5 transition-all">
                     <span class="material-symbols-outlined text-[#840f16] text-xl shrink-0">search</span>
                     <div class="min-w-0 flex-1 text-left">
                       <label for="hero-keyword-input" class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'ဆိုင်အမည် / ဟင်းလျာ' : 'Restaurant or Dish'}</label>
-                      <input
-                        type="text"
-                        id="hero-keyword-input"
-                        aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် ဟင်းလျာဖြင့် ရှာဖွေပါ' : 'Search by restaurant or dish'}"
-                        placeholder="${isMm ? 'ဥပမာ- The Gilded Fork, ရှမ်းခေါက်ဆွဲ...' : 'e.g. The Gilded Fork, Shan Noodle, Sushi...'}"
-                        value="${state.searchKeyword || ''}"
-                        class="w-full bg-transparent font-body text-xs sm:text-sm font-semibold text-[#231916] placeholder:text-[#9B8C87] placeholder:font-normal focus:outline-none"
-                      />
+                      <div class="relative">
+                        <input
+                          type="text"
+                          id="hero-keyword-input"
+                          aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် ဟင်းလျာဖြင့် ရှာဖွေပါ' : 'Search by restaurant or dish'}"
+                          placeholder=""
+                          value="${state.searchKeyword || ''}"
+                          class="relative z-10 w-full bg-transparent font-body text-xs sm:text-sm font-semibold text-[#231916] placeholder:text-[#9B8C87] placeholder:font-normal focus:outline-none"
+                        />
+                        <span
+                          id="hero-keyword-hint"
+                          aria-hidden="true"
+                          class="hero-keyword-hint${state.searchKeyword ? ' is-hidden' : ''}"
+                        >${(isMm ? HERO_KEYWORD_PROMPTS.MM : HERO_KEYWORD_PROMPTS.EN)[0]}</span>
+                      </div>
                     </div>
                   </div>
 
                   <!-- 2. Location Area Custom Selector -->
-                  <div class="relative w-full md:w-52 lg:w-56" id="hero-area-dropdown-container">
+                  <div class="relative w-full xl:w-40" id="hero-area-dropdown-container">
                     <input type="hidden" id="hero-area-select" value="${currentAreaVal}" />
                     <button
                       type="button"
@@ -168,7 +263,7 @@
                   </div>
 
                   <!-- 3. Cuisine Type Custom Selector -->
-                  <div class="relative w-full md:w-52 lg:w-56" id="hero-cuisine-dropdown-container">
+                  <div class="relative w-full xl:w-40" id="hero-cuisine-dropdown-container">
                     <input type="hidden" id="hero-cuisine-select" value="${currentCuisineVal}" />
                     <button
                       type="button"
@@ -227,11 +322,137 @@
                     </div>
                   </div>
 
+                  <!-- 3.5 When (Date & Time) + Guests — 2-up pills on mobile, inline segments on desktop -->
+                  <div class="grid grid-cols-2 gap-3 xl:contents">
+
+                    <!-- When Selector (opens calendar + time popover) -->
+                    <div class="relative w-full xl:w-52" id="hero-when-container">
+                      <input type="hidden" id="hero-time-select" value="${store.state.resultsState?.time || DEFAULT_TIME}" />
+                      <button
+                        type="button"
+                        id="hero-date-trigger"
+                        aria-haspopup="dialog"
+                        aria-expanded="false"
+                        class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
+                      >
+                        <div class="flex items-center gap-2.5 min-w-0">
+                          <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">calendar_month</span>
+                          <div class="min-w-0">
+                            <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'ည' : 'When'}</span>
+                            <span id="hero-date-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">${formatDateDisplay(store.state.resultsState?.selectedDate, isMm)} · ${formatTime12(store.state.resultsState?.time || DEFAULT_TIME)}</span>
+                          </div>
+                        </div>
+                        <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0 transition-transform duration-200" id="hero-date-chevron">expand_more</span>
+                      </button>
+
+                      <!-- Calendar + Time Popover -->
+                      <div
+                        id="hero-calendar-popover"
+                        role="dialog"
+                        aria-modal="false"
+                        aria-label="${isMm ? 'ရက်စွဲနှင့် အချိန် ရွေးချယ်ပါ' : 'Select date and time'}"
+                        tabindex="-1"
+                        class="hidden fixed z-50 inset-x-4 bottom-4 sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:-ml-40 sm:top-full sm:mt-2 sm:w-[320px] bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-4 animate-fadeIn text-left"
+                      >
+                        <div class="flex items-center justify-between mb-2">
+                          <div class="text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider">
+                            ${isMm ? 'ရက်စွဲနှင့် အချိန်' : 'Date & Time'}
+                          </div>
+                          <button
+                            type="button"
+                            id="hero-calendar-close"
+                            aria-label="${isMm ? 'ပိတ်ရန်' : 'Close'}"
+                            class="w-7 h-7 rounded-full bg-[#F8EFE5] border border-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] cursor-pointer transition-colors"
+                          >
+                            <span class="material-symbols-outlined text-base">close</span>
+                          </button>
+                        </div>
+                        <div id="hero-calendar-container"></div>
+                        <div class="mt-3 pt-3 border-t border-[#F0E6DA]">
+                          <div class="text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider mb-2">${isMm ? 'အချိန်' : 'Time'}</div>
+                          <div class="grid grid-cols-4 gap-1.5" id="hero-time-options" role="listbox" aria-label="${isMm ? 'အချိန် ရွေးချယ်ပါ' : 'Select time'}">
+                            ${HERO_TIME_SLOTS.map((t) => {
+                              const isSel = (store.state.resultsState?.time || DEFAULT_TIME) === t;
+                              return `
+                                <button
+                                  type="button"
+                                  role="option"
+                                  aria-selected="${isSel}"
+                                  data-hero-time-option="${t}"
+                                  class="py-2 rounded-xl font-label text-xs font-semibold transition-colors cursor-pointer ${
+                                    isSel
+                                      ? 'bg-[#840f16] text-white shadow-sm'
+                                      : 'bg-[#F8EFE5] text-[#332420] hover:bg-[#840f16]/10 hover:text-[#840f16]'
+                                  }"
+                                >${formatTime12(t)}</button>
+                              `;
+                            }).join('')}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Guests Selector -->
+                    <div class="relative w-full xl:w-36" id="hero-guests-container">
+                      <input type="hidden" id="hero-guests-select" value="${guestsValue}" />
+                      <button
+                        type="button"
+                        id="hero-guests-trigger"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        class="w-full bg-[#FAF6F0] hover:bg-white focus:bg-white border border-[#E8DDD0] hover:border-[#840f16]/40 focus:border-[#840f16] rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-2 transition-all cursor-pointer text-left"
+                      >
+                        <div class="flex items-center gap-2.5 min-w-0">
+                          <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">group</span>
+                          <div class="min-w-0">
+                            <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'လူအရေအတွက်' : 'Guests'}</span>
+                            <span id="hero-guests-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">${guestsValue}</span>
+                          </div>
+                        </div>
+                        <span class="material-symbols-outlined text-[#8d7b75] text-sm shrink-0 transition-transform duration-200" id="hero-guests-chevron">expand_more</span>
+                      </button>
+
+                      <!-- Guests Popover -->
+                      <div
+                        id="hero-guests-popover"
+                        role="listbox"
+                        aria-label="${isMm ? 'လူအရေအတွက် ရွေးချယ်ပါ' : 'Select number of guests'}"
+                        tabindex="-1"
+                        class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
+                      >
+                        <div class="px-2 py-1 text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider border-b border-[#F0E6DA] mb-1">
+                          ${isMm ? 'လူအရေအတွက် ရွေးချယ်ပါ' : 'Select Guests'}
+                        </div>
+                        ${['1', '2', '3', '4', '5', '6', '7', '8', '9+'].map((n) => {
+                          const isSelected = n === guestsValue;
+                          const optionLabel = isMm ? `${n} ဦး` : n === '9+' ? '9+ guests' : `${n} ${n === '1' ? 'guest' : 'guests'}`;
+                          return `
+                            <button
+                              type="button"
+                              role="option"
+                              aria-selected="${isSelected}"
+                              data-hero-guests-option="${n}"
+                              class="w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#840f16]/10 text-[#840f16] font-bold'
+                                  : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+                              }"
+                            >
+                              <span class="truncate">${optionLabel}</span>
+                              ${isSelected ? '<span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">check</span>' : ''}
+                            </button>
+                          `;
+                        }).join('')}
+                      </div>
+                    </div>
+
+                  </div>
+
                   <!-- 4. Primary Action Button -->
-                  <div class="w-full md:w-auto shrink-0 pt-1 md:pt-0">
+                  <div class="w-full xl:w-auto shrink-0 pt-1 xl:pt-0">
                     <button
                       type="submit"
-                      class="w-full md:w-auto bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-7 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
+                      class="w-full xl:w-auto bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-7 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
                     >
                       <span class="material-symbols-outlined text-lg sm:text-xl">search</span>
                       <span class="whitespace-nowrap">${isMm ? 'ရှာဖွေပါ' : 'Find Tables'}</span>
@@ -537,8 +758,132 @@
     `;
   }
 
+  // ─── Hero FX: crossfade carousel + gold bokeh canvas ─────────────────────
+  // Pattern adapted from the variant's editorial hero; colors map to
+  // DESIGN.md tokens only (gold #C69A2B / brand #9B1C25 family).
+  function initHeroBackgroundFx(containerElement) {
+    const section = containerElement.querySelector('.hero-bg-shell')?.closest('section');
+    if (!section) return;
+
+    // 1. Crossfading venue slides
+    const slides = [...containerElement.querySelectorAll('.hero-bg-slide')];
+    let currentSlide = 0;
+    let carouselTimer = null;
+    if (slides.length > 1 && !prefersReducedMotion()) {
+      carouselTimer = setInterval(() => {
+        if (!slides[0]?.isConnected) {
+          clearInterval(carouselTimer);
+          return;
+        }
+        slides[currentSlide]?.classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide]?.classList.add('active');
+      }, 5600);
+      registerHeroFxCleanup(() => clearInterval(carouselTimer));
+    }
+
+    // 2. Subtle gold/crimson bokeh particles
+    const canvas = containerElement.querySelector('.hero-bg-canvas');
+    if (!canvas || typeof canvas.getContext !== 'function') return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = section.clientWidth || 360);
+    let height = (canvas.height = section.clientHeight || 360);
+
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(() => {
+        const w = section.clientWidth || 360;
+        const h = section.clientHeight || 360;
+        if (canvas.width !== w || canvas.height !== h) {
+          width = canvas.width = w;
+          height = canvas.height = h;
+        }
+      });
+    });
+    resizeObserver.observe(section);
+    registerHeroFxCleanup(() => resizeObserver.disconnect());
+
+    const particleCount = width < 768 ? 10 : 16;
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 3 + 1.2,
+      vy: Math.random() * 0.35 + 0.15,
+      vx: (Math.random() - 0.5) * 0.18,
+      alpha: Math.random() * 0.35 + 0.12,
+      hue: Math.random() > 0.4 ? 'rgba(198, 154, 43,' : 'rgba(155, 28, 37,', // gold / brand
+    }));
+
+    function renderBokeh() {
+      if (!canvas.isConnected) return;
+      ctx.clearRect(0, 0, width, height);
+      if (!prefersReducedMotion()) {
+        for (const p of particles) {
+          p.y -= p.vy;
+          p.x += p.vx;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `${p.hue} ${p.alpha})`;
+          ctx.fill();
+        }
+      }
+      rafId = requestAnimationFrame(renderBokeh);
+    }
+    let rafId = requestAnimationFrame(renderBokeh);
+    registerHeroFxCleanup(() => cancelAnimationFrame(rafId));
+  }
+
+  // ─── Hero FX: rotating concierge keyword hint ────────────────────────────
+  function initHeroKeywordHint(containerElement) {
+    const hintEl = containerElement.querySelector('#hero-keyword-hint');
+    const searchInput = containerElement.querySelector('#hero-keyword-input');
+    if (!hintEl || !searchInput) return;
+
+    const prompts = store.state.currentLanguage === 'MM' ? HERO_KEYWORD_PROMPTS.MM : HERO_KEYWORD_PROMPTS.EN;
+    let promptIdx = 0;
+    let hintTimer = null;
+
+    const syncVisibility = () => {
+      const hasValue = searchInput.value.trim().length > 0;
+      hintEl.classList.toggle('is-hidden', hasValue || document.activeElement === searchInput);
+    };
+
+    searchInput.addEventListener('focus', syncVisibility);
+    searchInput.addEventListener('blur', syncVisibility);
+    searchInput.addEventListener('input', syncVisibility);
+
+    if (!prefersReducedMotion()) {
+      hintTimer = setInterval(() => {
+        if (!hintEl.isConnected) {
+          clearInterval(hintTimer);
+          return;
+        }
+        if (document.activeElement === searchInput || searchInput.value.trim().length > 0) return;
+        hintEl.classList.remove('hint-fade-in');
+        hintEl.classList.add('hint-fade-out');
+        setTimeout(() => {
+          promptIdx = (promptIdx + 1) % prompts.length;
+          hintEl.textContent = prompts[promptIdx];
+          hintEl.classList.remove('hint-fade-out');
+          hintEl.classList.add('hint-fade-in');
+        }, 250);
+      }, 3600);
+      registerHeroFxCleanup(() => clearInterval(hintTimer));
+    }
+  }
+
   function attachDiscoverViewEvents(containerElement = document) {
+    runHeroFxCleanup();
     attachRestaurantCardEvents(containerElement);
+    initHeroBackgroundFx(containerElement);
+    initHeroKeywordHint(containerElement);
 
     // Hero Search Form
     const form = containerElement.querySelector('#hero-search-form');
@@ -555,6 +900,7 @@
           keyword: kw,
           area,
           cuisine,
+          time,
           partySize: partySize === 'All' ? 'All Sizes' : partySize,
         });
         store.setSearchKeyword(kw);
@@ -594,6 +940,7 @@
       areaTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         closeCuisinePopover();
+        closeGuestsPopover();
         const isHidden = areaPopover.classList.contains('hidden');
         if (isHidden) {
           areaPopover.classList.remove('hidden');
@@ -609,6 +956,7 @@
       cuisineTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         closeAreaPopover();
+        closeGuestsPopover();
         const isHidden = cuisinePopover.classList.contains('hidden');
         if (isHidden) {
           cuisinePopover.classList.remove('hidden');
@@ -664,7 +1012,85 @@
       });
     });
 
-    // Close area & cuisine popovers on outside click
+    // Custom Popover logic for Guests
+    const guestsTrigger = containerElement.querySelector('#hero-guests-trigger');
+    const guestsPopover = containerElement.querySelector('#hero-guests-popover');
+    const guestsDisplay = containerElement.querySelector('#hero-guests-display');
+    const guestsInput = containerElement.querySelector('#hero-guests-select');
+    const guestsChevron = containerElement.querySelector('#hero-guests-chevron');
+
+    const closeGuestsPopover = () => {
+      if (!guestsPopover) return;
+      guestsPopover.classList.add('hidden');
+      if (guestsTrigger) guestsTrigger.setAttribute('aria-expanded', 'false');
+      if (guestsChevron) guestsChevron.classList.remove('rotate-180');
+    };
+
+    if (guestsTrigger && guestsPopover) {
+      guestsTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAreaPopover();
+        closeCuisinePopover();
+        const isHidden = guestsPopover.classList.contains('hidden');
+        if (isHidden) {
+          guestsPopover.classList.remove('hidden');
+          guestsTrigger.setAttribute('aria-expanded', 'true');
+          if (guestsChevron) guestsChevron.classList.add('rotate-180');
+        } else {
+          closeGuestsPopover();
+        }
+      });
+    }
+
+    // Guests option selection
+    containerElement.querySelectorAll('[data-hero-guests-option]').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = e.currentTarget.getAttribute('data-hero-guests-option');
+        if (guestsInput) guestsInput.value = val;
+        if (guestsDisplay) guestsDisplay.textContent = val;
+        containerElement.querySelectorAll('[data-hero-guests-option]').forEach(b => {
+          const isAct = b.getAttribute('data-hero-guests-option') === val;
+          b.setAttribute('aria-selected', isAct);
+          b.className = `w-full text-left flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
+            isAct ? 'bg-[#840f16]/10 text-[#840f16] font-bold' : 'hover:bg-[#FAF5EE] text-[#332420] font-medium'
+          }`;
+        });
+        closeGuestsPopover();
+      });
+    });
+
+    // Time slot selection inside the When popover
+    const timeInput = containerElement.querySelector('#hero-time-select');
+    const whenDisplay = containerElement.querySelector('#hero-date-display');
+
+    const updateWhenDisplay = () => {
+      if (!whenDisplay) return;
+      const isMmNow = store.state.currentLanguage === 'MM';
+      const dateStr = store.state.resultsState?.selectedDate || todayDisplayStr();
+      const time = timeInput?.value || DEFAULT_TIME;
+      whenDisplay.textContent = `${formatDateDisplay(dateStr, isMmNow)} · ${formatTime12(time)}`;
+    };
+
+    containerElement.querySelectorAll('[data-hero-time-option]').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = e.currentTarget.getAttribute('data-hero-time-option');
+        if (timeInput) timeInput.value = val;
+        containerElement.querySelectorAll('[data-hero-time-option]').forEach(b => {
+          const isAct = b.getAttribute('data-hero-time-option') === val;
+          b.setAttribute('aria-selected', isAct);
+          b.className = `py-2 rounded-xl font-label text-xs font-semibold transition-colors cursor-pointer ${
+            isAct
+              ? 'bg-[#840f16] text-white shadow-sm'
+              : 'bg-[#F8EFE5] text-[#332420] hover:bg-[#840f16]/10 hover:text-[#840f16]'
+          }`;
+        });
+        updateWhenDisplay();
+      });
+    });
+
+    // Close area, cuisine & guests popovers on outside click
     document.addEventListener('click', (e) => {
       if (areaPopover && !areaPopover.classList.contains('hidden') && !areaPopover.contains(e.target) && !areaTrigger?.contains(e.target)) {
         closeAreaPopover();
@@ -672,13 +1098,17 @@
       if (cuisinePopover && !cuisinePopover.classList.contains('hidden') && !cuisinePopover.contains(e.target) && !cuisineTrigger?.contains(e.target)) {
         closeCuisinePopover();
       }
+      if (guestsPopover && !guestsPopover.classList.contains('hidden') && !guestsPopover.contains(e.target) && !guestsTrigger?.contains(e.target)) {
+        closeGuestsPopover();
+      }
     });
 
-    // Close area & cuisine popovers on Escape
+    // Close area, cuisine & guests popovers on Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeAreaPopover();
         closeCuisinePopover();
+        closeGuestsPopover();
       }
     });
 
@@ -920,7 +1350,7 @@
           const dateStr = e.currentTarget.getAttribute('data-date-str');
           if (dateStr) {
             store.updateResultsState({ selectedDate: dateStr });
-            if (dateDisplay) dateDisplay.textContent = dateStr;
+            updateWhenDisplay();
             closeDatePopover();
           }
         });

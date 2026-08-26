@@ -2292,3 +2292,98 @@
 .json-boolean { color: #fbbf24; }
 .json-null { color: #94a3b8; }
 
+
+/* =========================================================
+   U-01 HERO FX — Depth Background & Rotating Keyword Hint
+   Tokens: DESIGN.md "Yoyaku Warm Ivory"
+   (body-bg #FBF4E8 / gold #C69A2B / brand #9B1C25 family)
+   Grep evidence: no existing hero-bg / bokeh / hint-fade
+   pattern in this variant (verified 2026-08-26).
+   ========================================================= */
+
+/* --- Depth background shell (behind hero content) --- */
+.hero-bg-shell {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-bg-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1200ms ease;
+}
+.hero-bg-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-bg-slide.active {
+  opacity: 0.32;
+}
+.hero-bg-slide.active img {
+  animation: hero-ken-burns 9s ease-out forwards;
+}
+@keyframes hero-ken-burns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.1); }
+}
+
+/* Warm Ivory veil: keeps dark ink (#231916) copy readable and melts the
+   photo into the page canvas at the bottom edge */
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(251, 244, 232, 0.45) 0%,
+    rgba(251, 244, 232, 0.6) 55%,
+    #fbf4e8 100%
+  );
+}
+
+.hero-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Rotating concierge hint inside keyword input --- */
+.hero-keyword-hint {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: 'Manrope', 'Be Vietnam Pro', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif;
+  font-weight: 400;
+  color: #9b8c87; /* DESIGN.md placeholder ink */
+  transition: opacity 250ms ease;
+}
+@media (min-width: 640px) {
+  .hero-keyword-hint { font-size: 0.875rem; }
+}
+@media (max-width: 639px) {
+  .hero-keyword-hint { font-size: 0.75rem; }
+}
+.hero-keyword-hint.is-hidden,
+.hero-keyword-hint.hint-fade-out {
+  opacity: 0;
+}
+.hero-keyword-hint.hint-fade-in {
+  opacity: 1;
+}
+
+/* Reduced motion: static first slide, no zoom, instant hint swaps */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-slide { transition: none; }
+  .hero-bg-slide.active img { animation: none; }
+  .hero-keyword-hint { transition: none; }
+}
