@@ -28,7 +28,7 @@
     ];
 
     return `
-      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FBF4E8]/95 backdrop-blur-lg border-t border-[#E8DDD0] px-3 py-2.5 sm:px-4 shadow-[0_-4px_16px_rgba(36,26,24,0.06)]">
+      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FBF4E8]/95 backdrop-blur-lg border-t border-[#E8DDD0] px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] sm:px-4 shadow-[0_-4px_16px_rgba(36,26,24,0.06)]">
         <div class="flex items-center justify-around max-w-md mx-auto gap-1">
           ${items
             .map(item => {

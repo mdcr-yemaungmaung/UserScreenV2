@@ -19,13 +19,13 @@
           <span>${isMm ? 'လိုင်းမရှိပါ (Offline Mode) — သင်၏ QR Pass နှင့် စိုတ်ယူထားမှုများကို ကြည့်ရှုနိုင်ပါသည်' : 'Offline Mode Active — Your saved bookings & QR passes remain available.'}</span>
         </div>
       ` : ''}
-      <header class="sticky top-0 z-40 bg-[#FBF4E8]/95 backdrop-blur-md border-b border-[#E8DDD0] transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <header class="sticky top-0 z-40 bg-[#FBF4E8]/95 backdrop-blur-md border-b border-[#E8DDD0] transition-all pt-[env(safe-area-inset-top,0px)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3 sm:gap-4">
 
           <!-- Brand Logo -->
-          <button id="nav-brand-logo" class="flex items-center gap-2.5 cursor-pointer group text-left shrink-0">
-            <div class="h-10 w-auto flex items-center group-hover:scale-105 transition-transform shrink-0">
-              <svg class="h-10 w-auto" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <button id="nav-brand-logo" class="flex items-center gap-2 sm:gap-2.5 cursor-pointer group text-left shrink-0">
+            <div class="h-8 sm:h-9 w-auto flex items-center group-hover:scale-105 transition-transform shrink-0">
+              <svg class="h-8 sm:h-9 w-auto" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="navPinLeft" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#B32A33"/>
@@ -48,7 +48,7 @@
               </svg>
             </div>
             <div class="hidden lg:block">
-              <span class="font-headline text-2xl font-black tracking-tight text-[#241A18] block leading-none">
+              <span class="font-headline text-xl sm:text-2xl font-black tracking-tight text-[#241A18] block leading-none">
                 Yoyaku
               </span>
             </div>
@@ -77,8 +77,8 @@
               <span class="truncate">${isMm ? 'စိုတ်ထားမှု စစ်ဆေးရန်' : 'Check Reservation'}</span>
             </button>
 
-            <!-- Language Selector Switcher -->
-            <div class="relative inline-block text-left">
+            <!-- Language Selector Switcher (Desktop Only: hidden on mobile to prevent notch/punch-hole clipping) -->
+            <div class="relative hidden md:inline-block text-left">
               <button
                 id="lang-dropdown-btn"
                 class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:border-[#9B1C25] transition-colors cursor-pointer"

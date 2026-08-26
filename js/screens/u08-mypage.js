@@ -828,6 +828,40 @@
                     </div>
                   </div>
 
+                  <!-- Mobile Language Preference Card (Single-tap notch-safe switcher) -->
+                  <div class="bg-[#FFF8F6] rounded-xl border border-[#EADFD1] p-3.5 shadow-xs flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <div class="w-8 h-8 rounded-full bg-[#840f16]/10 text-[#840f16] flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-base">language</span>
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-headline font-bold text-xs text-[#231916]">${isMm ? 'ဘာသာစကား' : 'Language'}</div>
+                        <div class="font-body text-[11px] text-[#8d7b75]">${isMm ? 'မြန်မာဘာသာ အသုံးပြုနေသည်' : 'Currently English'}</div>
+                      </div>
+                    </div>
+
+                    <div class="inline-flex rounded-full p-1 bg-[#EADFD1]/60 border border-[#EADFD1] shrink-0" role="radiogroup" aria-label="Language selector">
+                      <button
+                        type="button"
+                        data-mypage-set-lang="EN"
+                        class="px-3 py-1 rounded-full font-label text-xs font-bold transition-all cursor-pointer ${
+                          !isMm ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f] hover:text-[#231916]'
+                        }"
+                      >
+                        EN
+                      </button>
+                      <button
+                        type="button"
+                        data-mypage-set-lang="MM"
+                        class="px-3 py-1 rounded-full font-label text-xs font-bold transition-all cursor-pointer ${
+                          isMm ? 'bg-[#840f16] text-white shadow-xs' : 'text-[#58413f] hover:text-[#231916]'
+                        }"
+                      >
+                        မြန်မာ
+                      </button>
+                    </div>
+                  </div>
+
                   <!-- Mobile Menu List -->
                   <div class="bg-[#FFF8F6] rounded-xl border border-[#EADFD1] divide-y divide-[#EADFD1] overflow-hidden shadow-sm">
                     ${menuItems
@@ -1261,6 +1295,16 @@
         }
       });
     }
+
+    // Language Switcher in MyPage (Mobile notch-safe)
+    containerElement.querySelectorAll('[data-mypage-set-lang]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const lang = e.currentTarget.getAttribute('data-mypage-set-lang');
+        if (lang) {
+          store.setLanguage(lang);
+        }
+      });
+    });
 
     // Mobile Back to Menu button
     containerElement.querySelectorAll('[data-mypage-back]').forEach(btn => {

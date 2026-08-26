@@ -176,12 +176,36 @@
 
           <!-- Bottom Bar -->
           <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#8d7b75]">
-            <div>
-              © 2026 <span class="text-white font-bold">Yoyaku</span>. ${
-                isMm
-                  ? 'မူပိုင်ခွင့်များ ရယူထားပြီးဖြစ်သည်။'
-                  : 'All rights reserved. Fast & Instant Table Reservations in Myanmar.'
-              }
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+              <div>
+                © 2026 <span class="text-white font-bold">Yoyaku</span>. ${
+                  isMm
+                    ? 'မူပိုင်ခွင့်များ ရယူထားပြီးဖြစ်သည်။'
+                    : 'All rights reserved. Fast & Instant Table Reservations in Myanmar.'
+                }
+              </div>
+              
+              <!-- Footer Language Switcher (Mobile & Tablet thumb-friendly) -->
+              <div class="inline-flex rounded-full p-0.5 bg-[#362723] border border-[#4a3631]">
+                <button
+                  type="button"
+                  data-footer-set-lang="EN"
+                  class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold transition-all cursor-pointer ${
+                    !isMm ? 'bg-[#9B1C25] text-white shadow-xs' : 'text-[#bcaaa4] hover:text-white'
+                  }"
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  data-footer-set-lang="MM"
+                  class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold transition-all cursor-pointer ${
+                    isMm ? 'bg-[#9B1C25] text-white shadow-xs' : 'text-[#bcaaa4] hover:text-white'
+                  }"
+                >
+                  မြန်မာ
+                </button>
+              </div>
             </div>
 
             <!-- Social Links & Community -->
@@ -221,6 +245,16 @@
     if (ownerBtn) {
       ownerBtn.addEventListener('click', () => store.openInfoModal('owner_application'));
     }
+    // Footer Language Switcher
+    root.querySelectorAll('[data-footer-set-lang]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const lang = e.currentTarget.getAttribute('data-footer-set-lang');
+        if (lang) {
+          store.setLanguage(lang);
+        }
+      });
+    });
+
     // Brand Logo Click
     const logo = root.querySelector('#footer-brand-logo');
     if (logo) {
