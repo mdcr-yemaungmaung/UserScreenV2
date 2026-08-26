@@ -28,8 +28,8 @@
     ];
 
     return `
-      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFDFC]/95 backdrop-blur-xl border-t border-[#E8DDD0] px-2.5 pt-1.5 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))] sm:px-4 shadow-[0_-4px_24px_rgba(36,26,24,0.08)]">
-        <div class="flex items-center justify-around max-w-md mx-auto gap-1">
+      <nav id="bottom-nav-bar" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFDFC]/95 backdrop-blur-xl border-t border-[#E8DDD0] px-3 pt-2 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))] sm:px-4 shadow-[0_-4px_24px_rgba(36,26,24,0.08)]">
+        <div class="flex items-center justify-around max-w-md mx-auto gap-1 bg-[#F8EFE5] border border-[#E8DDD0] rounded-2xl p-1 shadow-xs">
           ${items
             .map(item => {
               const isActive = state.activeTab === item.id;
@@ -39,10 +39,10 @@
                   data-bottom-tab="${item.id}"
                   aria-label="${item.label}"
                   title="${item.label}"
-                  class="flex-1 flex flex-col items-center justify-center py-1.5 px-2 rounded-2xl transition-all duration-150 cursor-pointer relative min-w-0 active:scale-90 ${
+                  class="flex-1 flex items-center justify-center py-2.5 px-2 rounded-xl transition-all duration-150 cursor-pointer relative min-w-0 active:scale-90 ${
                     isActive
                         ? 'text-[#9B1C25] font-bold bg-[#F3DFD5] shadow-xs'
-                        : 'text-[#6D6561] hover:text-[#241A18] hover:bg-[#F8EFE5] active:bg-[#F3DFD5]'
+                        : 'text-[#6D6561] hover:text-[#241A18] hover:bg-[#FAF4EB] active:bg-[#F3DFD5]'
                   }"
                 >
                   <div class="relative flex items-center justify-center">
@@ -55,7 +55,6 @@
                         : ''
                     }
                   </div>
-                  <span class="font-label text-[10px] mt-0.5 tracking-tight ${isActive ? 'font-bold text-[#9B1C25]' : 'font-medium text-[#6D6561]'}">${item.label}</span>
                 </button>
               `;
             })

@@ -217,10 +217,6 @@
 
           <!-- Venue info over image -->
           <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-3.5 pt-10 sm:px-5 sm:pb-4">
-            <span class="inline-flex items-center gap-1 bg-[#840f16]/90 backdrop-blur-md text-white font-label text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full mb-1.5 shadow-md">
-              <span class="material-symbols-outlined text-xs">schedule</span>
-              <span>${isMm ? 'ယနေ့ည' : 'Tonight'}</span>
-            </span>
             <h3 class="font-headline text-[1.15rem] sm:text-[1.25rem] font-extrabold text-white leading-tight truncate" title="${title}">
               ${title}
             </h3>
@@ -790,11 +786,8 @@
                   <h3 class="font-headline text-base sm:text-lg lg:text-xl font-extrabold leading-tight">
                     ${isMm ? 'KBZPay & WavePay ဖြင့် စိုတ်ယူပါက ၂၀% လျှော့ဈေး' : '20% Off Weekend Dining Pass with KBZPay'}
                   </h3>
-                  <p class="font-body text-xs text-white/80 line-clamp-2 sm:line-clamp-none">
-                    ${isMm ? 'ယခုပတ်အတွင်း စားပွဲဝိုင်း စိုတ်ယူသူများအတွက် ရရှိနိုင်သော ကူပွန်' : 'Apply voucher code YOYAKUKBZ50K at checkout for instant table discount.'}
-                  </p>
                 </div>
-                <button data-nav-tab="mypage" class="shrink-0 bg-white text-[#840f16] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-amber-100 transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap">
+                <button data-nav-tab="mypage" class="shrink-0 hidden sm:inline-flex bg-white text-[#840f16] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-amber-100 transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap items-center justify-center">
                   ${isMm ? 'ကူပွန်ယူမည်' : 'Claim Voucher'}
                 </button>
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
@@ -810,11 +803,8 @@
                   <h3 class="font-headline text-base sm:text-lg lg:text-xl font-extrabold text-[#e8dfd8] leading-tight">
                     ${isMm ? 'ဗဟန်း၊ ဒဂုံ၊ မြို့ထဲတွင် Instant Pass စတင်ပါပြီ' : 'Instant Table Confirmation Enabled in Yangon'}
                   </h3>
-                  <p class="font-body text-xs text-[#bcaaa4] line-clamp-2 sm:line-clamp-none">
-                    ${isMm ? 'စောင့်ဆိုင်းရန် မလိုဘဲ စားပွဲဝိုင်းများကို ချက်ချင်းအတည်ပြုပေးပါသည်' : 'No phone calls needed. Receive instant QR entry pass right on your phone.'}
-                  </p>
                 </div>
-                <button data-nav-tab="resultlist" class="shrink-0 bg-[#d08e1c] text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-[#b07616] transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap">
+                <button data-nav-tab="resultlist" class="shrink-0 hidden sm:inline-flex bg-[#d08e1c] text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-[#b07616] transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap items-center justify-center">
                   ${isMm ? 'စိုတ်ယူရန်' : 'Book Table'}
                 </button>
               </div>
@@ -838,61 +828,183 @@
           </div>
         </section>
 
-        <!-- CURATED COLLECTIONS -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <!-- Header Centered -->
-          <div class="max-w-2xl mx-auto mb-6 lg:mb-10 text-center">
-            <h2 class="font-headline text-3xl sm:text-4xl font-extrabold text-[#231916]">
-              ${isMm ? 'အထူး စုစည်းမှုများ' : 'Curated Collections'}
-            </h2>
-            <p class="font-body text-sm sm:text-base text-[#58413f] mt-2 hidden lg:block">
-              ${isMm ? 'အစီအစဉ်အမျိုးမျိုးအတွက် အထူးသီးသန့် ရွေးချယ်ပေးထားသော စားသောက်ဆိုင်များ' : 'Hand-picked selections by our editors for every special occasion.'}
-            </p>
+        <!-- CURATED COLLECTIONS (Option 1 Bento on Desktop + Option A Snap Carousel on Mobile/Tablet) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+          <!-- Header with View All Action -->
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 lg:mb-8 gap-3">
+            <div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-[#840f16] font-label mb-1">
+                <span class="material-symbols-outlined text-sm leading-none">auto_awesome</span>
+                ${isMm ? 'အယ်ဒီတာ့ အထူးရွေးချယ်မှု' : 'Curator’s Issue #12'}
+              </span>
+              <h2 class="font-headline text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#231916]">
+                ${isMm ? 'အထူး စုစည်းမှုများ' : 'Curated Collections'}
+              </h2>
+              <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden sm:block">
+                ${isMm ? 'အစီအစဉ်အမျိုးမျိုးအတွက် အထူးသီးသန့် ရွေးချယ်ပေးထားသော စားသောက်ဆိုင်များ' : 'Hand-picked culinary editorial guides crafted for romantic evenings, celebrations, and heritage flavors.'}
+              </p>
+            </div>
+            <button
+              data-nav-tab="curated"
+              class="self-start sm:self-end inline-flex items-center gap-1.5 font-label text-xs sm:text-sm font-extrabold text-[#840f16] hover:underline cursor-pointer group"
+            >
+              <span>${isMm ? 'စုစည်းမှု အားလုံး ကြည့်ရန်' : 'Explore All Guides'}</span>
+              <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
           </div>
 
-          <!-- Cards Grid / Horizontal Scroll for Mobile & Tablet -->
-          <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pb-4 lg:pb-0">
-            ${COLLECTIONS_DATA.map(col => `
+          <!-- MOBILE & TABLET: Option A Clean Natural Snap Carousel (< lg, strictly 3 curated cards) -->
+          <div class="lg:hidden curated-collections-mobile-view mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 pt-1 scroll-smooth">
+            ${COLLECTIONS_DATA.slice(0, 3).map((col, idx) => `
               <div
                 data-collection-target="${col.targetRestaurantId}"
-                class="shrink-0 w-[270px] h-[320px] sm:w-[320px] sm:h-[360px] lg:w-auto lg:h-[380px] snap-start group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-end p-4 sm:p-5 lg:p-6 text-left text-white border border-white/10"
+                class="shrink-0 w-[280px] sm:w-[320px] h-[360px] sm:h-[380px] snap-start relative rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/15"
               >
                 <img
                   src="${col.image}"
                   alt="${col.title}"
                   referrerpolicy="no-referrer"
                   loading="lazy"
-                  onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+                  onerror="this.onerror=null; this.src='assets/images/seeds_lakefront.jpg';"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <!-- Dark Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/25"></div>
 
-                <!-- Card Content -->
+                <!-- Top Row Tag & Venue Count -->
+                <div class="relative z-10 flex items-center justify-between gap-2">
+                  <span class="inline-flex items-center gap-1 ${idx === 0 ? 'bg-[#D08E1C] text-[#231916]' : idx === 1 ? 'bg-[#840f16] text-white' : 'bg-[#2f7a3f] text-white'} px-3 py-1 rounded-full font-label text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
+                    ${isMm ? col.categoryTagMM : col.categoryTag}
+                  </span>
+                  <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
+                    ${idx === 0 ? (isMm ? '၆ ဆိုင်' : '6 Venues') : idx === 1 ? (isMm ? '၄ ဆိုင်' : '4 Tables') : (isMm ? '၅ ဆိုင်' : '5 Venues')}
+                  </span>
+                </div>
+
+                <!-- Bottom Content -->
                 <div class="relative z-10 space-y-2">
-                  <div>
-                    ${renderCuisineTag(isMm ? col.categoryTagMM : col.categoryTag, true)}
+                  <div class="text-[#f5d592] font-label text-[11px] font-bold uppercase tracking-wider">
+                    ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Issue'}
                   </div>
-                  <h3 class="font-headline text-lg sm:text-xl lg:text-2xl font-extrabold text-white leading-tight">
+                  <h4 class="font-headline text-lg sm:text-xl font-bold text-white leading-tight">
                     ${isMm ? col.titleMM : col.title}
-                  </h3>
-                  <p class="font-body text-xs sm:text-sm text-white/90 line-clamp-2 leading-relaxed">
+                  </h4>
+                  <p class="font-body text-xs text-white/85 line-clamp-2 leading-relaxed">
                     ${isMm ? col.subtitleMM : col.subtitle}
                   </p>
+                  <div class="pt-1 flex items-center gap-1.5 text-xs font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
+                    <span>${isMm ? 'လမ်းညွှန် ကြည့်ရှုမည်' : 'Explore Guide'}</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </div>
                 </div>
               </div>
             `).join('')}
           </div>
 
-          <!-- Centered Bottom Pill Button -->
-          <div class="mt-10 text-center">
-            <button
-              data-nav-tab="curated"
-              class="inline-flex items-center gap-2 px-7 py-3 rounded-full border border-[#EADFD1] bg-[#FBF3E2] hover:bg-[#840f16] hover:text-white hover:border-[#840f16] transition-all text-[#840f16] font-label text-sm font-bold shadow-sm hover:shadow-md cursor-pointer group"
-            >
-              <span>${isMm ? 'စုစည်းမှုများ အားလုံး ကြည့်မည်' : 'View All Collections'}</span>
-              <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </button>
+          <!-- DESKTOP: Option 1 Editorial Bento Grid (≥ lg) -->
+          <div class="hidden lg:grid curated-collections-desktop-view lg:grid-cols-12 gap-6">
+            <!-- Dominant Hero Card (7 Cols) -->
+            ${(() => {
+              const heroCol = COLLECTIONS_DATA[0] || {
+                targetRestaurantId: 'rest-1',
+                title: 'Most Romantic Dining & Sunset Views',
+                titleMM: 'အကြည်နူးဆုံး ရိုမန်းတစ် စားသောက်ဆိုင်များ',
+                subtitle: 'Intimate candlelit tables, panoramic Inya Lake sunsets, and curated wine pairings.',
+                subtitleMM: 'အင်းလျားကန်ဘေး သီးသန့်ဝိုင်းများနှင့် ဖယောင်းတိုင်အလင်းရောင် အောက်ရှိ ဇိမ်ခံညစာများ။',
+                image: 'assets/images/seeds_lakefront.jpg',
+                categoryTag: 'Romantic Dining',
+                categoryTagMM: 'ရိုမန်းတစ် ညစာ'
+              };
+              return `
+                <div
+                  data-collection-target="${heroCol.targetRestaurantId}"
+                  class="lg:col-span-7 relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-7 text-left text-white border border-white/10"
+                >
+                  <img
+                    src="${heroCol.image}"
+                    alt="${heroCol.title}"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='assets/images/seeds_lakefront.jpg';"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <!-- Luxury Vignette Gradient -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/25"></div>
+
+                  <!-- Top Pill & Counter -->
+                  <div class="relative z-10 flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1.5 bg-[#D08E1C] text-[#231916] px-3.5 py-1 rounded-full font-label text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+                      <span class="material-symbols-outlined text-xs leading-none">stars</span>
+                      ${isMm ? heroCol.categoryTagMM : heroCol.categoryTag}
+                    </span>
+                    <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-xs font-bold px-3 py-1 rounded-full">
+                      ${isMm ? '၆ ဆိုင် ပါဝင်ပါသည်' : '6 Venues Included'}
+                    </span>
+                  </div>
+
+                  <!-- Bottom Hero Details -->
+                  <div class="relative z-10 space-y-2">
+                    <div class="text-[#f5d592] font-label text-xs font-bold uppercase tracking-wider">
+                      ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Choice Edition'}
+                    </div>
+                    <h3 class="font-headline text-2xl lg:text-3xl font-extrabold text-white leading-tight">
+                      ${isMm ? heroCol.titleMM : heroCol.title}
+                    </h3>
+                    <p class="font-body text-sm text-white/90 line-clamp-2 max-w-xl leading-relaxed">
+                      ${isMm ? heroCol.subtitleMM : heroCol.subtitle}
+                    </p>
+                    <div class="pt-2 flex items-center gap-2 text-sm font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
+                      <span>${isMm ? 'စားသောက်ဆိုင်များ စိုတ်ယူရန်' : 'Explore Curated Dining Guide'}</span>
+                      <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            })()}
+
+            <!-- Stacked Duo Companion Cards (5 Cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+              ${COLLECTIONS_DATA.slice(1, 3).map((col, idx) => `
+                <div
+                  data-collection-target="${col.targetRestaurantId}"
+                  class="relative flex-1 min-h-[175px] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/10"
+                >
+                  <img
+                    src="${col.image}"
+                    alt="${col.title}"
+                    referrerpolicy="no-referrer"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <!-- Dark Gradient Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20"></div>
+
+                  <!-- Top Tag & Counter -->
+                  <div class="relative z-10 flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1 ${idx === 0 ? 'bg-[#840f16]' : 'bg-[#2f7a3f]'} text-white px-2.5 py-0.5 rounded-full font-label text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                      ${isMm ? col.categoryTagMM : col.categoryTag}
+                    </span>
+                    <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                      ${idx === 0 ? (isMm ? '၄ ဆိုင်' : '4 Tables') : (isMm ? '၅ ဆိုင်' : '5 Venues')}
+                    </span>
+                  </div>
+
+                  <!-- Bottom Info -->
+                  <div class="relative z-10 space-y-1">
+                    <h4 class="font-headline text-lg font-bold text-white leading-snug">
+                      ${isMm ? col.titleMM : col.title}
+                    </h4>
+                    <p class="font-body text-xs text-white/80 line-clamp-1">
+                      ${isMm ? col.subtitleMM : col.subtitle}
+                    </p>
+                    <div class="pt-1 flex items-center gap-1 text-[11px] font-label font-extrabold ${idx === 0 ? 'text-amber-200' : 'text-emerald-200'} group-hover:translate-x-1 transition-transform">
+                      <span>${isMm ? 'ကြည့်ရှုရန်' : 'Explore Guide'}</span>
+                      <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
           </div>
         </section>
 
@@ -927,7 +1039,7 @@
         ${
           promoRestaurants.length > 0
             ? `
-        <section class="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left))] sm:px-6 lg:px-8 text-left">
+        <section class="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left))] sm:px-6 lg:px-8 text-left relative">
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916] flex items-center gap-2">
@@ -940,8 +1052,35 @@
             </div>
           </div>
 
-          <div class="mobile-horizontal-scroll scroll-all mx-0 px-0 gap-4 sm:gap-5 lg:gap-6 pt-3 pb-4">
-            ${promoRestaurants.map(restaurant => renderPromoCard(restaurant, state)).join('')}
+          <!-- Hot Promotions Carousel Container with Floating Scroll Buttons -->
+          <div class="relative group/hotpromo-carousel">
+            <!-- Left Pressable Scroll Arrow -->
+            <button
+              id="hotpromo-float-prev"
+              aria-label="Scroll left"
+              title="Scroll left"
+              class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
+            >
+              <span class="material-symbols-outlined text-xl leading-none select-none">chevron_left</span>
+            </button>
+
+            <!-- Scrollable Hot Promotions Row -->
+            <div
+              id="hotpromo-scroll-container"
+              class="horizontal-scroll-row mobile-horizontal-scroll scroll-all flex flex-nowrap items-stretch overflow-x-auto overflow-y-hidden scroll-smooth mx-0 px-0 gap-4 sm:gap-5 lg:gap-6 pt-3 pb-4"
+            >
+              ${promoRestaurants.map(restaurant => renderPromoCard(restaurant, state)).join('')}
+            </div>
+
+            <!-- Right Pressable Scroll Arrow -->
+            <button
+              id="hotpromo-float-next"
+              aria-label="Scroll right"
+              title="Scroll right"
+              class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-[#840f16] text-[#231916] hover:text-white border border-[#EADFD1] shadow-lg items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none"
+            >
+              <span class="material-symbols-outlined text-xl leading-none select-none">chevron_right</span>
+            </button>
           </div>
         </section>
         `
@@ -1465,6 +1604,49 @@
     if (promoScrollContainer) {
       promoScrollContainer.addEventListener('scroll', updatePromoCarouselState, { passive: true });
       setTimeout(updatePromoCarouselState, 50);
+    }
+
+    // Hot Promotions horizontal slide controls (floating buttons matching occasions section)
+    const hotpromoScrollContainer = containerElement.querySelector('#hotpromo-scroll-container');
+    const hotpromoFloatPrev = containerElement.querySelector('#hotpromo-float-prev');
+    const hotpromoFloatNext = containerElement.querySelector('#hotpromo-float-next');
+
+    const updateHotpromoScrollButtons = () => {
+      if (!hotpromoScrollContainer) return;
+      const { scrollLeft, scrollWidth, clientWidth } = hotpromoScrollContainer;
+      const isAtStart = scrollLeft <= 10;
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+
+      if (hotpromoFloatPrev) {
+        hotpromoFloatPrev.style.opacity = isAtStart ? '0' : '1';
+        hotpromoFloatPrev.style.pointerEvents = isAtStart ? 'none' : 'auto';
+      }
+      if (hotpromoFloatNext) {
+        hotpromoFloatNext.style.opacity = isAtEnd ? '0' : '1';
+        hotpromoFloatNext.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+      }
+    };
+
+    const handleHotpromoScrollLeft = (e) => {
+      if (e) e.preventDefault();
+      if (hotpromoScrollContainer) {
+        hotpromoScrollContainer.scrollBy({ left: -340, behavior: 'smooth' });
+      }
+    };
+
+    const handleHotpromoScrollRight = (e) => {
+      if (e) e.preventDefault();
+      if (hotpromoScrollContainer) {
+        hotpromoScrollContainer.scrollBy({ left: 340, behavior: 'smooth' });
+      }
+    };
+
+    if (hotpromoFloatPrev) hotpromoFloatPrev.addEventListener('click', handleHotpromoScrollLeft);
+    if (hotpromoFloatNext) hotpromoFloatNext.addEventListener('click', handleHotpromoScrollRight);
+
+    if (hotpromoScrollContainer) {
+      hotpromoScrollContainer.addEventListener('scroll', updateHotpromoScrollButtons, { passive: true });
+      setTimeout(updateHotpromoScrollButtons, 50);
     }
 
     // Hero Calendar View Popover Logic

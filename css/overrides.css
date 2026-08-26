@@ -815,10 +815,31 @@ input[type="radio"] {
   }
 }
 
-/* sm:hidden utility - missing from compiled Tailwind */
+/* sm:hidden and lg:hidden responsive utilities */
 @media (min-width: 640px) {
   .sm\:hidden {
     display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:hidden,
+  .curated-collections-mobile-view {
+    display: none !important;
+  }
+  .lg\:grid,
+  .curated-collections-desktop-view {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .curated-collections-desktop-view,
+  .hidden.lg\:grid {
+    display: none !important;
+  }
+  .curated-collections-mobile-view {
+    display: flex !important;
   }
 }
 

@@ -30,7 +30,7 @@
 
   function section(titleEn, titleMm, bodyHtml) {
     return `
-      <section class="bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] p-4 sm:p-6 shadow-sm space-y-1">
+      <section class="space-y-4 py-4 sm:py-6 border-b border-[#E8DDD0]/70 last:border-b-0">
         ${sectionHeader(titleEn, titleMm)}
         ${bodyHtml}
       </section>
@@ -649,6 +649,647 @@
     `;
   }
 
+  // ============================================================
+  // Proposed Curated Collections Design Explorations (Options 1 - 4 + Mobile/Tablet Options A & B)
+  // ============================================================
+
+  function renderCuratedOptionA(isMm = false) {
+    const collections = [
+      {
+        id: 'col-a-1',
+        title: isMm ? 'အကြည်နူးဆုံး ရိုမန်းတစ် စားသောက်ဆိုင်များ' : 'Most Romantic Dining & Sunset Views',
+        subtitle: isMm ? 'အင်းလျားကန်ဘေး သီးသန့်ဝိုင်းများနှင့် ဖယောင်းတိုင်အလင်းရောင် အောက်ရှိ ဇိမ်ခံညစာများ။' : 'Intimate candlelit tables, panoramic Inya Lake sunsets, and curated wine pairings.',
+        tag: isMm ? 'ရိုမန်းတစ် ညစာ' : 'Romantic Dining',
+        tagColor: 'bg-[#D08E1C] text-[#231916]',
+        count: isMm ? '၆ ဆိုင် ပါဝင်ပါသည်' : '6 Venues Included',
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'col-a-2',
+        title: isMm ? 'မီရှလင်းအဆင့် အထူးညစာများ' : 'Michelin-Standard Fine Dining',
+        subtitle: isMm ? 'စားဖိုမှူးကြီးများ၏ ဆန်းသစ်တီထွင်မှုနှင့် နိုင်ငံတကာအဆင့် အကောင်းဆုံး ဝိုင်အတွဲအစပ်များ။' : 'World-class degustation menus, sommelier selections, and private dining.',
+        tag: isMm ? 'အဆင့်မြင့် ဟင်းလျာ' : 'Haute Cuisine',
+        tagColor: 'bg-[#840f16] text-white',
+        count: isMm ? '၄ ဆိုင် ပါဝင်ပါသည်' : '4 Tables Included',
+        img: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'col-a-3',
+        title: isMm ? 'ရန်ကုန်မြို့လယ် ရှေးဟောင်းလက်ဖက်ရည်ဆိုင်များ' : 'Yangon Heritage & Tea Salons',
+        subtitle: isMm ? 'ကိုလိုနီခေတ် ဗိသုကာလက်ရာများအောက်တွင် သမားရိုးကျ မြန်မာ့ရိုးရာ လက်ဖက်ရည်နှင့် မုန့်များ။' : 'Colonial high ceilings, artisanal clay-pot brews, and classic Burmese pastries.',
+        tag: isMm ? 'ရိုးရာ လက်ဖက်ရည်' : 'Heritage Gems',
+        tagColor: 'bg-[#2f7a3f] text-white',
+        count: isMm ? '၅ ဆိုင် ပါဝင်ပါသည်' : '5 Venues Included',
+        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+
+    return `
+      <div id="curated-mobile-option-a" class="space-y-3 p-4 sm:p-6 bg-[#FDFBF7] rounded-3xl border border-[#E8DDD0]">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+              <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+              Mobile/Tablet Option A: Clean Natural Snap Carousel (Equal Size + Edge Peek)
+            </span>
+            <p class="font-body text-xs text-[#58413f]">
+              ${isMm ? 'မိုဘိုင်းနှင့် တက်ဘလက်တွင် ကတ်အားလုံး အရွယ်အစား တူညီပြီး ချောမွေ့စွာ ဘေးသို့ ပွတ်ဆွဲကြည့်ရှုနိုင်သော ပုံစံ' : 'Uniform card dimensions with native snap scrolling. Shows a subtle peek of the next card on the right edge.'}
+            </p>
+          </div>
+          <span class="bg-[#231916] text-[#D08E1C] font-label text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider hidden sm:inline-block">
+            Swipeable
+          </span>
+        </div>
+
+        <!-- Horizontal Snap Carousel Container -->
+        <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 pt-1 scroll-smooth">
+          ${collections.map(c => `
+            <div
+              data-curated-demo="${c.id}"
+              class="shrink-0 w-[280px] sm:w-[320px] h-[360px] sm:h-[380px] snap-start relative rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/15"
+            >
+              <img
+                src="${c.img}"
+                alt="${c.title}"
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/25"></div>
+
+              <!-- Top Row Tag & Venue Count -->
+              <div class="relative z-10 flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1 ${c.tagColor} px-3 py-1 rounded-full font-label text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
+                  ${c.tag}
+                </span>
+                <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
+                  ${c.count}
+                </span>
+              </div>
+
+              <!-- Bottom Content -->
+              <div class="relative z-10 space-y-2">
+                <div class="text-[#f5d592] font-label text-[11px] font-bold uppercase tracking-wider">
+                  ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Issue'}
+                </div>
+                <h4 class="font-headline text-lg sm:text-xl font-bold text-white leading-tight">
+                  ${c.title}
+                </h4>
+                <p class="font-body text-xs text-white/85 line-clamp-2 leading-relaxed">
+                  ${c.subtitle}
+                </p>
+                <div class="pt-1 flex items-center gap-1.5 text-xs font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
+                  <span>${isMm ? 'လမ်းညွှန် ကြည့်ရှုမည်' : 'Explore Guide'}</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedOptionB(isMm = false) {
+    const collections = [
+      {
+        id: 'col-b-1',
+        title: isMm ? 'အကြည်နူးဆုံး ရိုမန်းတစ် စားသောက်ဆိုင်များ' : 'Most Romantic Dining & Sunset Views',
+        subtitle: isMm ? 'အင်းလျားကန်ဘေး သီးသန့်ဝိုင်းများနှင့် ဖယောင်းတိုင်အလင်းရောင် အောက်ရှိ ဇိမ်ခံညစာများ။' : 'Intimate candlelit tables, panoramic Inya Lake sunsets, and curated wine pairings.',
+        tag: isMm ? 'ရိုမန်းတစ် ညစာ' : 'Romantic Dining',
+        tagColor: 'bg-[#D08E1C] text-[#231916]',
+        count: isMm ? '၆ ဆိုင်' : '6 Venues',
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'col-b-2',
+        title: isMm ? 'မီရှလင်းအဆင့် အထူးညစာများ' : 'Michelin-Standard Fine Dining',
+        subtitle: isMm ? 'စားဖိုမှူးကြီးများ၏ ဆန်းသစ်တီထွင်မှုနှင့် နိုင်ငံတကာအဆင့် အကောင်းဆုံး ဝိုင်အတွဲအစပ်များ။' : 'World-class degustation menus, sommelier selections, and private dining.',
+        tag: isMm ? 'အဆင့်မြင့် ဟင်းလျာ' : 'Haute Cuisine',
+        tagColor: 'bg-[#840f16] text-white',
+        count: isMm ? '၄ ဆိုင်' : '4 Tables',
+        img: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'col-b-3',
+        title: isMm ? 'ရန်ကုန်မြို့လယ် ရှေးဟောင်းလက်ဖက်ရည်ဆိုင်များ' : 'Yangon Heritage & Tea Salons',
+        subtitle: isMm ? 'ကိုလိုနီခေတ် ဗိသုကာလက်ရာများအောက်တွင် သမားရိုးကျ မြန်မာ့ရိုးရာ လက်ဖက်ရည်နှင့် မုန့်များ။' : 'Colonial high ceilings, artisanal clay-pot brews, and classic Burmese pastries.',
+        tag: isMm ? 'ရိုးရာ လက်ဖက်ရည်' : 'Heritage Gems',
+        tagColor: 'bg-[#2f7a3f] text-white',
+        count: isMm ? '၅ ဆိုင်' : '5 Venues',
+        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+
+    return `
+      <div id="curated-mobile-option-b" class="space-y-3 p-4 sm:p-6 bg-[#FDFBF7] rounded-3xl border border-[#E8DDD0]">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+              <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+              Mobile/Tablet Option B: Carousel with Interactive Arrows & Progress Indicator
+            </span>
+            <p class="font-body text-xs text-[#58413f]">
+              ${isMm ? 'ဘယ်/ညာ ခလုတ်များနှင့် ကတ်အရေအတွက်ပြ Indicator ပါဝင်သော အဆင့်မြင့် Carousel ပုံစံ' : 'Includes interactive prev/next touch buttons, live active pagination pills, and touch drag support.'}
+            </p>
+          </div>
+
+          <!-- Interactive Prev / Next Navigation Arrows -->
+          <div class="flex items-center gap-2">
+            <button id="curated-option-b-prev" class="w-8 h-8 rounded-full bg-white border border-[#E8DDD0] text-[#231916] hover:bg-[#840f16] hover:text-white hover:border-[#840f16] transition-all flex items-center justify-center shadow-xs cursor-pointer" aria-label="Previous Slide">
+              <span class="material-symbols-outlined text-base">chevron_left</span>
+            </button>
+            <button id="curated-option-b-next" class="w-8 h-8 rounded-full bg-white border border-[#E8DDD0] text-[#231916] hover:bg-[#840f16] hover:text-white hover:border-[#840f16] transition-all flex items-center justify-center shadow-xs cursor-pointer" aria-label="Next Slide">
+              <span class="material-symbols-outlined text-base">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Carousel Track -->
+        <div id="curated-option-b-track" class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 pt-1 scroll-smooth">
+          ${collections.map((c, i) => `
+            <div
+              data-curated-b-index="${i}"
+              data-curated-demo="${c.id}"
+              class="shrink-0 w-[280px] sm:w-[320px] h-[360px] sm:h-[380px] snap-start relative rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/15"
+            >
+              <img
+                src="${c.img}"
+                alt="${c.title}"
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/25"></div>
+
+              <!-- Top Row Tag & Bookmark Button -->
+              <div class="relative z-10 flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1 ${c.tagColor} px-3 py-1 rounded-full font-label text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
+                  ${c.tag}
+                </span>
+                <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
+                  ${c.count}
+                </span>
+              </div>
+
+              <!-- Bottom Content -->
+              <div class="relative z-10 space-y-2">
+                <div class="text-[#f5d592] font-label text-[11px] font-bold uppercase tracking-wider">
+                  ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Edition'}
+                </div>
+                <h4 class="font-headline text-lg sm:text-xl font-bold text-white leading-tight">
+                  ${c.title}
+                </h4>
+                <p class="font-body text-xs text-white/85 line-clamp-2 leading-relaxed">
+                  ${c.subtitle}
+                </p>
+                <div class="pt-1 flex items-center justify-between border-t border-white/15 pt-2 text-xs font-label font-extrabold text-[#f5d592]">
+                  <span>${isMm ? 'လမ်းညွှန် ကြည့်ရှုမည်' : 'Explore Guide'}</span>
+                  <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Carousel Pagination Dots -->
+        <div class="flex items-center justify-center gap-1.5 pt-1" id="curated-option-b-dots">
+          <span class="w-6 h-1.5 rounded-full bg-[#840f16] transition-all"></span>
+          <span class="w-2 h-1.5 rounded-full bg-[#E8DDD0] transition-all"></span>
+          <span class="w-2 h-1.5 rounded-full bg-[#E8DDD0] transition-all"></span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedOption1(isMm = false) {
+    return `
+      <div id="curated-option-1-bento" class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+            <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+            Option 1: Editorial Bento Showcase (Hero + Duo Stack)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Dominant Hero Card (7 Cols) -->
+          <div class="lg:col-span-7 relative h-72 sm:h-80 rounded-3xl overflow-hidden shadow-md group cursor-pointer border border-[#362723]" data-curated-demo="col-1">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80" alt="Romantic Spots" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/20"></div>
+
+            <!-- Top Pill Tag & Count -->
+            <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+              <span class="inline-flex items-center gap-1.5 bg-[#D08E1C] text-[#231916] px-3 py-1 rounded-full font-label text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+                <span class="material-symbols-outlined text-xs leading-none">stars</span>
+                ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု · Issue #12' : 'Curator’s Issue #12'}
+              </span>
+              <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-xs font-bold px-3 py-1 rounded-full">
+                ${isMm ? '၆ ဆိုင် ပါဝင်ပါသည်' : '6 Venues Included'}
+              </span>
+            </div>
+
+            <!-- Bottom Content -->
+            <div class="absolute bottom-4 left-4 right-4 z-10 space-y-1.5 text-white">
+              <div class="text-[#f5d592] font-label text-xs font-bold uppercase tracking-wider">
+                ${isMm ? 'ဒိတ်နိုက် အမှတ်တရ' : 'Candlelight & Lakefront'}
+              </div>
+              <h3 class="font-headline text-xl sm:text-2xl font-bold leading-tight">
+                ${isMm ? 'အကြည်နူးဆုံး ရိုမန်းတစ် စားသောက်ဆိုင်များ' : 'Most Romantic Dining & Sunset Views'}
+              </h3>
+              <p class="font-body text-xs text-white/80 line-clamp-2 max-w-xl">
+                ${isMm ? 'အင်းလျားကန်ဘေး သီးသန့်ဝိုင်းများနှင့် ဖယောင်းတိုင်အလင်းရောင် အောက်ရှိ ဇိမ်ခံညစာများ။' : 'Intimate candlelit tables, panoramic Inya Lake sunsets, and curated wine pairings.'}
+              </p>
+              <div class="pt-2 flex items-center gap-2 text-xs font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
+                <span>${isMm ? 'စားသောက်ဆိုင်များ ကြည့်ရှုရန်' : 'Explore Curated Dining Guide'}</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duo Stacked Cards (5 Cols) -->
+          <div class="lg:col-span-5 flex flex-col gap-4">
+            <!-- Sub-card 1 -->
+            <div class="relative h-34 sm:h-38 rounded-2xl overflow-hidden shadow-sm group cursor-pointer border border-[#E8DDD0]" data-curated-demo="col-2">
+              <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80" alt="Michelin" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="bg-[#840f16] text-white px-2.5 py-0.5 rounded-full font-label text-[10px] font-extrabold uppercase tracking-wider">
+                  ${isMm ? 'အဆင့်မြင့် ဟင်းလျာ' : 'Haute Cuisine'}
+                </span>
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 z-10 text-white">
+                <h4 class="font-headline text-base font-bold leading-snug">
+                  ${isMm ? 'မီရှလင်း ကြယ်ပွင့် စားသောက်ဆိုင်များ' : 'Michelin & Fine Dining Guides'}
+                </h4>
+                <span class="text-[11px] text-amber-200 font-label font-bold flex items-center gap-1 mt-0.5">
+                  4 Tables · ${isMm ? 'စိုတ်ယူရန်' : 'Explore'} ➔
+                </span>
+              </div>
+            </div>
+
+            <!-- Sub-card 2 -->
+            <div class="relative h-34 sm:h-38 rounded-2xl overflow-hidden shadow-sm group cursor-pointer border border-[#E8DDD0]" data-curated-demo="col-3">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Heritage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="bg-[#2f7a3f] text-white px-2.5 py-0.5 rounded-full font-label text-[10px] font-extrabold uppercase tracking-wider">
+                  ${isMm ? 'ရိုးရာ လက်ဖက်ရည်' : 'Heritage Gems'}
+                </span>
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 z-10 text-white">
+                <h4 class="font-headline text-base font-bold leading-snug">
+                  ${isMm ? 'ရန်ကုန်မြို့လယ် ရှေးဟောင်းလက်ဖက်ရည်ဆိုင်များ' : 'Yangon Heritage & Tea Salons'}
+                </h4>
+                <span class="text-[11px] text-emerald-200 font-label font-bold flex items-center gap-1 mt-0.5">
+                  5 Venues · ${isMm ? 'စိုတ်ယူရန်' : 'Explore'} ➔
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedOption2(isMm = false) {
+    const collections = [
+      {
+        id: 'col-opt2-1',
+        title: isMm ? 'အကြည်နူးဆုံး ရိုမန်းတစ် ညစာများ' : 'Most Romantic Dining Spots',
+        moodTag: '🕯️ Candlelight & Lakefront',
+        venuesCount: 5,
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+        avatars: [
+          'assets/images/seeds_lakefront.jpg',
+          'assets/images/gilded_fork.jpg',
+          'assets/images/alchimiste.jpg'
+        ]
+      },
+      {
+        id: 'col-opt2-2',
+        title: isMm ? 'စားဖိုမှူး အထူး ဟင်းလျာလက်ရာ' : 'Chef’s Table & Fine Dining',
+        moodTag: '🍷 Sommelier & Haute Cuisine',
+        venuesCount: 4,
+        img: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80',
+        avatars: [
+          'assets/images/gilded_fork.jpg',
+          'assets/images/alchimiste.jpg',
+          'assets/images/rangoon_tea_house.jpg'
+        ]
+      },
+      {
+        id: 'col-opt2-3',
+        title: isMm ? 'အပန်းဖြေ စိမ်းလန်း ဥယျာဉ်ဆိုင်များ' : 'Lush Garden & Courtyard Dining',
+        moodTag: '🌿 Outdoor Tropical Sanctuary',
+        venuesCount: 6,
+        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+        avatars: [
+          'assets/images/seeds_lakefront.jpg',
+          'assets/images/rangoon_tea_house.jpg',
+          'assets/images/gilded_fork.jpg'
+        ]
+      }
+    ];
+
+    return `
+      <div id="curated-option-2-storybook" class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+            <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+            Option 2: Storybook Cards with Restaurant Peek Avatars & Save Pin
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+          ${collections.map(c => `
+            <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer" data-curated-demo="${c.id}">
+              <!-- Image with Atmospheric Overlay -->
+              <div class="relative h-48 w-full overflow-hidden bg-[#231916]">
+                <img src="${c.img}" alt="${c.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+
+                <!-- Mood Badge Top Left -->
+                <div class="absolute top-3 left-3 z-10">
+                  <span class="inline-flex items-center gap-1 bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[10px] font-bold px-2.5 py-1 rounded-full shadow-xs">
+                    ${c.moodTag}
+                  </span>
+                </div>
+
+                <!-- Bookmark Pin Top Right -->
+                <button class="gallery-card-fav absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-10" aria-label="Bookmark Guide" title="Save Guide">
+                  <span class="material-symbols-outlined text-base">bookmark</span>
+                </button>
+
+                <!-- Venue Avatar Stack in Lower Corner -->
+                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between z-10">
+                  <div class="flex items-center -space-x-2">
+                    ${c.avatars.map(av => `
+                      <img src="${av}" class="w-7 h-7 rounded-full border-2 border-white object-cover shadow-sm" alt="Venue" />
+                    `).join('')}
+                    <span class="w-7 h-7 rounded-full bg-[#840f16] text-white border-2 border-white text-[10px] font-bold flex items-center justify-center shadow-sm">
+                      +${c.venuesCount - c.avatars.length}
+                    </span>
+                  </div>
+                  <span class="bg-black/60 backdrop-blur-md text-white font-label text-[11px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+                    ${c.venuesCount} ${isMm ? 'ဆိုင်များ' : 'Venues'}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                <h4 class="font-headline text-base sm:text-lg font-bold text-[#231916] leading-snug group-hover:text-[#840f16] transition-colors">
+                  ${c.title}
+                </h4>
+
+                <div class="pt-2 border-t border-[#E8DDD0]/80 flex items-center justify-between text-xs font-label font-bold text-[#840f16]">
+                  <span>${isMm ? 'လမ်းညွှန် ကြည့်ရှုမည်' : 'View Curated Guide'}</span>
+                  <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedOption3(isMm = false) {
+    return `
+      <div id="curated-option-3-interactive" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+            <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+            Option 3: Mood-Based Interactive Filter Bar with Live Switching
+          </span>
+        </div>
+
+        <!-- Interactive Mood Filter Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="curated-mood-pills">
+          <button class="curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-[#840f16] text-white shadow-sm transition-all cursor-pointer whitespace-nowrap" data-mood="all">
+            ✨ ${isMm ? 'အားလုံး' : 'All Stories'}
+          </button>
+          <button class="curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-white text-[#58413f] border border-[#E8DDD0] hover:border-[#840f16] shadow-xs transition-all cursor-pointer whitespace-nowrap" data-mood="romantic">
+            🕯️ ${isMm ? 'ဒိတ်နိုက်' : 'Date Night'}
+          </button>
+          <button class="curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-white text-[#58413f] border border-[#E8DDD0] hover:border-[#840f16] shadow-xs transition-all cursor-pointer whitespace-nowrap" data-mood="business">
+            💼 ${isMm ? 'စီးပွားရေး ဧည့်ခံ' : 'Business Dining'}
+          </button>
+          <button class="curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-white text-[#58413f] border border-[#E8DDD0] hover:border-[#840f16] shadow-xs transition-all cursor-pointer whitespace-nowrap" data-mood="outdoor">
+            🌿 ${isMm ? 'ဥယျာဉ် & သဘာဝ' : 'Garden & Lake'}
+          </button>
+          <button class="curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-white text-[#58413f] border border-[#E8DDD0] hover:border-[#840f16] shadow-xs transition-all cursor-pointer whitespace-nowrap" data-mood="heritage">
+            🍜 ${isMm ? 'ရိုးရာ လက်ရာစစ်' : 'Heritage & Tea'}
+          </button>
+        </div>
+
+        <!-- Dynamic Card Display Container -->
+        <div id="curated-mood-content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Card 1 -->
+          <div class="relative h-64 rounded-3xl overflow-hidden group cursor-pointer shadow-md border border-[#E8DDD0]" data-curated-demo="col-1">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Date Night" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20"></div>
+            <div class="absolute top-3.5 left-3.5">
+              <span class="bg-[#D08E1C] text-[#231916] font-label text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md">
+                ${isMm ? 'အကြည်နူးဆုံး' : 'Top Romance'}
+              </span>
+            </div>
+            <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white space-y-1">
+              <h4 class="font-headline text-lg font-bold leading-tight">${isMm ? 'အင်းလျားကန်ဘေး ရိုမန်းတစ် ညစာများ' : 'Lakefront Candlelit Dinners'}</h4>
+              <p class="font-body text-xs text-white/80">${isMm ? '၅ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : '5 curated romantic venues with wine pairing'}</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="relative h-64 rounded-3xl overflow-hidden group cursor-pointer shadow-md border border-[#E8DDD0]" data-curated-demo="col-2">
+            <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80" alt="Fine Dining" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20"></div>
+            <div class="absolute top-3.5 left-3.5">
+              <span class="bg-[#840f16] text-white font-label text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md">
+                ${isMm ? 'သီးသန့် အဆင့်မြင့်' : 'VIP Executive'}
+              </span>
+            </div>
+            <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white space-y-1">
+              <h4 class="font-headline text-lg font-bold leading-tight">${isMm ? 'စီးပွားရေး ဧည့်ခံ သီးသန့်ခန်းများ' : 'Private Rooms for Business Dining'}</h4>
+              <p class="font-body text-xs text-white/80">${isMm ? '၄ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : 'Acoustic-treated private dining suites'}</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="relative h-64 rounded-3xl overflow-hidden group cursor-pointer shadow-md border border-[#E8DDD0]" data-curated-demo="col-3">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Heritage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20"></div>
+            <div class="absolute top-3.5 left-3.5">
+              <span class="bg-[#2f7a3f] text-white font-label text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md">
+                ${isMm ? 'သဘာဝ ဥယျာဉ်' : 'Open Air Garden'}
+              </span>
+            </div>
+            <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white space-y-1">
+              <h4 class="font-headline text-lg font-bold leading-tight">${isMm ? 'စိမ်းလန်းသော ပြင်ပ ဥယျာဉ်ဝိုင်းများ' : 'Lush Outdoor Garden Dining'}</h4>
+              <p class="font-body text-xs text-white/80">${isMm ? '၆ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : 'Al-fresco seating surrounded by greenery'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedOption4(isMm = false) {
+    return `
+      <div id="curated-option-4-hybrid" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 font-label text-xs font-extrabold uppercase tracking-wide text-[#840f16]">
+            <span class="w-2 h-2 rounded-full bg-[#840f16]"></span>
+            Option 4: The Ultimate Hybrid (Bento Layout + Story Avatars + Mood Badges)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <!-- Featured Lead Story (8 Cols) -->
+          <div class="lg:col-span-8 relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-lg group cursor-pointer border border-[#362723]" data-curated-demo="col-1">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80" alt="Featured Story" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/30"></div>
+
+            <!-- Top Floating Controls -->
+            <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-[#D08E1C] text-[#231916] px-3.5 py-1 rounded-full font-label text-xs font-extrabold uppercase tracking-wider shadow-md">
+                  <span class="material-symbols-outlined text-sm leading-none">auto_awesome</span>
+                  ${isMm ? 'အယ်ဒီတာ့ အထူးထုတ်' : 'Editorial Cover Story'}
+                </span>
+                <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-xs font-bold px-3 py-1 rounded-full hidden sm:inline-flex">
+                  🕯️ Romantic Sunset
+                </span>
+              </div>
+              <button class="gallery-card-fav w-10 h-10 rounded-full bg-white/90 backdrop-blur-md text-[#840f16] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-10" aria-label="Bookmark Guide" title="Save Guide">
+                <span class="material-symbols-outlined text-lg">bookmark</span>
+              </button>
+            </div>
+
+            <!-- Floating Glassmorphic Details Card -->
+            <div class="absolute bottom-4 left-4 right-4 z-10 p-5 bg-black/60 backdrop-blur-md rounded-2xl border border-white/15 text-white space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[#f5d592] font-label text-xs font-extrabold uppercase tracking-wider">
+                  ${isMm ? 'အင်းလျားကန်ဘေး ဇိမ်ခံညစာ' : 'Inya Lakefront Fine Dining Issue'}
+                </span>
+                <!-- Multi-Avatar Peek inside Lead Story -->
+                <div class="flex items-center -space-x-2">
+                  <img src="assets/images/seeds_lakefront.jpg" class="w-6 h-6 rounded-full border-2 border-white object-cover" />
+                  <img src="assets/images/gilded_fork.jpg" class="w-6 h-6 rounded-full border-2 border-white object-cover" />
+                  <img src="assets/images/alchimiste.jpg" class="w-6 h-6 rounded-full border-2 border-white object-cover" />
+                  <span class="w-6 h-6 rounded-full bg-[#840f16] text-white border-2 border-white text-[9px] font-bold flex items-center justify-center">
+                    +3
+                  </span>
+                </div>
+              </div>
+
+              <h3 class="font-headline text-xl sm:text-2xl font-bold leading-snug">
+                ${isMm ? 'အကြည်နူးဆုံး ရိုမန်းတစ် စားသောက်ဆိုင်များနှင့် ရှုခင်းများ' : 'Yangon’s Most Romantic Dining Spots & Candlelight Tables'}
+              </h3>
+
+              <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+                <span class="text-xs text-white/80 font-body">
+                  ${isMm ? '၆ ဆိုင် ပါဝင်သည် · သီးသန့်ဝိုင်းများ ချက်ချင်းစိုတ်နိုင်' : '6 Curated Tables · Instant Confirmation Available'}
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
+                  ${isMm ? 'ဖတ်ရှုရန်' : 'Explore Guide'} ➔
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Companion Guides (4 Cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-4">
+            <!-- Secondary 1 -->
+            <div class="relative flex-1 min-h-[175px] rounded-3xl overflow-hidden shadow-sm group cursor-pointer border border-[#E8DDD0]" data-curated-demo="col-2">
+              <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80" alt="Michelin" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+              
+              <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+                <span class="bg-[#840f16] text-white px-2.5 py-0.5 rounded-full font-label text-[10px] font-extrabold uppercase">
+                  🍷 Sommelier Picks
+                </span>
+                <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+                  4 Tables
+                </span>
+              </div>
+
+              <div class="absolute bottom-3 left-3 right-3 z-10 text-white space-y-1">
+                <h4 class="font-headline text-base font-bold leading-snug">
+                  ${isMm ? 'မီရှလင်းအဆင့် အထူးညစာများ' : 'Michelin-Standard Fine Dining'}
+                </h4>
+                <div class="text-[11px] text-amber-200 font-label font-bold flex items-center gap-1">
+                  ${isMm ? 'စိုတ်ယူရန်' : 'Explore'} ➔
+                </div>
+              </div>
+            </div>
+
+            <!-- Secondary 2 -->
+            <div class="relative flex-1 min-h-[175px] rounded-3xl overflow-hidden shadow-sm group cursor-pointer border border-[#E8DDD0]" data-curated-demo="col-3">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Heritage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+              
+              <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+                <span class="bg-[#2f7a3f] text-white px-2.5 py-0.5 rounded-full font-label text-[10px] font-extrabold uppercase">
+                  🍜 Heritage Craft
+                </span>
+                <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+                  5 Venues
+                </span>
+              </div>
+
+              <div class="absolute bottom-3 left-3 right-3 z-10 text-white space-y-1">
+                <h4 class="font-headline text-base font-bold leading-snug">
+                  ${isMm ? 'ရန်ကုန်မြို့လယ် ရှေးဟောင်းလက်ဖက်ရည်' : 'Heritage Teahouses & Street Bites'}
+                </h4>
+                <div class="text-[11px] text-emerald-200 font-label font-bold flex items-center gap-1">
+                  ${isMm ? 'စိုတ်ယူရန်' : 'Explore'} ➔
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCuratedDesignsShowcase() {
+    const isMm = store.getState().currentLanguage === 'MM';
+    return `
+      <div class="space-y-10">
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#F8EFE5] border border-[#E8DDD0] space-y-2">
+          <h3 class="font-headline text-base sm:text-lg font-bold text-[#840f16]">
+            Curated Collection Layout & Responsive Explorations
+          </h3>
+          <p class="font-body text-xs sm:text-sm text-[#58413f] leading-relaxed">
+            Below you can test both <strong>Desktop Layout Concepts (Options 1–4)</strong> and the new <strong>Mobile/Tablet Carousel Behaviors (Options A & B)</strong>. All cards feature real dimensions, typography scales, edge snapping, and interactive navigation triggers.
+          </p>
+        </div>
+
+        <!-- NEW RESPONSIVE MOBILE & TABLET CAROUSEL DEMOS -->
+        <div class="space-y-6">
+          <div class="border-b border-[#E8DDD0] pb-2">
+            <h4 class="font-headline text-base font-bold text-[#231916]">
+              Mobile & Tablet Responsive Behaviors (Equal Sizing + Carousel)
+            </h4>
+          </div>
+          ${renderCuratedOptionA(isMm)}
+          ${renderCuratedOptionB(isMm)}
+        </div>
+
+        <!-- DESKTOP ARCHETYPES -->
+        <div class="space-y-6 pt-4">
+          <div class="border-b border-[#E8DDD0] pb-2">
+            <h4 class="font-headline text-base font-bold text-[#231916]">
+              Desktop Layout Archetypes (Options 1 – 4)
+            </h4>
+          </div>
+          ${renderCuratedOption1(isMm)}
+          ${renderCuratedOption2(isMm)}
+          ${renderCuratedOption3(isMm)}
+          ${renderCuratedOption4(isMm)}
+        </div>
+      </div>
+    `;
+  }
+
   function renderSuggested() {
     const subhead = (t) => `<h3 class="font-label text-xs font-bold uppercase tracking-wide text-[#840f16]">${t}</h3>`;
     const statuses = ['confirmed', 'completed', 'pending', 'waitlisted', 'cancelled'];
@@ -739,6 +1380,7 @@
 
     return `
       <div class="space-y-6 sm:space-y-8">
+        ${section('Curated Collection Explorations (Options 1 - 4)', 'ရွေးချယ်ထားသော စားသောက်ဆိုင် ဒီဇိုင်းများ (၁ - ၄)', renderCuratedDesignsShowcase())}
         ${section('Colors', 'အရောင်များ', renderColors())}
         ${section('Typography', 'စာအရွယ်အစားများ', renderTypography())}
         ${section('Buttons', 'ခလုတ်များ', renderButtons())}
@@ -772,6 +1414,112 @@
     if (termsBtn) {
       termsBtn.addEventListener('click', () => store.openInfoModal('terms'));
     }
+
+    // Curated Option 3 Interactive Mood Pill Filtering
+    const moodButtons = root.querySelectorAll('.curated-mood-btn');
+    const moodContentContainer = root.querySelector('#curated-mood-content');
+    if (moodButtons.length && moodContentContainer) {
+      const isMm = store.getState().currentLanguage === 'MM';
+      const MOOD_DATA = {
+        all: [
+          { tag: isMm ? 'အကြည်နူးဆုံး' : 'Top Romance', tagColor: 'bg-[#D08E1C] text-[#231916]', title: isMm ? 'အင်းလျားကန်ဘေး ရိုမန်းတစ် ညစာများ' : 'Lakefront Candlelit Dinners', desc: isMm ? '၅ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : '5 curated romantic venues with wine pairing', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80', id: 'col-1' },
+          { tag: isMm ? 'သီးသန့် အဆင့်မြင့်' : 'VIP Executive', tagColor: 'bg-[#840f16] text-white', title: isMm ? 'စီးပွားရေး ဧည့်ခံ သီးသန့်ခန်းများ' : 'Private Rooms for Business Dining', desc: isMm ? '၄ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : 'Acoustic-treated private dining suites', img: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80', id: 'col-2' },
+          { tag: isMm ? 'သဘာဝ ဥယျာဉ်' : 'Open Air Garden', tagColor: 'bg-[#2f7a3f] text-white', title: isMm ? 'စိမ်းလန်းသော ပြင်ပ ဥယျာဉ်ဝိုင်းများ' : 'Lush Outdoor Garden Dining', desc: isMm ? '၆ ဆိုင် ပါဝင်သော အထူးလမ်းညွှန်' : 'Al-fresco seating surrounded by greenery', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', id: 'col-3' }
+        ],
+        romantic: [
+          { tag: isMm ? 'ဒိတ်နိုက်' : 'Candlelit Tables', tagColor: 'bg-[#D08E1C] text-[#231916]', title: isMm ? 'ကန်ဘေး နေဝင်ချိန် ဝိုင်းများ' : 'Sunset View & Champagne Pairings', desc: isMm ? 'အင်းလျားနှင့် ကန်တော်ကြီး အနီး' : 'Overlooking Inya Lake with private balcony seating', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80', id: 'col-1' },
+          { tag: isMm ? 'ပြည့်စုံသော အလှ' : 'Intimate Suites', tagColor: 'bg-[#840f16] text-white', title: isMm ? 'ဖယောင်းတိုင်မီးနှင့် ညစာ' : 'Private Garden Gazebos', desc: isMm ? 'သီးသန့် လေဟာပြင် မဏ္ဍပ်များ' : 'Secluded outdoor dining pavilions surrounded by orchids', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', id: 'col-3' }
+        ],
+        business: [
+          { tag: isMm ? 'ဧည့်ခံ သီးသန့်' : 'Boardroom Suites', tagColor: 'bg-[#840f16] text-white', title: isMm ? 'စီးပွားရေး ညစာစားပွဲများ' : 'Private Dining for Executives', desc: isMm ? 'အသံလုံအခန်းများနှင့် အဆင့်မြင့်ဝန်ဆောင်မှု' : 'Confidential meeting tables with sommelier service', img: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80', id: 'col-2' }
+        ],
+        outdoor: [
+          { tag: isMm ? 'လေဟာပြင်' : 'Tropical Breeze', tagColor: 'bg-[#2f7a3f] text-white', title: isMm ? 'အပန်းဖြေ ဥယျာဉ် စားသောက်ဆိုင်များ' : 'Tropical Courtyard & Poolside Cafes', desc: isMm ? 'စိမ်းလန်းသော သဘာဝ ရှုခင်း' : 'Lush greenery, open breeze, and artisanal coffee', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', id: 'col-3' }
+        ],
+        heritage: [
+          { tag: isMm ? 'ရှေးဟောင်း လက်ရာ' : 'Heritage Recipes', tagColor: 'bg-[#b07616] text-white', title: isMm ? 'ကိုလိုနီခေတ် ရှေးဟောင်း လက်ဖက်ရည်ဆိုင်များ' : 'Colonial Architecture & Heritage Teahouses', desc: isMm ? 'ပန်းဆိုးတန်းနှင့် မြို့လယ် အဆောက်အအုံများ' : 'Restored high-ceiling salons with traditional clay-pot teas', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', id: 'col-3' }
+        ]
+      };
+
+      moodButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mood = btn.getAttribute('data-mood') || 'all';
+          moodButtons.forEach(b => {
+            b.className = 'curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-white text-[#58413f] border border-[#E8DDD0] hover:border-[#840f16] shadow-xs transition-all cursor-pointer whitespace-nowrap';
+          });
+          btn.className = 'curated-mood-btn px-4 py-2 rounded-full font-label text-xs font-bold bg-[#840f16] text-white shadow-sm transition-all cursor-pointer whitespace-nowrap';
+
+          const items = MOOD_DATA[mood] || MOOD_DATA.all;
+          moodContentContainer.innerHTML = items.map(item => `
+            <div class="relative h-64 rounded-3xl overflow-hidden group cursor-pointer shadow-md border border-[#E8DDD0] animate-fadeIn" data-curated-demo="${item.id}">
+              <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20"></div>
+              <div class="absolute top-3.5 left-3.5">
+                <span class="${item.tagColor} font-label text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md">
+                  ${item.tag}
+                </span>
+              </div>
+              <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white space-y-1">
+                <h4 class="font-headline text-lg font-bold leading-tight">${item.title}</h4>
+                <p class="font-body text-xs text-white/80">${item.desc}</p>
+              </div>
+            </div>
+          `).join('');
+
+          // Reattach demo click
+          moodContentContainer.querySelectorAll('[data-curated-demo]').forEach(card => {
+            card.addEventListener('click', () => {
+              store.showToast('Demo: Navigating to Curated Collection Detail');
+            });
+          });
+        });
+      });
+    }
+
+    // Option B Carousel Interactive Controls
+    const optionBTrack = root.querySelector('#curated-option-b-track');
+    const optionBPrev = root.querySelector('#curated-option-b-prev');
+    const optionBNext = root.querySelector('#curated-option-b-next');
+    const optionBDots = root.querySelectorAll('#curated-option-b-dots span');
+
+    if (optionBTrack) {
+      const updateDots = () => {
+        if (!optionBDots.length) return;
+        const scrollLeft = optionBTrack.scrollLeft;
+        const cardWidth = optionBTrack.querySelector('[data-curated-b-index]')?.offsetWidth || 280;
+        const activeIndex = Math.min(Math.max(Math.round(scrollLeft / (cardWidth + 16)), 0), optionBDots.length - 1);
+        optionBDots.forEach((dot, idx) => {
+          if (idx === activeIndex) {
+            dot.className = 'w-6 h-1.5 rounded-full bg-[#840f16] transition-all';
+          } else {
+            dot.className = 'w-2 h-1.5 rounded-full bg-[#E8DDD0] transition-all';
+          }
+        });
+      };
+
+      optionBTrack.addEventListener('scroll', updateDots, { passive: true });
+
+      if (optionBPrev) {
+        optionBPrev.addEventListener('click', () => {
+          const cardWidth = optionBTrack.querySelector('[data-curated-b-index]')?.offsetWidth || 280;
+          optionBTrack.scrollBy({ left: -(cardWidth + 16), behavior: 'smooth' });
+        });
+      }
+
+      if (optionBNext) {
+        optionBNext.addEventListener('click', () => {
+          const cardWidth = optionBTrack.querySelector('[data-curated-b-index]')?.offsetWidth || 280;
+          optionBTrack.scrollBy({ left: (cardWidth + 16), behavior: 'smooth' });
+        });
+      }
+    }
+
+    // Curated Demo Cards Click Feedback
+    root.querySelectorAll('[data-curated-demo]').forEach(card => {
+      card.addEventListener('click', () => {
+        store.showToast('Demo: Opening Curated Collection Guide');
+      });
+    });
 
     // Suggested Cards Fav Buttons
     root.querySelectorAll('.gallery-card-fav').forEach(btn => {

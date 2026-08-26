@@ -1,6 +1,6 @@
 {
-  "name": "Remix EzBookNowUserScreenPrototypes",
-  "description": "Imported from GitHub: mdcr-yemaungmaung/EzBookNowUserScreenPrototypes",
+  "name": "Yoyaku Restaurant Booking",
+  "description": "Premier dining and table reservation user screen prototypes imported from GitHub mdcr-yemaungmaung/UserScreenV2",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
