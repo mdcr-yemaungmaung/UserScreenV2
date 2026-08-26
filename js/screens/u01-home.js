@@ -2,7 +2,7 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA } = window.YoyakuData;
-  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard } = window.YoyakuComponents;
+  const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard, hasPromoCardOffer } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
 
 
@@ -16,8 +16,8 @@
     // Compute Popularity Ranking (#1, #2, #3, #4) based on rating & reviewCount
     const popularRestaurants = [...RESTAURANTS_DATA].sort((a, b) => (b.rating * b.reviewCount) - (a.rating * a.reviewCount));
 
-    // Hot Promotions qualification (feature 005): only shops with a non-empty promotion offer
-    const promoRestaurants = RESTAURANTS_DATA.filter(r => r.offerTag && r.offerTag.trim() !== '');
+    // Hot Promotions qualification: prefer structured promotions[] and fall back to legacy offerTag.
+    const promoRestaurants = RESTAURANTS_DATA.filter((restaurant) => hasPromoCardOffer(restaurant));
 
     return `
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">

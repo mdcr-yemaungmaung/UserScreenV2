@@ -80,6 +80,31 @@
     `;
   }
 
+  function getPromoCardPromotions(restaurant) {
+    const sourcePromotions = Array.isArray(restaurant.promotions)
+      ? restaurant.promotions.filter((promotion) => {
+          const title = typeof promotion?.title === 'string' ? promotion.title.trim() : '';
+          const offerTag = typeof promotion?.offerTag === 'string' ? promotion.offerTag.trim() : '';
+          return Boolean(title || offerTag);
+        })
+      : [];
+
+    if (sourcePromotions.length) {
+      return sourcePromotions.map((promotion) => ({
+        title: (promotion.title || promotion.offerTag || restaurant.offerTag || 'Special Offer').trim(),
+        detail: (promotion.detail || '').trim(),
+        validity: (promotion.validity || '').trim(),
+      }));
+    }
+
+    const legacyOffer = typeof restaurant.offerTag === 'string' ? restaurant.offerTag.trim() : '';
+    return legacyOffer ? [{ title: legacyOffer, detail: '', validity: '' }] : [];
+  }
+
+  function hasPromoCardOffer(restaurant) {
+    return getPromoCardPromotions(restaurant).length > 0;
+  }
+
   // U-01 Home Page Restaurant Card (Keeps standard Reserve Table button & footer promotion tag)
   function renderRestaurantCard(restaurant, state) {
     const isFavorite = state.favorites.includes(restaurant.id);
@@ -255,37 +280,6 @@
       });
     });
 
-    // Promotion pager (< >): step through promotions one at a time, no wrap-around
-    const stepPromo = (btn, delta) => {
-      const card = btn.closest('[data-card-select-id]');
-      if (!card) return;
-      const slides = Array.from(card.querySelectorAll('[data-promo-slide]'));
-      if (slides.length < 2) return;
-      const current = slides.findIndex(s => !s.classList.contains('hidden'));
-      const next = Math.min(slides.length - 1, Math.max(0, current + delta));
-      if (next === current) return;
-      slides[current].classList.add('hidden');
-      slides[next].classList.remove('hidden');
-      const prevBtn = card.querySelector('[data-promo-prev]');
-      const nextBtn = card.querySelector('[data-promo-next]');
-      if (prevBtn) prevBtn.disabled = next === 0;
-      if (nextBtn) nextBtn.disabled = next === slides.length - 1;
-    };
-
-    containerElement.querySelectorAll('[data-promo-prev]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        stepPromo(e.currentTarget, -1);
-      });
-    });
-
-    containerElement.querySelectorAll('[data-promo-next]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        stepPromo(e.currentTarget, 1);
-      });
-    });
-
     // Select restaurant detail
     containerElement.querySelectorAll('[data-card-select-id]').forEach(el => {
       el.addEventListener('click', (e) => {
@@ -416,54 +410,23 @@
     const isMm = state.currentLanguage === 'MM';
     const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
     const locationText = restaurant.location || restaurant.area || 'Yangon';
-
-    // Normalize promotions into { title, detail, validity }. Falls back to the
-    // legacy single offerTag so existing data keeps working unchanged.
-    const promotions = (Array.isArray(restaurant.promotions) && restaurant.promotions.length)
-      ? restaurant.promotions.map(p => ({
-          title: p.title || p.offerTag || restaurant.offerTag || 'Special Offer',
-          detail: p.detail || '',
-          validity: p.validity || ''
-        }))
-      : [{ title: restaurant.offerTag || 'Special Offer', detail: '', validity: '' }];
-    const promoCount = promotions.length;
-    const hasPager = promoCount > 1;
-
-    const promoLine = (p) => `
-      <div class="min-w-0">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <span class="material-symbols-outlined text-[#840f16] text-lg sm:text-xl shrink-0 leading-none">sell</span>
-          <div class="font-headline text-base sm:text-lg font-extrabold text-[#840f16] leading-tight truncate" title="${p.title}">${p.title}</div>
-        </div>
-        ${p.detail ? `<div class="text-xs sm:text-sm text-[#58413f] font-medium truncate mt-0.5">${p.detail}</div>` : ''}
-        ${p.validity ? `<div class="flex items-center gap-1 text-[11px] sm:text-xs text-[#8a6f63] font-medium mt-0.5">
-          <span class="material-symbols-outlined text-xs shrink-0">schedule</span>
-          <span class="truncate">${p.validity}</span>
-        </div>` : ''}
-      </div>
-    `;
-
-    const pagerBtn = (dir) => `
-      <button
-        type="button"
-        data-promo-${dir}
-        ${dir === 'prev' ? 'disabled' : ''}
-        class="promo-pager-btn shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] flex items-center justify-center text-[#9B1C25] shadow-sm hover:bg-[#9B1C25] hover:text-white hover:border-[#9B1C25] active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
-        title="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
-        aria-label="${isMm ? (dir === 'prev' ? 'အရင် ပရိုမိုးရှင်း' : 'နောက် ပရိုမိုးရှင်း') : (dir === 'prev' ? 'Previous promotion' : 'Next promotion')}"
-      >
-        <span class="material-symbols-outlined text-lg sm:text-xl leading-none">chevron_${dir === 'prev' ? 'left' : 'right'}</span>
-      </button>
-    `;
+    const cuisineText = restaurant.cuisine || (isMm ? 'အစားအစာမျိုးစုံ' : 'Signature Dining');
+    const promotions = getPromoCardPromotions(restaurant);
+    const primaryPromotion = promotions[0] || { title: isMm ? 'အထူး ပရိုမိုးရှင်း' : 'Special Offer', detail: '', validity: '' };
+    const additionalCount = Math.max(promotions.length - 1, 0);
+    const promotionSummary = [cuisineText, locationText].filter(Boolean).join(' • ');
+    const moreOffersLabel = isMm
+      ? `+${additionalCount}`
+      : `+${additionalCount}`;
+    const bookNowLabel = isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Book Now';
 
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[var(--color-brand-surface)] border border-[var(--color-brand-border)] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_4px_14px_rgba(70,40,20,0.08)] hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
 
-        <!-- Card Image & Floating Badges (standard rating pill top-left, favorite top-right) -->
-        <div class="relative h-44 sm:h-52 lg:h-56 overflow-hidden">
+        <div class="relative aspect-[16/10] min-h-[220px] overflow-hidden">
           <img
             src="${restaurant.heroImage}"
             alt="${venueTitle}"
@@ -472,61 +435,57 @@
             onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          ${renderImageGradient()}
+          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(0,0,0,0.12)_65%,rgba(0,0,0,0.82)_100%)] pointer-events-none"></div>
           ${renderRatingBadge(restaurant)}
           ${renderFavoriteButton(restaurant.id, isFavorite)}
+
+          <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-4 pt-12 sm:px-5 sm:pb-5">
+            <h3 class="font-headline text-[1.35rem] sm:text-[1.5rem] font-extrabold text-white leading-tight truncate" title="${venueTitle}">
+              ${venueTitle}
+            </h3>
+            <p class="mt-1 font-body text-sm sm:text-[0.95rem] font-medium text-white/90 truncate" title="${promotionSummary}">
+              ${promotionSummary}
+            </p>
+          </div>
         </div>
 
-        <!-- Promotion Section (directly below image): one promotion at a time + < > pager -->
-        <div class="bg-[#FFFDFC] border-b border-[#E8DDD0] px-3.5 py-3 sm:px-4 sm:py-3.5">
-          <div class="flex items-center justify-between gap-3 min-w-0">
-            <!-- Promotion Slides (one visible at a time) -->
-            <div class="min-w-0 flex-1">
-              ${promotions.map((p, i) => `
-                <div class="promo-slide min-w-0" data-promo-slide ${i > 0 ? 'hidden' : ''}>
-                  ${promoLine(p)}
-                </div>
-              `).join('')}
+        <div class="flex flex-1 flex-col bg-[var(--color-brand-surface)] px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-5">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-white shadow-sm sm:h-14 sm:w-14">
+              <span class="material-symbols-outlined text-[1.45rem] leading-none">featured_seasonal_and_gifts</span>
             </div>
-
-            <!-- < > Promotion Pager (no wrap-around) -->
-            ${hasPager ? `
-              <div class="shrink-0 flex items-center gap-1.5">
-                ${pagerBtn('prev')}
-                ${pagerBtn('next')}
+            <div class="min-w-0 flex-1">
+              <div class="flex items-start gap-2 min-w-0">
+                <p class="min-w-0 flex-1 font-headline text-[1.05rem] sm:text-[1.15rem] font-extrabold leading-tight text-[var(--color-text)] [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden" title="${primaryPromotion.title}">
+                  ${primaryPromotion.title}
+                </p>
+                ${additionalCount > 0 ? `
+                  <span class="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg border border-[var(--color-brand)] px-3 py-2 font-label text-sm font-extrabold text-[var(--color-brand)]">
+                    ${moreOffersLabel}
+                  </span>
+                ` : ''}
               </div>
-            ` : ''}
-          </div>
-        </div>
-
-        <!-- Card Content Area: Name, Location, Price Range, Cuisine -->
-        <div class="p-3.5 sm:p-4 flex-1 flex flex-col space-y-2 sm:space-y-2.5 min-w-0">
-          <h3 class="font-headline text-base sm:text-lg md:text-xl font-bold text-[#231916] group-hover:text-[#840f16] transition-colors leading-snug line-clamp-1 break-words" title="${venueTitle}">
-            ${venueTitle}
-          </h3>
-
-          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">location_on</span>
-            <span class="truncate" title="${locationText}">${locationText}</span>
-          </div>
-
-          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">payments</span>
-            <span class="truncate" title="${restaurant.priceRange || ''}">${restaurant.priceRange || ''}</span>
+              ${primaryPromotion.detail ? `
+                <p class="mt-1 text-sm font-body font-medium text-[var(--color-text-secondary)] truncate" title="${primaryPromotion.detail}">
+                  ${primaryPromotion.detail}
+                </p>
+              ` : ''}
+              ${primaryPromotion.validity ? `
+                <div class="mt-1 flex items-center gap-1.5 text-xs font-label font-semibold text-[var(--color-text-secondary)] min-w-0">
+                  <span class="material-symbols-outlined text-sm shrink-0 text-[var(--color-brand)]">schedule</span>
+                  <span class="truncate" title="${primaryPromotion.validity}">${primaryPromotion.validity}</span>
+                </div>
+              ` : ''}
+            </div>
           </div>
 
-          <div class="flex items-center gap-1.5 text-xs font-body text-[#58413f] font-medium min-w-0">
-            <span class="material-symbols-outlined text-sm text-[#840f16] shrink-0">restaurant</span>
-            <span class="truncate" title="${restaurant.cuisine}">${restaurant.cuisine}</span>
-          </div>
-
-          <!-- Reserve CTA: full-width BOOK NOW pill, opens booking flow -->
-          <div class="mt-auto pt-3 border-t border-[#E8DDD0]">
+          <div class="mt-auto pt-5">
+            <div class="border-t border-[var(--color-brand-border)]"></div>
             <button
               data-card-reserve-id="${restaurant.id}"
-              class="w-full mt-1 bg-[#840f16] hover:bg-[#6c0c11] active:scale-[0.98] text-white px-6 py-3.5 rounded-full font-label text-sm sm:text-base font-extrabold uppercase tracking-widest shadow-md transition-all cursor-pointer text-center min-h-[44px] flex items-center justify-center gap-2"
+              class="mt-5 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-6 py-3.5 font-label text-sm sm:text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-md transition-all active:scale-[0.98] hover:bg-[var(--color-brand-hover)] cursor-pointer text-center"
             >
-              <span>${isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Book Now'}</span>
+              <span>${bookNowLabel}</span>
               <span class="material-symbols-outlined text-lg sm:text-xl leading-none">arrow_forward</span>
             </button>
           </div>
@@ -547,4 +506,6 @@
   window.YoyakuComponents.renderCuisineTag = renderCuisineTag;
   window.YoyakuComponents.renderCuisineTagOnImage = renderCuisineTagOnImage;
   window.YoyakuComponents.renderPromoTag = renderPromoTag;
+  window.YoyakuComponents.getPromoCardPromotions = getPromoCardPromotions;
+  window.YoyakuComponents.hasPromoCardOffer = hasPromoCardOffer;
 })();
