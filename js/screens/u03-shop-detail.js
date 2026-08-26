@@ -2,6 +2,75 @@
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
   const { generateCalendarGrid } = window.YoyakuComponents || {};
+  const LIGHTBOX_FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
+  let lightboxFocusReturnTarget = null;
+  let lightboxKeydownHandler = null;
+
+  function rememberLightboxTrigger(target = document.activeElement) {
+    if (target && typeof target.focus === 'function') {
+      lightboxFocusReturnTarget = target;
+    }
+  }
+
+  function getLightboxFocusableElements(lightboxShell) {
+    if (!lightboxShell) return [];
+    return Array.from(lightboxShell.querySelectorAll(LIGHTBOX_FOCUSABLE_SELECTOR)).filter(el => !el.hasAttribute('disabled'));
+  }
+
+  function syncLightboxAccessibility(containerElement) {
+    if (lightboxKeydownHandler) {
+      document.removeEventListener('keydown', lightboxKeydownHandler);
+      lightboxKeydownHandler = null;
+    }
+
+    const lightboxShell = containerElement.querySelector('[data-lightbox-shell]');
+    if (!lightboxShell) {
+      if (lightboxFocusReturnTarget && document.contains(lightboxFocusReturnTarget)) {
+        lightboxFocusReturnTarget.focus();
+      }
+      lightboxFocusReturnTarget = null;
+      return;
+    }
+
+    const focusable = getLightboxFocusableElements(lightboxShell);
+    const initialTarget = lightboxShell.querySelector('[data-lightbox-initial-focus]') || focusable[0] || lightboxShell;
+    if (!lightboxShell.contains(document.activeElement) && typeof initialTarget.focus === 'function') {
+      initialTarget.focus();
+    }
+
+    lightboxKeydownHandler = (event) => {
+      const liveLightboxShell = document.querySelector('[data-lightbox-shell]');
+      if (!liveLightboxShell) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        store.updateDetailState('lightboxIndex', null);
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const liveFocusable = getLightboxFocusableElements(liveLightboxShell);
+      if (!liveFocusable.length) {
+        event.preventDefault();
+        liveLightboxShell.focus();
+        return;
+      }
+
+      const firstFocusable = liveFocusable[0];
+      const lastFocusable = liveFocusable[liveFocusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstFocusable) {
+        event.preventDefault();
+        lastFocusable.focus();
+      } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+        event.preventDefault();
+        firstFocusable.focus();
+      }
+    };
+
+    document.addEventListener('keydown', lightboxKeydownHandler);
+  }
 
 
 
@@ -26,14 +95,17 @@
         <div class="flex justify-between items-center">
           <button
             id="detail-back-btn"
+            type="button"
             class="flex items-center gap-2 font-label text-xs font-bold text-[#840f16] hover:text-[#600b10] transition-colors cursor-pointer"
           >
             <span class="material-symbols-outlined text-sm">arrow_back</span>
-            <span>${isMm ? 'နောက်သို့ ပင်မစာမျက်နှာ' : 'Back to Discover'}</span>
+            <span>${isMm ? 'ယခင် စာမျက်နှာသို့' : 'Back to Previous'}</span>
           </button>
 
           <button
             id="detail-favorite-btn"
+            type="button"
+            aria-label="${isFavorite ? (isMm ? 'အကြိုက်ဆုံးမှ ဖယ်ရှားမည်' : 'Remove from favorites') : (isMm ? 'အကြိုက်ဆုံးသို့ ထည့်မည်' : 'Add to favorites')}"
             class="w-10 h-10 flex items-center justify-center rounded-full border transition-all cursor-pointer shadow-2xs ${
               isFavorite
                 ? 'bg-[#840f16] text-white border-[#840f16]'
@@ -45,7 +117,12 @@
         </div>
 
         <!-- HERO BANNER -->
-        <div class="relative h-[340px] sm:h-[420px] rounded-3xl overflow-hidden border border-[#EADFD1] shadow-2xl group cursor-pointer" id="hero-image-zoom">
+        <button
+          type="button"
+          id="hero-image-zoom"
+          aria-label="${isMm ? 'စားသောက်ဆိုင် ဓာတ်ပုံပြခန်း ဖွင့်မည်' : 'Open restaurant gallery'}"
+          class="group relative h-[340px] w-full overflow-hidden rounded-3xl border border-[#EADFD1] shadow-2xl cursor-pointer text-left sm:h-[420px]"
+        >
           <img
             src="${restaurant.heroImage}"
             alt="${restaurant.name}"
@@ -68,7 +145,7 @@
               ${restaurant.name}
             </h1>
           </div>
-        </div>
+        </button>
 
         <!-- SPECIAL ANNOUNCEMENTS / NOTICE BANNER -->
         ${
@@ -229,15 +306,17 @@
                           ${restaurant.images
                             .map(
                               (img, idx) => `
-                            <div
+                            <button
+                              type="button"
                               data-gallery-idx="${idx}"
-                              class="group relative h-40 rounded-2xl overflow-hidden border border-[#EADFD1] shadow-xs cursor-pointer"
+                              aria-label="${isMm ? `ဓာတ်ပုံ ${idx + 1} ကိုကြည့်မည်` : `Open gallery image ${idx + 1}`}"
+                              class="group relative h-40 overflow-hidden rounded-2xl border border-[#EADFD1] shadow-xs cursor-pointer text-left"
                             >
                               <img src="${img}" alt="Gallery ${idx + 1}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                                 <span class="material-symbols-outlined text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
                               </div>
-                            </div>
+                            </button>
                           `
                             )
                             .join('')}
@@ -570,12 +649,23 @@
             <div class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn" id="lightbox-modal">
               <button
                 id="lightbox-close-btn"
+                type="button"
+                data-lightbox-initial-focus
+                aria-label="${isMm ? 'ဓာတ်ပုံပြခန်း ပိတ်မည်' : 'Close gallery lightbox'}"
                 class="absolute top-5 right-5 text-white/80 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
               >
                 <span class="material-symbols-outlined text-2xl">close</span>
               </button>
 
-              <div class="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center justify-center space-y-3">
+              <div
+                data-lightbox-shell
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="u03-lightbox-title"
+                tabindex="-1"
+                class="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center justify-center space-y-3"
+              >
+                <span id="u03-lightbox-title" class="sr-only">${isMm ? 'စားသောက်ဆိုင် ဓာတ်ပုံပြခန်း' : 'Restaurant photo gallery'}</span>
                 <img
                   src="${restaurant.images[activeLightboxIndex] || restaurant.heroImage}"
                   alt="Enlarged gallery view"
@@ -583,14 +673,14 @@
                 />
 
                 <div class="flex items-center justify-between w-full text-white/80 font-label text-xs px-4 pt-2">
-                  <button id="lightbox-prev-btn" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
+                  <button id="lightbox-prev-btn" type="button" aria-label="${isMm ? 'ယခင် ဓာတ်ပုံ' : 'Previous gallery image'}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     <span>${isMm ? 'ယခင်ပုံ' : 'Previous'}</span>
                   </button>
 
                   <span>${activeLightboxIndex + 1} / ${(restaurant.images || []).length}</span>
 
-                  <button id="lightbox-next-btn" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
+                  <button id="lightbox-next-btn" type="button" aria-label="${isMm ? 'နောက် ဓာတ်ပုံ' : 'Next gallery image'}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
                     <span>${isMm ? 'နောက်ပုံ' : 'Next'}</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
@@ -610,8 +700,9 @@
     const backBtn = containerElement.querySelector('#detail-back-btn');
     if (backBtn) {
       backBtn.addEventListener('click', () => {
+        const previousTab = store.getState().detailState.previousTab || 'discover';
         store.setSelectedRestaurant(null);
-        store.setActiveTab('discover');
+        store.setActiveTab(previousTab);
       });
     }
 
@@ -641,13 +732,15 @@
     // Hero zoom / Gallery clicks
     const heroZoom = containerElement.querySelector('#hero-image-zoom');
     if (heroZoom) {
-      heroZoom.addEventListener('click', () => {
+      heroZoom.addEventListener('click', (e) => {
+        rememberLightboxTrigger(e.currentTarget);
         store.updateDetailState('lightboxIndex', 0);
       });
     }
 
     containerElement.querySelectorAll('[data-gallery-idx]').forEach(item => {
       item.addEventListener('click', (e) => {
+        rememberLightboxTrigger(e.currentTarget);
         const idx = parseInt(e.currentTarget.getAttribute('data-gallery-idx'), 10);
         store.updateDetailState('lightboxIndex', idx);
       });
@@ -823,6 +916,8 @@
         }
       });
     }
+
+    syncLightboxAccessibility(containerElement);
   }
 
 

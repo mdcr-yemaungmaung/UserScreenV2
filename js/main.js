@@ -2,6 +2,23 @@
   const store = window.store;
   const { renderTopNavBar, attachTopNavBarEvents, renderBottomNavBar, attachBottomNavBarEvents, renderFooter, attachFooterEvents, renderDiscoverView, attachDiscoverViewEvents, renderResultListView, attachResultListViewEvents, renderRestaurantDetailView, attachRestaurantDetailViewEvents, renderBookingStep1, attachBookingStep1Events, renderBookingStep2, attachBookingStep2Events, renderBookingStep3, attachBookingStep3Events, renderBookingStep4, attachBookingStep4Events, renderFavoritesView, attachFavoritesViewEvents, renderCuratedView, attachCuratedViewEvents, renderMyPageView, attachMyPageViewEvents, renderBookingDetailView, attachBookingDetailViewEvents, renderLoginView, attachLoginViewEvents, renderRegisterView, attachRegisterViewEvents, renderInfoModals, attachInfoModalsEvents, renderToast } = window.YoyakuComponents;
 
+  function syncRouteDrivenState() {
+    const hash = window.location.hash || '';
+    const shopMatch = hash.match(/^#\/user\/shop\/([^/?#]+)/);
+    if (shopMatch) {
+      const currentState = store.getState();
+      const selectedId = currentState.selectedRestaurant && currentState.selectedRestaurant.id;
+      if (selectedId !== shopMatch[1]) {
+        store.setSelectedRestaurantById(shopMatch[1], { previousTab: currentState.activeTab || 'discover' });
+      }
+      return;
+    }
+
+    if (store.getState().selectedRestaurant) {
+      store.setSelectedRestaurant(null);
+    }
+  }
+
   function renderApp() {
     const root = document.getElementById('root');
     if (!root) return;
@@ -92,7 +109,7 @@
 
     root.innerHTML = `
       <div class="min-h-screen flex flex-col justify-between ${hideBottomNav ? 'pb-0' : 'pb-20 lg:pb-0'}">
-        
+
         <!-- Top Navigation Header -->
         ${renderTopNavBar(state)}
 
@@ -171,8 +188,11 @@
 
 
   function startApp() {
+    syncRouteDrivenState();
     renderApp();
     store.subscribe(renderApp);
+
+    window.addEventListener('hashchange', syncRouteDrivenState);
 
     // Re-render when crossing the lg breakpoint (window resize / device rotation)
     let lastIsDesktop = window.innerWidth >= 1024;

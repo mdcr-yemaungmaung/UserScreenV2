@@ -240,7 +240,7 @@
         favorites: loadFavorites(),
         reservations: loadReservations(),
         toastMessage: null,
-        
+
         // Booking Modal State
         bookingModalState: {
           isOpen: false,
@@ -325,7 +325,8 @@
           activeTab: 'overview', // 'overview' | 'menu' | 'reviews'
           date: todayDisplayStr(),
           time: '18:30',
-          guests: 2
+          guests: 2,
+          previousTab: 'discover'
         },
 
         // QR Pass Inspection Modal
@@ -470,17 +471,28 @@
       this.notify();
     }
 
-    setSelectedRestaurant(restaurant) {
+    setSelectedRestaurant(restaurant, options = {}) {
       this.state.selectedRestaurant = restaurant;
       if (restaurant) {
+        const previousTab = options.previousTab || this.state.activeTab || this.state.detailState.previousTab || 'discover';
         this.state.detailState = {
           activeTab: 'overview',
           date: todayDisplayStr(),
           time: '18:30',
-          guests: 2
+          guests: 2,
+          previousTab
         };
       }
       this.notify();
+    }
+
+    setSelectedRestaurantById(restaurantId, options = {}) {
+      const { RESTAURANTS_DATA } = window.YoyakuData || {};
+      const restaurant = (RESTAURANTS_DATA || []).find(item => item.id === restaurantId) || null;
+      if (restaurant) {
+        this.setSelectedRestaurant(restaurant, options);
+      }
+      return restaurant;
     }
 
     toggleFavorite(id) {
@@ -953,7 +965,7 @@
         this.state.myPageData.userEmail = newEmail;
         this.state.myPageData.emailVerified = true;
         this.state.myPageData.pendingNewEmail = null;
-        
+
         const isMm = this.state.currentLanguage === 'MM';
         this.state.myPageData.notifications.unshift({
           id: 'n_' + Date.now(),
@@ -1100,7 +1112,7 @@
       const isMm = this.state.currentLanguage === 'MM';
       const testTitle = isMm ? 'စမ်းသပ်အသိပေးချက် - စားပွဲဝိုင်း အတည်ပြုခြင်း' : 'Test Push Notification - Table Confirmation';
       const testMsg = isMm ? 'The Glass Pavilion တွင် စားပွဲဝိုင်း နံပါတ် A-12 ကို စိုတ်ထားပြီးပါပြီ။' : 'Your table for 2 at The Glass Pavilion is ready!';
-      
+
       this.state.myPageData.notifications.unshift({
         id: 'n_' + Date.now(),
         title: testTitle,
@@ -1160,14 +1172,14 @@
         this.state.myPageData.authProvider = provider;
         this.state.myPageData.userName = provider === 'facebook' ? 'Alex Aung (FB)' : 'Alex Aung (Google)';
         this.state.myPageData.userEmail = provider === 'facebook' ? 'alex.fb@example.com' : 'alex.google@gmail.com';
-        
+
         // If guest flow was active, resume booking, else navigate to mypage
         if (this.state.loginState.isGuestFlow && this.state.bookingModalState.restaurant) {
           this.state.bookingModalState.isOpen = true;
         } else {
           this.setActiveTab('mypage');
         }
-        
+
         const isMm = this.state.currentLanguage === 'MM';
         this.showToast(isMm ? `${provider === 'facebook' ? 'Facebook' : 'Google'} ဖြင့် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ` : `Signed in with ${provider === 'facebook' ? 'Facebook' : 'Google'}!`);
       }, 700);
