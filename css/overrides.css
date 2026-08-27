@@ -882,3 +882,44 @@ input[type="radio"] {
   animation: heartBounce 0.45s cubic-bezier(0.17, 0.89, 0.32, 1.28);
 }
 
+/* Full-Screen Search Condition Animations */
+@keyframes searchConditionSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes searchConditionSlideDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+}
+
+.animate-search-condition-enter {
+  animation: searchConditionSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-search-condition-exit {
+  animation: searchConditionSlideDown 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Search Condition Chip Transitions */
+.search-chip-btn {
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+.search-chip-btn:active {
+  transform: scale(0.95);
+}
+
+

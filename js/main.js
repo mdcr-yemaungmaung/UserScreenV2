@@ -1,6 +1,6 @@
 (() => {
   const store = window.store;
-  const { renderTopNavBar, attachTopNavBarEvents, renderBottomNavBar, attachBottomNavBarEvents, renderFooter, attachFooterEvents, renderDiscoverView, attachDiscoverViewEvents, renderResultListView, attachResultListViewEvents, renderRestaurantDetailView, attachRestaurantDetailViewEvents, renderBookingStep1, attachBookingStep1Events, renderBookingStep2, attachBookingStep2Events, renderBookingStep3, attachBookingStep3Events, renderBookingStep4, attachBookingStep4Events, renderFavoritesView, attachFavoritesViewEvents, renderCuratedView, attachCuratedViewEvents, renderMyPageView, attachMyPageViewEvents, renderBookingDetailView, attachBookingDetailViewEvents, renderLoginView, attachLoginViewEvents, renderRegisterView, attachRegisterViewEvents, renderInfoModals, attachInfoModalsEvents, renderToast } = window.YoyakuComponents;
+  const { renderTopNavBar, attachTopNavBarEvents, renderBottomNavBar, attachBottomNavBarEvents, renderFooter, attachFooterEvents, renderDiscoverView, attachDiscoverViewEvents, renderResultListView, attachResultListViewEvents, renderRestaurantDetailView, attachRestaurantDetailViewEvents, renderBookingStep1, attachBookingStep1Events, renderBookingStep2, attachBookingStep2Events, renderBookingStep3, attachBookingStep3Events, renderBookingStep4, attachBookingStep4Events, renderFavoritesView, attachFavoritesViewEvents, renderCuratedView, attachCuratedViewEvents, renderMyPageView, attachMyPageViewEvents, renderBookingDetailView, attachBookingDetailViewEvents, renderLoginView, attachLoginViewEvents, renderRegisterView, attachRegisterViewEvents, renderInfoModals, attachInfoModalsEvents, renderToast, renderSearchConditionModal, attachSearchConditionModalEvents } = window.YoyakuComponents;
 
   function syncRouteDrivenState() {
     const hash = window.location.hash || '';
@@ -127,6 +127,9 @@
         <!-- Info & Auth Modals Overlay -->
         ${renderInfoModals(state)}
 
+        <!-- Search Condition Animated Full-Screen Overlay -->
+        ${renderSearchConditionModal ? renderSearchConditionModal(state) : ''}
+
         <!-- Mobile Bottom Navigation Bar -->
         ${renderBottomNavBar(state)}
 
@@ -140,6 +143,9 @@
     attachBottomNavBarEvents(root);
     attachFooterEvents(root);
     attachInfoModalsEvents(root);
+    if (state.searchConditionOpen && attachSearchConditionModalEvents) {
+      attachSearchConditionModalEvents(root);
+    }
 
     if (state.selectedReservationId && attachBookingDetailViewEvents) {
       attachBookingDetailViewEvents(root);

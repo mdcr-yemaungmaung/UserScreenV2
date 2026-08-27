@@ -304,16 +304,19 @@
         },
 
         // Search & Results Filter State
+        searchConditionOpen: false,
         resultsState: {
           keyword: '',
           area: 'All Areas',
           cuisine: 'All Cuisines',
           partySize: 'All Sizes',
           selectedDate: todayDisplayStr(),
-          showMoreFilters: false,
+          time: '18:30',
+          budgetTier: 'all',
           minPrice: '',
           maxPrice: '',
           selectedFeatures: [],
+          seatingPreference: 'all',
           viewMode: 'list', // 'list' | 'map'
           sortBy: 'popularity', // 'popularity' | 'rating' | 'reviews'
           currentPage: 1,
@@ -929,6 +932,52 @@
       } else {
         this.state.resultsState[keyOrObject] = value;
       }
+      this.notify();
+    }
+
+    openSearchConditions(initialValues = {}) {
+      this.state.searchConditionOpen = true;
+      if (Object.keys(initialValues).length > 0) {
+        this.state.resultsState = { ...this.state.resultsState, ...initialValues };
+      }
+      this.notify();
+    }
+
+    closeSearchConditions() {
+      this.state.searchConditionOpen = false;
+      this.notify();
+    }
+
+    applySearchConditions(conditions = {}) {
+      this.state.resultsState = {
+        ...this.state.resultsState,
+        ...conditions
+      };
+      if (conditions.keyword !== undefined) {
+        this.state.searchKeyword = conditions.keyword;
+      }
+      this.state.searchConditionOpen = false;
+      this.state.activeTab = 'resultlist';
+      this.notify();
+    }
+
+    resetSearchConditions() {
+      this.state.resultsState = {
+        ...this.state.resultsState,
+        keyword: '',
+        area: 'All Areas',
+        cuisine: 'All Cuisines',
+        partySize: 'All Sizes',
+        selectedDate: todayDisplayStr(),
+        time: '18:30',
+        budgetTier: 'all',
+        minPrice: '',
+        maxPrice: '',
+        selectedFeatures: [],
+        seatingPreference: 'all',
+        sortBy: 'popularity'
+      };
+      this.state.searchKeyword = '';
       this.notify();
     }
 

@@ -624,11 +624,21 @@
 
                   </div>
 
-                  <!-- 4. Primary Action Button -->
-                  <div class="w-full xl:w-auto shrink-0 pt-1 xl:pt-0">
+                  <!-- 4. Action Buttons -->
+                  <div class="w-full xl:w-auto shrink-0 pt-1 xl:pt-0 flex items-center gap-2">
+                    <button
+                      type="button"
+                      id="hero-open-conditions-btn"
+                      class="bg-[#F8EFE5] hover:bg-[#F3DFD5] border border-[#E8DDD0] hover:border-[#840f16] text-[#241A18] hover:text-[#840f16] py-3 sm:py-3.5 px-3.5 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
+                      title="${isMm ? 'ရှာဖွေမှု သတ်မှတ်ချက်များ' : 'Search Conditions'}"
+                    >
+                      <span class="material-symbols-outlined text-lg text-[#840f16]">tune</span>
+                      <span class="hidden sm:inline">${isMm ? 'သတ်မှတ်ချက်' : 'Conditions'}</span>
+                    </button>
+
                     <button
                       type="submit"
-                      class="w-full xl:w-auto bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-7 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
+                      class="flex-1 xl:flex-none bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-6 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
                     >
                       <span class="material-symbols-outlined text-lg sm:text-xl">search</span>
                       <span class="whitespace-nowrap">${isMm ? 'ရှာဖွေပါ' : 'Find Tables'}</span>
@@ -1187,6 +1197,26 @@
         });
         store.setSearchKeyword(kw);
         store.setActiveTab('resultlist');
+      });
+    }
+
+    // Hero Open Search Conditions Button
+    const heroOpenCondBtn = containerElement.querySelector('#hero-open-conditions-btn');
+    if (heroOpenCondBtn) {
+      heroOpenCondBtn.addEventListener('click', () => {
+        const kw = containerElement.querySelector('#hero-keyword-input')?.value || '';
+        const area = containerElement.querySelector('#hero-area-select')?.value || 'All Areas';
+        const cuisine = containerElement.querySelector('#hero-cuisine-select')?.value || 'All Cuisines';
+        const time = containerElement.querySelector('#hero-time-select')?.value || '18:30';
+        const partySize = containerElement.querySelector('#hero-guests-select')?.value || '2';
+
+        store.openSearchConditions({
+          keyword: kw,
+          area,
+          cuisine,
+          time,
+          partySize: partySize === 'All' ? 'All Sizes' : partySize,
+        });
       });
     }
 
