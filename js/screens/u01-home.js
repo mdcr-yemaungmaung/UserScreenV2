@@ -285,7 +285,7 @@
       <div class="space-y-8 sm:space-y-10 lg:space-y-16 pb-10 sm:pb-12 lg:pb-16">
 
         <!-- HERO SECTION (LUXURY EDITORIAL CONCIERGE & SHOWCASE) -->
-        <section class="relative pt-3 sm:pt-6 pb-6 sm:pb-10">
+        <section class="relative pt-3 sm:pt-5 pb-1 sm:pb-2">
           <!-- Depth Background: crossfading venue slides veiled in Warm Ivory -->
           <div class="hero-bg-shell" aria-hidden="true">
             <div class="hero-bg-track">
@@ -646,7 +646,7 @@
         </section>
 
         <!-- PROMOTION & ANNOUNCEMENT BANNERS (ကြေညာချက်ဘန်နာများ - High-Converting Perk Strip) -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-1 sm:my-2">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 lg:-mt-8 mb-1">
           <div class="relative group/promo-carousel">
             <!-- Left Pressable Scroll Arrow -->
             <button

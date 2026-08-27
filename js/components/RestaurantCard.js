@@ -292,6 +292,16 @@
       });
     });
 
+    // Copy Voucher Code Button
+    containerElement.querySelectorAll('[data-promo-copy-code]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const code = btn.getAttribute('data-promo-copy-code') || 'PROMO20';
+        navigator.clipboard?.writeText(code).catch(() => {});
+        store.showToast(`Voucher code copied: ${code}`);
+      });
+    });
+
     // Quick reserve table button (used in U-01 Home)
     containerElement.querySelectorAll('[data-card-reserve-id]').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -361,27 +371,34 @@
         class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
         <!-- Image Container with Overlays -->
-        <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden">
+        <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden bg-[#231916]">
           <img
             src="${cardImage}"
             alt="${dishTitle}"
             referrerpolicy="no-referrer"
             loading="lazy"
             onerror="this.onerror=null; this.src='${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}';"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
           />
-          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_40%,rgba(0,0,0,0.15)_60%,rgba(0,0,0,0.85)_100%)] pointer-events-none"></div>
-          ${renderRatingBadge(restaurant)}
-          ${renderFavoriteButton(restaurant.id, isFavorite)}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none"></div>
 
-          <!-- Restaurant Info Over Image (No icon for shop info) -->
-          <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-3.5 pt-10 sm:px-5 sm:pb-4">
-            <h3 class="font-headline text-[1.15rem] sm:text-[1.3rem] font-extrabold text-white leading-tight truncate" title="${restaurantTitle}">
+          <!-- Top Floating Controls -->
+          <div class="absolute top-3 inset-x-3 flex items-center justify-end z-10">
+            ${renderFavoriteButton(restaurant.id, isFavorite)}
+          </div>
+
+          <!-- Bottom Image Overlay: Restaurant Name above, Rating & Location under -->
+          <div class="absolute bottom-3 inset-x-3.5 z-10 text-white space-y-1 pointer-events-none">
+            <h3 class="font-headline text-lg sm:text-xl font-bold leading-tight truncate text-white drop-shadow-sm" title="${restaurantTitle}">
               ${restaurantTitle}
             </h3>
-            <p class="mt-0.5 font-body text-xs sm:text-[0.85rem] font-medium text-white/90 truncate" title="${locationText} • ${cuisineText}">
-              ${locationText} • ${cuisineText}
-            </p>
+            <div class="flex items-center gap-1.5 text-xs text-[#f5d592] font-semibold">
+              <span class="material-symbols-outlined text-xs fill-1">star</span>
+              <span>${restaurant.rating || 4.9}</span>
+              <span class="text-white/70">(${restaurant.reviewCount || 128})</span>
+              <span class="text-white/50">•</span>
+              <span class="text-white/90 font-medium truncate">${locationText}</span>
+            </div>
           </div>
         </div>
 
@@ -412,82 +429,118 @@
     `;
   }
 
-  // Hot Promotions Restaurant Card — responsive, promotion-focused PWA card.
-  // The promotion sits directly below the image as a clean, scannable block:
-  // one promotion shown at a time, with < > arrows to step through the rest
-  // (no wrap-around; arrows disable at the ends).
-  // Reuses shared helpers and event hooks so navigation, favorites and reserve
-  // behave identically to other cards. Fixed widths + snap-start make the card
-  // swipeable inside the Home Hot Promotions horizontal scroll row (mobile/tablet),
-  // matching Trending Venues behavior.
+  // Hot Promotions Restaurant Card — Option A "Perforated Dining Pass / Golden Voucher"
+  // Features a ticket-stub perforated notch divider, bold discount stamp, deal details,
+  // 1-tap copyable voucher code, urgency badge, and high-impact claim & book CTA.
   function renderPromoCard(restaurant, state) {
     const isFavorite = state.favorites.includes(restaurant.id);
     const isMm = state.currentLanguage === 'MM';
-    const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.location) : (restaurant.venueName || restaurant.location || `${restaurant.name} Venue`);
+    const venueTitle = isMm ? (restaurant.venueNameMM || restaurant.venueName || restaurant.nameMM || restaurant.name) : (restaurant.venueName || restaurant.name || `${restaurant.name} Venue`);
     const locationText = restaurant.location || restaurant.area || 'Yangon';
     const cuisineText = restaurant.cuisine || (isMm ? 'အစားအစာမျိုးစုံ' : 'Signature Dining');
     const promotions = getPromoCardPromotions(restaurant);
-    const primaryPromotion = promotions[0] || { title: isMm ? 'အထူး ပရိုမိုးရှင်း' : 'Special Offer', detail: '', validity: '' };
-    const additionalCount = Math.max(promotions.length - 1, 0);
-    const promotionSummary = [cuisineText, locationText].filter(Boolean).join(' • ');
-    const moreOffersLabel = isMm
-      ? `+${additionalCount}`
-      : `+${additionalCount}`;
-    const bookNowLabel = isMm ? 'ချက်ချင်း စိုတ်မည်' : 'Book Now';
+    const primaryPromotion = promotions[0] || { title: isMm ? '၂၀% လျှော့ဈေး' : '20% OFF', detail: 'À la carte Menu', validity: 'Until 10:00 PM' };
+    const offerTitle = primaryPromotion.title || restaurant.offerTag || '20% OFF';
+    const offerDetail = primaryPromotion.detail || (isMm ? 'စားသောက်စရိတ်' : 'Set Menu & Dining');
+    const promoCode = `PROMO${(restaurant.id || '20').replace(/\D/g, '').padStart(2, '0') || '25'}`;
+    const claimButtonLabel = isMm ? 'ဘောက်ချာ ရယူပြီး စိုတ်မည်' : 'Claim Voucher & Book';
 
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[290px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
-
-        <div class="relative aspect-[16/10] min-h-[220px] overflow-hidden">
+        <!-- Top Section: Visual Image & Venue Identity -->
+        <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-[#231916]">
           <img
-            src="${restaurant.heroImage}"
+            src="${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}"
             alt="${venueTitle}"
             referrerpolicy="no-referrer"
             loading="lazy"
             onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
           />
-          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(0,0,0,0.12)_65%,rgba(0,0,0,0.82)_100%)] pointer-events-none"></div>
-          ${renderRatingBadge(restaurant)}
-          ${renderFavoriteButton(restaurant.id, isFavorite)}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none"></div>
 
-          <div class="absolute inset-x-0 bottom-0 z-10 px-4 pb-4 pt-12 sm:px-5 sm:pb-5">
-            <h3 class="font-headline text-[1.35rem] sm:text-[1.5rem] font-extrabold text-white leading-tight truncate" title="${venueTitle}">
+          <!-- Top Floating Controls -->
+          <div class="absolute top-3 inset-x-3 flex items-center justify-end z-10">
+            ${renderFavoriteButton(restaurant.id, isFavorite)}
+          </div>
+
+          <!-- Bottom Image Overlay: Venue Name above, Location & Rating under -->
+          <div class="absolute bottom-3 inset-x-3.5 z-10 text-white space-y-1 pointer-events-none">
+            <h3 class="font-headline text-lg sm:text-xl font-bold leading-tight truncate text-white drop-shadow-sm" title="${venueTitle}">
               ${venueTitle}
             </h3>
-            <p class="mt-1 font-body text-sm sm:text-[0.95rem] font-medium text-white/90 truncate" title="${promotionSummary}">
-              ${promotionSummary}
-            </p>
+            <div class="flex items-center gap-1.5 text-xs text-[#f5d592] font-semibold">
+              <span class="material-symbols-outlined text-xs fill-1">star</span>
+              <span>${restaurant.rating || 4.9}</span>
+              <span class="text-white/70">(${restaurant.reviewCount || 128})</span>
+              <span class="text-white/50">•</span>
+              <span class="text-white/90 font-medium truncate">${locationText}</span>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-1 flex-col bg-[#FFFDFC] px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-5">
-          <div class="min-w-0">
-            <div class="flex items-start justify-between gap-2 min-w-0">
-              <div class="flex items-center gap-2 min-w-0 flex-1">
-                <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">local_offer</span>
-                <p class="font-headline text-[1.05rem] sm:text-[1.15rem] font-extrabold leading-tight text-[#241A18] truncate" title="${primaryPromotion.title}">
-                  ${primaryPromotion.title}
-                </p>
+        <!-- Ticket-Stub Perforated Divider (Notched Edges) -->
+        <div class="relative flex items-center justify-between bg-[#FFFDFC] px-0 py-0.5 select-none pointer-events-none">
+          <!-- Left Notch -->
+          <div class="w-3.5 h-5 bg-[#FBF4E8] rounded-r-full border-r border-t border-b border-[#E8DDD0] -ml-px"></div>
+          <!-- Perforated Dashed Line -->
+          <div class="flex-1 border-b-2 border-dashed border-[#E8DDD0] mx-2"></div>
+          <!-- Right Notch -->
+          <div class="w-3.5 h-5 bg-[#FBF4E8] rounded-l-full border-l border-t border-b border-[#E8DDD0] -mr-px"></div>
+        </div>
+
+        <!-- Bottom Section: High-Impact Deal Engine -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5 bg-[#FFFDFC]">
+          <div class="space-y-2.5">
+            <!-- Promo Value Stamp -->
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-baseline gap-1.5 min-w-0">
+                <span class="font-headline text-2xl sm:text-3xl font-extrabold text-[#9B1C25] leading-none shrink-0">${offerTitle}</span>
+                <span class="font-label text-[11px] sm:text-xs font-bold text-[#6D6561] uppercase tracking-wide truncate">${offerDetail}</span>
               </div>
-              ${additionalCount > 0 ? `
-                <span class="inline-flex min-h-[28px] shrink-0 items-center justify-center rounded-lg border border-[#9B1C25] px-2.5 py-0.5 font-label text-xs font-extrabold text-[#9B1C25]">
-                  ${moreOffersLabel}
-                </span>
-              ` : ''}
+            </div>
+
+            <!-- Description / Promo Subtext -->
+            <div class="space-y-0.5">
+              <h4 class="font-headline text-sm sm:text-base font-bold text-[#241A18] leading-snug line-clamp-1">
+                ${restaurant.tagline || (isMm ? 'အထူး စားသောက်စရိတ် လျှော့ဈေး အစီအစဉ်' : 'Exclusive Dining Offer & Tasting Set')}
+              </h4>
+              <p class="font-body text-xs text-[#6D6561] line-clamp-2 leading-relaxed">
+                ${isMm ? (restaurant.specialNotice || 'စားဖိုမှူးကြီး၏ အထူးဟင်းလျာများ၊ စပါကလင်းဝိုင်နှင့် အခမဲ့ အချိုပွဲ လက်ဆောင် ပါဝင်ပါသည်။') : (restaurant.description || 'Includes signature tasting menu, chef special dish, and welcome drinks.')}
+              </p>
+            </div>
+
+            <!-- Promo Code & Scarcity Badge -->
+            <div class="pt-1 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <button
+                type="button"
+                data-promo-copy-code="${promoCode}"
+                class="group/code inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F8EFE5] border border-[#E8DDD0] hover:border-[#9B1C25] font-mono text-[11px] font-bold text-[#241A18] transition-colors cursor-pointer"
+                title="${isMm ? 'ဘောက်ချာကုဒ် ကူးယူရန် နှိပ်ပါ' : 'Click to copy voucher code'}"
+              >
+                <span class="text-[#9B1C25] font-bold">CODE:</span>
+                <span>${promoCode}</span>
+                <span class="material-symbols-outlined text-xs text-[#6D6561] group-hover/code:text-[#9B1C25]">content_copy</span>
+              </button>
+
+              <span class="inline-flex items-center gap-1 text-[11px] font-label font-bold text-[#D08E1C]">
+                <span>🔥</span>
+                <span>${isMm ? 'ယနေ့ ၄ ဝိုင်းသာ ကျန်ပါသည်' : 'Limited Offer'}</span>
+              </span>
             </div>
           </div>
 
-          <div class="mt-auto pt-4">
+          <!-- Claim & Book CTA -->
+          <div class="pt-2">
             <button
               data-card-reserve-id="${restaurant.id}"
-              class="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[#9B1C25] px-6 py-3 font-label text-sm sm:text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-md transition-all active:scale-[0.98] hover:bg-[#7F161E] cursor-pointer text-center"
+              class="w-full bg-[#9B1C25] hover:bg-[#7F161E] active:scale-[0.98] text-white py-2.5 sm:py-3 px-4 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>${bookNowLabel}</span>
-              <span class="material-symbols-outlined text-lg sm:text-xl leading-none">arrow_forward</span>
+              <span>${claimButtonLabel}</span>
+              <span class="material-symbols-outlined text-sm sm:text-base">arrow_forward</span>
             </button>
           </div>
         </div>

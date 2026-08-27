@@ -650,6 +650,378 @@
   }
 
   // ============================================================
+  // Proposed Hot Promotion Card Explorations (Options A, B, C)
+  // ============================================================
+
+  function renderHotPromoOptionA(restaurant, isMm = false) {
+    const r = restaurant || {
+      id: 'r1',
+      name: 'The Gilded Fork',
+      venueName: 'The Gilded Fork Fine Dining',
+      cuisine: 'Contemporary European & French',
+      location: 'Bahan, Yangon',
+      rating: 4.9,
+      reviewCount: 342,
+      heroImage: 'assets/images/gilded_fork.jpg'
+    };
+
+    return `
+      <div class="flex flex-col h-full bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group text-left relative" data-hot-promo-card="option-a">
+        <!-- Card Type Label -->
+        <div class="bg-[#231916] text-[#EADFD1] px-4 py-2 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
+          <span class="font-bold text-[#D08E1C]">OPTION A: DINING PASS / VOUCHER</span>
+          <span class="text-white/60 text-[10px]">Ticket-Stub Voucher</span>
+        </div>
+
+        <!-- Top Section: Visual Image & Venue Identity -->
+        <div class="relative h-48 sm:h-52 w-full overflow-hidden bg-[#231916]">
+          <img
+            src="${r.heroImage || 'assets/images/gilded_fork.jpg'}"
+            alt="${r.name}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20"></div>
+
+          <!-- Top Floating Controls -->
+          <div class="absolute top-3 inset-x-3 flex items-center justify-end z-10">
+            <button class="gallery-card-fav w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">favorite</span>
+            </button>
+          </div>
+
+          <!-- Bottom Image Text: Restaurant Name above, Location & Rating under -->
+          <div class="absolute bottom-3 inset-x-3.5 z-10 text-white space-y-1">
+            <h4 class="font-headline text-lg sm:text-xl font-bold leading-tight truncate drop-shadow-sm">
+              ${r.venueName || r.name}
+            </h4>
+            <div class="flex items-center gap-1.5 text-xs text-[#f5d592] font-semibold">
+              <span class="material-symbols-outlined text-xs">star</span>
+              <span>${r.rating || 4.9}</span>
+              <span class="text-white/70">(${r.reviewCount || 342} reviews)</span>
+              <span class="text-white/50">•</span>
+              <span class="text-white/90 font-medium truncate">${r.location || 'Bahan, Yangon'}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket-Stub Perforated Divider (Notched edges) -->
+        <div class="relative flex items-center justify-between bg-[#FFFDFC] px-0 py-1 select-none">
+          <!-- Left Notch -->
+          <div class="w-4 h-6 bg-[#FBF4E8] rounded-r-full border-r border-t border-b border-[#E8DDD0] -ml-px"></div>
+          <!-- Perforated Dashed Line -->
+          <div class="flex-1 border-b-2 border-dashed border-[#E8DDD0] mx-2"></div>
+          <!-- Right Notch -->
+          <div class="w-4 h-6 bg-[#FBF4E8] rounded-l-full border-l border-t border-b border-[#E8DDD0] -mr-px"></div>
+        </div>
+
+        <!-- Bottom Section: High-Impact Deal Engine -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4 bg-[#FFFDFC]">
+          <div class="space-y-2.5">
+            <!-- Promo Value Stamp -->
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-headline text-2xl sm:text-3xl font-extrabold text-[#9B1C25] leading-none">25% OFF</span>
+                <span class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wide">${isMm ? 'စားသောက်စရိတ်' : 'Set Menu'}</span>
+              </div>
+            </div>
+
+            <!-- Promotion Details Headline -->
+            <div class="space-y-1">
+              <h5 class="font-headline text-base font-bold text-[#241A18] leading-snug">
+                ${isMm ? 'မုတ်သုံရာသီ ပြင်သစ် ၄ မျိုးဟင်းလျာနှင့် အခမဲ့ ဝိုင်အတွဲအစပ်' : 'Monsoon 4-Course French Degustation & Wine Pairing'}
+              </h5>
+              <p class="font-body text-xs text-[#6D6561] line-clamp-2 leading-relaxed">
+                ${isMm ? 'စားဖိုမှူးကြီး၏ အထူးဟင်းလျာများ၊ စပါကလင်းဝိုင်နှင့် အခမဲ့ အချိုပွဲ လက်ဆောင် ပါဝင်ပါသည်။' : 'Includes welcome champagne, chef signature main, and artisanal dessert.'}
+              </p>
+            </div>
+
+            <!-- Promo Code & Scarcity Badge -->
+            <div class="pt-1 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <button
+                data-promo-copy-code="MONSOON25"
+                class="group/code inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F8EFE5] border border-[#E8DDD0] hover:border-[#9B1C25] font-mono text-[11px] font-bold text-[#241A18] transition-colors cursor-pointer"
+                title="Click to copy voucher code"
+              >
+                <span class="text-[#9B1C25] font-bold">CODE:</span>
+                <span>MONSOON25</span>
+                <span class="material-symbols-outlined text-xs text-[#6D6561] group-hover/code:text-[#9B1C25]">content_copy</span>
+              </button>
+
+              <span class="inline-flex items-center gap-1 text-[11px] font-label font-bold text-[#D08E1C]">
+                <span>🔥</span>
+                <span>${isMm ? 'ယနေ့ ၄ ဝိုင်းသာ ကျန်ပါသည်' : '4 vouchers left today'}</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Claim & Book CTA -->
+          <div class="pt-2">
+            <button
+              data-hot-promo-book="${r.id}"
+              data-promo-tier="25% OFF Voucher"
+              class="w-full bg-[#9B1C25] hover:bg-[#7F161E] active:scale-[0.98] text-white py-3 px-4 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>${isMm ? 'ဘောက်ချာ ရယူပြီး စိုတ်မည်' : 'Claim Voucher & Reserve Table'}</span>
+              <span class="material-symbols-outlined text-sm sm:text-base">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderHotPromoOptionB(restaurant, isMm = false) {
+    const r = restaurant || {
+      id: 'r2',
+      name: 'Seeds Restaurant & Lounge',
+      venueName: 'Seeds Restaurant & Lounge',
+      cuisine: 'Contemporary Swiss & Microgreen Garden',
+      location: 'Inya Lakefront, Mayangone',
+      rating: 5.0,
+      reviewCount: 418,
+      heroImage: 'assets/images/seeds_lakefront.jpg'
+    };
+
+    return `
+      <div class="flex flex-col h-full relative bg-[#1c1311] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[460px] border border-[#362723] group text-left justify-between" data-hot-promo-card="option-b">
+        <!-- Card Type Label Header -->
+        <div class="bg-[#231916] text-[#EADFD1] px-4 py-2 flex items-center justify-between text-[11px] font-mono border-b border-[#362723] z-20">
+          <span class="font-bold text-[#D08E1C]">OPTION B: EDITORIAL LUXE BANNER</span>
+          <span class="text-white/60 text-[10px]">Full-Bleed Visual</span>
+        </div>
+
+        <!-- Full-Bleed Background Image with Multilayer Gradients -->
+        <div class="absolute inset-0 pt-8 overflow-hidden pointer-events-none">
+          <img
+            src="${r.heroImage || 'assets/images/seeds_lakefront.jpg'}"
+            alt="${r.name}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/30"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(155,28,37,0.35),transparent_60%)]"></div>
+        </div>
+
+        <!-- Top Row Controls -->
+        <div class="relative z-10 p-4 sm:p-5 flex items-start justify-between gap-2">
+          <div class="flex flex-col gap-1.5">
+            <span class="inline-flex items-center gap-1.5 bg-[#D08E1C] text-[#231916] px-3 py-1 rounded-full font-label text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+              <span class="material-symbols-outlined text-xs leading-none">stars</span>
+              ${isMm ? 'အထူး လက်တွဲဖော် ပရိုမိုးရှင်း' : 'Exclusive Partner Deal'}
+            </span>
+            <span class="text-white/80 font-label text-[10px] sm:text-xs">
+              KBZPay Platinum Perks
+            </span>
+          </div>
+
+          <button class="gallery-card-fav w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-lg">favorite</span>
+          </button>
+        </div>
+
+        <!-- Middle / Bottom Content -->
+        <div class="relative z-10 p-4 sm:p-5 space-y-3 mt-auto">
+          <!-- Discount Callout Hero -->
+          <div class="space-y-1">
+            <div class="font-label text-xs sm:text-sm font-extrabold uppercase tracking-widest text-[#f5d592]">
+              ${isMm ? 'သီးသန့် ကမ်းလှမ်းမှု' : 'Limited Time Offer'}
+            </div>
+            <h3 class="font-headline text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+              SAVE UP TO 30%
+            </h3>
+            <p class="font-headline text-sm sm:text-base font-medium text-white/90">
+              ${isMm ? 'ကန်ဘေး နေဝင်ချိန် ညစာနှင့် စားဖိုမှူးလက်ရာ အထူးမီနူး' : 'Sunset Lakefront Omakase & Champagne Pairing'}
+            </p>
+          </div>
+
+          <!-- Restaurant Metadata Pill -->
+          <div class="p-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/15 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <h5 class="font-headline font-bold text-sm text-white truncate">${r.venueName || r.name}</h5>
+              <span class="inline-flex items-center gap-1 text-[#f5d592] font-label text-xs font-bold shrink-0">
+                <span class="material-symbols-outlined text-xs fill-1">star</span>
+                ${r.rating || 5.0}
+              </span>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-white/70">
+              <span class="material-symbols-outlined text-xs text-[#f5d592]">schedule</span>
+              <span>${isMm ? 'အင်္ဂါ - တနင်္ဂနွေ ညစာအတွက် အကျုံးဝင်သည်' : 'Valid Tue - Sun for Dinner (6:00 PM - 9:30 PM)'}</span>
+            </div>
+          </div>
+
+          <!-- Frosted Glow Button -->
+          <button
+            data-hot-promo-book="${r.id}"
+            data-promo-tier="30% Exclusive Partner Deal"
+            class="w-full bg-[#FFFDFC] hover:bg-[#F3DFD5] active:scale-[0.98] text-[#9B1C25] py-3.5 px-5 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border border-white/30"
+          >
+            <span>${isMm ? 'ပရိုမိုးရှင်းဖြင့် စားပွဲဝိုင်း စိုတ်မည်' : 'Book Table with 30% Promo'}</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderHotPromoOptionC(restaurant, isMm = false) {
+    const r = restaurant || {
+      id: 'r3',
+      name: 'Le Planteur Fine Dining & Wine Bar',
+      venueName: 'Le Planteur Heritage Mansion',
+      cuisine: 'French Fine Dining & Bistro',
+      location: 'University Avenue, Bahan',
+      rating: 4.8,
+      reviewCount: 295,
+      heroImage: 'assets/images/le_planteur.jpg'
+    };
+
+    return `
+      <div class="flex flex-col h-full bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group text-left justify-between" data-hot-promo-card="option-c">
+        <!-- Card Type Label Header -->
+        <div class="bg-[#231916] text-[#EADFD1] px-4 py-2 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
+          <span class="font-bold text-[#D08E1C]">OPTION C: SPLIT ACTION + LIVE SLOTS</span>
+          <span class="text-white/60 text-[10px]">Instant Booking</span>
+        </div>
+
+        <!-- Visual Image Section -->
+        <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-[#231916]">
+          <img
+            src="${r.heroImage || 'assets/images/le_planteur.jpg'}"
+            alt="${r.name}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+
+          <!-- Hot Promo Ribbon Tag -->
+          <div class="absolute top-3 left-3 z-10">
+            <span class="inline-flex items-center gap-1 bg-[#9B1C25] text-white px-3 py-1 rounded-full font-label text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+              <span class="material-symbols-outlined text-xs">local_fire_department</span>
+              20% OFF TODAY
+            </span>
+          </div>
+
+          <button class="gallery-card-fav absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-[#9B1C25] shadow-md flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer z-10">
+            <span class="material-symbols-outlined text-base">favorite</span>
+          </button>
+
+          <div class="absolute bottom-3 inset-x-3.5 text-white">
+            <h4 class="font-headline text-lg font-bold leading-tight truncate">${r.venueName || r.name}</h4>
+            <p class="font-body text-xs text-white/80 truncate">${r.cuisine} • ${r.location}</p>
+          </div>
+        </div>
+
+        <!-- Content & Live Slot Chooser -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5 bg-[#FFFDFC]">
+          <!-- Deal Pricing Breakdown -->
+          <div class="space-y-1.5 bg-[#F8EFE5] p-3 rounded-2xl border border-[#E8DDD0]">
+            <div class="flex items-center justify-between">
+              <span class="font-label text-xs font-bold text-[#6D6561] uppercase tracking-wide">${isMm ? 'လျှော့ဈေးနှုန်း' : 'Promo Price'}</span>
+              <span class="px-2 py-0.5 rounded bg-[#9B1C25]/10 text-[#9B1C25] font-label text-[10px] font-extrabold">${isMm ? '၂၄,၀၀၀ သက်သာ' : 'Save 24,000 MMK'}</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-headline text-xl sm:text-2xl font-bold text-[#9B1C25]">96,000 MMK</span>
+              <span class="font-body text-xs text-[#6D6561] line-through">120,000 MMK</span>
+              <span class="font-body text-[11px] text-[#6D6561]">${isMm ? '/ တစ်ဦး' : '/ person'}</span>
+            </div>
+            <p class="font-body text-[11px] text-[#241A18]">
+              ${isMm ? 'အခမဲ့ အချိုပွဲနှင့် ဝိုင်တစ်ခွက် ပါဝင်ပါသည်' : 'Includes complimentary dessert & welcome prosecco.'}
+            </p>
+          </div>
+
+          <!-- Instant Available Time Slots Selector -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-[11px] font-label font-bold text-[#6D6561]">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-[#607A62]">schedule</span>
+                ${isMm ? 'စိုတ်ယူမည့် အချိန် ရွေးချယ်ပါ' : 'Select Preferred Time Slot'}
+              </span>
+              <span class="text-[#607A62] text-[10px] font-bold">● Instant Table</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 promo-c-slots-container">
+              <button data-promo-c-slot="18:30" class="promo-slot-btn py-1.5 px-1 bg-white hover:bg-[#9B1C25] hover:text-white border border-[#E8DDD0] hover:border-[#9B1C25] rounded-xl font-label text-xs font-bold text-[#241A18] transition-all cursor-pointer text-center">
+                6:30 PM
+              </button>
+              <button data-promo-c-slot="19:30" class="promo-slot-btn py-1.5 px-1 bg-[#9B1C25] text-white border border-[#9B1C25] rounded-xl font-label text-xs font-bold shadow-xs transition-all cursor-pointer text-center">
+                7:30 PM
+              </button>
+              <button data-promo-c-slot="20:30" class="promo-slot-btn py-1.5 px-1 bg-white hover:bg-[#9B1C25] hover:text-white border border-[#E8DDD0] hover:border-[#9B1C25] rounded-xl font-label text-xs font-bold text-[#241A18] transition-all cursor-pointer text-center">
+                8:30 PM
+              </button>
+            </div>
+          </div>
+
+          <!-- Action CTA -->
+          <div class="pt-1">
+            <button
+              data-hot-promo-book="${r.id}"
+              data-promo-tier="20% OFF Instant Slot"
+              class="w-full bg-[#9B1C25] hover:bg-[#7F161E] active:scale-[0.98] text-white py-3 px-4 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>${isMm ? '၇:၃၀ အချိန်ဖြင့် စိုတ်မည် (၂၀% သက်သာ)' : 'Reserve 7:30 PM (20% OFF)'}</span>
+              <span class="material-symbols-outlined text-sm sm:text-base">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderHotPromoExplorations(data, isMm = false) {
+    const r1 = data[0] || null;
+    const r2 = data[1] || data[0] || null;
+    const r3 = data[2] || data[0] || null;
+
+    return `
+      <div class="space-y-6">
+        <!-- Overview Banner -->
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#F8EFE5] border border-[#E8DDD0] space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#9B1C25] text-xl">local_fire_department</span>
+            <h3 class="font-headline text-base sm:text-lg font-bold text-[#9B1C25]">
+              ${isMm ? 'အထူး ပရိုမိုးရှင်း ကတ် ဒီဇိုင်း ရွေးချယ်စရာ ၃ မျိုး (Options A, B, C)' : 'Hot Promotion Card Design Explorations (Options A, B, C)'}
+            </h3>
+          </div>
+          <p class="font-body text-xs sm:text-sm text-[#6D6561] leading-relaxed">
+            ${isMm
+              ? 'လက်ရှိ ပရိုမိုးရှင်းကတ်ထက် ပိုမိုဆွဲဆောင်မှုရှိပြီး အကျိုးခံစားခွင့်ကို ရှင်းလင်းစွာ မြင်သာစေမည့် ပုံစံ ၃ မျိုးကို အောက်တွင် စမ်းသပ်ကြည့်ရှုနိုင်ပါသည်။ ခလုတ်များ၊ ကုဒ်ကူးယူခြင်းနှင့် အချိန်ရွေးချယ်မှုများကို တိုက်ရိုက် စမ်းသပ်နိုင်ပါသည်။'
+              : 'Compare 3 distinct promotion card archetypes tailored for luxury dining offers. Each option features clear visual hierarchy, deal terms, responsive hover physics, and interactive triggers.'}
+          </p>
+        </div>
+
+        <!-- 3 Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <!-- Option A -->
+          <div class="flex flex-col space-y-2">
+            <div class="text-xs font-bold text-[#9B1C25] flex items-center justify-between px-1">
+              <span>Option A: Voucher Pass Style</span>
+              <span class="text-[#6D6561] font-normal text-[11px]">Recommended</span>
+            </div>
+            ${renderHotPromoOptionA(r1, isMm)}
+          </div>
+
+          <!-- Option B -->
+          <div class="flex flex-col space-y-2">
+            <div class="text-xs font-bold text-[#9B1C25] flex items-center justify-between px-1">
+              <span>Option B: Full-Bleed Editorial</span>
+              <span class="text-[#6D6561] font-normal text-[11px]">Atmospheric</span>
+            </div>
+            ${renderHotPromoOptionB(r2, isMm)}
+          </div>
+
+          <!-- Option C -->
+          <div class="flex flex-col space-y-2">
+            <div class="text-xs font-bold text-[#9B1C25] flex items-center justify-between px-1">
+              <span>Option C: Split Action + Live Slots</span>
+              <span class="text-[#6D6561] font-normal text-[11px]">High Conversion</span>
+            </div>
+            ${renderHotPromoOptionC(r3, isMm)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============================================================
   // Proposed Curated Collections Design Explorations (Options 1 - 4 + Mobile/Tablet Options A & B)
   // ============================================================
 
@@ -1377,9 +1749,11 @@
   function renderComponentGallery(state) {
     const data = (window.YoyakuData && window.YoyakuData.RESTAURANTS_DATA) || [];
     const sample = data[0] || { heroImage: '', cuisine: 'Italian', offerTag: '20% OFF', rating: 4.8, reviewCount: 320 };
+    const isMm = state.currentLanguage === 'MM';
 
     return `
       <div class="space-y-6 sm:space-y-8">
+        ${section('Hot Promotion Card Explorations (Option A, B, C)', 'အထူး ပရိုမိုးရှင်း ကတ် ဒီဇိုင်း ရွေးချယ်စရာများ (Option A, B, C)', renderHotPromoExplorations(data, isMm))}
         ${section('Curated Collection Explorations (Options 1 - 4)', 'ရွေးချယ်ထားသော စားသောက်ဆိုင် ဒီဇိုင်းများ (၁ - ၄)', renderCuratedDesignsShowcase())}
         ${section('Colors', 'အရောင်များ', renderColors())}
         ${section('Typography', 'စာအရွယ်အစားများ', renderTypography())}
@@ -1414,6 +1788,54 @@
     if (termsBtn) {
       termsBtn.addEventListener('click', () => store.openInfoModal('terms'));
     }
+
+    // Hot Promotion Explorations: Copy Voucher Code
+    root.querySelectorAll('[data-promo-copy-code]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const code = btn.getAttribute('data-promo-copy-code') || 'MONSOON25';
+        navigator.clipboard?.writeText(code).catch(() => {});
+        store.showToast(`Voucher code copied: ${code}`);
+      });
+    });
+
+    // Hot Promotion Explorations: Option C Time Slot selection
+    root.querySelectorAll('[data-promo-c-slot]').forEach(slotBtn => {
+      slotBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const container = slotBtn.closest('.promo-c-slots-container');
+        const card = slotBtn.closest('[data-hot-promo-card="option-c"]');
+        const time = slotBtn.getAttribute('data-promo-c-slot') || '19:30';
+        const isMm = store.getState().currentLanguage === 'MM';
+
+        if (container) {
+          container.querySelectorAll('.promo-slot-btn').forEach(b => {
+            b.className = 'promo-slot-btn py-1.5 px-1 bg-white hover:bg-[#9B1C25] hover:text-white border border-[#E8DDD0] hover:border-[#9B1C25] rounded-xl font-label text-xs font-bold text-[#241A18] transition-all cursor-pointer text-center';
+          });
+        }
+        slotBtn.className = 'promo-slot-btn py-1.5 px-1 bg-[#9B1C25] text-white border border-[#9B1C25] rounded-xl font-label text-xs font-bold shadow-xs transition-all cursor-pointer text-center';
+
+        if (card) {
+          const ctaBtn = card.querySelector('[data-hot-promo-book] span');
+          if (ctaBtn) {
+            const formattedTime = time === '18:30' ? '6:30 PM' : time === '19:30' ? '7:30 PM' : '8:30 PM';
+            ctaBtn.textContent = isMm ? `${formattedTime} ဖြင့် စိုတ်မည် (၂၀% သက်သာ)` : `Reserve ${formattedTime} (20% OFF)`;
+          }
+        }
+        store.showToast(`Selected promo slot: ${time}`);
+      });
+    });
+
+    // Hot Promotion Explorations: Book / Claim Promo Triggers
+    root.querySelectorAll('[data-hot-promo-book]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const restaurantId = btn.getAttribute('data-hot-promo-book') || 'r1';
+        const promoTier = btn.getAttribute('data-promo-tier') || 'Special Promotion';
+        store.navigateTo('u03', { restaurantId: restaurantId });
+        store.showToast(`Applied ${promoTier}! Navigating to restaurant...`);
+      });
+    });
 
     // Curated Option 3 Interactive Mood Pill Filtering
     const moodButtons = root.querySelectorAll('.curated-mood-btn');
@@ -1566,6 +1988,10 @@
     });
   }
 
+  window.YoyakuComponents.renderHotPromoOptionA = renderHotPromoOptionA;
+  window.YoyakuComponents.renderHotPromoOptionB = renderHotPromoOptionB;
+  window.YoyakuComponents.renderHotPromoOptionC = renderHotPromoOptionC;
+  window.YoyakuComponents.renderHotPromoExplorations = renderHotPromoExplorations;
   window.YoyakuComponents.renderComponentGallery = renderComponentGallery;
   window.YoyakuComponents.attachComponentGalleryEvents = attachComponentGalleryEvents;
   window.YoyakuComponents.renderStatusBadge = renderStatusBadge;
