@@ -358,7 +358,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
         <!-- Image Container with Overlays -->
         <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden">
@@ -438,7 +438,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[var(--color-brand-surface)] border border-[var(--color-brand-border)] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_4px_14px_rgba(70,40,20,0.08)] hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
 
         <div class="relative aspect-[16/10] min-h-[220px] overflow-hidden">

@@ -211,7 +211,7 @@
                     const isCompleted = statusLower === 'completed';
 
                     return `
-                      <div class="luxe-card bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col gap-3.5 sm:gap-4">
+                      <div class="luxe-card group bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] overflow-hidden p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col gap-3.5 sm:gap-4 text-left">
 
                         <!-- Top Row: Restaurant Name & Location (Left), Status Badge (Right) -->
                         <div class="flex items-start justify-between gap-3 w-full">
@@ -364,7 +364,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           ${favoriteRestaurants
             .map(r => `
-              <div class="bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer">
                 <div class="relative h-44 overflow-hidden">
                   <img
                     src="${r.image || (r.images && r.images[0]) || 'assets/images/shop_theglasspavilion_1.jpg'}"
@@ -449,7 +449,7 @@
               : waitlists
                   .map(
                     w => `
-                      <div class="bg-[#FFFDFC] p-5 rounded-3xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
+                      <div class="bg-[#FFFDFC] p-5 rounded-2xl sm:rounded-3xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                         <div class="space-y-1">
                           <div class="font-headline font-bold text-base text-[#231916]">${w.restaurantName}</div>
                           <div class="font-body text-xs text-[#58413f] flex items-center gap-3">
@@ -495,7 +495,7 @@
           ${coupons
             .map(
               c => `
-                <div class="bg-[#FFFDFC] p-5 rounded-xl border border-[#E8DDD0] flex flex-col justify-between space-y-4 shadow-xs relative overflow-hidden">
+                <div class="bg-[#FFFDFC] p-5 rounded-2xl sm:rounded-3xl border border-[#E8DDD0] flex flex-col justify-between space-y-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                   <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-[#840f16]/5 rounded-full pointer-events-none"></div>
 
                   <div class="space-y-1">

@@ -331,7 +331,7 @@
     };
 
     return `
-      <div id="suggestion-card-quick-book" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
+      <div id="suggestion-card-quick-book" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col max-w-sm w-full">
         <!-- ID Badge Header -->
         <div class="bg-[#231916] text-[#EADFD1] px-3.5 py-1.5 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
           <span class="font-bold text-[#D08E1C]">ID: #suggestion-card-quick-book</span>
@@ -569,7 +569,7 @@
     };
 
     return `
-      <div id="suggestion-card-social-proof" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col max-w-sm w-full">
+      <div id="suggestion-card-social-proof" class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col max-w-sm w-full">
         <!-- ID Badge Header -->
         <div class="bg-[#231916] text-[#EADFD1] px-3.5 py-1.5 flex items-center justify-between text-[11px] font-mono border-b border-[#362723]">
           <span class="font-bold text-[#D08E1C]">ID: #suggestion-card-social-proof</span>
@@ -999,7 +999,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
           ${collections.map(c => `
-            <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer" data-curated-demo="${c.id}">
+            <div class="bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group cursor-pointer" data-curated-demo="${c.id}">
               <!-- Image with Atmospheric Overlay -->
               <div class="relative h-48 w-full overflow-hidden bg-[#231916]">
                 <img src="${c.img}" alt="${c.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />

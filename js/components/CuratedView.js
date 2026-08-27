@@ -30,7 +30,7 @@
           ${COLLECTIONS_DATA.map(col => `
             <div
               data-curated-target="${col.targetRestaurantId}"
-              class="group relative h-96 sm:h-[400px] rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-end p-6 sm:p-8 text-left text-white"
+              class="group relative h-96 sm:h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-end p-6 sm:p-8 text-left text-white border border-white/15"
             >
               <img
                 src="${col.image}"

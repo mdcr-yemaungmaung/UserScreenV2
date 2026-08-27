@@ -207,7 +207,7 @@
     return `
       <div
         data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        class="shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
       >
         <!-- Image Container with Overlays -->
         <div class="relative aspect-[16/9] min-h-[170px] sm:min-h-[190px] overflow-hidden">
@@ -645,42 +645,7 @@
           </div>
         </section>
 
-        <!-- TONIGHT'S OPEN TABLES (live availability strip with instant-book chips) -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
-          <div class="flex justify-between items-end mb-4 lg:mb-6">
-            <div>
-              <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
-                <span class="material-symbols-outlined text-sm">bolt</span>
-                <span>${isMm ? 'တစ်ချက်နှိပ်ရုံဖြင့် စိုတ်ယူပါ' : 'Live availability · One tap to book'}</span>
-              </div>
-              <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'ယနေ့ည ဗလာစားပွဲဝိုင်းများ' : 'Tonight’s Open Tables'}
-              </h2>
-              <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'ယနေ့ညအတွက် လစ်လပ်နေသော စားပွဲဝိုင်းများကို အချိန်ရွေးကာ ချက်ချင်း စိုတ်ယူနိုင်ပါသည်' : 'Skip the calendar — tap a free dinner slot tonight and reserve instantly.'}
-              </p>
-            </div>
-            <button
-              data-nav-tab="resultlist"
-              class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </button>
-          </div>
-
-          <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 pb-4 lg:pb-0">
-            ${
-              TONIGHT_VENUE_ORDER
-                .map(id => RESTAURANTS_DATA.find(r => r.id === id))
-                .filter(Boolean)
-                .map(r => renderTonightCard(r, state))
-                .join('')
-            }
-          </div>
-        </section>
-
-        <!-- PROMOTION & ANNOUNCEMENT BANNERS (ကြေညာချက်ဘန်နာများ - 1 Slidable Row with Indicators) -->
+        <!-- PROMOTION & ANNOUNCEMENT BANNERS (ကြေညာချက်ဘန်နာများ - High-Converting Perk Strip) -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-1 sm:my-2">
           <div class="relative group/promo-carousel">
             <!-- Left Pressable Scroll Arrow -->
@@ -749,6 +714,41 @@
           </div>
         </section>
 
+        <!-- TONIGHT'S OPEN TABLES (live availability strip with instant-book chips) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+          <div class="flex justify-between items-end mb-4 lg:mb-6">
+            <div>
+              <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-sm">bolt</span>
+                <span>${isMm ? 'တစ်ချက်နှိပ်ရုံဖြင့် စိုတ်ယူပါ' : 'Live availability · One tap to book'}</span>
+              </div>
+              <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
+                ${isMm ? 'ယနေ့ည ဗလာစားပွဲဝိုင်းများ' : 'Tonight’s Open Tables'}
+              </h2>
+              <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
+                ${isMm ? 'ယနေ့ညအတွက် လစ်လပ်နေသော စားပွဲဝိုင်းများကို အချိန်ရွေးကာ ချက်ချင်း စိုတ်ယူနိုင်ပါသည်' : 'Skip the calendar — tap a free dinner slot tonight and reserve instantly.'}
+              </p>
+            </div>
+            <button
+              data-nav-tab="resultlist"
+              class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="mobile-horizontal-scroll -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 pb-4 lg:pb-0">
+            ${
+              TONIGHT_VENUE_ORDER
+                .map(id => RESTAURANTS_DATA.find(r => r.id === id))
+                .filter(Boolean)
+                .map(r => renderTonightCard(r, state))
+                .join('')
+            }
+          </div>
+        </section>
+
         <!-- CURATED COLLECTIONS (Option 1 Bento on Desktop + Option A Snap Carousel on Mobile/Tablet) -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           <!-- Header with View All Action -->
@@ -775,7 +775,7 @@
             ${COLLECTIONS_DATA.slice(0, 3).map((col, idx) => `
               <div
                 data-collection-target="${col.targetRestaurantId}"
-                class="shrink-0 w-[280px] sm:w-[320px] h-[360px] sm:h-[380px] snap-start relative rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/15"
+                class="shrink-0 w-[280px] sm:w-[320px] h-[360px] sm:h-[380px] snap-start relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/15"
               >
                 <img
                   src="${col.image}"
@@ -834,7 +834,7 @@
               return `
                 <div
                   data-collection-target="${heroCol.targetRestaurantId}"
-                  class="lg:col-span-7 relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-7 text-left text-white border border-white/10"
+                  class="lg:col-span-7 relative h-80 sm:h-96 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer flex flex-col justify-between p-7 text-left text-white border border-white/10"
                 >
                   <img
                     src="${heroCol.image}"
@@ -883,7 +883,7 @@
               ${COLLECTIONS_DATA.slice(1, 3).map((col, idx) => `
                 <div
                   data-collection-target="${col.targetRestaurantId}"
-                  class="relative flex-1 min-h-[175px] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/10"
+                  class="relative flex-1 min-h-[175px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer flex flex-col justify-between p-5 text-left text-white border border-white/10"
                 >
                   <img
                     src="${col.image}"
