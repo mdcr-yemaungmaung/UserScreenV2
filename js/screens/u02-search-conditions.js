@@ -418,29 +418,22 @@
         >
           
           <!-- TOP NAVIGATION HEADER -->
-          <div class="sticky top-0 z-30 bg-[#FFFDFC]/95 backdrop-blur-md px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#E8DDD0] flex items-center justify-between gap-3 shrink-0 shadow-2xs">
+          <div class="sticky top-0 z-30 bg-[#FFFDFC]/95 backdrop-blur-md px-4 sm:px-6 lg:px-8 h-14 sm:h-16 border-b border-[#E8DDD0] flex items-center justify-between gap-3 sm:gap-4 shrink-0 shadow-2xs pt-[env(safe-area-inset-top,0px)]">
             <div class="flex items-center gap-3">
               <button 
                 id="search-cond-close-btn"
-                class="w-10 h-10 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#241A18] hover:text-[#9B1C25] active:scale-95 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#241A18] hover:text-[#9B1C25] active:scale-95 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
                 title="${isMm ? 'ပိတ်မည်' : 'Close'}"
                 aria-label="Close search conditions"
               >
                 <span class="material-symbols-outlined text-xl">close</span>
               </button>
-              <div>
-                <div class="flex items-center gap-2">
-                  <h1 class="font-headline text-lg sm:text-xl font-extrabold text-[#241A18] leading-tight">
-                    ${isMm ? 'ရှာဖွေရန်' : 'Search'}
-                  </h1>
-                </div>
-              </div>
             </div>
 
             <!-- Reset Button -->
             <button 
               id="search-cond-reset-btn"
-              class="px-3.5 py-1.5 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#6D6561] hover:text-[#9B1C25] font-label text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+              class="px-3.5 py-1.5 sm:py-2 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#6D6561] hover:text-[#9B1C25] font-label text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
             >
               <span class="material-symbols-outlined text-base">restart_alt</span>
               <span>${isMm ? 'ပြန်စမည်' : 'Reset'}</span>
