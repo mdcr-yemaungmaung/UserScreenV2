@@ -69,6 +69,7 @@
     document.querySelectorAll('[data-bottom-tab]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const tab = e.currentTarget.getAttribute('data-bottom-tab');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab(tab);
       });

@@ -259,6 +259,7 @@
     const logo = root.querySelector('#footer-brand-logo');
     if (logo) {
       logo.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab('discover');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -269,6 +270,7 @@
     root.querySelectorAll('[data-footer-tab]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const tab = e.currentTarget.getAttribute('data-footer-tab');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab(tab);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -279,6 +281,7 @@
     root.querySelectorAll('[data-footer-cuisine]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const cuisine = e.currentTarget.getAttribute('data-footer-cuisine');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.updateResultsState({ cuisine, area: 'All Areas', keyword: '' });
         store.setActiveTab('resultlist');
@@ -290,6 +293,7 @@
     root.querySelectorAll('[data-footer-area]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const area = e.currentTarget.getAttribute('data-footer-area');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.updateResultsState({ area, cuisine: 'All Cuisines', keyword: '' });
         store.setActiveTab('resultlist');

@@ -118,7 +118,7 @@
       <div id="u09-booking-detail-page" class="min-h-screen bg-[#FFF7E8] text-[#231916] pb-24 font-body antialiased">
 
         <!-- TOP BREADCRUMB & CONTEXT-AWARE NAVIGATION BAR -->
-        <div class="bg-[#FFF7E8] sticky top-16 z-20">
+        <div class="bg-[#FFF7E8] sticky top-14 sm:top-16 z-20">
           <div class="max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3">
 
             <!-- Left: Smart Back Button & Breadcrumbs -->
@@ -147,18 +147,8 @@
               </nav>
             </div>
 
-            <!-- Right: Return to Discover Quick Pill Button -->
-            <div class="flex items-center gap-2 shrink-0">
-              <button
-                id="u09-nav-discover-btn"
-                type="button"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] hover:bg-[#FBF3E2] hover:border-[#840f16]/30 text-xs font-label font-bold text-[#58413f] hover:text-[#840f16] transition-all cursor-pointer shadow-2xs active:scale-95"
-                title="${isMm ? 'ပင်မ ရှာဖွေရေး စာမျက်နှာသို့ သွားရန်' : 'Return to Discover'}"
-              >
-                <span class="material-symbols-outlined text-sm text-[#840f16]">explore</span>
-                <span>${isMm ? 'ရှာဖွေမည်' : 'Discover'}</span>
-              </button>
-            </div>
+            <!-- Right placeholder -->
+            <div></div>
 
           </div>
         </div>
@@ -779,15 +769,6 @@
         } else {
           store.setActiveTab('reservations');
         }
-      });
-    }
-
-    // Top Right Discover Pill Button
-    const navDiscoverBtn = containerElement.querySelector('#u09-nav-discover-btn');
-    if (navDiscoverBtn) {
-      navDiscoverBtn.addEventListener('click', () => {
-        store.clearSelectedReservationDetail();
-        store.setActiveTab('discover');
       });
     }
 

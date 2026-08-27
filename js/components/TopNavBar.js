@@ -221,6 +221,7 @@
     const logo = document.getElementById('nav-brand-logo');
     if (logo) {
       logo.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab('discover');
       });
@@ -238,6 +239,7 @@
     const checkBtn = document.getElementById('nav-check-booking-link');
     if (checkBtn) {
       checkBtn.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setLoginTab('lookup');
         store.setActiveTab('login');
@@ -256,6 +258,7 @@
     const loginBtn = document.getElementById('nav-login-btn');
     if (loginBtn) {
       loginBtn.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setLoginTab('login');
         store.setActiveTab('login');
@@ -265,6 +268,7 @@
     const signupBtn = document.getElementById('nav-signup-btn');
     if (signupBtn) {
       signupBtn.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab('register');
       });
@@ -274,6 +278,7 @@
     document.querySelectorAll('[data-nav-tab]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const tab = e.currentTarget.getAttribute('data-nav-tab');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab(tab);
       });
@@ -305,6 +310,7 @@
       profileMyPageBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (profileMenu) profileMenu.classList.add('hidden');
+        store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setActiveTab('mypage');
         if (window.innerWidth >= 1024) {
@@ -319,6 +325,7 @@
       profileLogoutBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (profileMenu) profileMenu.classList.add('hidden');
+        store.clearSelectedReservationDetail();
         const isMm = store.getState().currentLanguage === 'MM';
         store.toggleAuth(false);
         store.setActiveTab('discover');
