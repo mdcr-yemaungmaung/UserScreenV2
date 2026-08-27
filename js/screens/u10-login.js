@@ -813,7 +813,7 @@
       openLookupDetailBtn.addEventListener('click', () => {
         const res = store.getState().loginState.lookupResult;
         if (res) {
-          store.selectReservationForDetail(res.id, true);
+          store.selectReservationForDetail(res.id, true, 'lookup');
         }
       });
     }

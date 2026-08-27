@@ -99,26 +99,66 @@
     const seatingTitle = isMm ? (res.seatingMM || res.seating || 'Standard Table') : (res.seating || 'Standard Table');
     const paymentTitle = isMm ? (res.paymentStatusMM || res.paymentStatus || 'Pay at Restaurant') : (res.paymentStatus || 'Pay at Restaurant');
 
+    const origin = state.reservationDetailOrigin || (isGuest ? 'lookup' : 'reservations');
+    const isFromLookup = origin === 'lookup' || isGuest;
+    const isFromDiscover = origin === 'discover';
+
+    // Contextual Labels for Back Button & Parent Breadcrumb
+    const backLabel = isFromLookup
+      ? (isMm ? 'ဧည့်သည် စစ်ဆေးမှုသို့' : 'Back to Lookup')
+      : isFromDiscover
+        ? (isMm ? 'ပင်မ ရှာဖွေရေးသို့' : 'Back to Discover')
+        : (isMm ? 'ကြိုတင်စာရင်းများသို့' : 'Back to Reservations');
+
+    const parentLabel = isFromLookup
+      ? (isMm ? 'ဧည့်သည် စစ်ဆေးမှု' : 'Lookup Reservation')
+      : (isMm ? 'ကြိုတင်စာရင်းများ' : 'My Reservations');
+
     return `
       <div id="u09-booking-detail-page" class="min-h-screen bg-[#FFF7E8] text-[#231916] pb-24 font-body antialiased">
 
-        <!-- TOP BREADCRUMB & BACK HEADER -->
-        <div class="bg-[#FFFDF9] sticky top-16 z-20">
-          <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+        <!-- TOP BREADCRUMB & CONTEXT-AWARE NAVIGATION BAR -->
+        <div class="bg-[#FFF7E8] sticky top-16 z-20">
+          <div class="max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3">
 
-            <div class="flex items-center gap-3">
+            <!-- Left: Smart Back Button & Breadcrumbs -->
+            <div class="flex items-center gap-2 sm:gap-3.5 min-w-0">
               <button
                 id="u09-back-btn"
-                class="inline-flex items-center gap-2 text-xs sm:text-sm font-label font-bold text-[#840f16] hover:text-[#680b11] transition-colors cursor-pointer py-1"
+                class="flex items-center gap-2 font-label text-xs sm:text-sm font-bold text-[#840f16] hover:text-[#600b10] transition-colors cursor-pointer py-1"
                 title="${isMm ? 'နောက်သို့ ပြန်သွားရန်' : 'Back'}"
               >
-                <span class="material-symbols-outlined text-base sm:text-lg text-[#840f16]">arrow_back</span>
-                <span>${isGuest ? (isMm ? 'ဧည့်သည် စုံစမ်းမှုသို့' : 'Back to Inquiry') : (isMm ? 'မှတ်တမ်းသို့ ပြန်သွားရန်' : 'Back to Reservations')}</span>
+                <span class="material-symbols-outlined text-sm sm:text-base text-[#840f16]">arrow_back</span>
+                <span>${backLabel}</span>
               </button>
+
+              <!-- Breadcrumb Trail -->
+              <nav aria-label="Breadcrumb" class="hidden sm:flex items-center gap-1.5 font-label text-xs text-[#6D6561] min-w-0">
+                <span class="text-[#C5B7A8]">/</span>
+                <button id="u09-breadcrumb-discover" class="hover:text-[#840f16] hover:underline transition-colors cursor-pointer shrink-0">
+                  ${isMm ? 'ပင်မ' : 'Discover'}
+                </button>
+                <span class="text-[#C5B7A8]">&gt;</span>
+                <button id="u09-breadcrumb-parent" class="hover:text-[#840f16] hover:underline transition-colors cursor-pointer shrink-0">
+                  ${parentLabel}
+                </button>
+                <span class="text-[#C5B7A8]">&gt;</span>
+                <span class="font-bold text-[#840f16] truncate max-w-[140px] md:max-w-[200px]" title="${resNumber}">${resNumber}</span>
+              </nav>
             </div>
 
-            <!-- Top Right Space / Actions Placeholder -->
-            <div></div>
+            <!-- Right: Return to Discover Quick Pill Button -->
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                id="u09-nav-discover-btn"
+                type="button"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] hover:bg-[#FBF3E2] hover:border-[#840f16]/30 text-xs font-label font-bold text-[#58413f] hover:text-[#840f16] transition-all cursor-pointer shadow-2xs active:scale-95"
+                title="${isMm ? 'ပင်မ ရှာဖွေရေး စာမျက်နှာသို့ သွားရန်' : 'Return to Discover'}"
+              >
+                <span class="material-symbols-outlined text-sm text-[#840f16]">explore</span>
+                <span>${isMm ? 'ရှာဖွေမည်' : 'Discover'}</span>
+              </button>
+            </div>
 
           </div>
         </div>
@@ -697,17 +737,57 @@
   function attachBookingDetailViewEvents(containerElement) {
     if (!containerElement) return;
 
-    // Back button
+    // Back button (Context-Aware)
     const backBtn = containerElement.querySelector('#u09-back-btn');
     if (backBtn) {
       backBtn.addEventListener('click', () => {
-        const isGuest = store.getState().isGuestReservationView;
+        const state = store.getState();
+        const origin = state.reservationDetailOrigin;
+        const isGuest = !!state.isGuestReservationView;
         store.clearSelectedReservationDetail();
-        if (isGuest) {
+        if (origin === 'lookup' || isGuest) {
+          store.setLoginTab('lookup');
+          store.setActiveTab('login');
+        } else if (origin === 'discover') {
+          store.setActiveTab('discover');
+        } else {
+          store.setActiveTab('reservations');
+        }
+      });
+    }
+
+    // Breadcrumb: Discover link
+    const breadcrumbDiscover = containerElement.querySelector('#u09-breadcrumb-discover');
+    if (breadcrumbDiscover) {
+      breadcrumbDiscover.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
+        store.setActiveTab('discover');
+      });
+    }
+
+    // Breadcrumb: Parent (Lookup or My Reservations)
+    const breadcrumbParent = containerElement.querySelector('#u09-breadcrumb-parent');
+    if (breadcrumbParent) {
+      breadcrumbParent.addEventListener('click', () => {
+        const state = store.getState();
+        const origin = state.reservationDetailOrigin;
+        const isGuest = !!state.isGuestReservationView;
+        store.clearSelectedReservationDetail();
+        if (origin === 'lookup' || isGuest) {
+          store.setLoginTab('lookup');
           store.setActiveTab('login');
         } else {
           store.setActiveTab('reservations');
         }
+      });
+    }
+
+    // Top Right Discover Pill Button
+    const navDiscoverBtn = containerElement.querySelector('#u09-nav-discover-btn');
+    if (navDiscoverBtn) {
+      navDiscoverBtn.addEventListener('click', () => {
+        store.clearSelectedReservationDetail();
+        store.setActiveTab('discover');
       });
     }
 

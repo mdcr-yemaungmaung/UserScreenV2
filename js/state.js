@@ -388,6 +388,7 @@
         // =====================================================================
         selectedReservationId: null, // string (e.g. 'res-2026-001') or null for list
         isGuestReservationView: false, // true if viewed by guest without login
+        reservationDetailOrigin: null, // 'lookup' | 'reservations' | 'discover'
 
         // U-09: Date/Time & Guest Count Change Modal
         u09ChangeModal: {
@@ -579,9 +580,10 @@
     // =========================================================================
     // U-09: Reservation Details, Change & Cancellation Actions
     // =========================================================================
-    selectReservationForDetail(reservationId, isGuest = false) {
+    selectReservationForDetail(reservationId, isGuest = false, origin = null) {
       this.state.selectedReservationId = reservationId;
       this.state.isGuestReservationView = isGuest;
+      this.state.reservationDetailOrigin = origin || (isGuest ? 'lookup' : 'reservations');
       this.state.activeTab = 'reservations';
       this.notify();
     }
@@ -589,6 +591,7 @@
     clearSelectedReservationDetail() {
       this.state.selectedReservationId = null;
       this.state.isGuestReservationView = false;
+      this.state.reservationDetailOrigin = null;
       this.notify();
     }
 

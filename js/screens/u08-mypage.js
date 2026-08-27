@@ -1378,7 +1378,7 @@
     containerElement.querySelectorAll('[data-mypage-view-detail-id]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const resId = e.currentTarget.getAttribute('data-mypage-view-detail-id');
-        store.selectReservationForDetail(resId, false);
+        store.selectReservationForDetail(resId, false, 'reservations');
       });
     });
 
