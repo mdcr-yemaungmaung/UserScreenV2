@@ -430,14 +430,10 @@
               </button>
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-[#9B1C25] text-xl">tune</span>
                   <h1 class="font-headline text-lg sm:text-xl font-extrabold text-[#241A18] leading-tight">
-                    ${isMm ? 'ရှာဖွေမှု သတ်မှတ်ချက်များ' : 'Comprehensive Search Conditions'}
+                    ${isMm ? 'ရှာဖွေရန်' : 'Search'}
                   </h1>
                 </div>
-                <p class="font-body text-xs text-[#6D6561] hidden sm:block">
-                  ${isMm ? 'ရက်စွဲ၊ မြို့နယ်၊ အစားအစာနှင့် အငွေ့အသက်များကို အသေးစိတ် သတ်မှတ်ရှာဖွေပါ' : 'Fine-tune dining parameters with flexible dates, expanded townships, and multi-select cuisines'}
-                </p>
               </div>
             </div>
 
@@ -447,7 +443,7 @@
               class="px-3.5 py-1.5 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#6D6561] hover:text-[#9B1C25] font-label text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
             >
               <span class="material-symbols-outlined text-base">restart_alt</span>
-              <span>${isMm ? 'မူလအတိုင်းထားမည်' : 'Reset All'}</span>
+              <span>${isMm ? 'ပြန်စမည်' : 'Reset'}</span>
             </button>
           </div>
 
@@ -947,8 +943,8 @@
                 id="search-cond-apply-btn"
                 class="px-6 sm:px-8 py-3 rounded-full bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md hover:shadow-lg active:scale-95"
               >
-                <span>${isMm ? `ရလဒ် (${matchCount}) ကြည့်ရှုမည်` : `Show ${matchCount} Restaurants`}</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
+                <span>${isMm ? 'ရှာဖွေပါ' : 'Search'}</span>
+                <span class="material-symbols-outlined text-base">search</span>
               </button>
             </div>
 
