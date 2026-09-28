@@ -59,7 +59,7 @@
     const resId = state.selectedReservationId;
 
     // Find reservation in store or mock fallback
-    const res = (state.reservations || []).find(r => r.id === resId) || {
+    const res = (state.reservations || []).find(r => r.id === resId || r.reservationNo === resId) || {
       id: resId || 'res_default',
       reservationNo: resId ? `EZ-2026-${resId.replace(/\D/g, '').padStart(4, '0') || '8894'}` : 'EZ-2026-8894',
       restaurantId: '1',
@@ -738,7 +738,7 @@
         if (origin === 'lookup' || isGuest) {
           store.setLoginTab('lookup');
           store.setActiveTab('login');
-          window.location.hash = '#/login';
+          window.location.hash = '#/lookup';
         } else if (origin === 'discover') {
           store.setActiveTab('discover');
           window.location.hash = '#/';
@@ -769,8 +769,10 @@
         if (origin === 'lookup' || isGuest) {
           store.setLoginTab('lookup');
           store.setActiveTab('login');
+          window.location.hash = '#/lookup';
         } else {
           store.setActiveTab('reservations');
+          window.location.hash = '#/mypage';
         }
       });
     }
@@ -780,7 +782,8 @@
     if (guestLoginLink) {
       guestLoginLink.addEventListener('click', () => {
         store.clearSelectedReservationDetail();
-        store.setActiveTab('login');
+        store.setActiveTab('register');
+        window.location.hash = '#/register';
       });
     }
 
@@ -929,16 +932,21 @@
 
         const st = store.getState();
         const resId = st.selectedReservationId;
-        const resv = (st.reservations || []).find(r => r.id === resId);
+        const resv = (st.reservations || []).find(r => r.id === resId || r.reservationNo === resId);
         if (resv) {
           resv.date = dateVal;
           resv.time = timeVal;
           resv.guests = guestsVal;
           resv.totalAmountMMK = guestsVal * 87500;
+          try {
+            localStorage.setItem('yoyaku_reservations', JSON.stringify(st.reservations));
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         changeModal.classList.add('hidden');
-        store.showToast('Reservation date, time & guests successfully updated!');
+        store.showToast(store.state.currentLanguage === 'MM' ? 'မှာယူမှု ရက်စွဲနှင့် အချိန် ပြင်ဆင်ပြီးပါပြီ' : 'Reservation date, time & guests successfully updated!');
         store.notify();
       });
     }
@@ -970,14 +978,8 @@
       confirmCancelFinalBtn.addEventListener('click', () => {
         const st = store.getState();
         const resId = st.selectedReservationId;
-        const resv = (st.reservations || []).find(r => r.id === resId);
-        if (resv) {
-          resv.status = 'Cancelled';
-          resv.cancelledAt = new Date().toISOString();
-        }
+        store.cancelReservation(resId);
         cancelModal.classList.add('hidden');
-        store.showToast('Reservation has been cancelled.');
-        store.notify();
       });
     }
   }

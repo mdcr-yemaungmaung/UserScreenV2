@@ -45,14 +45,14 @@
                 class="w-full sm:w-auto px-8 py-4 rounded-full font-label text-sm font-bold text-white bg-[#9B1C25] hover:bg-[#7F161E] active:scale-95 shadow-lg shadow-[#9B1C25]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span class="material-symbols-outlined text-lg">calendar_month</span>
-                <span>${isMm ? 'အထူးစားသောက်ဆိုင် ချက်ချင်းဘွတ်ကင်လုပ်မည်' : 'Experience Direct Booking (U-01)'}</span>
+                <span>${isMm ? 'အထူးစားသောက်ဆိုင် ချက်ချင်းဘွတ်ကင်လုပ်မည်' : 'Experience Direct Booking'}</span>
               </a>
               <a
                 href="#/login"
                 class="w-full sm:w-auto px-6 py-4 rounded-full font-label text-sm font-bold text-[#241A18] bg-[#FFFDFC] border border-[#E8DDD0] hover:bg-[#F8EFE5] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span class="material-symbols-outlined text-lg">search_check</span>
-                <span>${isMm ? 'ဘွတ်ကင်အမှတ်ဖြင့် စစ်ဆေးရန်' : 'Lookup Reservation (U-06)'}</span>
+                <span>${isMm ? 'ဘွတ်ကင်အမှတ်ဖြင့် စစ်ဆေးရန်' : 'Lookup Reservation'}</span>
               </a>
             </div>
           </div>
@@ -77,16 +77,13 @@
                   1
                 </div>
                 <h3 class="font-headline text-lg font-bold text-[#241A18] mb-2">
-                  ${isMm ? 'ရက်စွဲနှင့် အချိန် ရွေးချယ်ပါ' : 'Select Slot & Party (U-01)'}
+                  ${isMm ? 'ရက်စွဲနှင့် အချိန် ရွေးချယ်ပါ' : 'Select Slot & Party'}
                 </h3>
                 <p class="font-body text-xs sm:text-sm text-[#6D6561] leading-relaxed">
                   ${isMm
                     ? 'လူဦးရေ၊ နေ့ရက်နှင့် အချိန်ဇယားကို တိုက်ရိုက် ကြည့်ရှုပြီး လွတ်လပ်စွာ ရွေးချယ်နိုင်ပါသည်။'
                     : 'Open the store direct link (/s/{slug}). Choose date, guests, and instant real-time available time slots.'}
                 </p>
-              </div>
-              <div class="mt-6 pt-4 border-t border-[#E8DDD0]/50 text-[11px] font-mono font-bold text-[#9B1C25]">
-                Screen: U-01 /s/{slug}
               </div>
             </div>
 
@@ -97,16 +94,13 @@
                   2
                 </div>
                 <h3 class="font-headline text-lg font-bold text-[#241A18] mb-2">
-                  ${isMm ? 'အချက်အလက် ဖြည့်သွင်း အတည်ပြုပါ' : 'Input Details & Verify (U-02 & U-13)'}
+                  ${isMm ? 'အချက်အလက် ဖြည့်သွင်း အတည်ပြုပါ' : 'Input Details & Verify'}
                 </h3>
                 <p class="font-body text-xs sm:text-sm text-[#6D6561] leading-relaxed">
                   ${isMm
                     ? 'ဧည့်သည် သို့မဟုတ် အသင်းဝင်အဖြစ် လိုအပ်သော အချက်အလက်များ ဖြည့်သွင်းပြီး SMS OTP ဖြင့် လုံခြုံစွာ အတည်ပြုပါ။'
-                    : 'Book as a logged-in member or guest. Seamless 6-digit SMS OTP verification (U-13) secures your table.'}
+                    : 'Book as a logged-in member or guest. Seamless 6-digit SMS OTP verification secures your table.'}
                 </p>
-              </div>
-              <div class="mt-6 pt-4 border-t border-[#E8DDD0]/50 text-[11px] font-mono font-bold text-[#C69A2B]">
-                Screens: U-02, U-03, U-13
               </div>
             </div>
 
@@ -117,16 +111,13 @@
                   3
                 </div>
                 <h3 class="font-headline text-lg font-bold text-[#241A18] mb-2">
-                  ${isMm ? 'ချက်ချင်း QR Pass ရယူပါ' : 'Instant Digital QR Pass (U-04)'}
+                  ${isMm ? 'ချက်ချင်း QR Pass ရယူပါ' : 'Instant Digital QR Pass'}
                 </h3>
                 <p class="font-body text-xs sm:text-sm text-[#6D6561] leading-relaxed">
                   ${isMm
                     ? 'ဘွတ်ကင် အောင်မြင်ပြီးသည်နှင့် ဒစ်ဂျစ်တယ် QR Pass ကို ရရှိမည်ဖြစ်ပြီး ဆိုင်တွင် ပြသကာ အလွယ်တကူ ဝင်ရောက်နိုင်ပါသည်။'
-                    : 'Receive your instant confirmation screen and contactless QR pass. Present at check-in or manage via My Page (U-09).'}
+                    : 'Receive your instant confirmation screen and contactless QR pass. Present at check-in or manage via My Page.'}
                 </p>
-              </div>
-              <div class="mt-6 pt-4 border-t border-[#E8DDD0]/50 text-[11px] font-mono font-bold text-[#104b2b]">
-                Screen: U-04 /s/{slug}/complete
               </div>
             </div>
           </div>
@@ -177,13 +168,13 @@
                       class="w-full py-2.5 rounded-full font-label text-xs font-bold text-white bg-[#9B1C25] hover:bg-[#7F161E] active:scale-95 transition-all text-center flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
                     >
                       <span class="material-symbols-outlined text-sm">calendar_add_on</span>
-                      <span>${isMm ? 'စားပွဲရွေးမည် (U-01)' : 'Book Table (U-01)'}</span>
+                      <span>${isMm ? 'စားပွဲရွေးမည်' : 'Book Table'}</span>
                     </a>
                     <a
                       href="#/s/${slug}/info"
                       class="w-full py-2 rounded-full font-label text-xs font-semibold text-[#6D6561] bg-[#F8EFE5] hover:bg-[#E8DDD0] text-center block transition-colors cursor-pointer"
                     >
-                      ${isMm ? 'ဆိုင်အချက်အလက် (U-05)' : 'Store Info (U-05)'}
+                      ${isMm ? 'ဆိုင်အချက်အလက်' : 'Store Info'}
                     </a>
                   </div>
                 </div>

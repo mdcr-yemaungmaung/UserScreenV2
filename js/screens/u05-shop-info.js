@@ -101,9 +101,8 @@
               class="flex items-center gap-2 font-label text-xs font-bold text-[#9B1C25] hover:text-[#7F161E] bg-[#FFFDFC] border border-[#E8DDD0] px-4 py-2 rounded-full transition-colors cursor-pointer shadow-2xs"
             >
               <span class="material-symbols-outlined text-sm">arrow_back</span>
-              <span>${isMm ? 'ကြိုတင်ဘွတ်ကင် သို့ (U-01)' : 'Back to Booking (U-01)'}</span>
+              <span>${isMm ? 'ကြိုတင်ဘွတ်ကင် သို့' : 'Back to Booking'}</span>
             </a>
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#9B1C25] font-label hidden sm:inline">Screen U-05</span>
           </div>
 
           <button

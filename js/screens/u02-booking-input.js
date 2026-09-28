@@ -29,6 +29,8 @@
       paymentMethod: 'store'
     };
     const isMm = state.currentLanguage === 'MM';
+    const isJa = state.currentLanguage === 'JA';
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const slug = (store && store.getRestaurantSlug) ? store.getRestaurantSlug(restaurant) : (restaurant.slug || 'gilded-fork');
 
     return `
@@ -44,7 +46,7 @@
                 </div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#065F46]">STEP 01</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'ရက်စွဲနှင့် အချိန်' : 'Date & Slots (U-01)'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Date & Slots', 'ရက်စွဲနှင့် အချိန်', '日時・空席選択')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#065F46]"></div>
@@ -54,7 +56,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#9B1C25] text-white shadow-xs">2</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9B1C25]">STEP 02</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'ဧည့်သည် အချက်အလက်' : 'Guest Details (U-02)'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Guest Details', 'ဧည့်သည် အချက်အလက်', 'お客様情報')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#9B1C25]"></div>
@@ -64,7 +66,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#E8DDD0] text-[#6D6561]">3</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9A908B]">STEP 03</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'အတည်ပြုချက်' : 'Confirm (U-03)'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Confirm', 'အတည်ပြုချက်', '予約内容の確認')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#E8DDD0]/60"></div>
@@ -77,9 +79,8 @@
 
           <div class="border-b border-[#E8DDD0] pb-4 mb-6 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#9B1C25] font-label">Screen U-02</span>
               <h2 class="font-headline text-2xl sm:text-3xl text-[#241A18] font-bold">
-                ${isMm ? 'ဧည့်သည် အချက်အလက် ဖြည့်သွင်းပါ' : 'Guest Details'}
+                ${t('Guest Details', 'ဧည့်သည် အချက်အလက် ဖြည့်သွင်းပါ', 'お客様情報の入力')}
               </h2>
             </div>
             <span class="text-xs font-label text-[#6D6561]">
@@ -91,24 +92,24 @@
 
             <div class="space-y-4">
               <h3 class="font-headline text-base sm:text-lg text-[#241A18] font-bold border-b border-[#E8DDD0] pb-2">
-                ${isMm ? 'ဧည့်သည် အချက်အလက်များ' : 'Contact Information'}
+                ${t('Contact Information', 'ဧည့်သည် အချက်အလက်များ', 'お客様のご連絡先')}
               </h3>
 
               <div>
-                <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${isMm ? 'အမည် အပြည့်အစုံ *' : 'Full Name *'}</label>
+                <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${t('Full Name *', 'အမည် အပြည့်အစုံ *', 'お名前 (フルネーム) *')}</label>
                 <input
                   type="text"
                   id="step2-name"
                   required
                   value="${gData.guestName || ''}"
-                  placeholder="e.g. Evelyn St. Clair"
+                  placeholder="${t('e.g. Evelyn St. Clair', 'ဥပမာ - မောင်မောင်', '例: 山田 太郎')}"
                   class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-xl px-4 py-3 font-body text-sm text-[#241A18] focus:outline-none transition-colors"
                 />
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${isMm ? 'ဖုန်းနံပါတ် (SMS အတည်ပြုရန်) *' : 'Phone Number (for SMS Verification) *'}</label>
+                  <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${t('Phone Number (for SMS Verification) *', 'ဖုန်းနံပါတ် (SMS အတည်ပြုရန်) *', '電話番号 (SMS認証用) *')}</label>
                   <input
                     type="tel"
                     id="step2-phone"
@@ -119,7 +120,7 @@
                   />
                 </div>
                 <div>
-                  <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${isMm ? 'အီးမေးလ် လိပ်စာ *' : 'Email Address *'}</label>
+                  <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${t('Email Address *', 'အီးမေးလ် လိပ်စာ *', 'メールアドレス *')}</label>
                   <input
                     type="email"
                     id="step2-email"
@@ -132,11 +133,11 @@
               </div>
 
               <div>
-                <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${isMm ? 'အထူး တောင်းဆိုချက်များ / စားသောက်မှု မှတ်ချက်' : 'Special Requests / Dietary Notes'}</label>
+                <label class="font-label text-xs font-bold text-[#6D6561] uppercase block mb-1.5">${t('Special Requests / Dietary Notes', 'အထူး တောင်းဆိုချက်များ / စားသောက်မှု မှတ်ချက်', 'ご要望・アレルギー等')}</label>
                 <textarea
                   id="step2-requests"
                   rows="3"
-                  placeholder="Any allergies, celebration details, or seating notes..."
+                  placeholder="${t('Any allergies, celebration details, or seating notes...', 'ဓာတ်မတည့်သည့် အစားအစာ၊ အထိမ်းအမှတ်ပွဲ သို့မဟုတ် အခြားမှတ်ချက်များ...', 'アレルギーや記念日のお祝いなど...')}"
                   class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] rounded-xl p-4 font-body text-sm text-[#241A18] resize-none focus:outline-none transition-colors"
                 >${gData.specialRequests || ''}</textarea>
               </div>
@@ -145,7 +146,7 @@
             <!-- Payment Preference -->
             <div class="space-y-3 pt-2">
               <h3 class="font-headline text-base sm:text-lg text-[#241A18] font-bold border-b border-[#E8DDD0] pb-2">
-                ${isMm ? 'ငွေပေးချေမှု ပုံစံ ရွေးချယ်ပါ' : 'Payment Preference'}
+                ${t('Payment Preference', 'ငွေပေးချေမှု ပုံစံ ရွေးချယ်ပါ', 'お支払い方法の選択')}
               </h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
@@ -157,7 +158,7 @@
                     <span>KBZPay / AYA Pay QR</span>
                     <span class="material-symbols-outlined text-[#9B1C25]">qr_code_2</span>
                   </div>
-                  <p class="font-body text-xs text-[#6D6561]">${isMm ? 'QR ဖျောက်ခတ်ပြီး ချက်ချင်း ၅၀,၀၀၀ ကျပ် လျှော့ဈေး ရယူပါ။' : 'Instant QR payment option with promotional dining perk.'}</p>
+                  <p class="font-body text-xs text-[#6D6561]">${t('Instant QR payment option with promotional dining perk.', 'QR ဖျောက်ခတ်ပြီး ချက်ချင်း ၅၀,၀၀၀ ကျပ် လျှော့ဈေး ရယူပါ။', '即時QR決済（プロモーション割引適用）')}</p>
                 </button>
                 <button
                   type="button"
@@ -165,10 +166,10 @@
                   class="p-4 rounded-2xl border text-left flex flex-col gap-2 cursor-pointer transition-all ${gData.paymentMethod === 'store' ? 'bg-[#9B1C25]/10 border-[#9B1C25] ring-2 ring-[#9B1C25]/20' : 'bg-[#FFFDFC] border-[#E8DDD0]'}"
                 >
                   <div class="flex justify-between items-center font-headline text-sm font-bold text-[#241A18]">
-                    <span>${isMm ? 'ဆိုင်တွင် ပေးချေမည်' : 'Pay at Restaurant'}</span>
+                    <span>${t('Pay at Restaurant', 'ဆိုင်တွင် ပေးချေမည်', '来店時のお支払い')}</span>
                     <span class="material-symbols-outlined text-[#6D6561]">payments</span>
                   </div>
-                  <p class="font-body text-xs text-[#6D6561]">${isMm ? 'ကြိုတင် ပေးချေရန် မလိုပါ။ စားသောက်ပြီးမှ ဆိုင်တွင် ပေးချေပါ။' : 'No upfront charge. Settle bill after dining at venue.'}</p>
+                  <p class="font-body text-xs text-[#6D6561]">${t('No upfront charge. Settle bill after dining at venue.', 'ကြိုတင် ပေးချေရန် မလိုပါ။ စားသောက်ပြီးမှ ဆိုင်တွင် ပေးချေပါ။', '事前決済不要。ご来店後に現地にてお支払い。')}</p>
                 </button>
               </div>
             </div>
@@ -181,14 +182,14 @@
                 class="w-full sm:w-auto px-7 py-3.5 rounded-full border border-[#E8DDD0] font-label text-sm font-semibold text-[#6D6561] hover:bg-[#F8EFE5] transition-all cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>${isMm ? 'နောက်သို့ (U-01)' : 'Back to Date & Slots (U-01)'}</span>
+                <span>${t('Back to Date & Slots', 'နောက်သို့', '戻る: 日時・人数選択')}</span>
               </a>
               <button
                 type="submit"
                 id="step2-submit-btn"
                 class="w-full sm:w-auto bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-sm font-bold px-8 py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
               >
-                <span>${isMm ? 'အတည်ပြုချက် စစ်ဆေးမည် (U-03)' : 'Continue to Confirmation (U-03)'}</span>
+                <span>${t('Continue to Confirmation', 'အတည်ပြုချက် စစ်ဆေးမည်', '次へ: 予約内容の確認')}</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
             </div>
@@ -207,6 +208,25 @@
         store.setBookingStep(2, { guestData: { paymentMethod } });
       });
     });
+
+    const backBtn = containerElement.querySelector('#step2-back-btn');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        const name = containerElement.querySelector('#step2-name')?.value;
+        const phone = containerElement.querySelector('#step2-phone')?.value;
+        const email = containerElement.querySelector('#step2-email')?.value;
+        const requests = containerElement.querySelector('#step2-requests')?.value;
+
+        store.setBookingStep(1, {
+          guestData: {
+            guestName: name !== undefined ? name : '',
+            guestPhone: phone !== undefined ? phone : '',
+            guestEmail: email !== undefined ? email : '',
+            specialRequests: requests !== undefined ? requests : ''
+          }
+        });
+      });
+    }
 
     const step2Form = containerElement.querySelector('#step2-form');
     if (step2Form) {

@@ -133,6 +133,26 @@
       return;
     }
 
+    // Guest Lookup direct route: #/lookup
+    if (hash.startsWith('#/lookup')) {
+      store.closeBookingModal();
+      store.setSelectedRestaurant(null);
+      store.clearSelectedReservationDetail();
+      store.setLoginTab('lookup');
+      store.setActiveTab('login');
+
+      const queryMatch = hash.match(/\?(.*)$/);
+      if (queryMatch) {
+        const params = new URLSearchParams(queryMatch[1]);
+        const qRes = params.get('res') || params.get('resNo');
+        const qPhone = params.get('phone');
+        if (qRes) {
+          store.executeLookupReservation(qRes, qPhone || '');
+        }
+      }
+      return;
+    }
+
     // U-06: /login
     if (hash.startsWith('#/login')) {
       store.closeBookingModal();
@@ -174,7 +194,9 @@
     if (resDetailMatch) {
       store.closeBookingModal();
       store.setSelectedRestaurant(null);
-      store.selectReservationForDetail(resDetailMatch[1], false, 'reservations');
+      const isGuestMode = hash.includes('guest=true') || !!store.state.isGuestReservationView || (store.state.loginState && store.state.loginState.lookupResult !== null);
+      const origin = store.state.reservationDetailOrigin || (isGuestMode ? 'lookup' : 'reservations');
+      store.selectReservationForDetail(resDetailMatch[1], isGuestMode, origin);
       return;
     }
 

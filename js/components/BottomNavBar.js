@@ -15,16 +15,18 @@
     }
 
     const isMm = state.currentLanguage === 'MM';
+    const isJa = state.currentLanguage === 'JA';
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const reservationCount = state.reservations.length;
 
     const isAuth = !!state.isAuthenticated;
 
     const items = [
-      { id: 'discover', icon: 'explore', filledIcon: 'explore', label: isMm ? 'ပင်မ' : 'Home' },
-      { id: 'resultlist', icon: 'search', filledIcon: 'search', label: isMm ? 'ရှာဖွေရန်' : 'Search' },
-      { id: 'reservations', icon: 'calendar_month', filledIcon: 'calendar_month', label: isMm ? 'စိုတ်ထားမှု' : 'Bookings', badge: reservationCount },
-      { id: 'favorites', icon: 'favorite_border', filledIcon: 'favorite', label: isMm ? 'သိမ်းဆည်း' : 'Saved' },
-      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person_outline' : 'account_circle', filledIcon: isAuth ? 'person' : 'account_circle', label: isAuth ? (isMm ? 'မိုင်ပေ့ချ်' : 'My Page') : (isMm ? 'အကောင့်ဝင်' : 'Login') }
+      { id: 'discover', icon: 'explore', filledIcon: 'explore', label: t('Home', 'ပင်မ', 'ホーム') },
+      { id: 'resultlist', icon: 'search', filledIcon: 'search', label: t('Search', 'ရှာဖွေရန်', '検索') },
+      { id: 'reservations', icon: 'calendar_month', filledIcon: 'calendar_month', label: t('Bookings', 'စိုတ်ထားမှု', '予約一覧'), badge: reservationCount },
+      { id: 'favorites', icon: 'favorite_border', filledIcon: 'favorite', label: t('Saved', 'သိမ်းဆည်း', 'お気に入り') },
+      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person_outline' : 'account_circle', filledIcon: isAuth ? 'person' : 'account_circle', label: isAuth ? t('My Page', 'မိုင်ပေ့ချ်', 'マイページ') : t('Login', 'အကောင့်ဝင်', 'ログイン') }
     ];
 
     return `

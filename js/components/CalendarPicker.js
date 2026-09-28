@@ -116,6 +116,35 @@
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
+    const monthNamesMM = [
+      'ဇန်နဝါရီ', 'ဖေဖော်ဝါရီ', 'မတ်', 'ဧပြီ', 'မေ', 'ဇွန်',
+      'ဇူလိုင်', 'သြဂုတ်', 'စက်တင်ဘာ', 'အောက်တိုဘာ', 'နိုဝင်ဘာ', 'ဒီဇင်ဘာ'
+    ];
+    const monthNamesJA = [
+      '1月', '2月', '3月', '4月', '5月', '6月',
+      '7月', '8月', '9月', '10月', '11月', '12月'
+    ];
+
+    const currentLang = (window.store && window.store.getState)
+      ? (window.store.getState().currentLanguage || 'EN')
+      : (localStorage.getItem('yoyaku_lang') || 'EN');
+
+    let localizedMonthTitle = `${monthNames[month]} ${year}`;
+    if (currentLang === 'MM') {
+      localizedMonthTitle = `${monthNamesMM[month]} ${year}`;
+    } else if (currentLang === 'JA') {
+      localizedMonthTitle = `${year}年 ${monthNamesJA[month]}`;
+    }
+
+    const prevMonthTitle = currentLang === 'MM' ? 'ယခင်လ' : (currentLang === 'JA' ? '前月' : 'Previous Month');
+    const nextMonthTitle = currentLang === 'MM' ? 'နောက်လ' : (currentLang === 'JA' ? '翌月' : 'Next Month');
+    const selectedLabel = currentLang === 'MM' ? 'ရွေးချယ်ထားသော ရက်:' : (currentLang === 'JA' ? '選択中:' : 'Selected:');
+
+    const dayHeaders = currentLang === 'MM'
+      ? ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'တေး', 'ကြာ', 'နေ']
+      : (currentLang === 'JA'
+        ? ['日', '月', '火', '水', '木', '金', '土']
+        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']);
 
     const todayMid = startOfToday();
     const curYear = todayMid.getFullYear();
@@ -173,14 +202,14 @@
               id="cal-prev-month"
               ${prevDisabled ? 'disabled' : ''}
               class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] transition-colors shadow-2xs ${prevDisabled ? navDisabledClass : navEnabledClass}"
-              title="Previous Month"
+              title="${prevMonthTitle}"
             >
               <span class="material-symbols-outlined text-lg">chevron_left</span>
             </button>
 
             <div id="calendar-month-label" class="flex items-center gap-1.5 font-headline text-base font-bold text-[#231916]">
               <span class="material-symbols-outlined text-lg text-[#840f16]">calendar_month</span>
-              <span>${monthNames[month]} ${year}</span>
+              <span>${localizedMonthTitle}</span>
             </div>
 
             <button
@@ -188,7 +217,7 @@
               id="cal-next-month"
               ${nextDisabled ? 'disabled' : ''}
               class="w-8 h-8 rounded-full bg-white border border-[#EADFD1] flex items-center justify-center text-[#231916] transition-colors shadow-2xs ${nextDisabled ? navDisabledClass : navEnabledClass}"
-              title="Next Month"
+              title="${nextMonthTitle}"
             >
               <span class="material-symbols-outlined text-lg">chevron_right</span>
             </button>
@@ -196,13 +225,13 @@
 
           ${selectedDateStr ? `
           <div class="font-label text-xs font-semibold text-[#840f16] bg-[#840f16]/10 px-3 py-1 rounded-full border border-[#840f16]/20">
-            Selected: ${selectedDateStr}
+            ${selectedLabel} ${selectedDateStr}
           </div>` : ''}
         </div>
 
         <!-- Day of Week Headers -->
         <div class="grid grid-cols-7 gap-1 text-center mb-3 font-label text-[11px] text-[#8d7b75] font-bold tracking-wider uppercase">
-          <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+          ${dayHeaders.map(d => `<span>${d}</span>`).join('')}
         </div>
 
         <!-- Calendar Days Grid -->

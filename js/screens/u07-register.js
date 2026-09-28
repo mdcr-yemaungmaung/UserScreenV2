@@ -324,7 +324,7 @@
                     id="btn-nav-to-login" 
                     class="font-bold text-[#840f16] hover:underline ml-1 cursor-pointer"
                   >
-                    ${isMm ? 'ဒီနေရာတွင် အကောင့်ဝင်ပါ (Login U-06)' : 'Sign In here (U-06)'}
+                    ${isMm ? 'ဒီနေရာတွင် အကောင့်ဝင်ပါ' : 'Sign In here'}
                   </button>
                 </p>
               </div>

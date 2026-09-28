@@ -27,6 +27,8 @@
 
   function renderLoginView(state) {
     const isMm = state.currentLanguage === 'MM';
+    const isJa = state.currentLanguage === 'JA';
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const loginState = state.loginState || {};
     const activeTab = loginState.activeTab || 'login'; // 'login' | 'lookup'
     const isLoading = !!loginState.isLoading;
@@ -40,6 +42,7 @@
     const rememberMe = loginState.rememberMe !== false;
     const showPassword = !!loginState.showPassword;
     const isInvalidFormat = !!loginState.isInvalidFormat;
+    const cBooking = (state.bookingModalState && state.bookingModalState.createdBooking) || null;
 
     return `
       <div id="u10-login-screen" class="login-screen-bg select-none">
@@ -84,7 +87,7 @@
               id="tab-login-btn"
               class="login-tab-button ${activeTab === 'login' && !showForgot && !showSignUp ? 'active' : ''}"
             >
-              ${isMm ? 'အကောင့်ဝင်ရန်' : 'Login'}
+              ${t('Login', 'အကောင့်ဝင်ရန်', 'ログイン')}
             </button>
 
             <!-- Tab 2: Lookup Reservation -->
@@ -93,7 +96,7 @@
               id="tab-lookup-btn"
               class="login-tab-button ${activeTab === 'lookup' ? 'active' : ''}"
             >
-              ${isMm ? 'ဘွတ်ကင်စစ်ဆေးရန်' : 'Lookup Reservation'}
+              ${t('Lookup Reservation', 'ဘွတ်ကင်စစ်ဆေးရန်', '予約確認')}
             </button>
           </div>
 
@@ -304,52 +307,85 @@
                 <div class="lookup-info-card">
                   <span class="material-symbols-outlined lookup-info-icon">info</span>
                   <p class="lookup-info-text">
-                    ${isMm ? 'အကောင့်မဖွင့်ဘဲ ဘွတ်ကင်ယူထားပါက သင်၏ ဘွတ်ကင်နံပါတ်နှင့် ဖုန်းနံပါတ်ဖြင့် အသေးစိတ်ကြည့်ရှုနိုင်ပြီး ပယ်ဖျက်နိုင်ပါသည်။' : 'If you booked without an account, you can view and cancel your reservation using your reservation number and phone number.'}
+                    ${t(
+                      'If you booked without an account, you can easily view, verify, and cancel your reservation using your reservation code and registered phone number.',
+                      'အကောင့်မဖွင့်ဘဲ ဘွတ်ကင်ယူထားပါက သင်၏ ဘွတ်ကင်နံပါတ်နှင့် ဖုန်းနံပါတ်ဖြင့် အသေးစိတ်ကြည့်ရှုနိုင်ပြီး ပယ်ဖျက်နိုင်ပါသည်။',
+                      'アカウントをお持ちでない場合でも、予約番号とお電話番号を入力することで予約の照会・キャンセルが可能です。'
+                    )}
                   </p>
                 </div>
 
-                <!-- Error Notice Banner (Exact match to screenshot 2) -->
+                <!-- Error Notice Banner -->
                 ${
                   errorMessage
                     ? `
-                  <div class="lookup-error-banner">
-                    <span class="material-symbols-outlined" style="font-size: 16px; color: #991B1B;">info</span>
-                    <span>${errorMessage}</span>
+                  <div class="lookup-error-banner animate-fadeIn">
+                    <span class="material-symbols-outlined" style="font-size: 16px; color: #991B1B;">error</span>
+                    <span style="flex: 1;">${errorMessage}</span>
                   </div>
                 `
                     : ''
                 }
 
-                <form id="lookup-form" style="display: flex; flex-direction: column;">
+                <form id="lookup-form" style="display: flex; flex-direction: column; gap: 0.5rem;">
                   
+                  <!-- Sample prefill helper chips -->
+                  <div style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.25rem;">
+                    <span style="font-size: 0.6875rem; color: #6D6561; font-weight: 600;">
+                      ${t('Test with sample bookings:', 'စမ်းသပ်ရန် နမူနာ အချက်အလက်များ:', 'テスト用サンプル予約:')}
+                    </span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;">
+                      ${
+                        cBooking
+                          ? `
+                        <button type="button" id="btn-fill-sample-recent" data-res="${cBooking.reservationNo || cBooking.id}" data-phone="${cBooking.guestPhone || '09791234567'}" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-full transition-colors cursor-pointer border border-emerald-300 flex items-center gap-1 shadow-2xs">
+                          <span class="material-symbols-outlined text-xs">history</span>
+                          <span>${t('Recent:', 'လတ်တလော:', '最新:')} ${cBooking.reservationNo}</span>
+                        </button>
+                      `
+                          : ''
+                      }
+                      <button type="button" id="btn-fill-sample-1" data-res="RSV-665304" data-phone="09791234567" class="text-[10px] font-bold text-[#9B1C25] bg-[#9B1C25]/10 hover:bg-[#9B1C25]/20 px-2.5 py-1 rounded-full transition-colors cursor-pointer border border-[#9B1C25]/20 flex items-center gap-1 shadow-2xs">
+                        <span class="material-symbols-outlined text-xs">restaurant</span>
+                        <span>RSV-665304 (Gilded Fork)</span>
+                      </button>
+                      <button type="button" id="btn-fill-sample-2" data-res="RES-2026-002" data-phone="09791234567" class="text-[10px] font-bold text-[#6D6561] bg-[#6D6561]/10 hover:bg-[#6D6561]/20 px-2.5 py-1 rounded-full transition-colors cursor-pointer border border-[#6D6561]/20 flex items-center gap-1 shadow-2xs">
+                        <span class="material-symbols-outlined text-xs">restaurant</span>
+                        <span>RES-2026-002 (Mandalay)</span>
+                      </button>
+                    </div>
+                  </div>
+
                   <!-- Field 1: Reservation Number Box -->
                   <div class="lookup-input-box">
                     <label for="lookup-resno-input" class="lookup-input-label">
-                      ${isMm ? 'ဘွတ်ကင် နံပါတ်' : 'Reservation Number'}
+                      ${t('Reservation Number', 'ဘွတ်ကင် နံပါတ်', '予約番号')} *
                     </label>
                     <input
                       type="text"
                       id="lookup-resno-input"
                       required
-                      placeholder="R20260815-K7M2QX"
-                      value="${loginState.lookupResNo || 'R20260815-K7M2QX'}"
+                      autocomplete="off"
+                      placeholder="${t('e.g. RSV-665304 or RES-2026-002', 'ဥပမာ RSV-665304 သို့မဟုတ် RES-2026-002', '例: RSV-665304 または RES-2026-002')}"
+                      value="${loginState.lookupResNo || ''}"
                       class="lookup-input-field"
                     />
                   </div>
 
                   <!-- Invalid Format Helper Text (if applicable) -->
                   <div class="lookup-validation-msg" id="lookup-format-msg" style="${isInvalidFormat ? 'display: block;' : 'display: none;'}">
-                    ${isMm ? 'နံပါတ် ပုံစံမမှန်ပါ' : 'Invalid Format'}
+                    ${t('Please enter a valid reservation code (e.g. RSV-665304)', 'နံပါတ် ပုံစံမမှန်ပါ (ဥပမာ RSV-665304)', '有効な予約番号を入力してください (例: RSV-665304)')}
                   </div>
 
                   <!-- Field 2: Phone Number with Country Code prefix +95 -->
-                  <div class="lookup-phone-wrapper" style="margin-top: ${isInvalidFormat ? '0' : '0.4rem'};">
+                  <div class="lookup-phone-wrapper" style="margin-top: ${isInvalidFormat ? '0' : '0.2rem'};">
                     <span class="lookup-phone-prefix">+95</span>
                     <input
                       type="tel"
                       id="lookup-phone-input"
                       required
-                      placeholder="${isMm ? 'ဖုန်းနံပါတ်' : 'Phone Number'}"
+                      autocomplete="tel"
+                      placeholder="${t('Phone Number (e.g. 09791234567)', 'ဖုန်းနံပါတ် (ဥပမာ 09791234567)', 'お電話番号 (例: 09791234567)')}"
                       value="${loginState.lookupPhone || ''}"
                       class="lookup-phone-input"
                     />
@@ -360,14 +396,14 @@
                     type="submit"
                     id="btn-submit-lookup"
                     ${isLoading ? 'disabled' : ''}
-                    class="w-full btn-primary py-3 rounded-2xl font-label text-sm font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                    class="w-full btn-primary py-3 rounded-2xl font-label text-sm font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer mt-1 active:scale-[0.98] transition-all"
                   >
                     ${
                       loadingAction === 'lookup'
                         ? '<span style="width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></span>'
                         : '<span class="material-symbols-outlined text-lg">search</span>'
                     }
-                    <span>${isMm ? 'ဘွတ်ကင် ရှာဖွေမည်' : 'Look up reservation'}</span>
+                    <span>${t('Look up reservation', 'ဘွတ်ကင် ရှာဖွေမည်', '予約を照会する')}</span>
                   </button>
                 </form>
 
@@ -375,51 +411,118 @@
                 ${
                   lookupResult
                     ? `
-                  <div style="padding: 0.85rem; border-radius: 14px; background-color: #FAF8F5; border: 1px solid rgba(132, 15, 22, 0.25); display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                  <div class="animate-fadeIn" style="padding: 1rem; border-radius: 16px; background-color: #FAF8F5; border: 1.5px solid rgba(132, 15, 22, 0.25); display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; box-shadow: 0 4px 16px rgba(36,26,24,0.06);">
+                    
+                    <!-- Header with Status Pill and QR Icon -->
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid #EADFD1; padding-bottom: 0.6rem;">
                       <div>
-                        <span style="padding: 0.15rem 0.45rem; border-radius: 5px; background-color: #0f766e; color: #ffffff; font-size: 0.625rem; font-weight: 700; text-transform: uppercase;">
-                          ${lookupResult.status || 'Confirmed'}
-                        </span>
-                        <h4 style="font-weight: 700; font-size: 0.8125rem; color: #231916; margin: 0.2rem 0 0 0;">${lookupResult.restaurantName || 'The Glass Pavilion'}</h4>
-                        <p style="font-family: monospace; font-size: 0.6875rem; color: #840f16; font-weight: 700; margin: 0.1rem 0 0 0;">${lookupResult.reservationNo || lookupResult.id}</p>
+                        <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
+                          <span style="padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; ${
+                            lookupResult.status === 'Cancelled'
+                              ? 'background-color: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3;'
+                              : lookupResult.status === 'Pending'
+                              ? 'background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a;'
+                              : lookupResult.status === 'Completed'
+                              ? 'background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;'
+                              : 'background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;'
+                          }">
+                            ${
+                              lookupResult.status === 'Cancelled'
+                                ? t('Cancelled', 'ပယ်ဖျက်ပြီး', 'キャンセル済み')
+                                : lookupResult.status === 'Pending'
+                                ? t('Pending Approval', 'စောင့်ဆိုင်းဆဲ', '承認待ち')
+                                : lookupResult.status === 'Completed'
+                                ? t('Completed', 'ပြီးမြောက်ပြီး', '完了')
+                                : t('Confirmed', 'အတည်ပြုပြီး', '確定')
+                            }
+                          </span>
+                          <span style="font-size: 0.6875rem; color: #6D6561;">${lookupResult.createdAt ? new Date(lookupResult.createdAt).toLocaleDateString() : ''}</span>
+                        </div>
+                        <h4 style="font-weight: 800; font-size: 0.9375rem; color: #231916; margin: 0;">${lookupResult.restaurantName || 'Restaurant'}</h4>
+                        <div style="display: flex; align-items: center; gap: 0.35rem; margin-top: 0.2rem;">
+                          <span style="font-family: monospace; font-size: 0.75rem; color: #840f16; font-weight: 800; letter-spacing: 0.02em;">${lookupResult.reservationNo || lookupResult.id}</span>
+                          <button
+                            type="button"
+                            id="btn-copy-lookup-resno"
+                            data-resno="${lookupResult.reservationNo || lookupResult.id}"
+                            title="${t('Copy Reservation ID', 'ဘွတ်ကင် နံပါတ် ကူးယူရန်', '予約番号をコピー')}"
+                            style="background: transparent; border: none; padding: 2px; cursor: pointer; color: #8d7b75; display: inline-flex; align-items: center;"
+                          >
+                            <span class="material-symbols-outlined" style="font-size: 0.875rem;">content_copy</span>
+                          </button>
+                        </div>
                       </div>
-                      <div style="width: 32px; height: 32px; border-radius: 8px; background-color: rgba(132, 15, 22, 0.1); color: #840f16; display: flex; align-items: center; justify-content: center;">
-                        <span class="material-symbols-outlined" style="font-size: 1.125rem;">qr_code_2</span>
+                      <div style="width: 36px; height: 36px; border-radius: 10px; background-color: rgba(132, 15, 22, 0.1); color: #840f16; display: flex; align-items: center; justify-content: center; shrink: 0;">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">qr_code_2</span>
                       </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.6875rem;">
-                      <div style="background-color: #ffffff; padding: 0.4rem; border-radius: 8px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${isMm ? 'ရက်စွဲ' : 'Date'}</span>
-                        <span style="font-weight: 700; color: #231916;">${lookupResult.date || 'Today'}</span>
+                    <!-- Details Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; font-size: 0.6875rem;">
+                      <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Date', 'ရက်စွဲ', '日付')}</span>
+                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.date || 'Today'}</span>
                       </div>
-                      <div style="background-color: #ffffff; padding: 0.4rem; border-radius: 8px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${isMm ? 'အချိန်' : 'Time'}</span>
-                        <span style="font-weight: 700; color: #231916;">${lookupResult.time || '18:30'}</span>
+                      <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Time', 'အချိန်', '時間')}</span>
+                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.time || '18:30'}</span>
+                      </div>
+                      <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Guests', 'လူဦးရေ', '人数')}</span>
+                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.guests || 2} ${t('Guests', 'ဦး', '名')}</span>
+                      </div>
+                      <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Guest Name', 'ဧည့်သည် အမည်', 'お名前')}</span>
+                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;">${lookupResult.guestName || 'Guest'}</span>
                       </div>
                     </div>
 
-                    <div style="display: flex; gap: 0.4rem;">
+                    <!-- Action Buttons Row -->
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
                       <button
                         type="button"
                         id="btn-open-lookup-detail"
                         class="btn-primary-action"
-                        style="flex: 1; height: 36px; font-size: 0.75rem;"
+                        style="flex: 1.5; min-width: 120px; height: 38px; font-size: 0.75rem; font-weight: 700;"
                       >
-                        <span class="material-symbols-outlined" style="font-size: 0.875rem;">receipt_long</span>
-                        <span>${isMm ? 'မှာယူမှု အသေးစိတ် (U-10)' : 'View Details (U-10)'}</span>
+                        <span class="material-symbols-outlined" style="font-size: 0.95rem;">receipt_long</span>
+                        <span>${t('View Full Details', 'မှာယူမှု အသေးစိတ်', '予約詳細を見る')}</span>
                       </button>
                       <button
                         type="button"
                         id="btn-open-lookup-pass"
                         class="btn-secondary-action"
-                        style="height: 36px; font-size: 0.75rem; padding: 0 0.75rem;"
+                        style="height: 38px; font-size: 0.75rem; padding: 0 0.85rem; font-weight: 700;"
                       >
-                        <span class="material-symbols-outlined" style="font-size: 0.875rem;">qr_code</span>
-                        <span>Pass</span>
+                        <span class="material-symbols-outlined" style="font-size: 0.95rem;">qr_code</span>
+                        <span>${t('Pass', 'ဝင်ခွင့်ကတ်', 'パス')}</span>
+                      </button>
+                      ${
+                        lookupResult.status !== 'Cancelled' && lookupResult.status !== 'Completed'
+                          ? `
+                        <button
+                          type="button"
+                          id="btn-lookup-direct-cancel"
+                          class="btn-secondary-action"
+                          style="height: 38px; font-size: 0.75rem; padding: 0 0.75rem; color: #9f1239; border-color: #fecdd3;"
+                          title="${t('Cancel Booking', 'ဘွတ်ကင် ပယ်ဖျက်ရန်', '予約をキャンセル')}"
+                        >
+                          <span class="material-symbols-outlined" style="font-size: 0.95rem;">cancel</span>
+                        </button>
+                      `
+                          : ''
+                      }
+                      <button
+                        type="button"
+                        id="btn-clear-lookup"
+                        class="btn-secondary-action"
+                        style="height: 38px; font-size: 0.75rem; padding: 0 0.65rem;"
+                        title="${t('Clear & Search Another', 'အသစ်ပြန်ရှာမည်', '新しい検索')}"
+                      >
+                        <span class="material-symbols-outlined" style="font-size: 0.95rem;">refresh</span>
                       </button>
                     </div>
+
                   </div>
                 `
                     : ''
@@ -586,6 +689,138 @@
             ${isMm ? 'English' : 'မြန်မာ'}
           </button>
         </div>
+
+        <!-- DIGITAL PASS MODAL (FOR LOOKUP & CHECK-IN) -->
+        ${
+          state.inspectedPassBooking
+            ? `
+          <div id="lookup-pass-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+            <div class="bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] shadow-2xl max-w-sm w-full p-6 text-center space-y-4 relative animate-in fade-in zoom-in-95 duration-200">
+              <div class="flex items-center justify-between border-b border-[#E8DDD0] pb-3">
+                <div class="font-headline font-bold text-base text-[#241A18] flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#9B1C25]">qr_code_2</span>
+                  <span>${t('Digital Dining Pass', 'ဒီဂျစ်တယ် ဝင်ခွင့်ကတ်', 'デジタルお食事パス')}</span>
+                </div>
+                <button type="button" id="btn-close-pass-modal" class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#241A18] cursor-pointer transition-colors">
+                  <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <div class="space-y-1">
+                <h4 class="font-headline font-bold text-base text-[#241A18]">${state.inspectedPassBooking.restaurantName || 'Restaurant'}</h4>
+                <div class="flex items-center justify-center gap-1.5">
+                  <span class="text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">${t('Reservation No', 'ဘွတ်ကင် နံပါတ်', '予約番号')}:</span>
+                  <span class="font-mono text-sm font-extrabold text-[#9B1C25]">${state.inspectedPassBooking.reservationNo || state.inspectedPassBooking.id}</span>
+                </div>
+              </div>
+
+              <!-- QR Code Image -->
+              <div class="p-4 bg-white rounded-2xl border border-[#E8DDD0] inline-block shadow-inner mx-auto">
+                <img
+                  src="${window.YoyakuPrototype ? window.YoyakuPrototype.createQrDataUri(`YOYAKU-${state.inspectedPassBooking.reservationNo || state.inspectedPassBooking.id}`) : `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=YOYAKU-${state.inspectedPassBooking.reservationNo || state.inspectedPassBooking.id}`}"
+                  alt="QR Pass"
+                  class="w-40 h-40 sm:w-44 sm:h-44 mx-auto object-contain"
+                />
+              </div>
+
+              <div class="bg-[#F8EFE5] rounded-xl p-3 text-xs text-[#241A18] space-y-1.5 text-left">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-[#6D6561]">${t('Date & Time', 'ရက်စွဲနှင့် အချိန်', '日時')}:</span>
+                  <span>${state.inspectedPassBooking.date} • ${state.inspectedPassBooking.time}</span>
+                </div>
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-[#6D6561]">${t('Party Size', 'လူဦးရေ', '人数')}:</span>
+                  <span>${state.inspectedPassBooking.guests} ${t('Guests', 'ဦး', '名')}</span>
+                </div>
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-[#6D6561]">${t('Guest', 'ဧည့်သည်', 'お名前')}:</span>
+                  <span>${state.inspectedPassBooking.guestName || 'Guest'}</span>
+                </div>
+              </div>
+
+              <p class="text-[11px] text-[#6D6561] leading-relaxed">
+                ${t('Present this digital QR pass to the restaurant host upon arrival for prompt seating.', 'စားသောက်ဆိုင်သို့ ရောက်ရှိချိန်တွင် စားပွဲဝိုင်း ချက်ချင်းရရှိရန် ဤ QR ကုဒ်ကို ဝန်ထမ်းများအား ပြသပေးပါ။', 'ご来店時にレストラン受付にてこちらのQRコードをご提示ください。')}
+              </p>
+
+              <button
+                type="button"
+                id="btn-dismiss-pass-modal"
+                class="w-full btn-primary py-3 rounded-full font-label text-xs font-bold shadow-md cursor-pointer"
+              >
+                ${t('Close Pass', 'ပိတ်မည်', '閉じる')}
+              </button>
+            </div>
+          </div>
+        `
+            : ''
+        }
+
+        <!-- DIRECT CANCEL MODAL FOR LOOKUP RESULT -->
+        ${
+          loginState.showDirectCancelModal && lookupResult
+            ? `
+          <div id="lookup-cancel-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+            <div class="bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] shadow-2xl max-w-sm w-full p-6 text-center space-y-4 relative animate-in fade-in zoom-in-95 duration-200">
+              <div class="flex items-center justify-between border-b border-[#E8DDD0] pb-3">
+                <div class="font-headline font-bold text-base text-[#9B1C25] flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#9B1C25]">cancel</span>
+                  <span>${t('Cancel Reservation', 'ဘွတ်ကင် ပယ်ဖျက်ရန်', '予約のキャンセル')}</span>
+                </div>
+                <button type="button" id="btn-close-direct-cancel-modal" class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#241A18] cursor-pointer transition-colors">
+                  <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <div class="space-y-1 text-left">
+                <h4 class="font-headline font-bold text-sm text-[#241A18]">${lookupResult.restaurantName}</h4>
+                <p class="font-mono text-xs font-bold text-[#9B1C25]">${lookupResult.reservationNo || lookupResult.id}</p>
+                <p class="text-xs text-[#6D6561]">${lookupResult.date} at ${lookupResult.time} (${lookupResult.guests} ${t('Guests', 'ဦး', '名')})</p>
+              </div>
+
+              <div class="text-left space-y-2">
+                <label class="text-xs font-bold text-[#241A18] block">${t('Reason for cancellation:', 'ပယ်ဖျက်ရသည့် အကြောင်းအရင်း:', 'キャンセル理由:')}</label>
+                <div class="space-y-1.5 text-xs text-[#554340] bg-[#F8EFE5]/50 p-3 rounded-xl border border-[#E8DDD0]">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="direct-cancel-reason" value="schedule" checked class="text-[#9B1C25]">
+                    <span>${t('Change of plans or schedule', 'အစီအစဉ် ရက်စွဲ ပြောင်းလဲသွားခြင်း', '予定の変更')}</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="direct-cancel-reason" value="emergency" class="text-[#9B1C25]">
+                    <span>${t('Personal emergency or illness', 'အရေးပေါ်ကိစ္စ သို့မဟုတ် ကျန်းမာရေး', '急用・体調不良')}</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="direct-cancel-reason" value="other" class="text-[#9B1C25]">
+                    <span>${t('Other reason', 'အခြား အကြောင်းအရင်း', 'その他')}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-900 flex items-center justify-between font-bold">
+                <span>${t('Cancellation Fee:', 'ပယ်ဖျက်ခ:', 'キャンセル手数料:')}</span>
+                <span class="font-extrabold text-emerald-950">${t('Free (0 MMK)', 'အခမဲ့ (၀ ကျပ်)', '無料 (0 MMK)')}</span>
+              </div>
+
+              <div class="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  id="btn-abort-direct-cancel"
+                  class="flex-1 py-3 px-4 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] cursor-pointer transition-colors"
+                >
+                  ${t('Keep Booking', 'မလုပ်တော့ပါ', '予約を維持')}
+                </button>
+                <button
+                  type="button"
+                  id="btn-confirm-direct-cancel"
+                  class="flex-1 py-3 px-4 rounded-full bg-[#9B1C25] hover:bg-[#7F161E] text-white text-xs font-bold shadow-md cursor-pointer transition-colors"
+                >
+                  ${t('Confirm Cancel', 'အတည်ပြု ပယ်ဖျက်မည်', 'キャンセル確定')}
+                </button>
+              </div>
+            </div>
+          </div>
+        `
+            : ''
+        }
 
       </div>
     `;
@@ -772,15 +1007,37 @@
       });
     }
 
-    // Lookup sample prefill
-    const sampleFillBtn = root.querySelector('#btn-fill-sample-lookup');
-    if (sampleFillBtn) {
-      sampleFillBtn.addEventListener('click', () => {
-        const resInput = root.querySelector('#lookup-resno-input');
-        const phoneInput = root.querySelector('#lookup-phone-input');
-        if (resInput) resInput.value = 'R20260815-K7M2QX';
-        if (phoneInput) phoneInput.value = '09791234567';
-        store.clearLoginError();
+    // Lookup sample prefill chips
+    const fillSample = (resNo, phone) => {
+      const resInput = root.querySelector('#lookup-resno-input');
+      const phoneInput = root.querySelector('#lookup-phone-input');
+      if (resInput) resInput.value = resNo;
+      if (phoneInput) phoneInput.value = phone;
+      store.clearLoginError();
+      store.setLoginField('isInvalidFormat', false);
+      store.executeLookupReservation(resNo, phone);
+    };
+
+    const sampleRecentBtn = root.querySelector('#btn-fill-sample-recent');
+    if (sampleRecentBtn) {
+      sampleRecentBtn.addEventListener('click', () => {
+        const res = sampleRecentBtn.getAttribute('data-res');
+        const phone = sampleRecentBtn.getAttribute('data-phone') || '09791234567';
+        if (res) fillSample(res, phone);
+      });
+    }
+
+    const sample1Btn = root.querySelector('#btn-fill-sample-1');
+    if (sample1Btn) {
+      sample1Btn.addEventListener('click', () => {
+        fillSample('RSV-665304', '09791234567');
+      });
+    }
+
+    const sample2Btn = root.querySelector('#btn-fill-sample-2');
+    if (sample2Btn) {
+      sample2Btn.addEventListener('click', () => {
+        fillSample('RES-2026-002', '09791234567');
       });
     }
 
@@ -794,16 +1051,34 @@
         const resNo = resInput ? resInput.value.trim() : '';
         const phone = phoneInput ? phoneInput.value.trim() : '';
 
-        // Validation checking
-        if (!resNo.startsWith('R') && !resNo.startsWith('RES')) {
+        // Validation checking: accept standard reservation IDs
+        if (!resNo || resNo.length < 3) {
           store.setLoginField('isInvalidFormat', true);
-          store.setLoginError('Reservation number format is invalid (e.g. R20260815-K7M2QX).');
+          const isMm = store.getState().currentLanguage === 'MM';
+          const isJa = store.getState().currentLanguage === 'JA';
+          const msg = isJa ? '予約番号の形式が正しくありません (例: RSV-665304)' : (isMm ? 'ဘွတ်ကင်နံပါတ် ပုံစံမမှန်ပါ (ဥပမာ RSV-665304)' : 'Reservation number format is invalid (e.g. RSV-665304).');
+          store.setLoginError(msg);
           return;
         } else {
           store.setLoginField('isInvalidFormat', false);
         }
 
         store.executeLookupReservation(resNo, phone);
+      });
+    }
+
+    // Copy Reservation No button
+    const copyResNoBtn = root.querySelector('#btn-copy-lookup-resno');
+    if (copyResNoBtn) {
+      copyResNoBtn.addEventListener('click', () => {
+        const no = copyResNoBtn.getAttribute('data-resno') || '';
+        if (no) {
+          navigator.clipboard.writeText(no);
+          const isMm = store.getState().currentLanguage === 'MM';
+          const isJa = store.getState().currentLanguage === 'JA';
+          const msg = isJa ? `予約番号をコピーしました: ${no}` : (isMm ? `ဘွတ်ကင်နံပါတ် ${no} အား ကူးယူပြီးပါပြီ` : `Copied reservation code: ${no}`);
+          store.showToast(msg);
+        }
       });
     }
 
@@ -827,6 +1102,65 @@
         if (res) {
           store.openInspectionPass(res);
         }
+      });
+    }
+
+    // Close Pass Modal handlers
+    const closePassBtn = root.querySelector('#btn-close-pass-modal');
+    if (closePassBtn) {
+      closePassBtn.addEventListener('click', () => {
+        store.closeInspectionPass();
+      });
+    }
+    const dismissPassBtn = root.querySelector('#btn-dismiss-pass-modal');
+    if (dismissPassBtn) {
+      dismissPassBtn.addEventListener('click', () => {
+        store.closeInspectionPass();
+      });
+    }
+
+    // Direct Cancel Modal trigger & actions
+    const directCancelTrigger = root.querySelector('#btn-lookup-direct-cancel');
+    if (directCancelTrigger) {
+      directCancelTrigger.addEventListener('click', () => {
+        store.setLoginField('showDirectCancelModal', true);
+      });
+    }
+
+    const closeDirectCancelBtn = root.querySelector('#btn-close-direct-cancel-modal');
+    if (closeDirectCancelBtn) {
+      closeDirectCancelBtn.addEventListener('click', () => {
+        store.setLoginField('showDirectCancelModal', false);
+      });
+    }
+
+    const abortDirectCancelBtn = root.querySelector('#btn-abort-direct-cancel');
+    if (abortDirectCancelBtn) {
+      abortDirectCancelBtn.addEventListener('click', () => {
+        store.setLoginField('showDirectCancelModal', false);
+      });
+    }
+
+    const confirmDirectCancelBtn = root.querySelector('#btn-confirm-direct-cancel');
+    if (confirmDirectCancelBtn) {
+      confirmDirectCancelBtn.addEventListener('click', () => {
+        const res = store.getState().loginState.lookupResult;
+        if (res) {
+          store.cancelReservation(res.id);
+          store.setLoginField('showDirectCancelModal', false);
+        }
+      });
+    }
+
+    // Clear lookup button
+    const clearLookupBtn = root.querySelector('#btn-clear-lookup');
+    if (clearLookupBtn) {
+      clearLookupBtn.addEventListener('click', () => {
+        store.clearLookupResult();
+        const resInput = root.querySelector('#lookup-resno-input');
+        const phoneInput = root.querySelector('#lookup-phone-input');
+        if (resInput) resInput.value = '';
+        if (phoneInput) phoneInput.value = '';
       });
     }
 

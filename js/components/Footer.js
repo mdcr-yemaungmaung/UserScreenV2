@@ -101,6 +101,12 @@
                     ${isMm ? 'အကောင့်နှင့် ကူပွန်များ' : 'Member Account & Rewards'}
                   </button>
                 </li>
+                <li>
+                  <button data-footer-route="#/lookup" class="hover:text-white transition-colors cursor-pointer text-left flex items-center gap-1.5 text-[#d08e1c]">
+                    <span class="material-symbols-outlined text-xs">search</span>
+                    <span>${isMm ? 'ဧည့်သည် ဘွတ်ကင် စစ်ဆေးရန်' : 'Lookup Guest Reservation'}</span>
+                  </button>
+                </li>
               </ul>
             </div>
 
@@ -274,6 +280,19 @@
         store.setSelectedRestaurant(null);
         store.setActiveTab(tab);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Footer Direct Routes (e.g. #/lookup)
+    root.querySelectorAll('[data-footer-route]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const route = e.currentTarget.getAttribute('data-footer-route');
+        if (route) {
+          store.clearSelectedReservationDetail();
+          store.setSelectedRestaurant(null);
+          window.location.hash = route;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       });
     });
 

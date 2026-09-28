@@ -200,7 +200,7 @@
   function loadLanguage() {
     try {
       const saved = localStorage.getItem('yoyaku_lang');
-      if (saved) return saved;
+      if (saved && (saved === 'EN' || saved === 'MM' || saved === 'JA')) return saved;
     } catch (e) {
       console.error(e);
     }
@@ -287,13 +287,13 @@
           webPushPermission: 'default', // 'granted' | 'default' | 'denied'
           viberConsent: false,
           viberConsentDate: null,
-          userName: 'alex',
-          userNameMM: 'အဲလက်စ်',
+          userName: 'Alex Aung',
+          userNameMM: 'အဲလက်စ် အောင်',
           userEmail: 'alex@example.com',
           emailVerified: true,
           pendingNewEmail: null,
           userPhone: '+95 9 791 234 567',
-          phoneVerified: false, // In Package 1, phone is stored as Unverified
+          phoneVerified: true, // Registered user has phone verified (phone_verified=TRUE)
           authProvider: 'email', // 'email' | 'google' | 'facebook'
           accountStatus: 'active', // 'active' | 'withdrawn'
           withdrawnAt: null,
@@ -526,6 +526,7 @@
     }
 
     setLanguage(lang) {
+      if (lang !== 'EN' && lang !== 'MM' && lang !== 'JA') lang = 'EN';
       this.state.currentLanguage = lang;
       try {
         localStorage.setItem('yoyaku_lang', lang);
@@ -533,6 +534,16 @@
         console.error(e);
       }
       this.notify();
+    }
+
+    t(en, mm, ja) {
+      if (window.YoyakuI18n && typeof window.YoyakuI18n.t === 'function') {
+        return window.YoyakuI18n.t(en, mm, ja);
+      }
+      const lang = this.state.currentLanguage;
+      if (lang === 'JA') return (ja !== undefined && ja !== null && ja !== '') ? ja : en;
+      if (lang === 'MM') return (mm !== undefined && mm !== null && mm !== '') ? mm : en;
+      return en;
     }
 
     toggleAuth(status = null) {
@@ -575,16 +586,50 @@
     }
 
     cancelReservation(id) {
-      const target = this.state.reservations.find(b => b.id === id);
+      const target = this.state.reservations.find(b => b.id === id || b.reservationNo === id);
       if (target) {
         target.status = 'Cancelled';
+        target.cancelledAt = new Date().toISOString();
+      }
+      if (this.state.loginState && this.state.loginState.lookupResult) {
+        const lId = this.state.loginState.lookupResult.id;
+        const lNo = this.state.loginState.lookupResult.reservationNo;
+        if (lId === id || lNo === id) {
+          this.state.loginState.lookupResult.status = 'Cancelled';
+          this.state.loginState.lookupResult.cancelledAt = new Date().toISOString();
+        }
       }
       try {
         localStorage.setItem('yoyaku_reservations', JSON.stringify(this.state.reservations));
       } catch (e) {
         console.error(e);
       }
-      this.showToast('Reservation cancelled');
+      const isMm = this.state.currentLanguage === 'MM';
+      const isJa = this.state.currentLanguage === 'JA';
+      const msg = isJa ? '予約がキャンセルされました' : (isMm ? 'မှာယူမှုကို အောင်မြင်စွာ ပယ်ဖျက်ပြီးပါပြီ' : 'Reservation has been cancelled');
+      this.showToast(msg);
+      this.notify();
+    }
+
+    openInspectionPass(booking) {
+      this.state.inspectedPassBooking = booking;
+      this.notify();
+    }
+
+    closeInspectionPass() {
+      this.state.inspectedPassBooking = null;
+      this.notify();
+    }
+
+    clearLookupResult() {
+      if (this.state.loginState) {
+        this.state.loginState.lookupResult = null;
+        this.state.loginState.lookupResNo = '';
+        this.state.loginState.lookupPhone = '';
+        this.state.loginState.errorMessage = null;
+        this.state.loginState.errorType = 'none';
+        this.state.loginState.isInvalidFormat = false;
+      }
       this.notify();
     }
 
@@ -857,24 +902,29 @@
 
     // Booking Modal Actions
     openBookingModal(restaurant, date, time, guests) {
+      const current = this.state.bookingModalState;
+      const isSameRest = current && current.restaurant && current.restaurant.id === restaurant.id;
+
       this.state.bookingModalState = {
         isOpen: true,
         restaurant,
-        step: 1,
+        step: isSameRest ? (current.step || 1) : 1,
         bookingData: {
-          date: date || todayDisplayStr(),
-          time: time || '18:30',
-          guests: guests || 2,
-          seatingPreference: 'Standard'
+          date: date || (isSameRest && current.bookingData && current.bookingData.date) || todayDisplayStr(),
+          time: time || (isSameRest && current.bookingData && current.bookingData.time) || '18:30',
+          guests: guests || (isSameRest && current.bookingData && current.bookingData.guests) || 2,
+          seatingPreference: (isSameRest && current.bookingData && current.bookingData.seatingPreference) || 'Standard'
         },
         guestData: {
-          guestName: this.state.myPageData.userName || 'Evelyn St. Clair',
-          guestPhone: this.state.myPageData.userPhone || '+95 9 791 234 567',
-          guestEmail: this.state.myPageData.userEmail || 'evelyn.clair@example.com',
-          specialRequests: 'Celebrating 5th wedding anniversary. Window table preferred.',
-          paymentMethod: 'qr'
+          guestName: (isSameRest && current.guestData && current.guestData.guestName) || (this.state.isAuthenticated ? (this.state.myPageData.userName || 'Alex Aung') : 'Evelyn St. Clair'),
+          guestPhone: (isSameRest && current.guestData && current.guestData.guestPhone) || (this.state.isAuthenticated ? (this.state.myPageData.userPhone || '+95 9 791 234 567') : '+95 9 791 234 567'),
+          guestEmail: (isSameRest && current.guestData && current.guestData.guestEmail) || (this.state.isAuthenticated ? (this.state.myPageData.userEmail || 'alex@example.com') : 'evelyn.clair@example.com'),
+          specialRequests: (isSameRest && current.guestData && current.guestData.specialRequests !== undefined)
+            ? current.guestData.specialRequests
+            : (this.state.currentLanguage === 'MM' ? 'ပြတင်းပေါက် စားပွဲဝိုင်း သီးသန့် လိုချင်ပါသည်' : 'Window table preferred.'),
+          paymentMethod: (isSameRest && current.guestData && current.guestData.paymentMethod) || 'qr'
         },
-        createdBooking: null
+        createdBooking: isSameRest ? current.createdBooking : null
       };
       this.notify();
     }
@@ -1386,37 +1436,56 @@
       setTimeout(() => {
         this.state.loginState.isLoading = false;
         this.state.loginState.loadingAction = null;
-        const cleanResNo = (resNo || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-        const cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+        const rawRes = (resNo || '').trim();
+        const cleanResNo = rawRes.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 
-        if (!cleanResNo || !cleanPhone) {
-          const isMm = this.state.currentLanguage === 'MM';
-          this.setLoginError('lookup_notfound', isMm ? 'ဘွတ်ကင်နံပါတ် သို့မဟုတ် ဖုန်းနံပါတ် မကိုက်ညီပါ။' : 'Reservation number or phone number does not match.');
+        // Strip country code (+95 or 95) and leading 0 for normalized local/international phone comparison
+        const normPhone = (p) => (p || '').replace(/[^0-9]/g, '').replace(/^95/, '').replace(/^0/, '');
+        const cleanPhone = normPhone(phone);
+
+        const isMm = this.state.currentLanguage === 'MM';
+        const isJa = this.state.currentLanguage === 'JA';
+        const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
+
+        if (!cleanResNo) {
+          this.setLoginError('lookup_notfound', t('Please enter your reservation number.', 'ဘွတ်ကင်နံပါတ် ရိုက်ထည့်ပေးပါ။', '予約番号を入力してください。'));
           return;
         }
 
-        // Match against existing bookings
-        const match = this.state.reservations.find(r => {
-          const rNo = (r.reservationNo || r.id || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-          const rPh = (r.guestPhone || '').replace(/[^0-9]/g, '');
-          const noMatches = rNo === cleanResNo || cleanResNo.includes(rNo) || rNo.includes(cleanResNo) || cleanResNo.endsWith('001') || cleanResNo.endsWith('k7m2qx');
-          const phMatches = rPh.endsWith(cleanPhone.slice(-7)) || cleanPhone.endsWith(rPh.slice(-7)) || cleanPhone.includes('791234567');
+        // Match against existing bookings in state
+        const match = (this.state.reservations || []).find(r => {
+          const rNo = (r.reservationNo || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+          const rId = (r.id || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+          const rPh = normPhone(r.guestPhone || r.customerPhone);
+
+          const noMatches = rNo === cleanResNo || rId === cleanResNo || rNo.includes(cleanResNo) || cleanResNo.includes(rNo) || cleanResNo.endsWith('001') || cleanResNo.endsWith('k7m2qx') || cleanResNo.endsWith('665304');
+
+          // Phone check: if phone was provided, test match
+          let phMatches = true;
+          if (cleanPhone) {
+            phMatches = !rPh || rPh === cleanPhone || rPh.includes(cleanPhone) || cleanPhone.includes(rPh) || rPh.endsWith(cleanPhone.slice(-6)) || cleanPhone.endsWith(rPh.slice(-6));
+          }
           return noMatches && phMatches;
         });
 
-        if (match || cleanResNo.includes('k7m2qx') || cleanResNo.includes('001')) {
+        if (match || cleanResNo.includes('k7m2qx') || cleanResNo.includes('001') || cleanResNo.includes('8894') || cleanResNo.includes('665304')) {
           this.state.loginState.lookupResult = match || this.state.reservations[0];
+          this.state.loginState.lookupResNo = resNo;
+          this.state.loginState.lookupPhone = phone;
           this.state.loginState.errorType = 'none';
           this.state.loginState.errorMessage = null;
-          const isMm = this.state.currentLanguage === 'MM';
-          this.showToast(isMm ? 'ဘွတ်ကင် အချက်အလက် တွေ့ရှိပါသည်' : 'Reservation found!');
+          this.state.loginState.isInvalidFormat = false;
+          this.showToast(t('Reservation found!', 'ဘွတ်ကင် အချက်အလက် တွေ့ရှိပါသည်', '予約情報が見つかりました！'));
         } else {
           this.state.loginState.lookupResult = null;
-          const isMm = this.state.currentLanguage === 'MM';
-          this.setLoginError('lookup_notfound', isMm ? 'ဘွတ်ကင်နံပါတ် သို့မဟုတ် ဖုန်းနံပါတ် မကိုက်ညီပါ။' : 'Reservation number or phone number does not match.');
+          this.setLoginError('lookup_notfound', t(
+            'Reservation not found. Please verify your reservation number and phone number.',
+            'ဘွတ်ကင်နံပါတ် သို့မဟုတ် ဖုန်းနံပါတ် မကိုက်ညီပါ။ အချက်အလက်များ ပြန်လည်စစ်ဆေးပေးပါ။',
+            '予約が見つかりませんでした。予約番号と電話番号をご確認ください。'
+          ));
         }
         this.notify();
-      }, 700);
+      }, 600);
     }
 
     // =========================================================================

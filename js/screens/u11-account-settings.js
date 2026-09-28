@@ -20,6 +20,9 @@
     const isPasswordOpen = expandedSection === 'password';
     const isPhoneOpen = expandedSection === 'phone';
     const isWithdrawOpen = expandedSection === 'withdrawal';
+    const isLanguageOpen = expandedSection === 'language';
+
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (state.currentLanguage === 'MM' ? mm : en);
 
     return `
       <div id="u20-account-settings-container" class="space-y-4 animate-fadeIn text-left">
@@ -27,7 +30,7 @@
         <!-- SECTION HEADER -->
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-            ${isMm ? 'အကောင့် လုံခြုံရေးနှင့် ဆက်တင်များ' : 'Account Security & Preferences'}
+            ${t('Account Security & Preferences', 'အကောင့် လုံခြုံရေးနှင့် ဆက်တင်များ', 'アカウント設定・表示言語')}
           </h2>
         </div>
 
@@ -39,12 +42,14 @@
                   <span class="material-symbols-outlined text-red-600 text-2xl shrink-0">cancel</span>
                   <div>
                     <h3 class="font-headline font-bold text-lg text-red-900">
-                      ${isMm ? 'ဤအကောင့်ကို ဖျက်သိမ်းထားပါသည်' : 'This Account Has Been Withdrawn'}
+                      ${t('This Account Has Been Withdrawn', 'ဤအကောင့်ကို ဖျက်သိမ်းထားပါသည်', 'このアカウントは退会手続き済みです')}
                     </h3>
                     <p class="font-body text-xs text-red-700 mt-1">
-                      ${isMm
-                        ? 'ရက်ပေါင်း ၃၀ အတွင်း ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း လုပ်ဆောင်နေပါသည်။'
-                        : 'Your account is scheduled for permanent deletion and PDPA anonymization within 30 days.'}
+                      ${t(
+                        'Your account is scheduled for permanent deletion and PDPA anonymization within 30 days.',
+                        'ရက်ပေါင်း ၃၀ အတွင်း ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း လုပ်ဆောင်နေပါသည်။',
+                        '30日以内に個人情報保護規定（PDPA）に準拠した完全匿名化・データ削除が完了します。'
+                      )}
                     </p>
                   </div>
                 </div>
@@ -52,12 +57,128 @@
                   id="u20-reactivate-account-btn"
                   class="btn-primary px-5 py-2 rounded-full font-label text-xs font-bold shadow-sm cursor-pointer"
                 >
-                  ${isMm ? 'အကောင့် ပြန်လည်အသက်သွင်းမည် (Demo)' : 'Reactivate Account (Demo)'}
+                  ${t('Reactivate Account (Demo)', 'အကောင့် ပြန်လည်အသက်သွင်းမည် (Demo)', 'アカウントを再有効化 (Demo)')}
                 </button>
               </div>
             `
             : ''
         }
+
+        <!-- 0. SYSTEM DISPLAY LANGUAGE (COLLAPSIBLE ACCORDION) -->
+        <div class="bg-[#FFFDFC] rounded-2xl border border-[#E8DDD0] shadow-xs overflow-hidden transition-all">
+          <!-- Accordion Header Button -->
+          <button
+            type="button"
+            data-accordion-toggle="language"
+            class="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left cursor-pointer hover:bg-[#F5EAD4]/50 transition-colors select-none"
+          >
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-[#840f16]/10 text-[#840f16] flex items-center justify-center font-bold shrink-0">
+                <span class="material-symbols-outlined text-xl">language</span>
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-headline font-bold text-base sm:text-lg text-[#231916] truncate">
+                  ${t('System Display Language', 'စနစ်ပြသရေး ဘာသာစကား', 'システム表示言語 (Language)')}
+                </h3>
+                <p class="font-body text-xs text-[#58413f] truncate">
+                  ${t('Current Language: ', 'လက်ရှိ ရွေးချယ်ထားသော ဘာသာစကား: ', '現在の設定: ')}
+                  <span class="font-bold text-[#840f16]">
+                    ${state.currentLanguage === 'EN' ? 'English (EN)' : (state.currentLanguage === 'JA' ? '日本語 (JA)' : 'မြန်မာ (MM)')}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="hidden sm:inline-flex items-center gap-1.5 bg-[#FFF8F6] text-[#840f16] border border-[#840f16]/20 px-3 py-1 rounded-full font-label text-xs font-bold">
+                <span class="material-symbols-outlined text-xs">translate</span>
+                <span>${state.currentLanguage === 'EN' ? 'EN' : (state.currentLanguage === 'JA' ? 'JA' : 'MM')}</span>
+              </span>
+              <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${isLanguageOpen ? 'bg-[#840f16] text-white border border-[#840f16]' : 'bg-white text-[#58413f] border border-[#EADFD1]'}">
+                <span class="material-symbols-outlined text-base select-none pointer-events-none">${isLanguageOpen ? 'expand_less' : 'expand_more'}</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- Accordion Body -->
+          ${
+            isLanguageOpen
+              ? `
+                <div class="p-5 sm:p-6 pt-2 border-t border-[#E8DDD0] space-y-4 animate-fadeIn">
+                  <p class="font-body text-xs text-[#6D6561]">
+                    ${t(
+                      'Choose your preferred system display language. All booking steps, details, and notifications update immediately.',
+                      'အသုံးပြုလိုသည့် ဘာသာစကား ရွေးချယ်ပါ။ စနစ်တစ်ခုလုံးရှိ မျက်နှာပြင်များ၊ အသိပေးချက်များနှင့် ဘွတ်ကင်လုပ်ဆောင်ချက်များသည် ချက်ချင်း ပြောင်းလဲသွားပါမည်။',
+                      'Yoyakuシステム全体で表示する言語を選択してください。すべての画面、通知、予約手続きが即座に切り替わります。'
+                    )}
+                  </p>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                    <!-- EN Option -->
+                    <button
+                      type="button"
+                      data-select-lang="EN"
+                      class="flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                        state.currentLanguage === 'EN'
+                          ? 'border-[#9B1C25] bg-[#F3DFD5]/40 ring-1 ring-[#9B1C25]/20 shadow-xs'
+                          : 'border-[#E8DDD0] bg-white hover:bg-[#FAF4EB]'
+                      }"
+                    >
+                      <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🇬🇧</span>
+                        <div>
+                          <div class="font-headline text-xs font-bold text-[#241A18]">English</div>
+                          <div class="font-label text-[10px] text-[#6D6561]">EN</div>
+                        </div>
+                      </div>
+                      ${state.currentLanguage === 'EN' ? '<span class="material-symbols-outlined text-base text-[#9B1C25]">check_circle</span>' : '<span class="w-4 h-4 rounded-full border border-[#D8C7B4]"></span>'}
+                    </button>
+
+                    <!-- MM Option -->
+                    <button
+                      type="button"
+                      data-select-lang="MM"
+                      class="flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                        state.currentLanguage === 'MM'
+                          ? 'border-[#9B1C25] bg-[#F3DFD5]/40 ring-1 ring-[#9B1C25]/20 shadow-xs'
+                          : 'border-[#E8DDD0] bg-white hover:bg-[#FAF4EB]'
+                      }"
+                    >
+                      <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🇲🇲</span>
+                        <div>
+                          <div class="font-headline text-xs font-bold text-[#241A18]">မြန်မာ</div>
+                          <div class="font-label text-[10px] text-[#6D6561]">MM</div>
+                        </div>
+                      </div>
+                      ${state.currentLanguage === 'MM' ? '<span class="material-symbols-outlined text-base text-[#9B1C25]">check_circle</span>' : '<span class="w-4 h-4 rounded-full border border-[#D8C7B4]"></span>'}
+                    </button>
+
+                    <!-- JA Option -->
+                    <button
+                      type="button"
+                      data-select-lang="JA"
+                      class="flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                        state.currentLanguage === 'JA'
+                          ? 'border-[#9B1C25] bg-[#F3DFD5]/40 ring-1 ring-[#9B1C25]/20 shadow-xs'
+                          : 'border-[#E8DDD0] bg-white hover:bg-[#FAF4EB]'
+                      }"
+                    >
+                      <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🇯🇵</span>
+                        <div>
+                          <div class="font-headline text-xs font-bold text-[#241A18]">日本語</div>
+                          <div class="font-label text-[10px] text-[#6D6561]">JA</div>
+                        </div>
+                      </div>
+                      ${state.currentLanguage === 'JA' ? '<span class="material-symbols-outlined text-base text-[#9B1C25]">check_circle</span>' : '<span class="w-4 h-4 rounded-full border border-[#D8C7B4]"></span>'}
+                    </button>
+                  </div>
+                </div>
+              `
+              : ''
+          }
+        </div>
 
         <!-- 1. EMAIL ADDRESS CHANGE (COLLAPSIBLE ACCORDION) -->
         <div class="bg-[#FFFDFC] rounded-2xl border border-[#E8DDD0] shadow-xs overflow-hidden transition-all">
@@ -617,7 +738,23 @@
   }
 
   function attachAccountSettingsEvents(containerElement = document) {
-    // 0. Accordion header toggle listener
+    // 0. Language selector listener
+    containerElement.querySelectorAll('[data-select-lang]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const lang = e.currentTarget.getAttribute('data-select-lang');
+        if (lang && store.setLanguage) {
+          store.setLanguage(lang);
+          const toastMsg = window.YoyakuI18n ? window.YoyakuI18n.t(
+            'Display language updated to English',
+            'စနစ်ပြသရေး ဘာသာစကားအား မြန်မာ သို့ ပြောင်းလဲပြီးပါပြီ',
+            '表示言語を日本語に変更しました'
+          ) : 'Language updated';
+          store.showToast(toastMsg);
+        }
+      });
+    });
+
+    // 0b. Accordion header toggle listener
     containerElement.querySelectorAll('[data-accordion-toggle]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const section = e.currentTarget.getAttribute('data-accordion-toggle');

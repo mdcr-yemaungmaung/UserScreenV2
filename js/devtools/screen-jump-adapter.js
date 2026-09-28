@@ -93,21 +93,12 @@
     if (!badge) {
       badge = document.createElement('div');
       badge.id = 'screen-id-badge';
-      badge.style.cssText = 'position:fixed;bottom:18px;left:18px;z-index:9999;display:flex;align-items:center;gap:6px;padding:6px 12px;background:#241A18;color:#FFFDFC;border:1px solid #E8DDD0;border-radius:9999px;font-family:Manrope,sans-serif;font-size:11px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.18);cursor:pointer;';
+      badge.style.cssText = 'display:none;';
       document.body.appendChild(badge);
       badge.addEventListener('click', toggleDevDrawer);
+    } else {
+      badge.style.display = 'none';
     }
-
-    const screen = currentScreen();
-    const id = screen ? screen.id : 'U-01';
-    const pkg = screen && screen.pkg
-      ? `<span style="font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;${getPkgStyle(screen.pkg)}">${screen.pkg}</span>`
-      : '';
-    badge.innerHTML = `
-      <span class="material-symbols-outlined" style="font-size:14px;color:#C69A2B;">grid_view</span>
-      <span>${id}</span>${pkg}
-      <span style="font-size:9.5px;color:#9A908B;margin-left:2px;">(v2.2)</span>
-    `;
   }
 
   function toggleDevDrawer() {
@@ -157,13 +148,11 @@
           <!-- Pkg1 Section -->
           <div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-              <span style="font-size:10px;font-weight:800;background:#9B1C25;color:#fff;padding:2px 8px;border-radius:10px;">Pkg1 Active Flow</span>
-              <span style="font-size:11px;color:#6D6561;">(Core Booking & Users)</span>
+              <span style="font-size:10px;font-weight:800;background:#9B1C25;color:#fff;padding:2px 8px;border-radius:10px;">Core Booking & Users</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:6px;">
               ${pkg1Screens.map(s => `
                 <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#FFFDFC;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s;">
-                  <span style="font-family:monospace;font-size:11px;font-weight:700;color:#9B1C25;background:#F8EFE5;padding:2px 6px;border-radius:6px;">${s.id}</span>
                   <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
                 </button>
               `).join('')}
@@ -173,13 +162,11 @@
           <!-- Post Pkg1 Section -->
           <div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-              <span style="font-size:10px;font-weight:800;background:#64748b;color:#fff;padding:2px 8px;border-radius:10px;">Post-Pkg1 Deferred</span>
-              <span style="font-size:11px;color:#6D6561;">(Portal & Growth)</span>
+              <span style="font-size:10px;font-weight:800;background:#64748b;color:#fff;padding:2px 8px;border-radius:10px;">Portal & Growth</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:6px;">
               ${postPkg1Screens.map(s => `
                 <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#F8FAFC;display:flex;align-items:center;gap:10px;cursor:pointer;opacity:0.85;">
-                  <span style="font-family:monospace;font-size:11px;font-weight:700;color:#64748b;background:#E2E8F0;padding:2px 6px;border-radius:6px;">${s.id}</span>
                   <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
                 </button>
               `).join('')}

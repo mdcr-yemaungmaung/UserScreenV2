@@ -6,6 +6,8 @@
 
   function renderTopNavBar(state) {
     const isMm = state.currentLanguage === 'MM';
+    const isJa = state.currentLanguage === 'JA';
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const isMyPageActive = state.activeTab === 'mypage';
     const unreadNotifsCount = state.myPageData.notifications.filter(n => n.isUnread).length;
     const isOnline = window.PwaManager ? window.PwaManager.isOnline : true;
@@ -70,28 +72,29 @@
             <!-- Check Guest Booking Link -->
             <button
               id="nav-check-booking-link"
-              class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#6D6561] hover:text-[#9B1C25] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
-              title="${isMm ? 'စိုတ်ထားမှု စစ်ဆေးရန်' : 'Check Reservation'}"
+              class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#6D6561] hover:text-[#9B1C25] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
+              title="${t('Check Reservation / Guest Lookup', 'စိုတ်ထားမှု စစ်ဆေးရန်', '予約確認・照会')}"
             >
-              <span class="material-symbols-outlined text-sm">confirmation_number</span>
-              <span class="truncate">${isMm ? 'စိုတ်ထားမှု စစ်ဆေးရန်' : 'Check Reservation'}</span>
+              <span class="material-symbols-outlined text-sm text-[#9B1C25]">confirmation_number</span>
+              <span class="hidden md:inline truncate">${t('Check Booking', 'ဘွတ်ကင်စစ်ဆေးရန်', '予約確認')}</span>
             </button>
 
-            <!-- Language Selector Switcher (Desktop Only: hidden on mobile to prevent notch/punch-hole clipping) -->
-            <div class="relative hidden md:inline-block text-left">
+            <!-- Language Selector Switcher (Accessible on both mobile and desktop) -->
+            <div class="relative inline-block text-left">
               <button
                 id="lang-dropdown-btn"
-                class="flex items-center gap-1 px-3 py-1.5 sm:py-2 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs"
+                class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] sm:text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs"
+                title="Select Language / ဘာသာစကား / 言語"
               >
-                <span class="material-symbols-outlined text-base text-[#9B1C25]">language</span>
-                <span>${state.currentLanguage === 'EN' ? 'EN' : 'မြန်မာ'}</span>
-                <span class="material-symbols-outlined text-sm">expand_more</span>
+                <span class="material-symbols-outlined text-sm sm:text-base text-[#9B1C25]">language</span>
+                <span>${state.currentLanguage === 'EN' ? 'EN' : (state.currentLanguage === 'JA' ? '日本語' : 'မြန်မာ')}</span>
+                <span class="material-symbols-outlined text-xs sm:text-sm">expand_more</span>
               </button>
 
               <!-- Dropdown Menu -->
               <div
                 id="lang-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-40 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-xl z-50 overflow-hidden py-1.5 animate-fadeIn"
+                class="hidden absolute right-0 mt-2 w-44 rounded-2xl bg-[#FFFDFC] border border-[#E8DDD0] shadow-xl z-50 overflow-hidden py-1.5 animate-fadeIn"
               >
                 <button
                   data-lang="EN"
@@ -116,6 +119,18 @@
                     <span>မြန်မာ (MM)</span>
                   </span>
                   ${state.currentLanguage === 'MM' ? '<span class="material-symbols-outlined text-sm text-[#9B1C25]">check</span>' : ''}
+                </button>
+                <button
+                  data-lang="JA"
+                  class="w-full text-left px-4 py-2.5 font-label text-xs font-bold flex items-center justify-between cursor-pointer hover:bg-[#F8EFE5] active:bg-[#F3DFD5] transition-colors ${
+                    state.currentLanguage === 'JA' ? 'text-[#9B1C25] bg-[#F3DFD5]/50' : 'text-[#6D6561]'
+                  }"
+                >
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full ${state.currentLanguage === 'JA' ? 'bg-[#9B1C25]' : 'bg-transparent'}"></span>
+                    <span>日本語 (JA)</span>
+                  </span>
+                  ${state.currentLanguage === 'JA' ? '<span class="material-symbols-outlined text-sm text-[#9B1C25]">check</span>' : ''}
                 </button>
               </div>
             </div>
@@ -242,7 +257,7 @@
         store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
         store.setLoginTab('lookup');
-        store.setActiveTab('login');
+        window.location.hash = '#/lookup';
       });
     }
 

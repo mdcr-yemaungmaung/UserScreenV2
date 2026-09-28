@@ -30,16 +30,28 @@
       seatingPreference: 'Standard'
     };
     const isMm = state.currentLanguage === 'MM';
+    const isJa = state.currentLanguage === 'JA';
+    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const slug = (store && store.getRestaurantSlug) ? store.getRestaurantSlug(restaurant) : (restaurant.slug || 'gilded-fork');
 
     const timeSlots = [
-      { time: '18:00', status: isMm ? 'အဆင်ပြေ' : 'Available' },
-      { time: '18:30', status: isMm ? 'အဆင်ပြေ' : 'Available' },
-      { time: '19:00', status: isMm ? 'နီးကပ်' : 'Limited' },
-      { time: '19:30', status: isMm ? 'အဆင်ပြေ' : 'Available' },
-      { time: '20:00', status: isMm ? 'အဆင်ပြေ' : 'Available' },
-      { time: '20:30', status: isMm ? 'နီးကပ်' : 'Limited' }
+      { time: '18:00', isLimited: false, status: t('Available', 'အဆင်ပြေ', '空席あり') },
+      { time: '18:30', isLimited: false, status: t('Available', 'အဆင်ပြေ', '空席あり') },
+      { time: '19:00', isLimited: true, status: t('Limited', 'နီးကပ်', '残りわずか') },
+      { time: '19:30', isLimited: false, status: t('Available', 'အဆင်ပြေ', '空席あり') },
+      { time: '20:00', isLimited: false, status: t('Available', 'အဆင်ပြေ', '空席あり') },
+      { time: '20:30', isLimited: true, status: t('Limited', 'နီးကပ်', '残りわずか') }
     ];
+
+    function getSeatingLabel(seatId) {
+      switch (seatId) {
+        case 'Window View': return t('Window View', 'ပြတင်းပေါက် ဘေး', '窓際席');
+        case "Chef's Counter": return t("Chef's Counter", 'စားဖိုမှူး ကောင်တာ', 'シェフズカウンター');
+        case 'Private Room': return t('Private Room', 'သီးသန့် အခန်း', '完全個室');
+        case 'Standard':
+        default: return t('Standard', 'ရိုးရိုး စားပွဲ', '一般テーブル席');
+      }
+    }
 
     return `
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-28 sm:pb-16 space-y-6 text-left animate-fadeIn">
@@ -56,7 +68,6 @@
             </div>
             <div class="min-w-0">
               <div class="flex items-center gap-2">
-                <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#9B1C25] font-label">Screen U-01</span>
                 <span class="inline-flex items-center gap-1 text-[11px] font-bold text-[#C69A2B] bg-[#FFF8EE] px-2 py-0.5 rounded-full border border-[#E8DDD0]">
                   <span class="material-symbols-outlined text-xs fill-1">star</span>
                   ${restaurant.rating || 4.9}
@@ -81,7 +92,7 @@
             class="w-full sm:w-auto px-5 py-2.5 rounded-full font-label text-xs font-bold text-[#241A18] bg-[#F8EFE5] hover:bg-[#E8DDD0] border border-[#E8DDD0] transition-colors flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
           >
             <span class="material-symbols-outlined text-base text-[#9B1C25]">storefront</span>
-            <span>${isMm ? 'ဆိုင်အချက်အလက် ကြည့်မည်' : 'お店の情報を見る (U-05)'}</span>
+            <span>${t('View Restaurant Info', 'ဆိုင်အချက်အလက် ကြည့်မည်', 'お店の情報を見る')}</span>
           </a>
         </div>
 
@@ -93,7 +104,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#9B1C25] text-white shadow-xs">1</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9B1C25]">STEP 01</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'ရက်စွဲနှင့် အချိန်' : 'Date & Slots'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Date & Slots', 'ရက်စွဲနှင့် အချိန်', '日時・空席選択')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#9B1C25]"></div>
@@ -103,7 +114,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#E8DDD0] text-[#6D6561]">2</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9A908B]">STEP 02</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'ဧည့်သည် အချက်အလက်' : 'Guest Details (U-02)'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Guest Details', 'ဧည့်သည် အချက်အလက်', 'お客様情報')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#E8DDD0]/60"></div>
@@ -113,7 +124,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#E8DDD0] text-[#6D6561]">3</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9A908B]">STEP 03</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${isMm ? 'အတည်ပြုချက်' : 'Confirm (U-03)'}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Confirm', 'အတည်ပြုချက်', '予約内容の確認')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#E8DDD0]/60"></div>
@@ -126,10 +137,10 @@
           
           <div class="border-b border-[#E8DDD0] pb-4">
             <h2 class="font-headline text-2xl sm:text-3xl text-[#241A18] font-bold">
-              ${isMm ? 'ရက်စွဲနှင့် အချိန် ရွေးချယ်ပါ' : 'Select Date & Schedule'}
+              ${t('Select Date & Schedule', 'ရက်စွဲနှင့် အချိန် ရွေးချယ်ပါ', '日時・空席選択')}
             </h2>
             <p class="font-body text-xs text-[#6D6561] mt-1">
-              ${isMm ? 'လွတ်လပ်စွာ စားသုံးနိုင်သော အချိန်ဇယားများ' : 'Real-time table availability updated instantly'}
+              ${t('Real-time table availability updated instantly', 'လွတ်လပ်စွာ စားသုံးနိုင်သော အချိန်ဇယားများ', 'リアルタイムで空席を即時更新')}
             </p>
           </div>
 
@@ -146,14 +157,14 @@
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center gap-2 font-headline text-base font-bold text-[#241A18]">
                 <span class="material-symbols-outlined text-lg text-[#9B1C25]">schedule</span>
-                <span>${isMm ? 'ညစာ စားသုံးချိန်များ' : 'Dinner Service Slots'}</span>
+                <span>${t('Dinner Service Slots', 'ညစာ စားသုံးချိန်များ', 'ディナータイム空席')}</span>
               </div>
-              <span class="font-label text-xs font-semibold text-[#6D6561]">6 Slots Available</span>
+              <span class="font-label text-xs font-semibold text-[#6D6561]">${t('6 Slots Available', 'ရရှိနိုင်သော အချိန် ၆ ခု', '空席 6枠')}</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
               ${timeSlots.map(slot => {
                 const isSelected = bData.time === slot.time;
-                const isLimited = slot.status.includes('Limited') || slot.status.includes('နီးကပ်');
+                const isLimited = slot.isLimited;
                 return `
                   <button data-select-time="${slot.time}" class="p-3.5 rounded-2xl border flex flex-col items-center justify-center transition-all cursor-pointer ${isSelected ? 'bg-[#9B1C25] text-white border-[#9B1C25] shadow-md ring-2 ring-[#9B1C25]/20' : 'bg-white text-[#241A18] border-[#E8DDD0] hover:border-[#9B1C25] shadow-2xs'}">
                     <span class="font-label text-sm font-bold">${slot.time}</span>
@@ -171,13 +182,13 @@
                 <span class="material-symbols-outlined text-lg">groups</span>
               </div>
               <div>
-                <div class="font-headline text-base font-bold text-[#241A18]">${isMm ? 'လူဦးရေ ရွေးချယ်ပါ' : 'Party Size'}</div>
-                <div class="font-body text-xs text-[#6D6561]">${isMm ? 'သက်တောင့်သက်သာ စားသုံးနိုင်ရန် စားပွဲ ပြင်ဆင်ပေးပါမည်' : 'Table configuration and guest seating tailored for comfort'}</div>
+                <div class="font-headline text-base font-bold text-[#241A18]">${t('Party Size', 'လူဦးရေ ရွေးချယ်ပါ', 'ご来店人数')}</div>
+                <div class="font-body text-xs text-[#6D6561]">${t('Table configuration and guest seating tailored for comfort', 'သက်တောင့်သက်သာ စားသုံးနိုင်ရန် စားပွဲ ပြင်ဆင်ပေးပါမည်', 'ご人数に合わせた快適なお席をご用意いたします')}</div>
               </div>
             </div>
             <div class="flex items-center gap-4 bg-white px-4 py-1.5 rounded-full border border-[#E8DDD0] shadow-2xs self-end sm:self-auto">
               <button id="step1-guests-minus" class="w-8 h-8 rounded-full bg-[#F8EFE5] text-[#241A18] font-bold shadow-2xs hover:bg-[#9B1C25] hover:text-white transition-colors flex items-center justify-center cursor-pointer">-</button>
-              <span class="font-label text-sm font-bold text-[#241A18] min-w-[65px] text-center">${bData.guests} ${isMm ? 'ဦး' : 'Guests'}</span>
+              <span class="font-label text-sm font-bold text-[#241A18] min-w-[65px] text-center">${bData.guests} ${t('Guests', 'ဦး', '名様')}</span>
               <button id="step1-guests-plus" class="w-8 h-8 rounded-full bg-[#F8EFE5] text-[#241A18] font-bold shadow-2xs hover:bg-[#9B1C25] hover:text-white transition-colors flex items-center justify-center cursor-pointer">+</button>
             </div>
           </div>
@@ -186,14 +197,14 @@
           <div>
             <div class="flex items-center gap-2 font-headline text-base font-bold text-[#241A18] mb-3">
               <span class="material-symbols-outlined text-lg text-[#9B1C25]">chair</span>
-              <span>${isMm ? 'နေရာ ထိုင်ခင်း အမျိုးအစား' : 'Seating Area Preference'}</span>
+              <span>${t('Seating Area Preference', 'နေရာ ထိုင်ခင်း အမျိုးအစား', '希望座席タイプ')}</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
               ${[
-                { id: 'Standard', label: isMm ? 'ရိုးရိုး စားပွဲ' : 'Standard', icon: 'chair', sublabel: 'Main Dining Floor' },
-                { id: 'Window View', label: isMm ? 'ပြတင်းပေါက် ဘေး' : 'Window View', icon: 'grid_view', sublabel: 'Garden & View' },
-                { id: "Chef's Counter", label: isMm ? 'စားဖိုမှူး ကောင်တာ' : "Chef's Counter", icon: 'countertops', sublabel: 'Front Row View' },
-                { id: 'Private Room', label: isMm ? 'သီးသန့် အခန်း' : 'Private Room', icon: 'meeting_room', sublabel: 'VIP Dining Suite' }
+                { id: 'Standard', label: t('Standard', 'ရိုးရိုး စားပွဲ', '一般テーブル席'), icon: 'chair', sublabel: t('Main Dining Floor', 'အဓိက ခန်းမ', 'メインフロア') },
+                { id: 'Window View', label: t('Window View', 'ပြတင်းပေါက် ဘေး', '窓際席'), icon: 'grid_view', sublabel: t('Garden & View', 'ဥယျာဉ် ရှုခင်း', '庭園・景色一望') },
+                { id: "Chef's Counter", label: t("Chef's Counter", 'စားဖိုမှူး ကောင်တာ', 'シェフズカウンター'), icon: 'countertops', sublabel: t('Front Row View', 'အနီးကပ် ချက်ပြုတ်မှု', '調理風景を目の前で') },
+                { id: 'Private Room', label: t('Private Room', 'သီးသန့် အခန်း', '完全個室'), icon: 'meeting_room', sublabel: t('VIP Dining Suite', 'ဗွီအိုင်ပီ သီးသန့်', 'VIPプライベート') }
               ].map(seat => {
                 const isSelected = bData.seatingPreference === seat.id;
                 return `
@@ -215,7 +226,7 @@
           <!-- RESERVATION SUMMARY BAR -->
           <div class="bg-[#F8EFE5] p-5 sm:p-6 rounded-2xl border border-[#E8DDD0] mt-6 shadow-xs">
             <div class="space-y-1.5 min-w-0">
-              <div class="font-label text-[10px] font-bold text-[#6D6561] uppercase tracking-wider">${isMm ? 'ရွေးချယ်ထားသော ဘွတ်ကင်အချက်အလက်များ' : 'RESERVATION SUMMARY'}</div>
+              <div class="font-label text-[10px] font-bold text-[#6D6561] uppercase tracking-wider">${t('RESERVATION SUMMARY', 'ရွေးချယ်ထားသော ဘွတ်ကင်အချက်အလက်များ', '選択中の予約内容')}</div>
               <div class="font-headline text-base sm:text-lg font-bold text-[#241A18] truncate">${restaurant.name}</div>
               <div class="font-body text-xs sm:text-sm text-[#6D6561] flex flex-wrap items-center gap-x-2.5 gap-y-1.5 pt-0.5">
                 <span class="flex items-center gap-1">
@@ -230,27 +241,91 @@
                 <span class="text-[#E8DDD0]">•</span>
                 <span class="flex items-center gap-1">
                   <span class="material-symbols-outlined text-sm text-[#9B1C25]">group</span>
-                  <span>${bData.guests} ${bData.guests === 1 ? (isMm ? 'ဦး' : 'Guest') : (isMm ? 'ဦး' : 'Guests')}</span>
+                  <span>${bData.guests} ${t('Guests', 'ဦး', '名様')}</span>
                 </span>
                 <span class="text-[#E8DDD0]">•</span>
                 <span class="flex items-center gap-1">
                   <span class="material-symbols-outlined text-sm text-[#9B1C25]">chair</span>
-                  <span>${bData.seatingPreference}</span>
+                  <span>${getSeatingLabel(bData.seatingPreference)}</span>
                 </span>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Action Buttons -->
-          <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 mt-5">
-            <a href="#/" id="step1-cancel-btn" class="w-full sm:w-auto px-7 py-3.5 rounded-full border border-[#E8DDD0] font-label text-sm font-semibold text-[#6D6561] hover:bg-[#F8EFE5] transition-all cursor-pointer flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-sm">home</span>
-              <span>${isMm ? 'မူလစာမျက်နှာ' : 'EzBookNow Home (U-12)'}</span>
-            </a>
-            <button id="step1-next-btn" class="w-full sm:w-auto bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-sm font-bold px-8 py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95">
-              <span>${isMm ? 'ဧည့်သည် အချက်အလက်များ သို့ ဆက်သွားမည်' : 'Continue to Guest Details (U-02)'}</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </button>
+          <!-- Bottom Action Buttons & Member Status -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-5 pt-3 border-t border-[#E8DDD0]/70">
+            ${state.isAuthenticated ? `
+              <div class="flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                <span>${t('Logged in as', 'အကောင့်ဝင်ရောက်ထားသူ -', 'ログイン中:')} <strong>${state.myPageData.userName || 'Alex Aung'}</strong> • ${t('Bypasses login & auto-fills profile', 'အကောင့်ဝင်ပြီးဖြစ်၍ အချက်အလက်များ အလိုအလျောက် ဖြည့်ပေးမည်', 'お客様情報自動入力・SMS認証不要')}</span>
+              </div>
+            ` : `
+              <div class="flex items-center gap-2 text-xs font-medium text-[#6D6561]">
+                <span class="material-symbols-outlined text-sm text-[#9B1C25]">info</span>
+                <span>${t('Instant booking available for both registered members and guests', 'အကောင့်ရှိသူရော ဧည့်သည်ပါ အလွယ်တကူ စိုတ်ယူနိုင်ပါသည်', '会員様・ゲスト様ともに素早く予約可能です')}</span>
+              </div>
+            `}
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+              <a href="#/" id="step1-cancel-btn" class="w-full sm:w-auto px-6 py-3.5 rounded-full border border-[#E8DDD0] font-label text-sm font-semibold text-[#6D6561] hover:bg-[#F8EFE5] transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">home</span>
+                <span>${t('EzBookNow Home', 'မူလစာမျက်နှာ', 'ホーム')}</span>
+              </a>
+              <button id="step1-next-btn" class="w-full sm:w-auto bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-sm font-bold px-8 py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95">
+                <span>${state.isAuthenticated ? t('Proceed to Booking', 'ကြိုတင်မှာယူမည်', '予約入力へ進む') : t('Proceed to Booking', 'ကြိုတင်မှာယူမည်', '予約へ進む')}</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Unauthenticated Login / Guest Intercept Modal -->
+          <div id="u01-auth-intercept-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fadeIn">
+            <div class="bg-[#FFFDFC] rounded-3xl border border-[#E8DDD0] shadow-2xl max-w-sm w-full p-6 text-center space-y-4 relative animate-in fade-in zoom-in-95 duration-200">
+              <div class="flex items-center justify-between border-b border-[#E8DDD0] pb-3">
+                <div class="font-headline font-bold text-base text-[#241A18] flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#9B1C25]">account_circle</span>
+                  <span>${t('Select Booking Option', 'မှာယူမည့် နည်းလမ်း ရွေးချယ်ပါ', '予約方法の選択')}</span>
+                </div>
+                <button type="button" id="u01-close-intercept-modal" class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#241A18] cursor-pointer transition-colors">
+                  <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <div class="space-y-1 text-left text-xs text-[#554340]">
+                <p class="leading-relaxed">
+                  ${t(
+                    'Log in with your Yoyaku account to auto-fill your contact details, earn reward points, and skip SMS verification. Or continue as guest with phone number only.',
+                    'သင့် Yoyaku အကောင့်ဖြင့် ဝင်ရောက်ပါက အချက်အလက်များကို အလိုအလျောက် ဖြည့်ပေးမည်ဖြစ်ပြီး SMS OTP စစ်ဆေးရန် မလိုတော့ပါ။ အကောင့်မဖွင့်ဘဲ ဧည့်သည်အဖြစ်လည်း ဆက်လက်လုပ်ဆောင်နိုင်ပါသည်။',
+                    'アカウントでログインするとお客様情報が自動入力され、SMS認証も不要になります。アカウントなしでゲスト予約も可能です。'
+                  )}
+                </p>
+              </div>
+
+              <div class="space-y-2.5 pt-1">
+                <button
+                  type="button"
+                  id="u01-intercept-login-btn"
+                  class="w-full btn-primary py-3 px-4 rounded-2xl font-label text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98]"
+                >
+                  <span class="material-symbols-outlined text-base">login</span>
+                  <span>${t('Log In / Create Account (Fast)', 'အကောင့်ဝင်ရောက်မည် (အချက်အလက်ဖြည့်ပြီး)', 'ログインして自動入力')}</span>
+                </button>
+
+                <div class="flex items-center gap-2 text-[10px] text-[#8d7b75] uppercase font-bold my-1">
+                  <span class="flex-1 h-px bg-[#E8DDD0]"></span>
+                  <span>${t('OR', 'သို့မဟုတ်', 'または')}</span>
+                  <span class="flex-1 h-px bg-[#E8DDD0]"></span>
+                </div>
+
+                <button
+                  type="button"
+                  id="u01-intercept-guest-btn"
+                  class="w-full py-3 px-4 rounded-2xl border border-[#E8DDD0] bg-[#FFFDFC] hover:bg-[#F8EFE5] text-[#241A18] font-label text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                  <span class="material-symbols-outlined text-base text-[#6D6561]">person_outline</span>
+                  <span>${t('Continue as Guest', 'ဧည့်သည်အဖြစ် ဆက်သွားမည်', 'ゲストとして続ける')}</span>
+                </button>
+              </div>
+            </div>
           </div>
 
         </div>
