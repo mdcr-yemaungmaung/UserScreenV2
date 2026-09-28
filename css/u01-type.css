@@ -1,0 +1,153 @@
+/* ============================================================================
+   U-01 Home — Editorial Luxury Typography Layer (scoped to .screen-u01)
+   Polished · Elegant · Sophisticated · Refined · Visually balanced
+   Display type moves to a high-contrast serif; controls stay in the system
+   sans so the overall design language remains consistent.
+   ========================================================================== */
+
+.screen-u01 {
+  /* Editorial display stack — uses premium serifs when installed, degrades
+     gracefully to universally available Georgia/Palatino. Myanmar script is
+     protected by dedicated fallbacks and never renders as tofu. */
+  --u01-display: 'Playfair Display', 'Didot', 'Bodoni MT', 'Cormorant Garamond',
+    Georgia, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman',
+    'Noto Sans Myanmar', 'Padauk', 'Pyidaungsu', serif;
+
+  /* Hero voice — a lighter, garamond-leaning cut for the opening statement,
+     visually distinct from section headings while staying in the family. */
+  --u01-hero-display: 'Cormorant Garamond', 'EB Garamond', Garamond, 'Baskerville',
+    'Playfair Display', 'Didot', Georgia, 'Palatino Linotype',
+    'Noto Sans Myanmar', 'Padauk', 'Pyidaungsu', serif;
+}
+
+/* ---------------------------------------------------------------------------
+   Headlines → refined serif at a calmer weight (600 replaces extrabold)
+   --------------------------------------------------------------------------- */
+.screen-u01 .font-headline {
+  font-family: var(--u01-display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* Hero statement — its own lighter garamond voice, generous optical size,
+   balanced line breaking and tight leading for a magazine-cover feel */
+.screen-u01 h1.font-headline {
+  font-family: var(--u01-hero-display);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero standfirst — set in the same serif, quiet and airy */
+.screen-u01 h1.font-headline ~ p.font-body {
+  font-family: var(--u01-hero-display);
+  font-size: 19px;
+  line-height: 1.75;
+  letter-spacing: 0.002em;
+  color: #5d4a45;
+}
+
+/* Hero eyebrow — engraved small-caps invitation */
+.screen-u01 .tracking-widest {
+  letter-spacing: 0.2em;
+  font-weight: 600;
+}
+
+@supports (text-wrap: balance) {
+  .screen-u01 h1.font-headline,
+  .screen-u01 section > div h2.font-headline {
+    text-wrap: balance;
+  }
+}
+
+/* Hero accent phrase — gold italic serif, the signature flourish */
+.screen-u01 h1 span {
+  color: #840f16;
+  font-style: italic;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .screen-u01 h1 span {
+    background: linear-gradient(
+      118deg,
+      #b07616 0%,
+      #d08e1c 42%,
+      #f5ca56 58%,
+      #8a5b0d 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #d08e1c;
+    padding-right: 0.06em; /* keep italic terminal from clipping */
+  }
+}
+
+/* Section titles breathe a little more between headline and copy */
+.screen-u01 h2.font-headline {
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Banner headlines — editorial white serif over burgundy/ink panels */
+.screen-u01 h3.font-headline {
+  letter-spacing: 0.002em;
+  line-height: 1.25;
+}
+
+/* Gallery label chips on hero collage — engraved museum-label feel */
+.screen-u01 .collage-img span.font-headline {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Cuisine chip names — quiet serif, no shouting */
+.screen-u01 [data-cuisine-filter] .font-headline {
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+/* ---------------------------------------------------------------------------
+   Body & supporting copy — softer presence, airier rhythm
+   --------------------------------------------------------------------------- */
+.screen-u01 p {
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+/* Search placeholder — quiet italic invitation */
+.screen-u01 input::placeholder {
+  font-style: italic;
+  color: #a5968d;
+}
+
+/* ---------------------------------------------------------------------------
+   Micro-interactions tied to type
+   --------------------------------------------------------------------------- */
+
+/* "View All" links — underline draws itself in from the left */
+.screen-u01 button[data-nav-tab].font-label {
+  text-decoration: none !important;
+  position: relative;
+}
+
+.screen-u01 button[data-nav-tab].font-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.75;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.screen-u01 button[data-nav-tab].font-label:hover::after,
+.screen-u01 button[data-nav-tab].font-label:focus-visible::after {
+  transform: scaleX(1);
+}

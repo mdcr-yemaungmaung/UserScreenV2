@@ -1,8 +1,9 @@
 /* ============================================================
-   EzBookNow Screen U-15 — Notifications Screen
+   EzBookNow Screen U-14 — Notifications Screen
+   Route: /notifications
    ============================================================ */
 
-const ScreenU15 = (() => {
+const ScreenU14 = (() => {
   let activeTab = 'unread'; // 'unread' or 'all'
 
   function getNotificationTone(type) {
@@ -11,8 +12,6 @@ const ScreenU15 = (() => {
         return { bg: '#dcfce7', text: '#166534', dot: '#22c55e' };
       case 'reminder':
         return { bg: '#fef9c3', text: '#854d0e', dot: '#eab308' };
-      case 'waitlist_available':
-        return { bg: '#dbeafe', text: '#1e40af', dot: '#3b82f6' };
       case 'review_reply':
         return { bg: '#f5e7ff', text: '#7c3aed', dot: '#8b5cf6' };
       default:
@@ -30,11 +29,11 @@ const ScreenU15 = (() => {
     const toolbar = `
       <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
         <div class="tabs mb-0" style="border-bottom:none;">
-          <button class="tab ${activeTab === 'unread' ? 'active' : ''}" onclick="ScreenU15.setTab('unread')">${I18n.t('unread')} (${unreadList.length})</button>
-          <button class="tab ${activeTab === 'all' ? 'active' : ''}" onclick="ScreenU15.setTab('all')">${I18n.t('all_notifications')}</button>
+          <button class="tab ${activeTab === 'unread' ? 'active' : ''}" onclick="ScreenU14.setTab('unread')">${I18n.t('unread')} (${unreadList.length})</button>
+          <button class="tab ${activeTab === 'all' ? 'active' : ''}" onclick="ScreenU14.setTab('all')">${I18n.t('all_notifications')}</button>
         </div>
         ${unreadList.length > 0 ? `
-          <button class="btn btn-secondary btn-sm" onclick="ScreenU15.markAllRead()">${I18n.t('mark_all_read')}</button>
+          <button class="btn btn-secondary btn-sm" onclick="ScreenU14.markAllRead()">${I18n.t('mark_all_read')}</button>
         ` : ''}
       </div>
     `;
@@ -62,7 +61,7 @@ const ScreenU15 = (() => {
             if (n.type === 'review_reply') iconCode = '💬';
 
             return `
-              <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="ScreenU15.handleNotifClick('${n.id}', '${n.link}')">
+              <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="ScreenU14.handleNotifClick('${n.id}', '${n.link}')">
                 <div class="notification-item__icon" style="font-weight:600; background:${tone.bg}; color:${tone.text};">
                   ${iconCode}
                 </div>
@@ -124,3 +123,6 @@ const ScreenU15 = (() => {
 
   return { render, setTab, markAllRead, handleNotifClick };
 })();
+
+window.ScreenU14 = ScreenU14;
+window.ScreenU15 = ScreenU14;

@@ -408,7 +408,7 @@
                         style="flex: 1; height: 36px; font-size: 0.75rem;"
                       >
                         <span class="material-symbols-outlined" style="font-size: 0.875rem;">receipt_long</span>
-                        <span>${isMm ? 'မှာယူမှု အသေးစိတ် (U-09)' : 'View Details'}</span>
+                        <span>${isMm ? 'မှာယူမှု အသေးစိတ် (U-10)' : 'View Details (U-10)'}</span>
                       </button>
                       <button
                         type="button"
@@ -807,13 +807,14 @@
       });
     }
 
-    // Open lookup detail (U-09 in guest mode)
+    // Open lookup detail (U-10 in guest mode)
     const openLookupDetailBtn = root.querySelector('#btn-open-lookup-detail');
     if (openLookupDetailBtn) {
       openLookupDetailBtn.addEventListener('click', () => {
         const res = store.getState().loginState.lookupResult;
         if (res) {
           store.selectReservationForDetail(res.id, true, 'lookup');
+          window.location.hash = `#/reservations/${res.reservationNo || res.id}`;
         }
       });
     }

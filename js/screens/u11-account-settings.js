@@ -785,16 +785,28 @@
             : `Phone updated to ${newPhone}. Verification status reset to FALSE.`
         );
 
-        // Open interactive OTP modal
-        store.openMyPageModal('phone_otp');
+        // Open interactive OTP modal (U-13)
+        store.openOtpModal({
+          caller: 'settings',
+          phoneNumber: newPhone,
+          onVerified: () => {
+            store.verifyPhoneNumberOtp();
+          }
+        });
       });
     }
 
-    // 8. Open OTP verification modal manually
+    // 8. Open OTP verification modal manually (U-13)
     const openOtpBtn = containerElement.querySelector('#u20-open-otp-modal-btn');
     if (openOtpBtn) {
       openOtpBtn.addEventListener('click', () => {
-        store.openMyPageModal('phone_otp');
+        store.openOtpModal({
+          caller: 'settings',
+          phoneNumber: store.getState().myPageData.userPhone,
+          onVerified: () => {
+            store.verifyPhoneNumberOtp();
+          }
+        });
       });
     }
 

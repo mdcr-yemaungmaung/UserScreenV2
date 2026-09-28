@@ -1,8 +1,8 @@
 /* ============================================================
-   EzBookNow Screen U-19 — Announcements List Screen
+   EzBookNow Screen U-58 — Announcements List Screen (Post-Pkg1 Deferred)
    ============================================================ */
 
-const ScreenU19 = (() => {
+const ScreenU58 = (() => {
   function render() {
     const lang = I18n.getLang();
     const list = MockData.announcements;

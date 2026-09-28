@@ -1,8 +1,9 @@
 /* ============================================================
-   EzBookNow Screen U-12 — Password Reset Screen
+   EzBookNow Screen U-08 — Password Reset Screen
+   Route: /forgot-password
    ============================================================ */
 
-const ScreenU12 = (() => {
+const ScreenU08 = (() => {
   let step = 1; // 1 = input email, 2 = input new password
 
   function render() {
@@ -86,3 +87,6 @@ const ScreenU12 = (() => {
 
   return { render, requestLink, setNewPassword };
 })();
+
+window.ScreenU08 = ScreenU08;
+window.ScreenU12 = ScreenU08;

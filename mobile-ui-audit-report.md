@@ -54,9 +54,8 @@
 #### O6. Card style inconsistencies (design debt) — ✅ FIXED 2026-08-23
 | Element | Location | Fix Applied |
 |---|---|---|
-| MyPage Favorites panel card | `u08-mypage.js:309` | `bg-[#FFF8F6] rounded-xl` → `bg-[#FFF9EE] rounded-3xl border border-[#EADFD1]` |
-| Waitlist queue item | `u08-mypage.js:396` | `bg-[#FFF8F6] p-5 rounded-xl` → `bg-[#FFF9EE] p-5 rounded-3xl` |
-| Reservation history card radius | `u08-mypage.js:156` | Removed inline `style="border-radius:16px"`, now uses `rounded-3xl` per design standard |
+| MyPage Favorites panel card | `u09-mypage.js:309` | `bg-[#FFF8F6] rounded-xl` → `bg-[#FFF9EE] rounded-3xl border border-[#E8DDD0]` |
+| Reservation history card radius | `u09-mypage.js:156` | Removed inline `style="border-radius:16px"`, now uses `rounded-3xl` per design standard (Waitlist removed in v2.2) |
 
 ### 🟢 Minor
 

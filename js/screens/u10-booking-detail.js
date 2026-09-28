@@ -723,7 +723,7 @@
     `;
   }
 
-  // Attach Event Listeners for U-09
+  // Attach Event Listeners for U-10
   function attachBookingDetailViewEvents(containerElement) {
     if (!containerElement) return;
 
@@ -738,10 +738,13 @@
         if (origin === 'lookup' || isGuest) {
           store.setLoginTab('lookup');
           store.setActiveTab('login');
+          window.location.hash = '#/login';
         } else if (origin === 'discover') {
           store.setActiveTab('discover');
+          window.location.hash = '#/';
         } else {
           store.setActiveTab('reservations');
+          window.location.hash = '#/mypage';
         }
       });
     }

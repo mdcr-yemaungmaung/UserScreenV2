@@ -1,8 +1,8 @@
 /* ============================================================
-   EzBookNow Screen U-16 — Points & Membership Screen
+   EzBookNow Screen U-60 — Points & Membership Screen (Post-Pkg1 Deferred)
    ============================================================ */
 
-const ScreenU16 = (() => {
+const ScreenU60 = (() => {
   function render() {
     const points = 1250;
     const rank = 'Silver';

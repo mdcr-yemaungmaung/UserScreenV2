@@ -263,13 +263,10 @@
         },
 
         // My Page Modal State
-        myPageModal: 'none', // 'none' | 'waitlist' | 'coupons' | 'notifications' | 'viber' | 'announcements' | 'points' | 'account' | 'review'
+        myPageModal: 'none', // 'none' | 'coupons' | 'notifications' | 'viber' | 'announcements' | 'points' | 'account' | 'review'
         myPageSubTab: 'upcoming', // 'upcoming' | 'past'
-        myPageActiveMenu: 'reservations', // 'reservations' | 'favorites' | 'waitlist' | 'coupons' | 'points' | 'notifications' | 'viber' | 'announcements' | 'account'
+        myPageActiveMenu: 'reservations', // 'reservations' | 'favorites' | 'coupons' | 'points' | 'notifications' | 'viber' | 'announcements' | 'account'
         myPageData: {
-          waitlists: [
-            { id: 'w1', restaurantName: 'Seeds Restaurant & Lounge', partySize: 2, requestedDate: 'Aug 28, 2026', status: 'In Queue (#2)' }
-          ],
           claimedCoupons: [
             { id: 'c1', code: 'YOYAKUKBZ50K', title: '50,000 MMK KBZPay Discount', validTill: 'Sep 30, 2026' },
             { id: 'c2', code: 'LUXEWINE15', title: '15% Off Sommelier Pairing', validTill: 'Oct 15, 2026' }
@@ -387,13 +384,24 @@
         },
 
         // =====================================================================
-        // U-09: Reservation Details, Change & Cancellation State
+        // U-13: SMS OTP Verification Modal State
+        // =====================================================================
+        otpModalState: {
+          isOpen: false,
+          caller: null, // 'register' | 'login' | 'guest_confirm' | 'settings'
+          phoneNumber: '',
+          error: null,
+          onVerified: null
+        },
+
+        // =====================================================================
+        // U-10: Reservation Details, Change & Cancellation State
         // =====================================================================
         selectedReservationId: null, // string (e.g. 'res-2026-001') or null for list
         isGuestReservationView: false, // true if viewed by guest without login
         reservationDetailOrigin: null, // 'lookup' | 'reservations' | 'discover'
 
-        // U-09: Date/Time & Guest Count Change Modal
+        // U-10: Date/Time & Guest Count Change Modal
         u09ChangeModal: {
           isOpen: false,
           reservationId: null,
@@ -1053,6 +1061,88 @@
         isUnread: true
       });
       this.notify();
+    }
+
+    // =====================================================================
+    // U-13: Reusable SMS OTP Modal Actions
+    // =====================================================================
+    openOtpModal({ caller, phoneNumber, onVerified } = {}) {
+      this.state.otpModalState = {
+        isOpen: true,
+        caller: caller || 'default',
+        phoneNumber: phoneNumber || this.state.myPageData.userPhone || '+95 9 123 456 789',
+        error: null,
+        onVerified: onVerified || null
+      };
+      this.notify();
+    }
+
+    closeOtpModal() {
+      this.state.otpModalState = {
+        isOpen: false,
+        caller: null,
+        phoneNumber: '',
+        error: null,
+        onVerified: null
+      };
+      this.notify();
+    }
+
+    verifyOtpCode(code) {
+      const isMm = this.state.currentLanguage === 'MM';
+      if (code !== '123456') {
+        this.state.otpModalState.error = isMm
+          ? 'အတည်ပြုကုဒ် မှားယွင်းနေပါသည်။ စမ်းသပ်ကုဒ် 123456 ကို အသုံးပြုပါ။'
+          : 'Invalid verification code. Please enter 123456.';
+        this.notify();
+        return false;
+      }
+
+      this.state.otpModalState.error = null;
+      this.state.myPageData.phoneVerified = true;
+      const caller = this.state.otpModalState.caller;
+      const callback = this.state.otpModalState.onVerified;
+
+      this.closeOtpModal();
+      this.showToast(isMm ? 'ဖုန်းနံပါတ် အတည်ပြုပြီးပါပြီ' : 'Phone verified successfully');
+
+      if (typeof callback === 'function') {
+        callback();
+      } else if (caller === 'register') {
+        this.setActiveTab('mypage');
+        window.location.hash = '#/mypage';
+      } else if (caller === 'login') {
+        this.setActiveTab('mypage');
+        window.location.hash = '#/mypage';
+      } else if (caller === 'guest_confirm') {
+        if (this.state.bookingModalState && this.state.bookingModalState.restaurant) {
+          const slug = this.getRestaurantSlug(this.state.bookingModalState.restaurant);
+          window.location.hash = `#/s/${slug}/complete`;
+        }
+      }
+      return true;
+    }
+
+    resendOtpCode() {
+      const isMm = this.state.currentLanguage === 'MM';
+      this.state.otpModalState.error = null;
+      this.showToast(isMm ? 'အတည်ပြုကုဒ် အသစ် ပေးပို့ပြီးပါပြီ' : 'New SMS verification code sent');
+      this.notify();
+    }
+
+    getRestaurantSlug(restaurant) {
+      if (!restaurant) return 'gilded-fork';
+      if (restaurant.slug) return restaurant.slug;
+      if (restaurant.id === 'rest-1') return 'gilded-fork';
+      return restaurant.id;
+    }
+
+    getRestaurantBySlug(slug) {
+      const restaurants = (window.YoyakuData && window.YoyakuData.RESTAURANTS_DATA) || [];
+      if (!slug || slug === 'gilded-fork' || slug === 'rest-1') {
+        return restaurants[0] || null;
+      }
+      return restaurants.find(r => r.id === slug || r.slug === slug || (r.id === 'rest-1' && slug === 'gilded-fork')) || restaurants[0] || null;
     }
 
     withdrawAccount(reason, feedback = '') {

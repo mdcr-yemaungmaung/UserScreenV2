@@ -316,7 +316,7 @@
                 </div>
               ` : ''}
 
-              <!-- Divider & Navigation to Login (U-10) -->
+              <!-- Divider & Navigation to Login (U-06) -->
               <div class="pt-3 border-t border-[#EADFD1] text-center">
                 <p class="text-xs text-[#58413f]">
                   ${isMm ? 'အကောင့်ရှိပြီးသားဖြစ်ပါက' : 'Already have an account?'}
@@ -324,7 +324,7 @@
                     id="btn-nav-to-login" 
                     class="font-bold text-[#840f16] hover:underline ml-1 cursor-pointer"
                   >
-                    ${isMm ? 'ဒီနေရာတွင် အကောင့်ဝင်ပါ (Login here)' : 'Sign In here'}
+                    ${isMm ? 'ဒီနေရာတွင် အကောင့်ဝင်ပါ (Login U-06)' : 'Sign In here (U-06)'}
                   </button>
                 </p>
               </div>
@@ -336,7 +336,7 @@
       </div>
 
       <!-- ===================================================================
-           SSO FIRST-TIME TERMS AGREEMENT MODAL (U-11 Requirement)
+           SSO FIRST-TIME TERMS AGREEMENT MODAL (U-07 Requirement)
            =================================================================== -->
       ${regState.showSsoTermsModal ? `
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn" id="sso-terms-modal-backdrop">

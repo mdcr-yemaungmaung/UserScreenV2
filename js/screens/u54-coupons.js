@@ -1,8 +1,8 @@
 /* ============================================================
-   EzBookNow Screen U-14 — Coupons List Screen
+   EzBookNow Screen U-54 — Coupons List Screen (Post-Pkg1 Deferred)
    ============================================================ */
 
-const ScreenU14 = (() => {
+const ScreenU54 = (() => {
   function render() {
     const listHtml = MockData.coupons.length === 0 ? 
       Components.emptyState('tag', I18n.t('no_coupons'), I18n.t('check_back_later')) :
@@ -20,7 +20,7 @@ const ScreenU14 = (() => {
               </div>
               <div class="flex flex-col gap-2 items-end">
                 <div class="p-2 bg-surface-container text-primary font-mono text-label-sm" style="border-radius:4px; font-weight:700; border:1px dashed var(--color-outline-variant);">${c.code}</div>
-                <button class="btn btn-primary btn-sm" onclick="ScreenU14.copyCode('${c.code}')">${I18n.t('use_coupon')}</button>
+                <button class="btn btn-primary btn-sm" onclick="ScreenU54.copyCode('${c.code}')">${I18n.t('use_coupon')}</button>
               </div>
             </div>
           `;

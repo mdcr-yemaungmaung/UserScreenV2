@@ -1,8 +1,8 @@
 /* ============================================================
-   EzBookNow Screen U-18 — Online Payment Screen (Sandbox)
+   EzBookNow Screen U-57 — Online Payment Screen (Post-Pkg1 Deferred)
    ============================================================ */
 
-const ScreenU18 = (() => {
+const ScreenU57 = (() => {
   let selectedProvider = 'kbzpay';
   let isProcessing = false;
 

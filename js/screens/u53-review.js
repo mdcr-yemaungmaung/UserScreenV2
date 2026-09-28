@@ -1,8 +1,8 @@
 /* ============================================================
-   EzBookNow Screen U-13 — Write a Review Screen
+   EzBookNow Screen U-53 — Write a Review Screen (Post-Pkg1 Deferred)
    ============================================================ */
 
-const ScreenU13 = (() => {
+const ScreenU53 = (() => {
   let selectedRating = 5;
 
   function render(params) {

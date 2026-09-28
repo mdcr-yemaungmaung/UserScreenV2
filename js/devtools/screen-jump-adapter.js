@@ -1,181 +1,219 @@
 /* ============================================================
-   EzBookNow Screen Jump Adapter — user-yoyaku
-   Bridges the shared cross-app Screen Jump devtool
-   (shared/devtools/screen-catalog.js & screen-jump.js) to the
-   Yoyaku store-driven SPA, which has no hash routing.
-
-   Maps Screen IDs (U-xx) to Yoyaku store actions, keeps the
-   floating badge and the drawer active highlight in sync with
-   the live store state.
+   EzBookNow Screen Jump Adapter — user-yoyaku (v2.2 Specification)
+   Bridges the cross-app Screen Jump devtool to the
+   EzBookNow v2.2 routing and screen structure.
+   
+   Active Pkg1 Core Screens: U-01 to U-14
+   Post-Pkg1 Deferred Screens: U-51+
+   Deleted: U-21 / U-59 (Waitlist completely removed)
    ============================================================ */
 (() => {
-  if (typeof ScreenJump === 'undefined' || typeof ScreenCatalog === 'undefined') return;
   const store = window.store;
   if (!store) return;
 
-  const CATALOG = ScreenCatalog;
-  const originalJumpTo = ScreenJump.jumpTo;
-  const originalToggleDrawer = ScreenJump.toggleDrawer;
-
-  // Yoyaku screens implemented in this prototype (mirrors the catalog 'yoyaku' variant)
-  const YOYAKU_IDS = ['U-01', 'U-02', 'U-03', 'U-04', 'U-05', 'U-06', 'U-07', 'U-08', 'U-09', 'U-10', 'U-17', 'U-20'];
-
-  function getScreen(id) {
-    return CATALOG.allScreens('yoyaku').find(s => s.id === id) || CATALOG.allScreens().find(s => s.id === id) || null;
-  }
-
-  function firstRestaurant() {
-    const data = (window.YoyakuData && window.YoyakuData.RESTAURANTS_DATA) || [];
-    return data[0] || null;
-  }
-
-  function ensureBookingModal() {
-    const state = store.getState();
-    if (!state.bookingModalState.isOpen || !state.bookingModalState.restaurant) {
-      store.setSelectedRestaurant(null);
-      const r = firstRestaurant();
-      if (r) store.openBookingModal(r);
-    }
-  }
-
-  // Screen ID -> store action
   const JUMP_MAP = {
-    'U-01': () => { store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('discover'); },
-    'U-02': () => { store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('resultlist'); },
-    'U-03': () => {
-      store.closeBookingModal();
-      const r = firstRestaurant();
-      if (r) store.setSelectedRestaurant(r);
+    'U-01': () => { window.location.hash = '#/s/gilded-fork'; },
+    'U-02': () => { window.location.hash = '#/s/gilded-fork/book'; },
+    'U-03': () => { window.location.hash = '#/s/gilded-fork/confirm'; },
+    'U-04': () => { window.location.hash = '#/s/gilded-fork/complete'; },
+    'U-05': () => { window.location.hash = '#/s/gilded-fork/info'; },
+    'U-06': () => { window.location.hash = '#/login'; },
+    'U-07': () => { window.location.hash = '#/register'; },
+    'U-08': () => { window.location.hash = '#/forgot-password'; },
+    'U-09': () => { window.location.hash = '#/mypage'; },
+    'U-10': () => {
+      const res = (store.getState().reservations || [])[0];
+      const id = res ? (res.reservationNo || res.id) : 'RSV-2026-001';
+      window.location.hash = `#/reservations/${id}`;
     },
-    'U-04': () => {
-      store.setSelectedRestaurant(null);
-      const r = firstRestaurant();
-      if (r) { store.openBookingModal(r); store.setBookingStep(1); }
+    'U-11': () => { window.location.hash = '#/settings'; },
+    'U-12': () => { window.location.hash = '#/'; },
+    'U-13': () => {
+      store.openOtpModal({ caller: 'settings', phoneNumber: store.getState().myPageData.userPhone || '+95 9 123 456 789' });
     },
-    'U-05': () => { ensureBookingModal(); store.setBookingStep(2); },
-    'U-06': () => { ensureBookingModal(); store.setBookingStep(3); },
-    'U-07': () => {
-      ensureBookingModal();
-      const st = store.getState();
-      const base = st.reservations[0];
-      const createdBooking = base ? Object.assign({}, base) : {
-        reservationNo: 'RES-2026-NEW',
-        restaurantName: st.bookingModalState.restaurant ? st.bookingModalState.restaurant.name : 'Yoyaku Restaurant',
-        date: st.bookingModalState.bookingData.date,
-        time: st.bookingModalState.bookingData.time,
-        guests: st.bookingModalState.bookingData.guests,
-        guestName: st.bookingModalState.guestData.guestName
-      };
-      store.setBookingStep(4, { createdBooking });
+    'U-14': () => { window.location.hash = '#/notifications'; },
+    'U-51': () => { window.location.hash = '#/discover'; },
+    'U-52': () => { window.location.hash = '#/search'; },
+    'U-54': () => {
+      store.setActiveTab('mypage');
+      store.setMyPageActiveMenu('coupons');
     },
-    'U-08': () => {
-      store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('mypage');
-      store.closeMyPageModal(); store.setMyPageActiveMenu('reservations');
+    'U-56': () => {
+      store.setActiveTab('mypage');
+      store.setMyPageActiveMenu('notif-settings');
     },
-    'U-09': () => { store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('reservations'); },
-    'U-10': () => { store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('login'); },
-    'U-11': () => { store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('register'); },
-    'U-17': () => {
-      store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('mypage');
-      store.closeMyPageModal(); store.setMyPageActiveMenu('notif-settings');
-    },
-    'U-20': () => {
-      store.closeBookingModal(); store.setSelectedRestaurant(null); store.setActiveTab('mypage');
-      store.closeMyPageModal(); store.setMyPageActiveMenu('account');
+    'U-60': () => {
+      store.setActiveTab('mypage');
+      store.setMyPageActiveMenu('points');
     }
   };
 
   function currentScreen() {
+    const hash = window.location.hash || '';
+    if (hash.includes('/complete')) return { id: 'U-04', name: '予約完了', pkg: 'Pkg1' };
+    if (hash.includes('/confirm')) return { id: 'U-03', name: '予約確認', pkg: 'Pkg1' };
+    if (hash.includes('/book')) return { id: 'U-02', name: '予約入力', pkg: 'Pkg1' };
+    if (hash.includes('/info')) return { id: 'U-05', name: '店舗情報ページ', pkg: 'Pkg1' };
+    if (hash.match(/^#\/s\/[^/?#]+/)) return { id: 'U-01', name: '予約ページ (SNS Landing)', pkg: 'Pkg1' };
+    if (hash.startsWith('#/login')) return { id: 'U-06', name: 'ログイン / 予約照会', pkg: 'Pkg1' };
+    if (hash.startsWith('#/register')) return { id: 'U-07', name: '会員登録', pkg: 'Pkg1' };
+    if (hash.startsWith('#/forgot-password')) return { id: 'U-08', name: 'パスワードリセット', pkg: 'Pkg1' };
+    if (hash.startsWith('#/reservations')) return { id: 'U-10', name: '予約詳細・変更・キャンセル', pkg: 'Pkg1' };
+    if (hash.startsWith('#/settings')) return { id: 'U-11', name: 'アカウント設定・退会', pkg: 'Pkg1' };
+    if (hash === '#/' || hash === '#/root') return { id: 'U-12', name: 'サービス紹介 (ルートLP)', pkg: 'Pkg1' };
+    if (hash.startsWith('#/notifications')) return { id: 'U-14', name: '通知センター', pkg: 'Pkg1' };
+    if (hash.startsWith('#/mypage')) return { id: 'U-09', name: 'マイページ (予約履歴)', pkg: 'Pkg1' };
+    if (hash.startsWith('#/discover')) return { id: 'U-51', name: 'トップ (ホーム)', pkg: 'Post-Pkg1' };
+    if (hash.startsWith('#/search')) return { id: 'U-52', name: '検索結果一覧', pkg: 'Post-Pkg1' };
+
     const st = store.getState();
-    if (st.bookingModalState.isOpen && st.bookingModalState.restaurant) {
-      if (st.bookingModalState.step === 4) return getScreen('U-07');
-      if (st.bookingModalState.step === 3) return getScreen('U-06');
-      if (st.bookingModalState.step === 2) return getScreen('U-05');
-      return getScreen('U-04');
+    if (st.otpModalState && st.otpModalState.isOpen) return { id: 'U-13', name: 'SMS認証 (OTP入力)', pkg: 'Pkg1' };
+    if (st.selectedReservationId) return { id: 'U-10', name: '予約詳細・変更・キャンセル', pkg: 'Pkg1' };
+    if (st.bookingModalState && st.bookingModalState.isOpen && st.bookingModalState.restaurant) {
+      if (st.bookingModalState.step === 4) return { id: 'U-04', name: '予約完了', pkg: 'Pkg1' };
+      if (st.bookingModalState.step === 3) return { id: 'U-03', name: '予約確認', pkg: 'Pkg1' };
+      if (st.bookingModalState.step === 2) return { id: 'U-02', name: '予約入力', pkg: 'Pkg1' };
+      return { id: 'U-01', name: '予約ページ (SNS Landing)', pkg: 'Pkg1' };
     }
-    if (st.selectedRestaurant) return getScreen('U-03');
-    switch (st.activeTab) {
-      case 'resultlist': return getScreen('U-02');
-      case 'reservations': return getScreen('U-09');
-      case 'mypage':
-        if (st.myPageActiveMenu === 'notif-settings') return getScreen('U-17');
-        if (st.myPageActiveMenu === 'account') return getScreen('U-20');
-        return getScreen('U-08');
-      case 'login': return getScreen('U-10');
-      case 'register': return getScreen('U-11');
-      default: return getScreen('U-01');
-    }
+    if (st.selectedRestaurant) return { id: 'U-05', name: '店舗情報ページ', pkg: 'Pkg1' };
+    if (st.activeTab === 'login') return { id: 'U-06', name: 'ログイン / 予約照会', pkg: 'Pkg1' };
+    if (st.activeTab === 'register') return { id: 'U-07', name: '会員登録', pkg: 'Pkg1' };
+    if (st.activeTab === 'root-lp') return { id: 'U-12', name: 'サービス紹介 (ルートLP)', pkg: 'Pkg1' };
+    if (st.activeTab === 'mypage') return { id: 'U-09', name: 'マイページ (予約履歴)', pkg: 'Pkg1' };
+    return { id: 'U-01', name: '予約ページ (SNS Landing)', pkg: 'Pkg1' };
   }
 
   function getPkgStyle(pkg) {
-    if (pkg === 'Pkg1') return 'background:#0284c7;color:#fff;';
-    if (pkg === 'Pkg2') return 'background:#16a34a;color:#fff;';
-    if (pkg === 'Pkg3') return 'background:#7c3aed;color:#fff;';
+    if (pkg === 'Pkg1') return 'background:#9B1C25;color:#fff;';
     return 'background:#64748b;color:#fff;';
   }
 
   function refreshBadge() {
-    const badge = document.getElementById('screen-id-badge');
-    if (!badge) return;
+    let badge = document.getElementById('screen-id-badge');
+    if (!badge) {
+      badge = document.createElement('div');
+      badge.id = 'screen-id-badge';
+      badge.style.cssText = 'position:fixed;bottom:18px;left:18px;z-index:9999;display:flex;align-items:center;gap:6px;padding:6px 12px;background:#241A18;color:#FFFDFC;border:1px solid #E8DDD0;border-radius:9999px;font-family:Manrope,sans-serif;font-size:11px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.18);cursor:pointer;';
+      document.body.appendChild(badge);
+      badge.addEventListener('click', toggleDevDrawer);
+    }
+
     const screen = currentScreen();
-    const id = screen ? screen.id : 'Unknown';
-    const pkg = (screen && screen.pkg && screen.app !== 'hub')
-      ? `<span style="font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:10px;${getPkgStyle(screen.pkg)}">${screen.pkg}</span>`
+    const id = screen ? screen.id : 'U-01';
+    const pkg = screen && screen.pkg
+      ? `<span style="font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;${getPkgStyle(screen.pkg)}">${screen.pkg}</span>`
       : '';
     badge.innerHTML = `
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#aaf457" stroke-width="2.6">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
+      <span class="material-symbols-outlined" style="font-size:14px;color:#C69A2B;">grid_view</span>
       <span>${id}</span>${pkg}
-      <span style="font-size:9.5px;color:#94a3b8;margin-left:1px;">(Jump)</span>
+      <span style="font-size:9.5px;color:#9A908B;margin-left:2px;">(v2.2)</span>
     `;
-
-    document.querySelectorAll('.sj-item').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.sj-item-id').forEach(el => el.classList.remove('active'));
-    if (screen) {
-      const activeEl = document.getElementById('nav-item-' + screen.id);
-      if (activeEl) {
-        activeEl.classList.add('active');
-        const idSpan = activeEl.querySelector('.sj-item-id');
-        if (idSpan) idSpan.classList.add('active');
-      }
-    }
   }
 
-  function jumpTo(id) {
-    if (ScreenJump.getDrawerVariant() === 'yoyaku' && JUMP_MAP[id]) {
-      JUMP_MAP[id]();
-      const drawer = document.getElementById('screen-jump-drawer');
-      const overlay = document.getElementById('screen-jump-overlay');
-      if (drawer && drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
-        if (overlay) overlay.classList.remove('open');
-      }
-      refreshBadge();
-    } else {
-      originalJumpTo(id);
-    }
-  }
+  function toggleDevDrawer() {
+    let drawer = document.getElementById('screen-jump-drawer-v2');
+    if (!drawer) {
+      drawer = document.createElement('div');
+      drawer.id = 'screen-jump-drawer-v2';
+      drawer.style.cssText = 'position:fixed;top:0;right:0;width:340px;height:100%;background:#FFFDFC;border-left:1px solid #E8DDD0;box-shadow:-4px 0 24px rgba(0,0,0,0.15);z-index:10000;display:flex;flex-direction:column;font-family:Manrope,sans-serif;';
+      
+      const pkg1Screens = [
+        { id: 'U-01', name: '予約ページ (SNS Landing)', path: '#/s/gilded-fork' },
+        { id: 'U-02', name: '予約入力', path: '#/s/gilded-fork/book' },
+        { id: 'U-03', name: '予約確認', path: '#/s/gilded-fork/confirm' },
+        { id: 'U-04', name: '予約完了', path: '#/s/gilded-fork/complete' },
+        { id: 'U-05', name: '店舗情報ページ', path: '#/s/gilded-fork/info' },
+        { id: 'U-06', name: 'ログイン / 予約照会', path: '#/login' },
+        { id: 'U-07', name: '会員登録', path: '#/register' },
+        { id: 'U-08', name: 'パスワードリセット', path: '#/forgot-password' },
+        { id: 'U-09', name: 'マイページ (予約履歴)', path: '#/mypage' },
+        { id: 'U-10', name: '予約詳細・変更・キャンセル', path: '#/reservations/RSV-2026-001' },
+        { id: 'U-11', name: 'アカウント設定・退会', path: '#/settings' },
+        { id: 'U-12', name: 'サービス紹介 (ルートLP)', path: '#/' },
+        { id: 'U-13', name: 'SMS認証 (OTP入力)', action: 'U-13' },
+        { id: 'U-14', name: '通知センター', path: '#/notifications' }
+      ];
 
-  function toggleDrawer() {
-    originalToggleDrawer();
-    refreshBadge();
+      const postPkg1Screens = [
+        { id: 'U-51', name: 'トップ (ホーム)', path: '#/discover' },
+        { id: 'U-52', name: '検索結果一覧', path: '#/search' },
+        { id: 'U-54', name: 'クーポン一覧', action: 'U-54' },
+        { id: 'U-56', name: '通知設定・Viber連携', action: 'U-56' },
+        { id: 'U-60', name: 'ポイント・会員ランク', action: 'U-60' }
+      ];
+
+      drawer.innerHTML = `
+        <div style="padding:16px 20px;border-bottom:1px solid #E8DDD0;display:flex;justify-content:space-between;align-items:center;background:#FBF4E8;">
+          <div>
+            <div style="font-size:10px;font-weight:800;color:#9B1C25;text-transform:uppercase;letter-spacing:1px;">Screen Jump Devtool</div>
+            <div style="font-size:14px;font-weight:700;color:#241A18;">EzBookNow v2.2 Catalog</div>
+          </div>
+          <button id="close-drawer-v2-btn" style="border:none;background:#F8EFE5;width:28px;height:28px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6D6561;">
+            <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+          </button>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:20px;">
+          <!-- Pkg1 Section -->
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <span style="font-size:10px;font-weight:800;background:#9B1C25;color:#fff;padding:2px 8px;border-radius:10px;">Pkg1 Active Flow</span>
+              <span style="font-size:11px;color:#6D6561;">(Core Booking & Users)</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              ${pkg1Screens.map(s => `
+                <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#FFFDFC;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s;">
+                  <span style="font-family:monospace;font-size:11px;font-weight:700;color:#9B1C25;background:#F8EFE5;padding:2px 6px;border-radius:6px;">${s.id}</span>
+                  <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Post Pkg1 Section -->
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <span style="font-size:10px;font-weight:800;background:#64748b;color:#fff;padding:2px 8px;border-radius:10px;">Post-Pkg1 Deferred</span>
+              <span style="font-size:11px;color:#6D6561;">(Portal & Growth)</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              ${postPkg1Screens.map(s => `
+                <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#F8FAFC;display:flex;align-items:center;gap:10px;cursor:pointer;opacity:0.85;">
+                  <span style="font-family:monospace;font-size:11px;font-weight:700;color:#64748b;background:#E2E8F0;padding:2px 6px;border-radius:6px;">${s.id}</span>
+                  <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(drawer);
+
+      drawer.querySelector('#close-drawer-v2-btn').addEventListener('click', () => {
+        drawer.style.display = 'none';
+      });
+
+      drawer.querySelectorAll('[data-jump-id]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-jump-id');
+          if (JUMP_MAP[id]) {
+            JUMP_MAP[id]();
+            drawer.style.display = 'none';
+            setTimeout(refreshBadge, 100);
+          }
+        });
+      });
+      return;
+    }
+
+    drawer.style.display = drawer.style.display === 'none' ? 'flex' : 'none';
   }
 
   function init() {
-    ScreenJump.init({ app: 'user', variant: 'yoyaku' });
-    ScreenJump.jumpTo = jumpTo;
-    ScreenJump.toggleDrawer = toggleDrawer;
     refreshBadge();
-
-    // Re-apply active highlight after the drawer opens via the badge click
-    // (the shared tool's internal click handler is not observable).
-    const badge = document.getElementById('screen-id-badge');
-    if (badge) {
-      badge.addEventListener('click', () => setTimeout(refreshBadge, 50));
-    }
-
-    if (store.subscribe) store.subscribe(() => refreshBadge());
+    window.addEventListener('hashchange', refreshBadge);
+    if (store.subscribe) store.subscribe(refreshBadge);
   }
 
   if (document.readyState === 'loading') {
@@ -183,4 +221,6 @@
   } else {
     init();
   }
+
+  window.ScreenJumpAdapter = { refreshBadge, jumpTo: (id) => JUMP_MAP[id] && JUMP_MAP[id]() };
 })();

@@ -416,67 +416,7 @@
     `;
   }
 
-  // 3. WAITLIST PANEL
-  function renderWaitlistPanel(state, isMm) {
-    const myData = state.myPageData || {};
-    const waitlists = myData.waitlists || [];
-
-    return `
-      <div class="space-y-6">
-        <div class="border-b border-[#EADFD1] pb-4">
-          <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${isMm ? 'လူပြည့် စောင့်ဆိုင်းစာရင်း' : 'Waitlist & Queue Management'}
-          </h2>
-        </div>
-
-        <div class="bg-[#FFF3D6] border border-[#EADFD1] rounded-xl p-4 flex items-start gap-3 text-xs text-[#8f5d0b]">
-          <span class="material-symbols-outlined text-lg text-[#D08E1C] shrink-0 mt-0.5">info</span>
-          <p class="leading-relaxed">
-            ${isMm ? 'စားပွဲဝိုင်း လွတ်လပ်သွားပါက SMS နှင့် Viber မှတစ်ဆင့် ၁၅ မိနစ် သီးသန့် ဝိုင်းစိုတ်လင့်ခ်ကို ပေးပို့ပေးပါမည်။' : 'When an existing booking cancels, you will receive an instant 15-minute priority booking link via SMS and Viber.'}
-          </p>
-        </div>
-
-        <div class="space-y-3">
-          ${
-            waitlists.length === 0
-              ? `
-                ${window.YoyakuComponents.renderEmptyState({
-                  icon: 'hourglass_empty',
-                  title: isMm ? 'လက်ရှိ စောင့်ဆိုင်းစာရင်း မရှိပါ' : 'No active waitlist queues',
-                  message: isMm ? 'လူပြည့်နေသော ဆိုင်များတွင် Waitlist စာရင်းသွင်းနိုင်ပါသည်' : 'You can join a waitlist when a restaurant is fully booked on your chosen date.'
-                })}
-              `
-              : waitlists
-                  .map(
-                    w => `
-                      <div class="bg-[#FFFDFC] p-5 rounded-2xl sm:rounded-3xl border border-[#E8DDD0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="space-y-1">
-                          <div class="font-headline font-bold text-base text-[#231916]">${w.restaurantName}</div>
-                          <div class="font-body text-xs text-[#58413f] flex items-center gap-3">
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-xs">calendar_month</span> ${w.requestedDate}</span>
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-xs">group</span> ${w.partySize} Guests</span>
-                          </div>
-                          <div class="inline-flex items-center gap-1.5 text-xs font-label font-bold text-[#104b2b] bg-[#104b2b]/10 px-2.5 py-0.5 rounded-full mt-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#104b2b]"></span>
-                            <span>${w.status}</span>
-                          </div>
-                        </div>
-
-                        <button
-                          data-cancel-waitlist-id="${w.id}"
-                          class="px-4 py-2 rounded-full border border-[#840f16] text-[#840f16] hover:bg-[#840f16] hover:text-white font-label text-xs font-bold cursor-pointer transition-colors shadow-2xs"
-                        >
-                          ${isMm ? 'စောင့်ဆိုင်းစာရင်း ပယ်ဖျက်မည်' : 'Cancel Queue'}
-                        </button>
-                      </div>
-                    `
-                  )
-                  .join('')
-          }
-        </div>
-      </div>
-    `;
-  }
+  // (Waitlist feature removed per v2.2 specification)
 
   // 4. COUPONS PANEL
   function renderCouponsPanel(state, isMm) {
@@ -706,7 +646,6 @@
     const menuItems = [
       { id: 'reservations', label: isMm ? 'စိုတ်ထားမှု မှတ်တမ်း' : 'Reservation History', icon: 'calendar_today' },
       { id: 'favorites', label: isMm ? 'အကြိုက်ဆုံး ဆိုင်များ' : 'Favorites', icon: 'favorite_border' },
-      { id: 'waitlist', label: isMm ? 'လူပြည့် စောင့်ဆိုင်းစာရင်း' : 'Cancel Waitlist', icon: 'schedule' },
       { id: 'coupons', label: isMm ? 'ဘောက်ချာနှင့် ကူပွန်များ' : 'Coupons', icon: 'sell' },
       { id: 'points', label: isMm ? 'အမှတ်နှင့် အသင်းဝင်အဆင့်' : 'Points & Membership', icon: 'workspace_premium' },
       { id: 'notifications', label: isMm ? 'အသိပေးချက် စင်တာ' : 'Notification Center', icon: 'notifications' },
@@ -726,9 +665,6 @@
       }
       if (activeMenu === 'favorites') {
         return renderFavoritesPanel(state, isMm);
-      }
-      if (activeMenu === 'waitlist') {
-        return renderWaitlistPanel(state, isMm);
       }
       if (activeMenu === 'coupons') {
         return renderCouponsPanel(state, isMm);
@@ -1374,11 +1310,12 @@
       });
     });
 
-    // View Details & Modify (Navigate to U-09)
+    // View Details & Modify (Navigate to U-10)
     containerElement.querySelectorAll('[data-mypage-view-detail-id]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const resId = e.currentTarget.getAttribute('data-mypage-view-detail-id');
         store.selectReservationForDetail(resId, false, 'reservations');
+        window.location.hash = `#/reservations/${resId}`;
       });
     });
 
@@ -1459,17 +1396,7 @@
       });
     }
 
-    // Cancel waitlist queue
-    containerElement.querySelectorAll('[data-cancel-waitlist-id]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const wId = e.currentTarget.getAttribute('data-cancel-waitlist-id');
-        store.updateMyPageData(data => ({
-          ...data,
-          waitlists: (data.waitlists || []).filter(w => w.id !== wId)
-        }));
-        store.showToast('Waitlist queue cancelled.');
-      });
-    });
+
 
     // Copy coupon code
     containerElement.querySelectorAll('[data-copy-coupon]').forEach(btn => {

@@ -1,0 +1,374 @@
+/* ============================================================================
+   EzBookNow — Global Luxury Polish Layer
+   Loaded last. Elevates every screen with one consistent, refined system:
+   - Sophisticated motion curves & layered shadows
+   - High-quality imagery treatment (scrims, eased zoom, clarity)
+   - Subtle micro-interactions (lifts, sheens, focus rings)
+   - Balanced typography and hairline detailing
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. Design Tokens (single source of truth for the polish layer)
+   --------------------------------------------------------------------------- */
+:root {
+  /* Brand palette */
+  --lux-burgundy: #840f16;
+  --lux-burgundy-deep: #6c0c11;
+  --lux-gold: #d08e1c;
+  --lux-gold-soft: #f5ca56;
+  --lux-cream: #fff7e8;
+  --lux-surface: #fff9ee;
+  --lux-hairline: #eadfd1;
+  --lux-ink: #231916;
+  --lux-muted: #58413f;
+
+  /* Signature easing — confident, never bouncy */
+  --lux-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --lux-ease-spring: cubic-bezier(0.34, 1.28, 0.44, 1);
+  --lux-dur-fast: 180ms;
+  --lux-dur-med: 320ms;
+  --lux-dur-slow: 600ms;
+
+  /* Layered elevation — soft, directional, expensive-looking */
+  --lux-shadow-1: 0 1px 2px rgba(35, 25, 22, 0.05), 0 2px 8px rgba(35, 25, 22, 0.04);
+  --lux-shadow-2: 0 2px 6px rgba(35, 25, 22, 0.06), 0 10px 24px -8px rgba(35, 25, 22, 0.12);
+  --lux-shadow-3: 0 4px 12px rgba(35, 25, 22, 0.08), 0 20px 44px -12px rgba(35, 25, 22, 0.18);
+  --lux-shadow-gold: 0 6px 18px -4px rgba(208, 142, 28, 0.35);
+  --lux-shadow-wine: 0 6px 18px -4px rgba(132, 15, 22, 0.38);
+
+  /* Focus ring */
+  --lux-ring: 0 0 0 3px rgba(208, 142, 28, 0.35), 0 0 0 1px rgba(208, 142, 28, 0.9);
+}
+
+/* ---------------------------------------------------------------------------
+   2. Typography — balance, kerning, optical refinement
+   --------------------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  text-rendering: optimizeLegibility;
+}
+
+@supports (text-wrap: balance) {
+  h1, h2, h3 { text-wrap: balance; }
+}
+
+body {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.font-headline {
+  letter-spacing: -0.015em;
+}
+
+.font-label {
+  letter-spacing: 0.01em;
+}
+
+/* ---------------------------------------------------------------------------
+   3. Imagery — high-quality product treatment on all screens
+   --------------------------------------------------------------------------- */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Clarity boost: gentle saturation/contrast so photography feels curated */
+.group img,
+[data-card-select-id] img {
+  filter: saturate(1.06) contrast(1.02);
+  transition:
+    transform var(--lux-dur-slow) var(--lux-ease-out),
+    filter var(--lux-dur-med) ease;
+  will-change: transform;
+}
+
+/* Cinematic zoom with a graceful deceleration; slight dim deepens the
+   gradient scrim so overlaid badges/text stay legible over bright photos */
+.group:hover img.object-cover,
+[data-card-select-id]:hover img.object-cover {
+  transform: scale(1.06);
+  filter: saturate(1.1) contrast(1.04) brightness(0.97);
+}
+
+/* ---------------------------------------------------------------------------
+   4. Cards — quiet luxury elevation (all card variants across screens)
+   --------------------------------------------------------------------------- */
+.luxe-card,
+[data-card-select-id] {
+  transition:
+    transform var(--lux-dur-med) var(--lux-ease-out),
+    box-shadow var(--lux-dur-med) var(--lux-ease-out),
+    border-color var(--lux-dur-med) ease;
+}
+
+.luxe-card:hover,
+[data-card-select-id]:hover {
+  border-color: #ddcbb3;
+}
+
+@media (hover: hover) {
+  .luxe-card:hover,
+  [data-card-select-id]:hover {
+    box-shadow: var(--lux-shadow-3);
+    transform: translateY(-4px);
+  }
+}
+
+.luxe-card:active,
+[data-card-select-id]:active {
+  transform: translateY(-1px) scale(0.995);
+  transition-duration: var(--lux-dur-fast);
+}
+
+/* Hairline inner highlight — subtle bevel that reads as craftsmanship */
+.luxe-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    var(--lux-shadow-1);
+}
+
+/* ---------------------------------------------------------------------------
+   5. Buttons — unified micro-interaction language
+   --------------------------------------------------------------------------- */
+button {
+  transition:
+    transform var(--lux-dur-fast) var(--lux-ease-out),
+    box-shadow var(--lux-dur-fast) ease,
+    background-color var(--lux-dur-fast) ease,
+    color var(--lux-dur-fast) ease,
+    border-color var(--lux-dur-fast) ease,
+    opacity var(--lux-dur-fast) ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Primary burgundy CTAs get a light sheen sweep on hover.
+   Hooked via stable data attributes / known auth button classes. */
+button[data-card-reserve-id],
+.btn-primary-action,
+.btn-lookup-submit {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+button[data-card-reserve-id]::after,
+.btn-primary-action::after,
+.btn-lookup-submit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -80%;
+  width: 50%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (hover: hover) {
+  button[data-card-reserve-id]:hover::after,
+  .btn-primary-action:hover::after,
+  .btn-lookup-submit:hover::after {
+    opacity: 1;
+    animation: luxSheen 700ms var(--lux-ease-out);
+  }
+
+  button[data-card-reserve-id]:hover,
+  .btn-primary-action:hover,
+  .btn-lookup-submit:hover {
+    box-shadow: var(--lux-shadow-wine);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes luxSheen {
+  from { left: -80%; }
+  to { left: 130%; }
+}
+
+/* Quick-book time slots: tactile press + soft bloom */
+[data-card-time-slot] {
+  transition:
+    background-color var(--lux-dur-fast) ease,
+    color var(--lux-dur-fast) ease,
+    border-color var(--lux-dur-fast) ease,
+    box-shadow var(--lux-dur-fast) ease,
+    transform var(--lux-dur-fast) var(--lux-ease-spring);
+}
+
+@media (hover: hover) {
+  [data-card-time-slot]:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--lux-shadow-2);
+  }
+}
+
+/* Favorite heart: magnetic hover */
+[data-card-fav-id] {
+  transition:
+    transform var(--lux-dur-fast) var(--lux-ease-spring),
+    box-shadow var(--lux-dur-fast) ease;
+}
+
+[data-card-fav-id]:hover {
+  box-shadow: 0 4px 14px rgba(132, 15, 22, 0.25);
+}
+
+/* Gold pill badges & glass chips — crisp edges, softer presence */
+.resv-status-badge,
+.resv-id-badge,
+.promo-badge-yellow {
+  transition: transform var(--lux-dur-fast) var(--lux-ease-out),
+              box-shadow var(--lux-dur-fast) ease;
+}
+
+/* ---------------------------------------------------------------------------
+   6. Navigation — header glass, bottom-nav tactility
+   --------------------------------------------------------------------------- */
+header.sticky {
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow:
+    inset 0 -1px 0 rgba(234, 223, 209, 0.9),
+    0 8px 24px -18px rgba(35, 25, 22, 0.25);
+}
+
+#bottom-nav-bar {
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 -6px 24px -12px rgba(35, 25, 22, 0.15);
+}
+
+#bottom-nav-bar [data-bottom-tab] .material-symbols-outlined {
+  transition: transform var(--lux-dur-med) var(--lux-ease-spring);
+}
+
+@media (hover: hover) {
+  #bottom-nav-bar [data-bottom-tab]:hover .material-symbols-outlined {
+    transform: translateY(-2px);
+  }
+}
+
+#bottom-nav-bar [data-bottom-tab]:active .material-symbols-outlined {
+  transform: translateY(0) scale(0.92);
+}
+
+/* ---------------------------------------------------------------------------
+   7. Forms — focused, premium inputs
+   --------------------------------------------------------------------------- */
+input,
+select,
+textarea {
+  transition:
+    border-color var(--lux-dur-fast) ease,
+    box-shadow var(--lux-dur-fast) ease,
+    background-color var(--lux-dur-fast) ease;
+}
+
+.login-form-input:focus,
+.lookup-input-box:focus-within,
+.lookup-phone-wrapper:focus-within {
+  box-shadow: 0 0 0 3px rgba(132, 15, 22, 0.08);
+}
+
+/* ---------------------------------------------------------------------------
+   8. Overlays — modals & toast with composed entrances
+   --------------------------------------------------------------------------- */
+
+/* Richer backdrop: deeper blur + slight desaturation focuses attention */
+.fixed.inset-0.z-50 {
+  backdrop-filter: blur(10px) saturate(0.92);
+  -webkit-backdrop-filter: blur(10px) saturate(0.92);
+}
+
+/* Panel springs in gracefully (direct child of the fixed overlay) */
+.fixed.inset-0.z-50 > div {
+  animation: luxModalIn var(--lux-dur-med) var(--lux-ease-spring) both;
+}
+
+@keyframes luxModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Toast: replace bounce with a composed drop + settle */
+#toast-container.animate-bounce {
+  animation: luxToastIn 480ms var(--lux-ease-spring) both !important;
+}
+
+@keyframes luxToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   9. Focus & selection — accessible gold signature
+   --------------------------------------------------------------------------- */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--lux-ring);
+  border-radius: 12px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--lux-ring);
+}
+
+::selection {
+  background: rgba(132, 15, 22, 0.85);
+  color: #fff7e8;
+}
+
+/* Refined scrollbar — thin, brand-tinted thumb */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(132, 15, 22, 0.22);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 15, 22, 0.4);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* ---------------------------------------------------------------------------
+   10. Reduced motion — respect user preference everywhere
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

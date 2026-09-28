@@ -85,22 +85,26 @@
 
     // Shop description with language fallback (feature 004): MM -> descriptionMM ?? description, EN -> description
     const descriptionText = isMm
-      ? restaurant.descriptionMM || restaurant.description || ''
-      : restaurant.description || '';
+      ? (restaurant.descriptionMM || restaurant.description || '')
+      : (restaurant.description || '');
+    const slug = (store && store.getRestaurantSlug) ? store.getRestaurantSlug(restaurant) : (restaurant.slug || 'gilded-fork');
 
     return `
       <div class="space-y-8 pb-24 text-left max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 animate-fadeIn">
 
         <!-- Top Navigation & Actions -->
         <div class="flex justify-between items-center">
-          <button
-            id="detail-back-btn"
-            type="button"
-            class="flex items-center gap-2 font-label text-xs font-bold text-[#840f16] hover:text-[#600b10] transition-colors cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-sm">arrow_back</span>
-            <span>${isMm ? 'ယခင် စာမျက်နှာသို့' : 'Back to Previous'}</span>
-          </button>
+          <div class="flex items-center gap-3">
+            <a
+              id="detail-back-btn"
+              href="#/s/${slug}"
+              class="flex items-center gap-2 font-label text-xs font-bold text-[#9B1C25] hover:text-[#7F161E] bg-[#FFFDFC] border border-[#E8DDD0] px-4 py-2 rounded-full transition-colors cursor-pointer shadow-2xs"
+            >
+              <span class="material-symbols-outlined text-sm">arrow_back</span>
+              <span>${isMm ? 'ကြိုတင်ဘွတ်ကင် သို့ (U-01)' : 'Back to Booking (U-01)'}</span>
+            </a>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#9B1C25] font-label hidden sm:inline">Screen U-05</span>
+          </div>
 
           <button
             id="detail-favorite-btn"
@@ -108,8 +112,8 @@
             aria-label="${isFavorite ? (isMm ? 'အကြိုက်ဆုံးမှ ဖယ်ရှားမည်' : 'Remove from favorites') : (isMm ? 'အကြိုက်ဆုံးသို့ ထည့်မည်' : 'Add to favorites')}"
             class="w-10 h-10 flex items-center justify-center rounded-full border transition-all cursor-pointer shadow-2xs ${
               isFavorite
-                ? 'bg-[#840f16] text-white border-[#840f16]'
-                : 'bg-[#FBF3E2] text-[#840f16] border-[#EADFD1] hover:border-[#840f16]'
+                ? 'bg-[#9B1C25] text-white border-[#9B1C25]'
+                : 'bg-[#FBF4E8] text-[#9B1C25] border-[#E8DDD0] hover:border-[#9B1C25]'
             }"
           >
             <span class="material-symbols-outlined text-lg ${isFavorite ? 'fill-1' : ''}">favorite</span>
@@ -959,10 +963,12 @@
     const confirmBtn = containerElement.querySelector('#detail-confirm-reserve-btn');
     if (confirmBtn) {
       confirmBtn.addEventListener('click', () => {
-        const selected = store.getState().selectedRestaurant;
+        const selected = store.getState().selectedRestaurant || (window.YoyakuData && window.YoyakuData.RESTAURANTS_DATA && window.YoyakuData.RESTAURANTS_DATA[0]);
         const dState = store.getState().detailState;
         if (selected) {
           store.openBookingModal(selected, dState.date, dState.time, dState.guests);
+          const slug = store.getRestaurantSlug ? store.getRestaurantSlug(selected) : 'gilded-fork';
+          window.location.hash = `#/s/${slug}`;
         }
       });
     }
@@ -971,10 +977,12 @@
     const mobileStickyBtn = containerElement.querySelector('#mobile-sticky-reserve-btn');
     if (mobileStickyBtn) {
       mobileStickyBtn.addEventListener('click', () => {
-        const selected = store.getState().selectedRestaurant;
+        const selected = store.getState().selectedRestaurant || (window.YoyakuData && window.YoyakuData.RESTAURANTS_DATA && window.YoyakuData.RESTAURANTS_DATA[0]);
         const dState = store.getState().detailState;
         if (selected) {
           store.openBookingModal(selected, dState.date, dState.time, dState.guests);
+          const slug = store.getRestaurantSlug ? store.getRestaurantSlug(selected) : 'gilded-fork';
+          window.location.hash = `#/s/${slug}`;
         }
       });
     }
@@ -982,7 +990,8 @@
     syncLightboxAccessibility(containerElement);
   }
 
-
   window.YoyakuComponents.renderRestaurantDetailView = renderRestaurantDetailView;
+  window.YoyakuComponents.renderShopInfoView = renderRestaurantDetailView;
   window.YoyakuComponents.attachRestaurantDetailViewEvents = attachRestaurantDetailViewEvents;
+  window.YoyakuComponents.attachShopInfoEvents = attachRestaurantDetailViewEvents;
 })();

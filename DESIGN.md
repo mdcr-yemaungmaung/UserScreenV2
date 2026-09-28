@@ -4,7 +4,7 @@ product: Yoyaku — User PWA (Customer table-booking portal)
 mode: light-only
 source-of-truth:
   css-entry: index.html → css/fonts.css → css/styles.css → css/overrides.css (@imports components.css)
-  screens: js/screens/u01–u22 + js/components/*
+  screens: js/screens/u01–u14 (Pkg1 Active) + js/screens/u51–u60 (Post-Pkg1 Deferred) + js/components/*
   rebuild-css: npm run build:css  (tailwindcss -i ./tailwind.input.css -o ./css/styles.css --minify)
 colors:
   brand:
@@ -57,12 +57,7 @@ colors:
     cancelled-border: '#FCA5A5'
     cancelled-text: '#991B1B'
     cancelled-icon: '#DC2626'
-  waitlist-green:
-    solid: '#104b2b'
-    hover: '#0c3820'
-    banner-bg: '#EAF3EB'
-    banner-border: '#C5DEC8'
-    banner-subtext: '#2e5b3c'
+  availability-green:
     available-slot-bg: '#E8F5E9'
     available-slot-border: '#C8E6C9'
     available-slot-text: '#104b2b'
@@ -196,12 +191,10 @@ Rules:
 
 Badge anatomy: inline-flex, gap 6px, padding 4px 12px, radius full, Manrope 12px/700, subtle `0 1px 3px rgba(0,0,0,.05)` shadow.
 
-### 3.4 Waitlist / Availability Greens & Urgency Ambers
+### 3.4 Availability Greens & Urgency Ambers
 
 | Token | Value | Usage |
 | --- | --- | --- |
-| Waitlist solid | `#104b2b` (hover `#0c3820`) | "Join Waitlist" button, icon circle |
-| Banner green | bg `#EAF3EB`, border `#C5DEC8`, subtext `#2e5b3c` | Waitlist callout panel |
 | Slot available | bg `#E8F5E9`, border `#C8E6C9`, text `#104b2b` | Time-slot status chip |
 | Slot limited | bg `#FFF3E0`, border `#FFE0B2`, text `#D08E1C` | Time-slot status chip |
 
@@ -252,11 +245,11 @@ Chrome-only glassmorphism: header and bottom nav use translucent warm-ivory fill
 Breakpoints: Tailwind defaults — `sm 640` · `md 768` · `lg 1024`.
 
 1. **TopNavBar** (`js/components/TopNavBar.js`): sticky top-0 z-40 glass bar, container `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20`. SVG location-pin logo (two-stop gradients per §3.1) + hidden-until-lg wordmark. Action cluster = light pill chips (`rounded-full bg-[#FFFDFC] border-[#E8DDD0] font-label text-[11px] font-bold`); owner CTA uses soft blush fill that inverts to solid burgundy on hover. Language dropdown: `w-36 rounded-2xl bg-[#FFFDFC] border-[#E8DDD0] shadow-xl`.
-2. **BottomNavBar** (`BottomNavBar.js`): `lg:hidden fixed bottom-0` z-40 glass bar; 5 tabs (Home/Search/Bookings/Saved/Login-or-MyPage) centered `max-w-md`. Active tab: `text-[#9B1C25] font-bold bg-[#F3DFD5] shadow-xs` + icon `scale-110`; inactive `text-[#6D6561]`. Count badge: `bg-[#C69A2B] w-4 h-4 text-[9px] font-extrabold rounded-full border-2 border-[#FBF4E8]`. Hidden automatically on U-03 shop detail and the U-04→U-07 booking flow and booking detail.
+2. **BottomNavBar** (`BottomNavBar.js`): `lg:hidden fixed bottom-0` z-40 glass bar; 5 tabs (Home/Search/Bookings/Saved/Login-or-MyPage) centered `max-w-md`. Active tab: `text-[#9B1C25] font-bold bg-[#F3DFD5] shadow-xs` + icon `scale-110`; inactive `text-[#6D6561]`. Count badge: `bg-[#C69A2B] w-4 h-4 text-[9px] font-extrabold rounded-full border-2 border-[#FBF4E8]`. Hidden automatically on U-05 shop detail, the U-01→U-04 direct booking flow, and U-10 booking detail.
 3. **Content rhythm**: home sections are horizontal snap-scroll carousels on <1024px (`scroll-snap-type: x mandatory`, hidden scrollbar, 16px edge padding → 24px tablet) and reflow to grid ≥1024px (`overrides.css` 590–672).
-4. **Booking wizard modal** (U-04–U-07): full-bleed transparent sheet on mobile → light warm panel on desktop; sticky progress track `h-1 rounded-full bg-[#E8DDD0]/60`; step titles hidden <640px (`.stepper-step-title`); close = 36px soft-white circle top-right.
+4. **Booking sequence** (U-01–U-04): dedicated full-page booking experience; sticky progress track `h-1 rounded-full bg-[#E8DDD0]/60`; step titles hidden <640px (`.stepper-step-title`).
 5. **Safe areas**: `viewport-fit=cover`; black-translucent iOS status bar; bottom nav sits above home indicator.
-6. **Login/Lookup screen** (U-10): full-viewport centered column on `#FBF4E8`; card `max-w-[360px] rounded-[24px] border-[#E8DDD0] shadow 0 10px 30px rgba(43,33,29,.07)`; tab underline is a 3px burgundy→gold gradient bar.
+6. **Login/Lookup screen** (U-06): full-viewport centered column on `#FBF4E8`; card `max-w-[360px] rounded-[24px] border-[#E8DDD0] shadow 0 10px 30px rgba(43,33,29,.07)`; tab underline is a 3px burgundy→gold gradient bar.
 
 ---
 
@@ -265,11 +258,11 @@ Breakpoints: Tailwind defaults — `sm 640` · `md 768` · `lg 1024`.
 | Component | Spec (from code) |
 | --- | --- |
 | **Restaurant card** (`RestaurantCard.js`, `luxe-card`) | `bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border-[#E8DDD0] overflow-hidden`; media `h-44 sm:h-52 md:h-56` with bottom gradient `from-black/60 via-transparent`; hover: card `-translate-y-1 shadow-lg`, image `scale-105` (500ms). Favorite heart: absolute top-3 right-3, 36–40px `bg-[#FFFDFC]/90 backdrop-blur-md text-[#9B1C25] rounded-full`, `hover:scale-110 active:scale-95` + heart-bounce keyframe. Rating pill: absolute top-3 left-3 `bg-black/60 backdrop-blur-md border-white/20 rounded-full`, gold `fill-1` star, white score + `/80` count. Cuisine tag: burgundy `text-[10px] font-extrabold uppercase tracking-wider rounded-xl` (on-image variant adds blur). Promo tag: blush or muted gold equivalent. Footer row: divider-top `border-[#E8DDD0]`, promo left, **Reserve Table** pill right (`bg-[#9B1C25] px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full font-label text-xs font-bold`, `active:scale-95`). |
-| **Time slot tile** (U-04) | Grid `grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3`; cell `p-3.5 rounded-2xl border`. Selected: `bg-[#9B1C25] text-white` with a soft burgundy ring and shadow; rest: white + `#E8DDD0`, hover burgundy border. Status chip inside: Available green / Limited amber (§3.4). |
+| **Time slot tile** (U-01) | Grid `grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3`; cell `p-3.5 rounded-2xl border`. Selected: `bg-[#9B1C25] text-white` with a soft burgundy ring and shadow; rest: white + `#E8DDD0`, hover burgundy border. Status chip inside: Available green / Limited amber (§3.4). |
 | **Calendar day cell** (`CalendarPicker.js`) | `h-10 w-full rounded-2xl font-label text-xs`. Selected: `bg-[#9B1C25] text-white` with a burgundy ring and scale emphasis. Today: light warm panel with burgundy border. Disabled: reduced-opacity muted text and warm outline. Month nav: white circles; month chip uses a soft burgundy tint with burgundy text. |
-| **Seating preference card** (U-04) | 4-up selectable tiles; selected = inverted dark fill `bg-[#231916] text-white` with amber icon/check accents (`text-amber-400`); unselected = white + maroon hover border. |
-| **Party-size stepper** (U-04) | White pill container `rounded-full border-[#E8DDD0]`; 32px circular −/+ buttons use soft cream fills that invert to burgundy on hover; value min-w-[65px] center. |
-| **Auth & lookup forms** (U-10, overrides.css) | Boxed-label pattern: container `bg-[#FFFDFC] border-[#E8DDD0] rounded-[14px]`, tiny bold burgundy label inside, focus-within → `border-[#9B1C25] bg-white`. Phone input: prefix block uses a soft cream chip with right hairline. Primary submit: burgundy gradient or solid burgundy fill, h-44/46px, `rounded-[14px]`, restrained glow. Tabs: equal-width, 14px/700, active = burgundy text + 3px burgundy→gold gradient underline. |
+| **Seating preference card** (U-01) | 4-up selectable tiles; selected = inverted dark fill `bg-[#231916] text-white` with amber icon/check accents (`text-amber-400`); unselected = white + maroon hover border. |
+| **Party-size stepper** (U-01) | White pill container `rounded-full border-[#E8DDD0]`; 32px circular −/+ buttons use soft cream fills that invert to burgundy on hover; value min-w-[65px] center. |
+| **Auth & lookup forms** (U-06, overrides.css) | Boxed-label pattern: container `bg-[#FFFDFC] border-[#E8DDD0] rounded-[14px]`, tiny bold burgundy label inside, focus-within → `border-[#9B1C25] bg-white`. Phone input: prefix block uses a soft cream chip with right hairline. Primary submit: burgundy gradient or solid burgundy fill, h-44/46px, `rounded-[14px]`, restrained glow. Tabs: equal-width, 14px/700, active = burgundy text + 3px burgundy→gold gradient underline. |
 | **Toggle switch** (`.toggle-switch-*`) | Track 48×26 `#E2D5C3`, knob 20px white; checked track `#9B1C25`, knob travel 22px, 220ms standard-curve; focus-visible burgundy outline. |
 | **Status & ID badges** | See §3.3; reservation-ID badge: `bg-[#EFE4D6] border-[#D8C7B4] text-[#4A3B32]` pill. |
 | **Offline banner** | Full-width `bg-[#231916] text-[#FBF3E2]` strip above header; pulsing amber dot + `cloud_off` icon; MM string documents QR-pass offline availability. |
