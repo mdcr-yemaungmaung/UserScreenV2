@@ -267,7 +267,7 @@
       logo.addEventListener('click', () => {
         store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
-        store.setActiveTab('discover');
+        window.location.hash = '#/s/gilded-fork';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }

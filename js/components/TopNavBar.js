@@ -186,12 +186,21 @@
                   <div class="py-1">
                     <button
                       id="profile-dropdown-mypage-btn"
-                      class="w-full text-left px-4 py-2.5 font-label text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] hover:text-[#9B1C25] active:bg-[#F3DFD5] flex items-center gap-3 transition-colors cursor-pointer"
+                      class="w-full text-left px-4 py-2 font-label text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] hover:text-[#9B1C25] active:bg-[#F3DFD5] flex items-center gap-2.5 transition-colors cursor-pointer"
                     >
-                      <div class="w-7 h-7 rounded-lg bg-[#9B1C25]/10 text-[#9B1C25] flex items-center justify-center shrink-0">
+                      <div class="w-6 h-6 rounded-lg bg-[#9B1C25]/10 text-[#9B1C25] flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-base">person</span>
                       </div>
-                      <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ' : 'My Page'}</span>
+                      <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ (U-09)' : 'My Page / Bookings (U-09)'}</span>
+                    </button>
+                    <button
+                      id="profile-dropdown-settings-btn"
+                      class="w-full text-left px-4 py-2 font-label text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] hover:text-[#9B1C25] active:bg-[#F3DFD5] flex items-center gap-2.5 transition-colors cursor-pointer"
+                    >
+                      <div class="w-6 h-6 rounded-lg bg-[#9B1C25]/10 text-[#9B1C25] flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-base">settings</span>
+                      </div>
+                      <span>${isMm ? 'အကောင့် ပြင်ဆင်မှုများ (U-11)' : 'Account Settings (U-11)'}</span>
                     </button>
                   </div>
 
@@ -232,13 +241,13 @@
   }
 
   function attachTopNavBarEvents() {
-    // Brand logo
+    // Brand logo -> U-01 Direct Booking
     const logo = document.getElementById('nav-brand-logo');
     if (logo) {
       logo.addEventListener('click', () => {
         store.clearSelectedReservationDetail();
         store.setSelectedRestaurant(null);
-        store.setActiveTab('discover');
+        window.location.hash = '#/s/gilded-fork';
       });
     }
 
@@ -334,6 +343,18 @@
       });
     }
 
+    // Profile Dropdown: Settings link (U-11)
+    const profileSettingsBtn = document.getElementById('profile-dropdown-settings-btn');
+    if (profileSettingsBtn) {
+      profileSettingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (profileMenu) profileMenu.classList.add('hidden');
+        store.clearSelectedReservationDetail();
+        store.setSelectedRestaurant(null);
+        window.location.hash = '#/settings';
+      });
+    }
+
     // Profile Dropdown: Logout link
     const profileLogoutBtn = document.getElementById('profile-dropdown-logout-btn');
     if (profileLogoutBtn) {
@@ -343,7 +364,7 @@
         store.clearSelectedReservationDetail();
         const isMm = store.getState().currentLanguage === 'MM';
         store.toggleAuth(false);
-        store.setActiveTab('discover');
+        window.location.hash = '#/s/gilded-fork';
         store.showToast(isMm ? 'အကောင့်ထွက်ပြီးပါပြီ' : 'Logged out successfully');
       });
     }
