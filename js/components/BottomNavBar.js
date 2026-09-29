@@ -14,19 +14,17 @@
       return '';
     }
 
-    const isMm = state.currentLanguage === 'MM';
-    const isJa = state.currentLanguage === 'JA';
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
+    const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
     const reservationCount = state.reservations.length;
 
     const isAuth = !!state.isAuthenticated;
 
     const items = [
-      { id: 'discover', icon: 'explore', filledIcon: 'explore', label: t('Home', 'ပင်မ', 'ホーム') },
-      { id: 'resultlist', icon: 'search', filledIcon: 'search', label: t('Search', 'ရှာဖွေရန်', '検索') },
-      { id: 'reservations', icon: 'calendar_month', filledIcon: 'calendar_month', label: t('Bookings', 'စိုတ်ထားမှု', '予約一覧'), badge: reservationCount },
-      { id: 'favorites', icon: 'favorite_border', filledIcon: 'favorite', label: t('Saved', 'သိမ်းဆည်း', 'お気に入り') },
-      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person_outline' : 'account_circle', filledIcon: isAuth ? 'person' : 'account_circle', label: isAuth ? t('My Page', 'မိုင်ပေ့ချ်', 'マイページ') : t('Login', 'အကောင့်ဝင်', 'ログイン') }
+      { id: 'discover', icon: 'explore', filledIcon: 'explore', label: t('navHome') },
+      { id: 'resultlist', icon: 'search', filledIcon: 'search', label: t('navSearch') },
+      { id: 'reservations', icon: 'calendar_month', filledIcon: 'calendar_month', label: t('navBookings'), badge: reservationCount },
+      { id: 'favorites', icon: 'favorite_border', filledIcon: 'favorite', label: t('navSaved') },
+      { id: isAuth ? 'mypage' : 'login', icon: isAuth ? 'person_outline' : 'account_circle', filledIcon: isAuth ? 'person' : 'account_circle', label: isAuth ? t('navMyPage') : t('login') }
     ];
 
     return `

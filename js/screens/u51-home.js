@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
   const { RESTAURANTS_DATA, CUISINES_DATA, COLLECTIONS_DATA, DINING_OCCASIONS_DATA = [] } = window.YoyakuData;
   const { renderRestaurantCard, attachRestaurantCardEvents, renderImageGradient, renderFavoriteButton, renderRatingBadge, renderCuisineTagOnImage, renderCuisineTag, renderPromoTag, renderTrendingCard, renderPromoCard, hasPromoCardOffer } = window.YoyakuComponents;
   const { generateCalendarGrid } = window.YoyakuComponents;
@@ -94,7 +95,7 @@
   // without year ("Aug 28") — the 60-day booking window makes the year noise.
   function formatDateDisplay(dateStr, isMm) {
     if (!dateStr || dateStr === todayDisplayStr()) {
-      return isMm ? 'ယနေ့' : 'Tonight';
+      return t('home_tonight_short');
     }
     return dateStr.split(',')[0] || dateStr;
   }
@@ -149,25 +150,25 @@
       { 
         icon: 'local_fire_department', 
         value: '340+', 
-        label: isMm ? 'ယနေ့ဘွတ်ကင်' : 'Booked Today',
-        labelFull: isMm ? 'ယနေ့ စားပွဲဘွတ်ကင်' : 'Tables Booked Today'
+        label: t('home_booked_today'),
+        labelFull: t('home_booked_today_full')
       },
       { 
         icon: 'star', 
         value: `${avgRating}`, 
-        label: isMm ? 'ပျမ်းမျှရမှတ်' : 'Avg Rating',
-        labelFull: isMm ? 'ဧည့်သည် ပျမ်းမျှရမှတ်' : 'Average Guest Rating'
+        label: t('home_avg_rating'),
+        labelFull: t('home_avg_rating_full')
       },
       { 
         icon: 'storefront', 
         value: venueCount, 
-        label: isMm ? 'မိတ်ဖက်ဆိုင်များ' : 'Partner Venues',
-        labelFull: isMm ? 'ရန်ကုန် မိတ်ဖက်ဆိုင်များ' : 'Partner Venues'
+        label: t('home_partner_venues'),
+        labelFull: t('home_partner_venues_full')
       },
     ];
 
     return `
-      <div class="mt-3 sm:mt-4 pt-1" aria-label="${isMm ? 'ယုံကြည်မှု အချက်အလက်' : 'Trust and social proof'}">
+      <div class="mt-3 sm:mt-4 pt-1" aria-label="${t('home_social_proof_aria')}">
         <!-- Stat cells (integrated luxury inline presentation) -->
         <div class="grid grid-cols-3 divide-x divide-[#E5D9CC]/75 py-1 max-w-2xl sm:max-w-3xl mx-auto">
           ${stats.map(s => `
@@ -238,7 +239,7 @@
         <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
           <div class="flex items-center gap-1 font-label text-[10px] sm:text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">
             <span class="material-symbols-outlined text-xs text-[#9B1C25]">event_available</span>
-            <span>${isMm ? 'ယနေ့ည ရရှိနိုင်သော အချိန်များ' : 'Available tonight'}</span>
+            <span>${t('home_available_tonight')}</span>
           </div>
 
           <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2.5">
@@ -248,7 +249,7 @@
                 data-card-time-slot="${time}"
                 data-card-restaurant-id="${restaurant.id}"
                 class="py-2 px-1 rounded-xl font-label text-xs font-bold transition-all duration-200 cursor-pointer text-center bg-[#FFFDFC] text-[#9B1C25] border border-[#E8DDD0] hover:bg-[#9B1C25] hover:text-white hover:border-[#9B1C25] hover:shadow-md active:scale-95 flex items-center justify-center whitespace-nowrap"
-                title="${isMm ? `${time} တွင် စားပွဲဝိုင်း စိုတ်ယူမည်` : `Book table for ${formatTime12(time)}`}"
+                title="${t('home_book_table_for')} ${formatTime12(time)}"
               >
                 ${formatTime12(time)}
               </button>
@@ -288,49 +289,21 @@
         <section class="relative pt-3 sm:pt-5 pb-1 sm:pb-2">
           <!-- Depth Background: crossfading venue slides veiled in Warm Ivory -->
           <div class="hero-bg-shell" aria-hidden="true">
-            <div class="hero-bg-track">
-              ${HERO_BG_IMAGES.map((img, i) => `\
-                <div class="hero-bg-slide${i === 0 ? ' active' : ''}" data-hero-bg-index="${i}">\
-                  <img src="${img.src}" alt="${img.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" referrerpolicy="no-referrer" onerror="this.closest('.hero-bg-slide').style.display='none';" />\
-                </div>`).join('')}
-            </div>
-            <div class="hero-bg-overlay"></div>
-            <canvas class="hero-bg-canvas"></canvas>
-          </div>
-
-          <!-- Ambient Luxury Lighting Glows (own clipping layer so popovers can escape the section) -->
-          <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
-            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#840f16]/8 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute top-1/3 -right-20 w-80 h-80 bg-[#C59B27]/6 rounded-full blur-3xl pointer-events-none"></div>
-          </div>
-
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <!-- Editorial Header Block -->
-            <div class="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-              <!-- Prestigious Eyebrow Pill -->
+            <div class="hero              <!-- Prestigious Eyebrow Pill -->
               <div class="hidden lg:inline-flex items-center gap-2 bg-[#840f16]/[0.06] border border-[#840f16]/20 px-4 py-1.5 rounded-full shadow-2xs backdrop-blur-xs">
                 <span class="material-symbols-outlined text-xs sm:text-sm text-[#840f16]">hotel_class</span>
                 <span class="font-label text-[11px] sm:text-xs font-bold text-[#840f16] tracking-widest uppercase">
-                  ${isMm ? 'ရန်ကုန်မြို့၏ အဆင့်မြင့် စားသောက်ဆိုင် စားပွဲဝိုင်းများ' : 'Curated Table Reservations • Yangon'}
+                  ${t('home_hero_pill')}
                 </span>
               </div>
 
               <!-- Main Hero Headline -->
               <h1 class="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-[#231916] leading-[1.12] tracking-tight">
-                ${
-                  isMm
-                    ? 'အမှတ်တရ ညစာစားပွဲနှင့် <span class="font-serif italic font-normal text-[#840f16]">ထူးခြားသော အတွေ့အကြုံများ</span>'
-                    : 'Reserve extraordinary dining, <br class="hidden sm:inline" /><span class="font-serif italic font-normal text-[#840f16]">effortlessly perfected.</span>'
-                }
+                ${t('home_hero_headline')}
               </h1>
 
               <p class="hidden lg:block font-body text-xs sm:text-base text-[#68554F] max-w-xl mx-auto leading-relaxed">
-                ${
-                  isMm
-                    ? 'နာမည်ကြီး ရိုးရာလက်ဖက်ရည်ဆိုင်များ၊ သာယာသော အင်းလျားကန်စပ် ညစာနှင့် သီးသန့် အဆင့်မြင့် စားသောက်ဆိုင်များတွင် စားပွဲဝိုင်းများကို အချိန်မရွေး ချက်ချင်း စိုတ်ယူလိုက်ပါ။'
-                    : 'Instant table access at Yangon’s most celebrated venues — from heritage tea houses to scenic lakefront sanctuaries.'
-                }
+                ${t('home_hero_subtitle')}
               </p>
             </div>
 
@@ -343,12 +316,12 @@
                   <div class="flex-1 bg-[#FAF6F0] hover:bg-white focus-within:bg-white border border-[#E8DDD0] focus-within:border-[#840f16] focus-within:ring-2 focus-within:ring-[#840f16]/10 rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 flex items-center gap-2.5 transition-all">
                     <span class="material-symbols-outlined text-[#840f16] text-xl shrink-0">search</span>
                     <div class="min-w-0 flex-1 text-left">
-                      <label for="hero-keyword-input" class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'ဆိုင်အမည် / ဟင်းလျာ' : 'Restaurant or Dish'}</label>
+                      <label for="hero-keyword-input" class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${t('home_search_dish_label')}</label>
                       <div class="relative">
                         <input
                           type="text"
                           id="hero-keyword-input"
-                          aria-label="${isMm ? 'ဆိုင်အမည် သို့မဟုတ် ဟင်းလျာဖြင့် ရှာဖွေပါ' : 'Search by restaurant or dish'}"
+                          aria-label="${t('home_search_dish_aria')}"
                           placeholder=""
                           value="${state.searchKeyword || ''}"
                           class="relative z-10 w-full bg-transparent font-body text-xs sm:text-sm font-semibold text-[#231916] placeholder:text-[#9B8C87] placeholder:font-normal focus:outline-none"
@@ -376,7 +349,7 @@
                       <div class="flex items-center gap-2.5 min-w-0">
                         <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">${selectedAreaObj.icon}</span>
                         <div class="min-w-0">
-                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'တည်နေရာ' : 'Location'}</span>
+                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${t('home_search_location_label')}</span>
                           <span id="hero-area-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">
                             ${selectedAreaLabel}
                           </span>
@@ -394,7 +367,7 @@
                       class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
                     >
                       <div class="px-2 py-1 text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider border-b border-[#F0E6DA] mb-1">
-                        ${isMm ? 'နေရာဒေသ ရွေးချယ်ပါ' : 'Select Location'}
+                        ${t('home_select_location')}
                       </div>
                       ${HERO_LOCATIONS.map(loc => {
                         const isSelected = loc.value === currentAreaVal;
@@ -426,7 +399,7 @@
                     </div>
                   </div>
 
-                  <!-- 3. Cuisine Type Custom Selector -->
+                  <!-- 3. Cuisine Custom Selector -->
                   <div class="relative w-full xl:w-48" id="hero-cuisine-dropdown-container">
                     <input type="hidden" id="hero-cuisine-select" value="${currentCuisineVal}" />
                     <button
@@ -440,7 +413,7 @@
                       <div class="flex items-center gap-2.5 min-w-0">
                         <span class="material-symbols-outlined text-[#840f16] text-lg shrink-0">${selectedCuisineObj.icon}</span>
                         <div class="min-w-0">
-                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${isMm ? 'အစားအစာ' : 'Cuisine'}</span>
+                          <span class="block text-[10px] font-label font-bold text-[#8A7B76] uppercase tracking-wider leading-none mb-0.5">${t('home_search_cuisine_label')}</span>
                           <span id="hero-cuisine-display" class="font-label text-xs sm:text-sm font-semibold text-[#231916] truncate block">
                             ${selectedCuisineLabel}
                           </span>
@@ -458,7 +431,7 @@
                       class="hidden absolute top-full left-0 right-0 mt-2 z-50 bg-[#FFFDFC] border border-[#EADFD1] rounded-2xl shadow-[0_16px_36px_-10px_rgba(35,25,22,0.18)] p-2 space-y-1 animate-fadeIn max-h-72 overflow-y-auto"
                     >
                       <div class="px-2 py-1 text-[10px] font-label font-bold text-[#840f16] uppercase tracking-wider border-b border-[#F0E6DA] mb-1">
-                        ${isMm ? 'အစားအစာ အမျိုးအစား ရွေးချယ်ပါ' : 'Select Cuisine'}
+                        ${t('home_select_cuisine')}
                       </div>
                       ${HERO_CUISINES.map(c => {
                         const isSelected = c.value === currentCuisineVal;
@@ -496,10 +469,10 @@
                       type="button"
                       id="hero-open-conditions-btn"
                       class="bg-[#F8EFE5] hover:bg-[#F3DFD5] border border-[#E8DDD0] hover:border-[#840f16] text-[#241A18] hover:text-[#840f16] py-3 sm:py-3.5 px-3.5 rounded-xl sm:rounded-2xl font-label text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
-                      title="${isMm ? 'ရှာဖွေမှု သတ်မှတ်ချက်များ' : 'Search Conditions'}"
+                      title="${t('home_search_conditions_title')}"
                     >
                       <span class="material-symbols-outlined text-lg text-[#840f16]">tune</span>
-                      <span class="hidden sm:inline">${isMm ? 'သတ်မှတ်ချက်' : 'Conditions'}</span>
+                      <span class="hidden sm:inline">${t('home_conditions_btn')}</span>
                     </button>
 
                     <button
@@ -507,7 +480,7 @@
                       class="flex-1 xl:flex-none bg-[#840f16] hover:bg-[#6e0c12] active:scale-[0.98] text-white py-3 sm:py-3.5 px-6 rounded-xl sm:rounded-2xl font-headline text-xs sm:text-sm font-bold shadow-[0_8px_20px_-4px_rgba(132,15,22,0.35)] hover:shadow-[0_12px_24px_-4px_rgba(132,15,22,0.45)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
                     >
                       <span class="material-symbols-outlined text-lg sm:text-xl">search</span>
-                      <span class="whitespace-nowrap">${isMm ? 'ရှာဖွေပါ' : 'Find Tables'}</span>
+                      <span class="whitespace-nowrap">${t('home_find_tables_btn')}</span>
                     </button>
                   </div>
 
@@ -543,14 +516,14 @@
                 <div class="space-y-1.5 z-10 text-left min-w-0">
                   <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-wider text-amber-200">
                     <span class="material-symbols-outlined text-xs">local_activity</span>
-                    <span>${isMm ? 'ပရိုမိုးရှင်း အထူးအစီအစဉ်' : 'Exclusive Dining Offer'}</span>
+                    <span>${t('home_promo_banner_tag')}</span>
                   </div>
                   <h3 class="font-headline text-base sm:text-lg lg:text-xl font-extrabold leading-tight">
-                    ${isMm ? 'KBZPay & WavePay ဖြင့် စိုတ်ယူပါက ၂၀% လျှော့ဈေး' : '20% Off Weekend Dining Pass with KBZPay'}
+                    ${t('home_promo_banner_text')}
                   </h3>
                 </div>
                 <button data-nav-tab="mypage" class="shrink-0 hidden sm:inline-flex bg-white text-[#840f16] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-amber-100 transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap items-center justify-center">
-                  ${isMm ? 'ကူပွန်ယူမည်' : 'Claim Voucher'}
+                  ${t('home_claim_voucher')}
                 </button>
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
               </div>
@@ -560,14 +533,14 @@
                 <div class="space-y-1.5 z-10 text-left min-w-0">
                   <div class="inline-flex items-center gap-1.5 bg-[#d08e1c]/20 px-3 py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-wider text-[#d08e1c]">
                     <span class="material-symbols-outlined text-xs">verified</span>
-                    <span>${isMm ? 'စနစ်ဆိုင်ရာ အသိပေးချက်' : 'System Announcement'}</span>
+                    <span>${t('home_sys_banner_tag')}</span>
                   </div>
                   <h3 class="font-headline text-base sm:text-lg lg:text-xl font-extrabold text-[#e8dfd8] leading-tight">
-                    ${isMm ? 'ဗဟန်း၊ ဒဂုံ၊ မြို့ထဲတွင် Instant Pass စတင်ပါပြီ' : 'Instant Table Confirmation Enabled in Yangon'}
+                    ${t('home_sys_banner_text')}
                   </h3>
                 </div>
                 <button data-nav-tab="resultlist" class="shrink-0 hidden sm:inline-flex bg-[#d08e1c] text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl font-label text-xs font-bold hover:bg-[#b07616] transition-colors shadow-md cursor-pointer z-10 whitespace-nowrap items-center justify-center">
-                  ${isMm ? 'စိုတ်ယူရန်' : 'Book Table'}
+                  ${t('home_banner_book_btn')}
                 </button>
               </div>
             </div>
@@ -596,20 +569,20 @@
             <div>
               <div class="inline-flex items-center gap-1.5 text-[11px] font-label font-bold text-[#840f16] uppercase tracking-wider mb-1">
                 <span class="material-symbols-outlined text-sm">bolt</span>
-                <span>${isMm ? 'တစ်ချက်နှိပ်ရုံဖြင့် စိုတ်ယူပါ' : 'Live availability · One tap to book'}</span>
+                <span>${t('home_tonight_sub')}</span>
               </div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'ယနေ့ည ဗလာစားပွဲဝိုင်းများ' : 'Tonight’s Open Tables'}
+                ${t('home_tonight_title')}
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'ယနေ့ညအတွက် လစ်လပ်နေသော စားပွဲဝိုင်းများကို အချိန်ရွေးကာ ချက်ချင်း စိုတ်ယူနိုင်ပါသည်' : 'Skip the calendar — tap a free dinner slot tonight and reserve instantly.'}
+                ${t('home_tonight_desc')}
               </p>
             </div>
             <button
               data-nav-tab="resultlist"
               class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
             >
-              <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
+              <span>${t('view_all')}</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
@@ -631,17 +604,17 @@
           <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 lg:mb-8 gap-3">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#231916]">
-                ${isMm ? 'အထူး စုစည်းမှုများ' : 'Curated Collections'}
+                ${t('home_collections_title')}
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden sm:block">
-                ${isMm ? 'အစီအစဉ်အမျိုးမျိုးအတွက် အထူးသီးသန့် ရွေးချယ်ပေးထားသော စားသောက်ဆိုင်များ' : 'Hand-picked culinary editorial guides crafted for romantic evenings, celebrations, and heritage flavors.'}
+                ${t('home_collections_desc')}
               </p>
             </div>
             <button
               data-nav-tab="curated"
               class="self-start sm:self-end inline-flex items-center gap-1.5 font-label text-xs sm:text-sm font-extrabold text-[#840f16] hover:underline cursor-pointer group"
             >
-              <span>${isMm ? 'စုစည်းမှု အားလုံး ကြည့်ရန်' : 'Explore All Guides'}</span>
+              <span>${t('home_collections_all_btn')}</span>
               <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </button>
           </div>
@@ -669,14 +642,14 @@
                     ${isMm ? col.categoryTagMM : col.categoryTag}
                   </span>
                   <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
-                    ${idx === 0 ? (isMm ? '၆ ဆိုင်' : '6 Venues') : idx === 1 ? (isMm ? '၄ ဆိုင်' : '4 Tables') : (isMm ? '၅ ဆိုင်' : '5 Venues')}
+                    ${idx === 0 ? t('home_venues_included_6') : idx === 1 ? t('home_venues_included_4') : t('home_venues_included_5')}
                   </span>
                 </div>
 
                 <!-- Bottom Content -->
                 <div class="relative z-10 space-y-2">
                   <div class="text-[#f5d592] font-label text-[11px] font-bold uppercase tracking-wider">
-                    ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Issue'}
+                    ${t('home_curators_issue')}
                   </div>
                   <h4 class="font-headline text-lg sm:text-xl font-bold text-white leading-tight">
                     ${isMm ? col.titleMM : col.title}
@@ -685,7 +658,7 @@
                     ${isMm ? col.subtitleMM : col.subtitle}
                   </p>
                   <div class="pt-1 flex items-center gap-1.5 text-xs font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
-                    <span>${isMm ? 'လမ်းညွှန် ကြည့်ရှုမည်' : 'Explore Guide'}</span>
+                    <span>${t('home_explore_guide')}</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                   </div>
                 </div>
@@ -730,14 +703,14 @@
                       ${isMm ? heroCol.categoryTagMM : heroCol.categoryTag}
                     </span>
                     <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-xs font-bold px-3 py-1 rounded-full">
-                      ${isMm ? '၆ ဆိုင် ပါဝင်ပါသည်' : '6 Venues Included'}
+                      ${t('home_venues_included_6')}
                     </span>
                   </div>
 
                   <!-- Bottom Hero Details -->
                   <div class="relative z-10 space-y-2">
                     <div class="text-[#f5d592] font-label text-xs font-bold uppercase tracking-wider">
-                      ${isMm ? 'အယ်ဒီတာ့ ရွေးချယ်မှု' : 'Curator’s Choice Edition'}
+                      ${t('home_curators_choice_edition')}
                     </div>
                     <h3 class="font-headline text-2xl lg:text-3xl font-extrabold text-white leading-tight">
                       ${isMm ? heroCol.titleMM : heroCol.title}
@@ -746,7 +719,7 @@
                       ${isMm ? heroCol.subtitleMM : heroCol.subtitle}
                     </p>
                     <div class="pt-2 flex items-center gap-2 text-sm font-label font-extrabold text-[#f5d592] group-hover:translate-x-1 transition-transform">
-                      <span>${isMm ? 'စားသောက်ဆိုင်များ စိုတ်ယူရန်' : 'Explore Curated Dining Guide'}</span>
+                      <span>${t('home_explore_curated_dining_guide')}</span>
                       <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </div>
                   </div>
@@ -778,7 +751,7 @@
                       ${isMm ? col.categoryTagMM : col.categoryTag}
                     </span>
                     <span class="bg-black/60 backdrop-blur-md border border-white/20 text-white font-label text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                      ${idx === 0 ? (isMm ? '၄ ဆိုင်' : '4 Tables') : (isMm ? '၅ ဆိုင်' : '5 Venues')}
+                      ${idx === 0 ? t('home_venues_included_4') : t('home_venues_included_5')}
                     </span>
                   </div>
 
@@ -791,7 +764,7 @@
                       ${isMm ? col.subtitleMM : col.subtitle}
                     </p>
                     <div class="pt-1 flex items-center gap-1 text-[11px] font-label font-extrabold ${idx === 0 ? 'text-amber-200' : 'text-emerald-200'} group-hover:translate-x-1 transition-transform">
-                      <span>${isMm ? 'ကြည့်ရှုရန်' : 'Explore Guide'}</span>
+                      <span>${t('home_explore_guide')}</span>
                       <span class="material-symbols-outlined text-xs">arrow_forward</span>
                     </div>
                   </div>
@@ -807,17 +780,17 @@
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-                ${isMm ? 'ရေပန်းစားသော ဟင်းလျာများ' : 'Trending Dishes'}
+                ${t('home_trending_title')}
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'ဧည့်သည်များ အကြိုက်ဆုံးနှင့် လူကြိုက်အများဆုံး ထိပ်တန်း ဟင်းလျာများ' : 'Top trending signature dishes curated dynamically based on guest popularity and high ratings.'}
+                ${t('home_trending_desc')}
               </p>
             </div>
             <button
               data-nav-tab="resultlist"
               class="shrink-0 whitespace-nowrap font-label text-xs font-bold text-[#840f16] hover:underline flex items-center gap-1 cursor-pointer"
             >
-              <span>${isMm ? 'အားလုံးကြည့်ရန်' : 'View All'}</span>
+              <span>${t('view_all')}</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
@@ -836,11 +809,11 @@
           <div class="flex justify-between items-end mb-4 lg:mb-6">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916] flex items-center gap-2">
-                <span>${isMm ? 'အထူးပရိုမိုးရှင်း စားသောက်ဆိုင်များ' : 'Hot Promotions'}</span>
+                <span>${t('home_hot_promo_title')}</span>
                 <span class="material-symbols-outlined text-[#840f16] text-2xl sm:text-3xl">local_fire_department</span>
               </h2>
               <p class="font-body text-xs sm:text-sm text-[#58413f] mt-1 hidden lg:block">
-                ${isMm ? 'အချိန်အကန့်အသတ်ဖြင့် ရရှိနိုင်သော အထူးလျှော့စျေးနှင့် ပရိုမိုးရှင်း စားသောက်ဆိုင်များ' : 'Limited-time exclusive dining deals, promotional offers, and special table discounts in Yangon.'}
+                ${t('home_hot_promo_desc')}
               </p>
             </div>
           </div>

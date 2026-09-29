@@ -11,6 +11,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
 
   function renderBookingStep3(state) {
     const modalState = state.bookingModalState || {};
@@ -30,9 +31,8 @@
       specialRequests: '',
       paymentMethod: 'store'
     };
-    const isMm = state.currentLanguage === 'MM';
-    const isJa = state.currentLanguage === 'JA';
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
+    const isMm = (window.I18n ? window.I18n.getLang() : '') === 'mm';
+    const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
     const slug = (store && store.getRestaurantSlug) ? store.getRestaurantSlug(restaurant) : (restaurant.slug || 'gilded-fork');
 
     const experiencePrice = 180000 * bData.guests;
@@ -56,7 +56,7 @@
                 </div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#065F46]">STEP 01</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Date & Slots', 'ရက်စွဲနှင့် အချိန်', '日時・空席選択')}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('step1')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#065F46]"></div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#065F46]">STEP 02</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Guest Details', 'ဧည့်သည် အချက်အလက်', 'お客様情報')}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('step2')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#065F46]"></div>
@@ -78,7 +78,7 @@
                 <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 bg-[#9B1C25] text-white shadow-xs">3</div>
                 <div class="min-w-0">
                   <div class="font-label text-[10px] font-bold uppercase tracking-wider text-[#9B1C25]">STEP 03</div>
-                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('Confirm', 'အတည်ပြုချက်', '予約内容の確認')}</div>
+                  <div class="font-headline text-xs sm:text-sm font-bold text-[#241A18] truncate stepper-step-title">${t('step3')}</div>
                 </div>
               </div>
               <div class="mt-2.5 h-1 rounded-full w-full bg-[#9B1C25]"></div>
@@ -92,7 +92,7 @@
           <div class="border-b border-[#E8DDD0] pb-4 flex items-center justify-between">
             <div>
               <h2 class="font-headline text-2xl sm:text-3xl text-[#241A18] font-bold">
-                ${t('Confirm Reservation', 'ဘွတ်ကင် အချက်အလက် အတည်ပြုပါ', '予約内容のご確認')}
+                ${t('confirm_reservation_heading')}
               </h2>
             </div>
             <span class="text-xs font-label text-[#6D6561]">
@@ -104,7 +104,7 @@
           <div class="space-y-4">
             <div class="font-headline text-base font-bold text-[#241A18] border-b border-[#E8DDD0] pb-2 flex items-center gap-2">
               <span class="material-symbols-outlined text-[#9B1C25] text-lg">restaurant</span>
-              <span>${t('Restaurant & Table Details', 'ဆိုင်နှင့် စားပွဲဝိုင်း အချက်အလက်', '店舗・ご予約情報')}</span>
+              <span>${t('restaurant_table_details')}</span>
             </div>
 
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -134,7 +134,7 @@
                   <span class="text-[#E8DDD0] hidden sm:inline">•</span>
                   <span class="font-medium text-[#241A18] flex items-center gap-1">
                     <span class="material-symbols-outlined text-sm text-[#9B1C25]">group</span>
-                    <span>${bData.guests} ${t('Guests', 'ဦး', '名様')} (${bData.seatingPreference})</span>
+                    <span>${bData.guests} ${t('guests')} (${bData.seatingPreference})</span>
                   </span>
                 </div>
               </div>
@@ -145,34 +145,34 @@
           <div class="space-y-4">
             <div class="font-headline text-base font-bold text-[#241A18] border-b border-[#E8DDD0] pb-2 flex items-center gap-2">
               <span class="material-symbols-outlined text-[#9B1C25] text-lg">person_pin</span>
-              <span>${t('Guest & Payment Information', 'ဧည့်သည်နှင့် ငွေပေးချေမှု အချက်အလက်', 'お客様・お支払い情報')}</span>
+              <span>${t('guest_payment_info')}</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="bg-[#F8EFE5] p-3.5 rounded-xl border border-[#E8DDD0]">
-                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('Guest Name', 'ဧည့်သည် အမည်', 'お名前')}</div>
+                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('guest_name')}</div>
                 <div class="text-[#241A18] text-sm font-bold font-body mt-0.5">${gData.guestName || '—'}</div>
               </div>
               <div class="bg-[#F8EFE5] p-3.5 rounded-xl border border-[#E8DDD0]">
-                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('Phone Number', 'ဖုန်းနံပါတ်', '電話番号')}</div>
+                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('phone_number')}</div>
                 <div class="text-[#241A18] text-sm font-bold font-body mt-0.5">${gData.guestPhone || '—'}</div>
               </div>
               <div class="bg-[#F8EFE5] p-3.5 rounded-xl border border-[#E8DDD0]">
-                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('Email Address', 'အီးမေးလ်', 'メールアドレス')}</div>
+                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('email_address')}</div>
                 <div class="text-[#241A18] text-sm font-bold font-body mt-0.5 truncate">${gData.guestEmail || '—'}</div>
               </div>
               <div class="bg-[#F8EFE5] p-3.5 rounded-xl border border-[#E8DDD0]">
-                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('Payment Preference', 'ငွေပေးချေမှု ပုံစံ', 'お支払い方法')}</div>
+                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('payment_preference')}</div>
                 <div class="text-[#9B1C25] text-sm font-bold font-body mt-0.5 flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm">${gData.paymentMethod === 'qr' ? 'qr_code_2' : 'payments'}</span>
-                  <span>${gData.paymentMethod === 'qr' ? t('KBZPay / AYA Pay QR (Promo Applied)', 'KBZPay / AYA Pay QR (၅၀,၀၀၀ ကျပ် လျှော့ပြီး)', 'KBZPay / AYA Pay QR (割引適用)') : t('Pay at Restaurant', 'ဆိုင်တွင် ပေးချေမည်', '来店時のお支払い')}</span>
+                  <span>${gData.paymentMethod === 'qr' ? t('pay_qr_promo_label') : t('pay_at_restaurant')}</span>
                 </div>
               </div>
             </div>
 
             ${gData.specialRequests ? `
               <div class="bg-[#F8EFE5] p-3.5 rounded-xl border border-[#E8DDD0]">
-                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('Special Requests / Dietary Notes', 'အထူး တောင်းဆိုချက် / မှတ်ချက်', 'ご要望・アレルギー等')}</div>
+                <div class="text-[#6D6561] text-[10px] uppercase font-bold tracking-wider font-label">${t('special_requests')}</div>
                 <div class="text-[#241A18] text-xs font-body mt-0.5">${gData.specialRequests}</div>
               </div>
             ` : ''}
@@ -182,30 +182,30 @@
           <div class="space-y-3 font-label text-xs">
             <div class="font-headline text-base font-bold text-[#241A18] border-b border-[#E8DDD0] pb-2 flex items-center gap-2">
               <span class="material-symbols-outlined text-[#9B1C25] text-lg">receipt_long</span>
-              <span>${t('Estimated Pricing Breakdown', 'ခန့်မှန်းခြေ ကုန်ကျစရိတ် တွက်ချက်မှု', 'お見積り明細')}</span>
+              <span>${t('estimated_pricing_breakdown')}</span>
             </div>
             <div class="flex justify-between text-[#6D6561]">
-              <span>${t('Experience Tasting Menu', 'အထူး ဟင်းပွဲ မီနူး', 'ディナーコース')} (x${bData.guests})</span>
+              <span>${t('experience_tasting_menu')} (x${bData.guests})</span>
               <span class="font-bold text-[#241A18]">${experiencePrice.toLocaleString()} MMK</span>
             </div>
             <div class="flex justify-between text-[#6D6561]">
-              <span>${t('Sommelier Wine Pairing', 'ဝိုင် တွဲဖက် သောက်သုံးမှု', 'ワインペアリング')} (x${bData.guests})</span>
+              <span>${t('wine_pairing')} (x${bData.guests})</span>
               <span class="font-bold text-[#241A18]">${winePairingPrice.toLocaleString()} MMK</span>
             </div>
             ${promoDiscount > 0
-              ? `<div class="flex justify-between text-[#065F46] font-semibold"><span>${t('KBZPay / QR Instant Discount', 'KBZPay / QR အထူး လျှော့ဈေး', 'KBZPay / QR 即時割引')}</span><span>-${promoDiscount.toLocaleString()} MMK</span></div>`
+              ? `<div class="flex justify-between text-[#065F46] font-semibold"><span>${t('qr_instant_discount')}</span><span>-${promoDiscount.toLocaleString()} MMK</span></div>`
               : ''
             }
             <div class="flex justify-between text-[#6D6561]">
-              <span>${t('Commercial Tax (8.5%)', 'ကုန်သွယ်ခွန် (၈.၅%)', '商業税 (8.5%)')}</span>
+              <span>${t('commercial_tax')}</span>
               <span class="font-bold text-[#241A18]">${tax.toLocaleString()} MMK</span>
             </div>
             <div class="flex justify-between text-[#6D6561]">
-              <span>${t('Service Charge (18%)', 'ဝန်ဆောင်ခ (၁၈%)', 'サービス料 (18%)')}</span>
+              <span>${t('service_charge')}</span>
               <span class="font-bold text-[#241A18]">${serviceCharge.toLocaleString()} MMK</span>
             </div>
             <div class="pt-3 border-t border-[#E8DDD0] flex justify-between items-center text-sm">
-              <span class="font-bold text-[#241A18]">${t('Estimated Total', 'စုစုပေါင်း ခန့်မှန်းကုန်ကျစရိတ်', '合計（概算）')}</span>
+              <span class="font-bold text-[#241A18]">${t('estimated_total')}</span>
               <span class="font-bold text-[#9B1C25] font-headline text-lg">${totalAmount.toLocaleString()} MMK</span>
             </div>
           </div>
@@ -213,7 +213,7 @@
           <label class="flex items-center gap-3 cursor-pointer bg-[#F8EFE5] p-4 rounded-xl border border-[#E8DDD0]">
             <input type="checkbox" id="step3-terms" checked class="w-5 h-5 rounded border-[#E8DDD0] accent-[#9B1C25] cursor-pointer" />
             <span class="font-body text-xs text-[#241A18] font-semibold">
-              ${t('I agree to the cancellation policy and restaurant terms of service.', 'ပယ်ဖျက်ခြင်းဆိုင်ရာ စည်းမျဉ်းများနှင့် စည်းကမ်းချက်များကို သဘောတူပါသည်။', 'キャンセルポリシーおよび利用規約に同意します。')}
+              ${t('terms_agreement')}
             </span>
           </label>
 
@@ -225,14 +225,14 @@
               class="w-full sm:w-auto px-7 py-3.5 rounded-full border border-[#E8DDD0] font-label text-sm font-semibold text-[#6D6561] hover:bg-[#F8EFE5] transition-all cursor-pointer flex items-center justify-center gap-1.5"
             >
               <span class="material-symbols-outlined text-sm">arrow_back</span>
-              <span>${t('Back to Details', 'နောက်သို့', '戻る: お客様情報')}</span>
+              <span>${t('back_to_details')}</span>
             </a>
             <button
               type="button"
               id="step3-final-btn"
               class="w-full sm:w-auto bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-sm font-bold px-8 py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
             >
-              <span>${t('Confirm & Complete', 'ကြိုတင်မှာယူမှု အတည်ပြုမည်', '予約を確定する')}</span>
+              <span>${t('confirm_and_complete')}</span>
               <span class="material-symbols-outlined text-sm">check_circle</span>
             </button>
           </div>
@@ -295,7 +295,7 @@
           store.setBookingStep(4, { createdBooking: newBooking });
           const slug = store.getRestaurantSlug ? store.getRestaurantSlug(rest) : 'gilded-fork';
           window.location.hash = `#/s/${slug}/complete`;
-          store.showToast(t('Reservation confirmed!', 'ဘွတ်ကင် အောင်မြင်စွာ တင်ပြီးပါပြီ။', '予約が完了しました！'));
+          store.showToast(t('reservation_confirmed_toast'));
         }
 
         // Section 3: SMS Verification (U-13) check for unverified guest phone

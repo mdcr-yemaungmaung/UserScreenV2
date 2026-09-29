@@ -1,11 +1,12 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
   const { RESTAURANTS_DATA } = window.YoyakuData;
   const { renderSearchResultCard, attachRestaurantCardEvents } = window.YoyakuComponents;
 
   function renderResultListView(state) {
-    const isMm = state.currentLanguage === 'MM';
+    const isMm = (window.I18n ? window.I18n.getLang() : state.currentLanguage) === 'mm' || state.currentLanguage === 'MM';
     const rState = state.resultsState || {};
 
     // Filter Logic using comprehensive search condition criteria
@@ -191,7 +192,7 @@
 
     // Party size badge
     if (rState.partySize && rState.partySize !== 'All Sizes' && rState.partySize !== 'All') {
-      activeConditionBadges.push({ type: 'partySize', label: `${rState.partySize} ${isMm ? 'ဦး' : 'Guests'}`, icon: 'group' });
+      activeConditionBadges.push({ type: 'partySize', label: `${rState.partySize} ${t('guest_unit')}`, icon: 'group' });
     }
 
     // Budget tier badge
@@ -220,10 +221,10 @@
         <!-- HEADER TITLE -->
         <div>
           <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-            ${isMm ? 'စားသောက်ဆိုင်များ ရှာဖွေရန်' : 'Search Dining Venues'}
+            ${t('search_dining_venues')}
           </h2>
           <p class="font-body text-xs sm:text-sm text-[#6D6561] mt-0.5">
-            ${isMm ? 'ရန်ကုန်မြို့၏ ထိပ်တန်းစားသောက်ဆိုင်များကို အချိန်မရွေး ကြိုတင်စိုတ်ယူနိုင်ပါသည်' : 'Explore and book premier Myanmar culinary destinations in real time'}
+            ${t('explore_book_premier')}
           </p>
         </div>
 
@@ -238,13 +239,13 @@
               <input
                 type="text"
                 id="results-keyword-input"
-                placeholder="${isMm ? 'ဆိုင်အမည်၊ ဟင်းလျာ၊ မြို့နယ် သို့မဟုတ် အစားအသောက် ရှာဖွေရန်...' : 'Search by restaurant name, cuisine, township, or dish...'}"
+                placeholder="${t('search_placeholder')}"
                 value="${rState.keyword || ''}"
                 class="w-full bg-transparent font-body text-xs sm:text-sm text-[#231916] placeholder:text-[#A19690] focus:outline-none"
               />
               ${
                 rState.keyword
-                  ? `<button id="results-clear-kw" title="Clear text" class="text-[#6D6561] hover:text-[#9B1C25] transition-transform active:scale-95 cursor-pointer flex items-center justify-center p-1">
+                  ? `<button id="results-clear-kw" title="${t('clear_keyword_title')}" class="text-[#6D6561] hover:text-[#9B1C25] transition-transform active:scale-95 cursor-pointer flex items-center justify-center p-1">
                       <span class="material-symbols-outlined text-base">close</span>
                     </button>`
                   : ''
@@ -259,10 +260,10 @@
                   ? 'bg-[#9B1C25] text-white border-[#9B1C25] hover:bg-[#7F161E]'
                   : 'bg-[#FFFDFC] text-[#241A18] border-[#E8DDD0] hover:bg-[#F3DFD5] hover:border-[#9B1C25]'
               }"
-              title="${isMm ? 'ရှာဖွေမှု သတ်မှတ်ချက်များ ဖွင့်ရန်' : 'Open Search Conditions'}"
+              title="${t('open_search_conditions')}"
             >
               <span class="material-symbols-outlined text-lg ${totalActiveConditions > 0 ? 'text-white' : 'text-[#9B1C25]'}">tune</span>
-              <span class="hidden sm:inline">${isMm ? 'သတ်မှတ်ချက်များ' : 'Conditions'}</span>
+              <span class="hidden sm:inline">${t('conditions_label')}</span>
               ${
                 totalActiveConditions > 0
                   ? `<span class="bg-[#FFFDFC] text-[#9B1C25] font-label text-[11px] font-black px-2 py-0.5 rounded-full shadow-xs">
@@ -279,7 +280,7 @@
             activeConditionBadges.length > 0
               ? `
                 <div class="flex items-center flex-wrap gap-1.5 pt-1 animate-fadeIn">
-                  <span class="font-label text-[11px] text-[#6D6561] font-bold mr-1">${isMm ? 'သတ်မှတ်ချက်များ:' : 'Active:'}</span>
+                  <span class="font-label text-[11px] text-[#6D6561] font-bold mr-1">${t('active_filters_label')}</span>
                   ${activeConditionBadges
                     .map(b => `
                       <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F3DFD5] border border-[#E8DDD0] text-[#9B1C25] font-label text-[11px] font-bold">
@@ -289,7 +290,7 @@
                           data-remove-condition="${b.type}" 
                           data-condition-val="${b.itemVal || b.featureId || ''}"
                           class="hover:text-red-700 ml-0.5 cursor-pointer flex items-center justify-center"
-                          title="Remove filter"
+                          title="${t('remove_filter_title')}"
                         >
                           <span class="material-symbols-outlined text-[14px]">close</span>
                         </button>
@@ -301,7 +302,7 @@
                     id="results-clear-all-conditions-btn"
                     class="font-label text-[11px] text-[#6D6561] hover:text-[#9B1C25] underline ml-1 font-semibold cursor-pointer"
                   >
-                    ${isMm ? 'အားလုံးရှင်းမည်' : 'Clear all'}
+                    ${t('clear_all_filters')}
                   </button>
                 </div>
               `
@@ -314,7 +315,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 py-1">
 
           <div class="font-headline text-base font-extrabold text-[#231916]">
-            ${filtered.length} ${isMm ? 'ဆိုင်များ တွေ့ရှိပါသည်' : 'Restaurants found'}
+            ${filtered.length} ${t('restaurants_found')}
           </div>
 
           <div class="flex items-center flex-wrap gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
@@ -328,7 +329,7 @@
                 }"
               >
                 <span class="material-symbols-outlined text-sm">grid_view</span>
-                <span>List</span>
+                <span>${t('view_mode_list')}</span>
               </button>
               <button
                 id="results-mode-map-btn"
@@ -337,17 +338,17 @@
                 }"
               >
                 <span class="material-symbols-outlined text-sm">map</span>
-                <span>Map</span>
+                <span>${t('view_mode_map')}</span>
               </button>
             </div>
 
             <!-- Sort Select -->
             <div class="flex items-center gap-2 bg-[#FFFDFC] px-3.5 py-2 rounded-2xl border border-[#E8DDD0] shadow-2xs">
-              <span class="font-label text-xs text-[#6D6561] font-bold">${isMm ? 'အစီအစဉ်:' : 'Sort:'}</span>
+              <span class="font-label text-xs text-[#6D6561] font-bold">${t('sort_label')}</span>
               <select id="results-sort-select" class="bg-transparent font-label text-xs font-bold text-[#241A18] focus:outline-none cursor-pointer">
-                <option value="popularity" ${rState.sortBy === 'popularity' ? 'selected' : ''}>Popularity</option>
-                <option value="rating" ${rState.sortBy === 'rating' ? 'selected' : ''}>Highest Rating</option>
-                <option value="reviews" ${rState.sortBy === 'reviews' ? 'selected' : ''}>Most Reviews</option>
+                <option value="popularity" ${rState.sortBy === 'popularity' ? 'selected' : ''}>${t('sort_popularity')}</option>
+                <option value="rating" ${rState.sortBy === 'rating' ? 'selected' : ''}>${t('sort_rating')}</option>
+                <option value="reviews" ${rState.sortBy === 'reviews' ? 'selected' : ''}>${t('sort_reviews')}</option>
               </select>
             </div>
 
@@ -369,16 +370,16 @@
                           <span class="material-symbols-outlined text-3xl">search_off</span>
                         </div>
                         <h3 class="font-headline text-lg font-bold text-[#241A18] mb-1">
-                          ${isMm ? 'ကိုက်ညီသော စားသောက်ဆိုင် မတွေ့ရှိပါ' : 'No matching restaurants found'}
+                          ${t('no_matching_restaurants')}
                         </h3>
                         <p class="font-body text-xs sm:text-sm text-[#6D6561] max-w-md mb-6">
-                          ${isMm ? 'ရှာဖွေမှု သတ်မှတ်ချက်များကို ပြောင်းလဲပြီး ထပ်မံကြိုးစားကြည့်ပါ' : 'Try broadening your search keyword or resetting specific search conditions.'}
+                          ${t('adjust_search_conditions_hint')}
                         </p>
                         <button
                           id="results-empty-open-cond-btn"
                           class="px-5 py-2.5 rounded-full bg-[#9B1C25] text-white font-label text-xs font-bold hover:bg-[#7F161E] transition-all cursor-pointer shadow-sm active:scale-95"
                         >
-                          ${isMm ? 'သတ်မှတ်ချက်များ ပြင်ဆင်ရှာဖွေမည်' : 'Adjust Search Conditions'}
+                          ${t('adjust_search_conditions_btn')}
                         </button>
                       </div>
                     `
@@ -398,7 +399,7 @@
                   </svg>
                   <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full text-white font-label text-xs flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-[#104b2b] animate-pulse"></span>
-                    <span>Yangon Dining Map View</span>
+                    <span>${t('map_view_title')}</span>
                   </div>
 
                   <!-- Map Pins -->

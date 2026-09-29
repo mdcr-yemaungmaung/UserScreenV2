@@ -5,9 +5,8 @@
 
 
   function renderTopNavBar(state) {
-    const isMm = state.currentLanguage === 'MM';
-    const isJa = state.currentLanguage === 'JA';
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
+    const isMm = (window.I18n ? window.I18n.getLang() : '') === 'mm';
+    const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
     const isMyPageActive = state.activeTab === 'mypage';
     const unreadNotifsCount = state.myPageData.notifications.filter(n => n.isUnread).length;
     const isOnline = window.PwaManager ? window.PwaManager.isOnline : true;
@@ -18,7 +17,7 @@
         <div class="bg-[#241A18] text-[#FBF4E8] px-4 py-2 text-center text-xs font-label font-bold flex items-center justify-center gap-2 border-b border-[#C69A2B]/35 z-50">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
           <span class="material-symbols-outlined text-sm text-amber-400">cloud_off</span>
-          <span>${isMm ? 'လိုင်းမရှိပါ (Offline Mode) — သင်၏ QR Pass နှင့် စိုတ်ယူထားမှုများကို ကြည့်ရှုနိုင်ပါသည်' : 'Offline Mode Active — Your saved bookings & QR passes remain available.'}</span>
+          <span>${t('offlineModeNotice')}</span>
         </div>
       ` : ''}
       <header class="sticky top-0 z-40 bg-[#FBF4E8]/95 backdrop-blur-md border-b border-[#E8DDD0] transition-all pt-[env(safe-area-inset-top,0px)]">
@@ -63,20 +62,20 @@
             <button
               id="nav-owner-link"
               class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F3DFD5] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#9B1C25] hover:bg-[#9B1C25] hover:text-white active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
-              title="${isMm ? 'ဆိုင်ပိုင်ရှင်များ' : 'For Restaurant Owners'}"
+              title="${t('for_restaurant_owners')}"
             >
               <span class="material-symbols-outlined text-sm">storefront</span>
-              <span class="truncate">${isMm ? 'ဆိုင်ပိုင်ရှင်များ' : 'For Restaurant Owners'}</span>
+              <span class="truncate">${t('for_restaurant_owners')}</span>
             </button>
 
             <!-- Check Guest Booking Link -->
             <button
               id="nav-check-booking-link"
               class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] font-label text-[11px] font-bold text-[#6D6561] hover:text-[#9B1C25] hover:border-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-xs"
-              title="${t('Check Reservation / Guest Lookup', 'စိုတ်ထားမှု စစ်ဆေးရန်', '予約確認・照会')}"
+              title="${t('check_reservation_lookup')}"
             >
               <span class="material-symbols-outlined text-sm text-[#9B1C25]">confirmation_number</span>
-              <span class="hidden md:inline truncate">${t('Check Booking', 'ဘွတ်ကင်စစ်ဆေးရန်', '予約確認')}</span>
+              <span class="hidden md:inline truncate">${t('check_booking')}</span>
             </button>
 
             <!-- Language Selector Switcher (Accessible on both mobile and desktop) -->
@@ -140,7 +139,7 @@
               <button
                 id="nav-notif-btn"
                 class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFFDFC] border border-[#E8DDD0] hover:border-[#9B1C25] flex items-center justify-center text-[#6D6561] hover:text-[#9B1C25] active:scale-95 transition-all duration-150 cursor-pointer shrink-0 shadow-2xs"
-                title="${isMm ? 'အသိပေးချက်များ' : 'Notifications'}"
+                title="${t('notifications')}"
               >
                 <span class="material-symbols-outlined text-xl">notifications</span>
                 ${unreadNotifsCount > 0 ? `
@@ -191,7 +190,7 @@
                       <div class="w-7 h-7 rounded-lg bg-[#9B1C25]/10 text-[#9B1C25] flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-base">person</span>
                       </div>
-                      <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ' : 'My Page'}</span>
+                      <span>${t('myPage')}</span>
                     </button>
                   </div>
 
@@ -204,7 +203,7 @@
                       class="w-full text-left px-3 py-2 rounded-xl font-label text-xs font-bold text-[#9B1C25] hover:bg-[#F3DFD5] active:scale-95 flex items-center gap-2.5 transition-all cursor-pointer"
                     >
                       <span class="material-symbols-outlined text-base">logout</span>
-                      <span>${isMm ? 'အကောင့်ထွက်ရန်' : 'Logout'}</span>
+                      <span>${t('logout')}</span>
                     </button>
                   </div>
                 </div>
@@ -215,13 +214,13 @@
                 id="nav-login-btn"
                 class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[#9B1C25] text-[#9B1C25] font-label text-xs font-bold hover:bg-[#9B1C25] hover:text-white active:scale-95 transition-all duration-150 cursor-pointer shadow-2xs"
               >
-                ${isMm ? 'အကောင့်ဝင်ရန်' : 'Login'}
+                ${t('login')}
               </button>
               <button
                 id="nav-signup-btn"
                 class="hidden sm:inline-block px-4 py-2 rounded-full bg-[#9B1C25] text-white font-label text-xs font-bold hover:bg-[#7F161E] active:scale-95 shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer"
               >
-                ${isMm ? 'အကောင့်ဖွင့်ရန်' : 'Sign Up'}
+                ${t('signUp')}
               </button>
             `}
 

@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
 
   // SVG Icons matching reference design
   const facebookSvg = `
@@ -26,9 +27,6 @@
   `;
 
   function renderLoginView(state) {
-    const isMm = state.currentLanguage === 'MM';
-    const isJa = state.currentLanguage === 'JA';
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
     const loginState = state.loginState || {};
     const activeTab = loginState.activeTab || 'login'; // 'login' | 'lookup'
     const isLoading = !!loginState.isLoading;
@@ -87,7 +85,7 @@
               id="tab-login-btn"
               class="login-tab-button ${activeTab === 'login' && !showForgot && !showSignUp ? 'active' : ''}"
             >
-              ${t('Login', 'အကောင့်ဝင်ရန်', 'ログイン')}
+              ${t('login_tab_btn')}
             </button>
 
             <!-- Tab 2: Lookup Reservation -->
@@ -96,7 +94,7 @@
               id="tab-lookup-btn"
               class="login-tab-button ${activeTab === 'lookup' ? 'active' : ''}"
             >
-              ${t('Lookup Reservation', 'ဘွတ်ကင်စစ်ဆေးရန်', '予約確認')}
+              ${t('lookup_tab_btn')}
             </button>
           </div>
 
@@ -126,7 +124,7 @@
                         ? '<span style="width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></span>'
                         : facebookSvg
                     }
-                    <span>${isMm ? 'Facebook ဖြင့် ဆက်လက်လုပ်ဆောင်မည်' : 'Continue with Facebook'}</span>
+                    <span>${t('continue_with_facebook')}</span>
                   </button>
 
                   <!-- Button 2: Continue with Google -->
@@ -141,7 +139,7 @@
                         ? '<span style="width: 16px; height: 16px; border: 2px solid #840f16; border-top-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></span>'
                         : googleSvg
                     }
-                    <span>${isMm ? 'Google ဖြင့် ဆက်လက်လုပ်ဆောင်မည်' : 'Continue with Google'}</span>
+                    <span>${t('continue_with_google')}</span>
                   </button>
 
                   <!-- Button 3: Login with Email -->
@@ -151,7 +149,7 @@
                     class="btn-auth-email"
                   >
                     <span class="material-symbols-outlined" style="font-size: 1.125rem; color: #443632;">mail</span>
-                    <span>${isMm ? 'အီးမေးလ်ဖြင့် ဝင်မည်' : 'Login with Email'}</span>
+                    <span>${t('login_with_email')}</span>
                   </button>
 
                   <!-- OR DIVIDER -->
@@ -167,11 +165,11 @@
                       class="w-full btn-primary py-3 rounded-2xl font-label text-sm font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span class="material-symbols-outlined text-lg">person_outline</span>
-                      <span>${isMm ? 'ဧည့်သည်အဖြစ် ဆက်လက်လုပ်ဆောင်မည်' : 'Continue as Guest'}</span>
+                      <span>${t('continue_as_guest')}</span>
                     </button>
                     <!-- Subtext underneath button -->
                     <p class="guest-helper-text">
-                      ${isMm ? 'ဖုန်းနံပါတ်ဖြင့်သာ ဘွတ်ကင်ယူနိုင်ပြီး အကောင့်ဖွင့်ရန် မလိုပါ' : 'Book with just your phone number, no registration needed.'}
+                      ${t('continue_as_guest_sub')}
                     </p>
                   </div>
 
@@ -187,9 +185,9 @@
                       style="background: transparent; border: none; font-size: 0.75rem; font-weight: 700; color: #58413f; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;"
                     >
                       <span class="material-symbols-outlined" style="font-size: 0.875rem;">arrow_back</span>
-                      <span>${isMm ? 'ရွေးချယ်မှုများသို့' : 'Back to Options'}</span>
+                      <span>${t('back_to_options')}</span>
                     </button>
-                    <span style="font-size: 0.75rem; font-weight: 700; color: #840f16;">${isMm ? 'အီးမေးလ်ဖြင့် ဝင်ရောက်ခြင်း' : 'Email Sign In'}</span>
+                    <span style="font-size: 0.75rem; font-weight: 700; color: #840f16;">${t('email_sign_in_heading')}</span>
                   </div>
 
                   ${
@@ -206,7 +204,7 @@
                   <form id="email-login-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <div>
                       <label for="login-email-input" style="display: block; font-size: 0.71875rem; font-weight: 700; color: #554340; margin-bottom: 0.25rem;">
-                        ${isMm ? 'အီးမေးလ်လိပ်စာ' : 'Email Address'} *
+                        ${t('email_address')} *
                       </label>
                       <input
                         type="email"
@@ -222,14 +220,14 @@
                     <div>
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
                         <label for="login-password-input" style="font-size: 0.71875rem; font-weight: 700; color: #554340;">
-                          ${isMm ? 'စကားဝှက်' : 'Password'} *
+                          ${t('password')} *
                         </label>
                         <button
                           type="button"
                           id="btn-forgot-password-link"
                           style="background: transparent; border: none; font-size: 0.71875rem; font-weight: 600; color: #840f16; cursor: pointer;"
                         >
-                          ${isMm ? 'စကားဝှက် မေ့နေပါသလား?' : 'Forgot password?'}
+                          ${t('forgot_password')}
                         </button>
                       </div>
 
@@ -262,7 +260,7 @@
                         style="cursor: pointer;"
                       />
                       <label for="login-remember-checkbox" style="font-size: 0.71875rem; color: #554340; cursor: pointer; user-select: none;">
-                        ${isMm ? 'အကောင့် မှတ်ထားမည်' : 'Remember me'}
+                        ${t('remember_me')}
                       </label>
                     </div>
 
@@ -278,19 +276,19 @@
                           ? '<span style="width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></span>'
                           : '<span class="material-symbols-outlined text-lg">lock</span>'
                       }
-                      <span>${isMm ? 'အကောင့်ဝင်မည်' : 'Log In'}</span>
+                      <span>${t('login')}</span>
                     </button>
                   </form>
 
                   <!-- Sign Up Footer -->
                   <div style="text-align: center; font-size: 0.71875rem; color: #554340; padding-top: 0.35rem;">
-                    <span>${isMm ? 'အကောင့် မရှိသေးပါက' : "Don't have an account?"}</span>
+                    <span>${t('dont_have_account')}</span>
                     <button
                       type="button"
                       id="btn-open-signup-link"
                       style="background: transparent; border: none; font-weight: 700; color: #840f16; cursor: pointer; margin-left: 0.25rem;"
                     >
-                      ${isMm ? 'ဒီနေရာတွင် အကောင့်သစ်ဖွင့်ပါ' : 'Sign up here'}
+                      ${t('sign_up_here')}
                     </button>
                   </div>
                 </div>
@@ -307,11 +305,7 @@
                 <div class="lookup-info-card">
                   <span class="material-symbols-outlined lookup-info-icon">info</span>
                   <p class="lookup-info-text">
-                    ${t(
-                      'If you booked without an account, you can easily view, verify, and cancel your reservation using your reservation code and registered phone number.',
-                      'အကောင့်မဖွင့်ဘဲ ဘွတ်ကင်ယူထားပါက သင်၏ ဘွတ်ကင်နံပါတ်နှင့် ဖုန်းနံပါတ်ဖြင့် အသေးစိတ်ကြည့်ရှုနိုင်ပြီး ပယ်ဖျက်နိုင်ပါသည်။',
-                      'アカウントをお持ちでない場合でも、予約番号とお電話番号を入力することで予約の照会・キャンセルが可能です。'
-                    )}
+                    ${t('lookup_info_text')}
                   </p>
                 </div>
 
@@ -332,7 +326,7 @@
                   <!-- Sample prefill helper chips -->
                   <div style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.25rem;">
                     <span style="font-size: 0.6875rem; color: #6D6561; font-weight: 600;">
-                      ${t('Test with sample bookings:', 'စမ်းသပ်ရန် နမူနာ အချက်အလက်များ:', 'テスト用サンプル予約:')}
+                      ${t('test_sample_bookings')}
                     </span>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;">
                       ${
@@ -340,7 +334,7 @@
                           ? `
                         <button type="button" id="btn-fill-sample-recent" data-res="${cBooking.reservationNo || cBooking.id}" data-phone="${cBooking.guestPhone || '09791234567'}" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-full transition-colors cursor-pointer border border-emerald-300 flex items-center gap-1 shadow-2xs">
                           <span class="material-symbols-outlined text-xs">history</span>
-                          <span>${t('Recent:', 'လတ်တလော:', '最新:')} ${cBooking.reservationNo}</span>
+                          <span>${t('recent_lookup_label')} ${cBooking.reservationNo}</span>
                         </button>
                       `
                           : ''
@@ -359,14 +353,14 @@
                   <!-- Field 1: Reservation Number Box -->
                   <div class="lookup-input-box">
                     <label for="lookup-resno-input" class="lookup-input-label">
-                      ${t('Reservation Number', 'ဘွတ်ကင် နံပါတ်', '予約番号')} *
+                      ${t('reservation_number_field')} *
                     </label>
                     <input
                       type="text"
                       id="lookup-resno-input"
                       required
                       autocomplete="off"
-                      placeholder="${t('e.g. RSV-665304 or RES-2026-002', 'ဥပမာ RSV-665304 သို့မဟုတ် RES-2026-002', '例: RSV-665304 または RES-2026-002')}"
+                      placeholder="${t('reservation_number_placeholder')}"
                       value="${loginState.lookupResNo || ''}"
                       class="lookup-input-field"
                     />
@@ -374,7 +368,7 @@
 
                   <!-- Invalid Format Helper Text (if applicable) -->
                   <div class="lookup-validation-msg" id="lookup-format-msg" style="${isInvalidFormat ? 'display: block;' : 'display: none;'}">
-                    ${t('Please enter a valid reservation code (e.g. RSV-665304)', 'နံပါတ် ပုံစံမမှန်ပါ (ဥပမာ RSV-665304)', '有効な予約番号を入力してください (例: RSV-665304)')}
+                    ${t('invalid_code_error')}
                   </div>
 
                   <!-- Field 2: Phone Number with Country Code prefix +95 -->
@@ -385,7 +379,7 @@
                       id="lookup-phone-input"
                       required
                       autocomplete="tel"
-                      placeholder="${t('Phone Number (e.g. 09791234567)', 'ဖုန်းနံပါတ် (ဥပမာ 09791234567)', 'お電話番号 (例: 09791234567)')}"
+                      placeholder="${t('phone_lookup_placeholder')}"
                       value="${loginState.lookupPhone || ''}"
                       class="lookup-phone-input"
                     />
@@ -403,7 +397,7 @@
                         ? '<span style="width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></span>'
                         : '<span class="material-symbols-outlined text-lg">search</span>'
                     }
-                    <span>${t('Look up reservation', 'ဘွတ်ကင် ရှာဖွေမည်', '予約を照会する')}</span>
+                    <span>${t('lookup_submit_btn')}</span>
                   </button>
                 </form>
 
@@ -428,12 +422,12 @@
                           }">
                             ${
                               lookupResult.status === 'Cancelled'
-                                ? t('Cancelled', 'ပယ်ဖျက်ပြီး', 'キャンセル済み')
+                                ? t('cancelled')
                                 : lookupResult.status === 'Pending'
-                                ? t('Pending Approval', 'စောင့်ဆိုင်းဆဲ', '承認待ち')
+                                ? t('pending')
                                 : lookupResult.status === 'Completed'
-                                ? t('Completed', 'ပြီးမြောက်ပြီး', '完了')
-                                : t('Confirmed', 'အတည်ပြုပြီး', '確定')
+                                ? t('completed')
+                                : t('confirmed')
                             }
                           </span>
                           <span style="font-size: 0.6875rem; color: #6D6561;">${lookupResult.createdAt ? new Date(lookupResult.createdAt).toLocaleDateString() : ''}</span>
@@ -445,7 +439,7 @@
                             type="button"
                             id="btn-copy-lookup-resno"
                             data-resno="${lookupResult.reservationNo || lookupResult.id}"
-                            title="${t('Copy Reservation ID', 'ဘွတ်ကင် နံပါတ် ကူးယူရန်', '予約番号をコピー')}"
+                            title="${t('copy_reservation_id')}"
                             style="background: transparent; border: none; padding: 2px; cursor: pointer; color: #8d7b75; display: inline-flex; align-items: center;"
                           >
                             <span class="material-symbols-outlined" style="font-size: 0.875rem;">content_copy</span>
@@ -460,19 +454,19 @@
                     <!-- Details Grid -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; font-size: 0.6875rem;">
                       <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Date', 'ရက်စွဲ', '日付')}</span>
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('date_label')}</span>
                         <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.date || 'Today'}</span>
                       </div>
                       <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Time', 'အချိန်', '時間')}</span>
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('time_label')}</span>
                         <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.time || '18:30'}</span>
                       </div>
                       <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Guests', 'လူဦးရေ', '人数')}</span>
-                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.guests || 2} ${t('Guests', 'ဦး', '名')}</span>
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('guests_label')}</span>
+                        <span style="font-weight: 800; color: #231916; font-size: 0.75rem;">${lookupResult.guests || 2} ${t('guests')}</span>
                       </div>
                       <div style="background-color: #ffffff; padding: 0.45rem; border-radius: 10px; border: 1px solid #ECE4DA;">
-                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('Guest Name', 'ဧည့်သည် အမည်', 'お名前')}</span>
+                        <span style="color: #8d7b75; display: block; font-size: 0.5625rem; text-transform: uppercase; font-weight: 700;">${t('guest_name')}</span>
                         <span style="font-weight: 800; color: #231916; font-size: 0.75rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;">${lookupResult.guestName || 'Guest'}</span>
                       </div>
                     </div>
@@ -486,7 +480,7 @@
                         style="flex: 1.5; min-width: 120px; height: 38px; font-size: 0.75rem; font-weight: 700;"
                       >
                         <span class="material-symbols-outlined" style="font-size: 0.95rem;">receipt_long</span>
-                        <span>${t('View Full Details', 'မှာယူမှု အသေးစိတ်', '予約詳細を見る')}</span>
+                        <span>${t('view_full_details_btn')}</span>
                       </button>
                       <button
                         type="button"
@@ -495,7 +489,7 @@
                         style="height: 38px; font-size: 0.75rem; padding: 0 0.85rem; font-weight: 700;"
                       >
                         <span class="material-symbols-outlined" style="font-size: 0.95rem;">qr_code</span>
-                        <span>${t('Pass', 'ဝင်ခွင့်ကတ်', 'パス')}</span>
+                        <span>${t('pass_btn_label')}</span>
                       </button>
                       ${
                         lookupResult.status !== 'Cancelled' && lookupResult.status !== 'Completed'
@@ -505,7 +499,7 @@
                           id="btn-lookup-direct-cancel"
                           class="btn-secondary-action"
                           style="height: 38px; font-size: 0.75rem; padding: 0 0.75rem; color: #9f1239; border-color: #fecdd3;"
-                          title="${t('Cancel Booking', 'ဘွတ်ကင် ပယ်ဖျက်ရန်', '予約をキャンセル')}"
+                          title="${t('cancel_booking_action')}"
                         >
                           <span class="material-symbols-outlined" style="font-size: 0.95rem;">cancel</span>
                         </button>
@@ -517,7 +511,7 @@
                         id="btn-clear-lookup"
                         class="btn-secondary-action"
                         style="height: 38px; font-size: 0.75rem; padding: 0 0.65rem;"
-                        title="${t('Clear & Search Another', 'အသစ်ပြန်ရှာမည်', '新しい検索')}"
+                        title="${t('clear_and_search_another')}"
                       >
                         <span class="material-symbols-outlined" style="font-size: 0.95rem;">refresh</span>
                       </button>
@@ -545,28 +539,28 @@
                   >
                     <span class="material-symbols-outlined" style="font-size: 0.875rem;">arrow_back</span>
                   </button>
-                  <h3 style="font-weight: 700; font-size: 0.8125rem; color: #231916; margin: 0;">${isMm ? 'စကားဝှက် ပြန်လည်သတ်မှတ်ရန်' : 'Reset Password'}</h3>
+                  <h3 style="font-weight: 700; font-size: 0.8125rem; color: #231916; margin: 0;">${t('reset_password')}</h3>
                 </div>
 
                 ${
                   resetEmailSent
                     ? `
                   <div style="padding: 0.875rem; border-radius: 14px; background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; display: flex; flex-direction: column; gap: 0.4rem;">
-                    <p style="font-size: 0.71875rem; font-weight: 700; margin: 0;">${isMm ? 'စကားဝှက် ပြောင်းလဲရန် လင့်ခ် ပေးပို့ပြီးပါပြီ' : 'Reset Link Sent Successfully'}</p>
-                    <p style="font-size: 0.6875rem; margin: 0;">${isMm ? 'သင့်အီးမေးလ် inbox ထဲတွင် လင့်ခ်ကို စစ်ဆေးပေးပါ' : 'Please check your email inbox to reset your password.'}</p>
+                    <p style="font-size: 0.71875rem; font-weight: 700; margin: 0;">${t('reset_link_sent_title')}</p>
+                    <p style="font-size: 0.6875rem; margin: 0;">${t('reset_link_sent_sub')}</p>
                     <button
                       type="button"
                       id="btn-return-login-reset"
                       class="btn-primary-action"
                       style="height: 36px; font-size: 0.75rem; background-color: #166534 !important;"
                     >
-                      ${isMm ? 'အကောင့်ဝင်ရန် ပြန်သွားမည်' : 'Return to Login'}
+                      ${t('return_to_login')}
                     </button>
                   </div>
                 `
                     : `
                   <p style="font-size: 0.75rem; color: #58413f; margin: 0; line-height: 1.4;">
-                    ${isMm ? 'သင့်အကောင့် အီးမေးလ်ကို ထည့်ပါ။ စကားဝှက်အသစ် ပြောင်းလဲရန် လင့်ခ် ပေးပို့ပါမည်။' : 'Enter your registered email address to receive password reset instructions.'}
+                    ${t('reset_instructions')}
                   </p>
 
                   <form id="forgot-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -582,7 +576,7 @@
                       type="submit"
                       class="btn-primary-action"
                     >
-                      ${isMm ? 'လင့်ခ် ပေးပို့မည်' : 'Send Reset Link'}
+                      ${t('send_reset_link')}
                     </button>
                   </form>
                 `
@@ -605,12 +599,12 @@
                   >
                     <span class="material-symbols-outlined" style="font-size: 0.875rem;">arrow_back</span>
                   </button>
-                  <h3 style="font-weight: 700; font-size: 0.8125rem; color: #231916; margin: 0;">${isMm ? 'အကောင့်သစ် ဖွင့်ရန်' : 'Create Account'}</h3>
+                  <h3 style="font-weight: 700; font-size: 0.8125rem; color: #231916; margin: 0;">${t('create_account_heading')}</h3>
                 </div>
 
                 <form id="signup-new-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
                   <div>
-                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${isMm ? 'အမည်' : 'Full Name'} *</label>
+                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${t('full_name')} *</label>
                     <input
                       type="text"
                       required
@@ -622,7 +616,7 @@
                   </div>
 
                   <div>
-                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${isMm ? 'အီးမေးလ်' : 'Email'} *</label>
+                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${t('email')} *</label>
                     <input
                       type="email"
                       required
@@ -634,7 +628,7 @@
                   </div>
 
                   <div>
-                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${isMm ? 'စကားဝှက်' : 'Password'} *</label>
+                    <label style="display: block; font-size: 0.71875rem; font-weight: 700; color: #58413f; margin-bottom: 0.2rem;">${t('password')} *</label>
                     <input
                       type="password"
                       required
@@ -651,7 +645,7 @@
                     class="btn-primary-action"
                     style="margin-top: 0.25rem;"
                   >
-                    ${isMm ? 'အကောင့် အတည်ပြုဖွင့်မည်' : 'Complete Registration'}
+                    ${t('complete_registration')}
                   </button>
                 </form>
               </div>
@@ -670,7 +664,7 @@
             id="login-footer-privacy-btn"
             class="login-footer-link"
           >
-            ${isMm ? 'ကိုယ်ရေးလုံခြုံမှု မူဝါဒ' : 'Privacy Policy'}
+            ${t('privacy_policy')}
           </button>
           <span>•</span>
           <button
@@ -678,7 +672,7 @@
             id="login-footer-terms-btn"
             class="login-footer-link"
           >
-            ${isMm ? 'စည်းမျဉ်းနှင့် သတ်မှတ်ချက်များ' : 'Terms of Service'}
+            ${t('terms_of_service')}
           </button>
           <span>•</span>
           <button
@@ -686,7 +680,7 @@
             id="login-footer-lang-btn"
             class="login-footer-link lang-highlight"
           >
-            ${isMm ? 'English' : 'မြန်မာ'}
+            ${(window.I18n ? window.I18n.getRawLang() : 'EN') === 'MM' ? 'English' : 'မြန်မာ'}
           </button>
         </div>
 
@@ -699,7 +693,7 @@
               <div class="flex items-center justify-between border-b border-[#E8DDD0] pb-3">
                 <div class="font-headline font-bold text-base text-[#241A18] flex items-center gap-2">
                   <span class="material-symbols-outlined text-[#9B1C25]">qr_code_2</span>
-                  <span>${t('Digital Dining Pass', 'ဒီဂျစ်တယ် ဝင်ခွင့်ကတ်', 'デジタルお食事パス')}</span>
+                  <span>${t('digital_dining_pass')}</span>
                 </div>
                 <button type="button" id="btn-close-pass-modal" class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#241A18] cursor-pointer transition-colors">
                   <span class="material-symbols-outlined text-lg">close</span>
@@ -709,7 +703,7 @@
               <div class="space-y-1">
                 <h4 class="font-headline font-bold text-base text-[#241A18]">${state.inspectedPassBooking.restaurantName || 'Restaurant'}</h4>
                 <div class="flex items-center justify-center gap-1.5">
-                  <span class="text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">${t('Reservation No', 'ဘွတ်ကင် နံပါတ်', '予約番号')}:</span>
+                  <span class="text-[11px] font-bold text-[#6D6561] uppercase tracking-wider">${t('reservation_no_colon')}</span>
                   <span class="font-mono text-sm font-extrabold text-[#9B1C25]">${state.inspectedPassBooking.reservationNo || state.inspectedPassBooking.id}</span>
                 </div>
               </div>
@@ -725,21 +719,21 @@
 
               <div class="bg-[#F8EFE5] rounded-xl p-3 text-xs text-[#241A18] space-y-1.5 text-left">
                 <div class="flex items-center justify-between font-semibold">
-                  <span class="text-[#6D6561]">${t('Date & Time', 'ရက်စွဲနှင့် အချိန်', '日時')}:</span>
+                  <span class="text-[#6D6561]">${t('date_and_time')}</span>
                   <span>${state.inspectedPassBooking.date} • ${state.inspectedPassBooking.time}</span>
                 </div>
                 <div class="flex items-center justify-between font-semibold">
-                  <span class="text-[#6D6561]">${t('Party Size', 'လူဦးရေ', '人数')}:</span>
-                  <span>${state.inspectedPassBooking.guests} ${t('Guests', 'ဦး', '名')}</span>
+                  <span class="text-[#6D6561]">${t('party_size_colon')}</span>
+                  <span>${state.inspectedPassBooking.guests} ${t('guests_suffix')}</span>
                 </div>
                 <div class="flex items-center justify-between font-semibold">
-                  <span class="text-[#6D6561]">${t('Guest', 'ဧည့်သည်', 'お名前')}:</span>
+                  <span class="text-[#6D6561]">${t('guest_name')}:</span>
                   <span>${state.inspectedPassBooking.guestName || 'Guest'}</span>
                 </div>
               </div>
 
               <p class="text-[11px] text-[#6D6561] leading-relaxed">
-                ${t('Present this digital QR pass to the restaurant host upon arrival for prompt seating.', 'စားသောက်ဆိုင်သို့ ရောက်ရှိချိန်တွင် စားပွဲဝိုင်း ချက်ချင်းရရှိရန် ဤ QR ကုဒ်ကို ဝန်ထမ်းများအား ပြသပေးပါ။', 'ご来店時にレストラン受付にてこちらのQRコードをご提示ください。')}
+                ${t('present_pass_prompt')}
               </p>
 
               <button
@@ -747,7 +741,7 @@
                 id="btn-dismiss-pass-modal"
                 class="w-full btn-primary py-3 rounded-full font-label text-xs font-bold shadow-md cursor-pointer"
               >
-                ${t('Close Pass', 'ပိတ်မည်', '閉じる')}
+                ${t('close_pass_btn')}
               </button>
             </div>
           </div>
@@ -764,7 +758,7 @@
               <div class="flex items-center justify-between border-b border-[#E8DDD0] pb-3">
                 <div class="font-headline font-bold text-base text-[#9B1C25] flex items-center gap-2">
                   <span class="material-symbols-outlined text-[#9B1C25]">cancel</span>
-                  <span>${t('Cancel Reservation', 'ဘွတ်ကင် ပယ်ဖျက်ရန်', '予約のキャンセル')}</span>
+                  <span>${t('cancel_reservation_heading')}</span>
                 </div>
                 <button type="button" id="btn-close-direct-cancel-modal" class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] hover:text-[#241A18] cursor-pointer transition-colors">
                   <span class="material-symbols-outlined text-lg">close</span>
@@ -774,30 +768,30 @@
               <div class="space-y-1 text-left">
                 <h4 class="font-headline font-bold text-sm text-[#241A18]">${lookupResult.restaurantName}</h4>
                 <p class="font-mono text-xs font-bold text-[#9B1C25]">${lookupResult.reservationNo || lookupResult.id}</p>
-                <p class="text-xs text-[#6D6561]">${lookupResult.date} at ${lookupResult.time} (${lookupResult.guests} ${t('Guests', 'ဦး', '名')})</p>
+                <p class="text-xs text-[#6D6561]">${lookupResult.date} at ${lookupResult.time} (${lookupResult.guests} ${t('guests_suffix')})</p>
               </div>
 
               <div class="text-left space-y-2">
-                <label class="text-xs font-bold text-[#241A18] block">${t('Reason for cancellation:', 'ပယ်ဖျက်ရသည့် အကြောင်းအရင်း:', 'キャンセル理由:')}</label>
+                <label class="text-xs font-bold text-[#241A18] block">${t('reason_for_cancellation')}</label>
                 <div class="space-y-1.5 text-xs text-[#554340] bg-[#F8EFE5]/50 p-3 rounded-xl border border-[#E8DDD0]">
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" name="direct-cancel-reason" value="schedule" checked class="text-[#9B1C25]">
-                    <span>${t('Change of plans or schedule', 'အစီအစဉ် ရက်စွဲ ပြောင်းလဲသွားခြင်း', '予定の変更')}</span>
+                    <span>${t('reason_change_plans')}</span>
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" name="direct-cancel-reason" value="emergency" class="text-[#9B1C25]">
-                    <span>${t('Personal emergency or illness', 'အရေးပေါ်ကိစ္စ သို့မဟုတ် ကျန်းမာရေး', '急用・体調不良')}</span>
+                    <span>${t('reason_emergency')}</span>
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" name="direct-cancel-reason" value="other" class="text-[#9B1C25]">
-                    <span>${t('Other reason', 'အခြား အကြောင်းအရင်း', 'その他')}</span>
+                    <span>${t('reason_other')}</span>
                   </label>
                 </div>
               </div>
 
               <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-900 flex items-center justify-between font-bold">
-                <span>${t('Cancellation Fee:', 'ပယ်ဖျက်ခ:', 'キャンセル手数料:')}</span>
-                <span class="font-extrabold text-emerald-950">${t('Free (0 MMK)', 'အခမဲ့ (၀ ကျပ်)', '無料 (0 MMK)')}</span>
+                <span>${t('cancellation_fee')}</span>
+                <span class="font-extrabold text-emerald-950">${t('free_mmk')}</span>
               </div>
 
               <div class="flex items-center gap-2 pt-1">
@@ -806,14 +800,14 @@
                   id="btn-abort-direct-cancel"
                   class="flex-1 py-3 px-4 rounded-full border border-[#E8DDD0] bg-[#FFFDFC] text-xs font-bold text-[#241A18] hover:bg-[#F8EFE5] cursor-pointer transition-colors"
                 >
-                  ${t('Keep Booking', 'မလုပ်တော့ပါ', '予約を維持')}
+                  ${t('keep_booking')}
                 </button>
                 <button
                   type="button"
                   id="btn-confirm-direct-cancel"
                   class="flex-1 py-3 px-4 rounded-full bg-[#9B1C25] hover:bg-[#7F161E] text-white text-xs font-bold shadow-md cursor-pointer transition-colors"
                 >
-                  ${t('Confirm Cancel', 'အတည်ပြု ပယ်ဖျက်မည်', 'キャンセル確定')}
+                  ${t('confirm_cancel')}
                 </button>
               </div>
             </div>
@@ -870,8 +864,7 @@
     if (guestBtn) {
       guestBtn.addEventListener('click', () => {
         store.setActiveTab('discover');
-        const isMm = store.getState().currentLanguage === 'MM';
-        store.showToast(isMm ? 'ဧည့်သည်အဖြစ် ဆက်လက်ဝင်ရောက်ထားပါသည်' : 'Browsing as Guest');
+        store.showToast(t('browsing_as_guest'));
       });
     }
 
@@ -953,8 +946,7 @@
         const email = emailInput ? emailInput.value : '';
         if (email) {
           store.setLoginField('resetEmailSent', true);
-          const isMm = store.getState().currentLanguage === 'MM';
-          store.showToast(isMm ? `${email} သို့ လင့်ခ် ပို့ပြီးပါပြီ` : `Password reset link sent to ${email}`);
+          store.showToast(`${t('reset_email_sent')} (${email})`);
         }
       });
     }
@@ -1002,8 +994,7 @@
         store.setLoginField('showSignUp', false);
         store.setActiveTab('mypage');
 
-        const isMm = store.getState().currentLanguage === 'MM';
-        store.showToast(isMm ? 'အကောင့်အသစ် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ' : 'Account created successfully!');
+        store.showToast(t('account_created_success'));
       });
     }
 
@@ -1054,10 +1045,7 @@
         // Validation checking: accept standard reservation IDs
         if (!resNo || resNo.length < 3) {
           store.setLoginField('isInvalidFormat', true);
-          const isMm = store.getState().currentLanguage === 'MM';
-          const isJa = store.getState().currentLanguage === 'JA';
-          const msg = isJa ? '予約番号の形式が正しくありません (例: RSV-665304)' : (isMm ? 'ဘွတ်ကင်နံပါတ် ပုံစံမမှန်ပါ (ဥပမာ RSV-665304)' : 'Reservation number format is invalid (e.g. RSV-665304).');
-          store.setLoginError(msg);
+          store.setLoginError(t('invalid_code_error'));
           return;
         } else {
           store.setLoginField('isInvalidFormat', false);
@@ -1074,10 +1062,7 @@
         const no = copyResNoBtn.getAttribute('data-resno') || '';
         if (no) {
           navigator.clipboard.writeText(no);
-          const isMm = store.getState().currentLanguage === 'MM';
-          const isJa = store.getState().currentLanguage === 'JA';
-          const msg = isJa ? `予約番号をコピーしました: ${no}` : (isMm ? `ဘွတ်ကင်နံပါတ် ${no} အား ကူးယူပြီးပါပြီ` : `Copied reservation code: ${no}`);
-          store.showToast(msg);
+          store.showToast(`${t('reservation_copied_toast')}: ${no}`);
         }
       });
     }

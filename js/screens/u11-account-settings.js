@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
 
   // Track currently expanded accordion section: 'email' (expanded by default) | 'password' | 'phone' | 'withdrawal' | null
   let expandedSection = 'email';
@@ -22,15 +23,13 @@
     const isWithdrawOpen = expandedSection === 'withdrawal';
     const isLanguageOpen = expandedSection === 'language';
 
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (state.currentLanguage === 'MM' ? mm : en);
-
     return `
       <div id="u20-account-settings-container" class="space-y-4 animate-fadeIn text-left">
 
         <!-- SECTION HEADER -->
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl sm:text-3xl font-extrabold text-[#231916]">
-            ${t('Account Security & Preferences', 'အကောင့် လုံခြုံရေးနှင့် ဆက်တင်များ', 'アカウント設定・表示言語')}
+            ${t('accountSecurityPrefs')}
           </h2>
         </div>
 
@@ -42,14 +41,10 @@
                   <span class="material-symbols-outlined text-red-600 text-2xl shrink-0">cancel</span>
                   <div>
                     <h3 class="font-headline font-bold text-lg text-red-900">
-                      ${t('This Account Has Been Withdrawn', 'ဤအကောင့်ကို ဖျက်သိမ်းထားပါသည်', 'このアカウントは退会手続き済みです')}
+                      ${t('accountWithdrawnNotice')}
                     </h3>
                     <p class="font-body text-xs text-red-700 mt-1">
-                      ${t(
-                        'Your account is scheduled for permanent deletion and PDPA anonymization within 30 days.',
-                        'ရက်ပေါင်း ၃၀ အတွင်း ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း လုပ်ဆောင်နေပါသည်။',
-                        '30日以内に個人情報保護規定（PDPA）に準拠した完全匿名化・データ削除が完了します。'
-                      )}
+                      ${t('accountWithdrawnDesc')}
                     </p>
                   </div>
                 </div>
@@ -57,7 +52,7 @@
                   id="u20-reactivate-account-btn"
                   class="btn-primary px-5 py-2 rounded-full font-label text-xs font-bold shadow-sm cursor-pointer"
                 >
-                  ${t('Reactivate Account (Demo)', 'အကောင့် ပြန်လည်အသက်သွင်းမည် (Demo)', 'アカウントを再有効化 (Demo)')}
+                  ${t('reactivate_account_demo')}
                 </button>
               </div>
             `
@@ -78,10 +73,10 @@
               </div>
               <div class="min-w-0">
                 <h3 class="font-headline font-bold text-base sm:text-lg text-[#231916] truncate">
-                  ${t('System Display Language', 'စနစ်ပြသရေး ဘာသာစကား', 'システム表示言語 (Language)')}
+                  ${t('displayLanguage')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] truncate">
-                  ${t('Current Language: ', 'လက်ရှိ ရွေးချယ်ထားသော ဘာသာစကား: ', '現在の設定: ')}
+                  ${t('currentLanguageLabel')}
                   <span class="font-bold text-[#840f16]">
                     ${state.currentLanguage === 'EN' ? 'English (EN)' : (state.currentLanguage === 'JA' ? '日本語 (JA)' : 'မြန်မာ (MM)')}
                   </span>
@@ -106,11 +101,7 @@
               ? `
                 <div class="p-5 sm:p-6 pt-2 border-t border-[#E8DDD0] space-y-4 animate-fadeIn">
                   <p class="font-body text-xs text-[#6D6561]">
-                    ${t(
-                      'Choose your preferred system display language. All booking steps, details, and notifications update immediately.',
-                      'အသုံးပြုလိုသည့် ဘာသာစကား ရွေးချယ်ပါ။ စနစ်တစ်ခုလုံးရှိ မျက်နှာပြင်များ၊ အသိပေးချက်များနှင့် ဘွတ်ကင်လုပ်ဆောင်ချက်များသည် ချက်ချင်း ပြောင်းလဲသွားပါမည်။',
-                      'Yoyakuシステム全体で表示する言語を選択してください。すべての画面、通知、予約手続きが即座に切り替わります。'
-                    )}
+                    ${t('languageSelectDesc')}
                   </p>
 
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
@@ -194,11 +185,11 @@
               </div>
               <div class="min-w-0">
                 <h3 class="font-headline font-bold text-base sm:text-lg text-[#231916] truncate">
-                  ${isMm ? 'အီးမေးလ်လိပ်စာ ပြောင်းလဲခြင်း' : 'Email Address Change'}
+                  ${t('emailAddressChange')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] truncate">
                   <span class="font-mono text-[#231916] font-semibold">${myData.userEmail || 'alex@example.com'}</span>
-                  ${myData.pendingNewEmail ? `<span class="text-amber-800 ml-1.5">(${isMm ? 'အသစ်စောင့်ဆိုင်းနေ:' : 'Pending:'} ${myData.pendingNewEmail})</span>` : ''}
+                  ${myData.pendingNewEmail ? `<span class="text-amber-800 ml-1.5">(${t('pendingPrefix')} ${myData.pendingNewEmail})</span>` : ''}
                 </p>
               </div>
             </div>
@@ -211,13 +202,13 @@
                     ? `
                       <span class="hidden sm:inline-flex items-center gap-1.5 bg-[#104b2b]/10 text-[#104b2b] border border-[#104b2b]/25 px-3 py-1 rounded-full font-label text-xs font-bold">
                         <span class="material-symbols-outlined text-xs">verified</span>
-                        <span>${isMm ? 'အတည်ပြုပြီး' : 'Verified'}</span>
+                        <span>${t('verifiedBadge')}</span>
                       </span>
                     `
                     : `
                       <span class="hidden sm:inline-flex items-center gap-1.5 bg-amber-500/15 text-amber-800 border border-amber-500/30 px-3 py-1 rounded-full font-label text-xs font-bold">
                         <span class="material-symbols-outlined text-xs">warning</span>
-                        <span>${isMm ? 'အတည်မပြုရသေး' : 'Unverified'}</span>
+                        <span>${t('unverifiedBadge')}</span>
                       </span>
                     `
                 }
@@ -242,11 +233,11 @@
                             <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">mark_email_unread</span>
                             <div>
                               <div class="font-headline font-bold text-xs text-amber-900">
-                                ${isMm ? 'အတည်ပြုရန် စောင့်ဆိုင်းနေသော အီးမေးလ်အသစ်:' : 'Pending Email Verification:'}
+                                ${t('pendingEmailAlert')}
                                 <span class="font-mono text-amber-950 font-extrabold underline ml-1">${myData.pendingNewEmail}</span>
                               </div>
                               <div class="font-body text-[11px] text-amber-800 mt-0.5">
-                                ${isMm ? 'အီးမေးလ်အသစ်ထံ ပို့ထားသော အတည်ပြုလင့်ခ်ကို နှိပ်ပြီးမှသာ အတည်ဖြစ်ပါမည်။' : 'Click the verification link sent to your new email inbox to complete the change.'}
+                                ${t('pendingEmailDesc')}
                               </div>
                             </div>
                           </div>
@@ -255,7 +246,7 @@
                             id="u20-simulate-verify-email-btn"
                             class="btn-primary px-4 py-1.5 rounded-full font-label text-xs font-bold shrink-0 cursor-pointer shadow-xs"
                           >
-                            ${isMm ? 'လင့်ခ်နှိပ်ခြင်း စမ်းသပ်ရန်' : 'Simulate Verify Link'}
+                            ${t('simulateVerifyLink')}
                           </button>
                         </div>
                       `
@@ -266,7 +257,7 @@
                     <!-- Current Email Display -->
                     <div>
                       <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'လက်ရှိ အီးမေးလ်လိပ်စာ' : 'Current Email Address'}
+                        ${t('currentEmailAddress')}
                       </label>
                       <div class="w-full bg-[#EADFD1]/40 border border-[#EADFD1] rounded-xl px-4 py-2.5 font-body text-xs text-[#231916] font-medium flex items-center justify-between">
                         <span>${myData.userEmail || 'alex@example.com'}</span>
@@ -277,12 +268,12 @@
                     <!-- New Email Input -->
                     <div>
                       <label for="u20-input-new-email" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'အီးမေးလ်လိပ်စာ အသစ်' : 'New Email Address'} <span class="text-[#840f16]">*</span>
+                        ${t('newEmailAddress')} <span class="text-[#840f16]">*</span>
                       </label>
                       <input
                         type="email"
                         id="u20-input-new-email"
-                        placeholder="${isMm ? 'ဥပမာ- user@example.com' : 'e.g. alex.new@example.com'}"
+                        placeholder="${t('newEmailPlaceholder')}"
                         class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl px-4 py-2.5 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-colors"
                         required
                       />
@@ -291,13 +282,13 @@
                     <!-- Re-authentication requirement -->
                     <div>
                       <label for="u20-email-confirm-pw" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'လုံခြုံရေး အတည်ပြုရန် စကားဝှက် ရိုက်ထည့်ပါ' : 'Security Re-authentication (Current Password)'} <span class="text-[#840f16]">*</span>
+                        ${t('securityReauth')} <span class="text-[#840f16]">*</span>
                       </label>
                       <div class="relative">
                         <input
                           type="password"
                           id="u20-email-confirm-pw"
-                          placeholder="${isMm ? 'လက်ရှိ စကားဝှက် ရိုက်ထည့်ပါ' : 'Enter current account password'}"
+                          placeholder="${t('currentPasswordPlaceholder')}"
                           class="w-full bg-[#FFF8F6] border border-[#EADFD1] focus:border-[#840f16] focus:bg-white rounded-xl pl-4 pr-11 py-2.5 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-colors"
                           required
                         />
@@ -315,7 +306,7 @@
                     <!-- OR SSO Re-authentication if Google auth -->
                     <div class="pt-1 flex items-center gap-3">
                       <div class="h-px bg-[#EADFD1] flex-1"></div>
-                      <span class="font-label text-[11px] text-[#8d7b75] uppercase">${isMm ? 'သို့မဟုတ်' : 'Or via SSO'}</span>
+                      <span class="font-label text-[11px] text-[#8d7b75] uppercase">${t('orViaSSO')}</span>
                       <div class="h-px bg-[#EADFD1] flex-1"></div>
                     </div>
 
@@ -330,7 +321,7 @@
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                       </svg>
-                      <span>${isMm ? 'Google အကောင့်ဖြင့် Re-authenticate ပြုလုပ်မည်' : 'Re-authenticate with Google'}</span>
+                      <span>${t('reauthWithGoogle')}</span>
                     </button>
 
                     <button
@@ -338,7 +329,7 @@
                       class="btn-primary px-6 py-2.5 rounded-full font-label text-xs font-bold shadow-xs cursor-pointer inline-flex items-center gap-2"
                     >
                       <span class="material-symbols-outlined text-sm">send</span>
-                      <span>${isMm ? 'အတည်ပြုလင့်ခ် ပို့မည်' : 'Send Verification Link'}</span>
+                      <span>${t('sendVerificationLink')}</span>
                     </button>
                   </form>
                 </div>
@@ -362,10 +353,10 @@
               </div>
               <div class="min-w-0">
                 <h3 class="font-headline font-bold text-base sm:text-lg text-[#231916] truncate">
-                  ${isMm ? 'စကားဝှက် ပြောင်းလဲခြင်း' : 'Password Change'}
+                  ${t('passwordChange')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] truncate">
-                  ${isMm ? 'အနည်းဆုံး စာလုံး (၈) လုံး၊ အင်္ဂလိပ်စာလုံးနှင့် ဂဏန်းတွဲ၍ ပြောင်းလဲပါ' : 'Minimum 8 characters with combination of letters and numbers'}
+                  ${t('passwordChangeRules')}
                 </p>
               </div>
             </div>
@@ -386,13 +377,13 @@
                     <!-- Current Password -->
                     <div>
                       <label for="u20-current-password" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'လက်ရှိ စကားဝှက်' : 'Current Password'} <span class="text-[#840f16]">*</span>
+                        ${t('currentPassword')} <span class="text-[#840f16]">*</span>
                       </label>
                       <div class="relative">
                         <input
                           type="password"
                           id="u20-current-password"
-                          placeholder="${isMm ? 'လက်ရှိ စကားဝှက် ရိုက်ထည့်ပါ' : 'Enter current password'}"
+                          placeholder="${t('currentPasswordPlaceholder')}"
                           class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl pl-4 pr-11 py-2.5 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-colors"
                           required
                         />
@@ -410,13 +401,13 @@
                     <!-- New Password -->
                     <div>
                       <label for="u20-new-password" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'စကားဝှက်အသစ်' : 'New Password'} <span class="text-[#840f16]">*</span>
+                        ${t('newPassword')} <span class="text-[#840f16]">*</span>
                       </label>
                       <div class="relative">
                         <input
                           type="password"
                           id="u20-new-password"
-                          placeholder="${isMm ? 'စကားဝှက်အသစ် (အနည်းဆုံး ၈ လုံး၊ အင်္ဂလိပ်စာလုံး + ဂဏန်း)' : 'Enter new password (min 8 chars, letters + numbers)'}"
+                          placeholder="${t('newPasswordRulesPlaceholder')}"
                           class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl pl-4 pr-11 py-2.5 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-colors"
                           required
                         />
@@ -434,13 +425,13 @@
                     <!-- Confirm New Password -->
                     <div>
                       <label for="u20-confirm-password" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'စကားဝှက်အသစ်ကို ထပ်မံရိုက်ထည့်ပါ' : 'Confirm New Password'} <span class="text-[#840f16]">*</span>
+                        ${t('confirmNewPassword')} <span class="text-[#840f16]">*</span>
                       </label>
                       <div class="relative">
                         <input
                           type="password"
                           id="u20-confirm-password"
-                          placeholder="${isMm ? 'စကားဝှက်အသစ်ကို အတည်ပြုရန် ထပ်မံရိုက်ထည့်ပါ' : 'Re-enter new password'}"
+                          placeholder="${t('confirmNewPasswordPlaceholder')}"
                           class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl pl-4 pr-11 py-2.5 font-body text-xs text-[#231916] placeholder:text-[#8d7b75] focus:outline-none transition-colors"
                           required
                         />
@@ -460,7 +451,7 @@
                       class="btn-primary px-6 py-2.5 rounded-full font-label text-xs font-bold shadow-xs cursor-pointer inline-flex items-center gap-2"
                     >
                       <span class="material-symbols-outlined text-sm">lock_reset</span>
-                      <span>${isMm ? 'စကားဝှက် အသစ်သိမ်းမည်' : 'Update Password'}</span>
+                      <span>${t('updatePasswordBtn')}</span>
                     </button>
                   </form>
                 </div>
@@ -484,7 +475,7 @@
               </div>
               <div class="min-w-0">
                 <h3 class="font-headline font-bold text-base sm:text-lg text-[#231916] truncate">
-                  ${isMm ? 'ဖုန်းနံပါတ် ပြောင်းလဲခြင်း' : 'Phone Number Change'}
+                  ${t('phoneNumberChange')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] truncate">
                   <span class="font-mono text-[#231916] font-semibold">${myData.userPhone || '+95 9 791 234 567'}</span>
@@ -500,13 +491,13 @@
                     ? `
                       <span class="hidden sm:inline-flex items-center gap-1.5 bg-[#104b2b]/10 text-[#104b2b] border border-[#104b2b]/25 px-3 py-1 rounded-full font-label text-xs font-bold">
                         <span class="material-symbols-outlined text-xs">check_circle</span>
-                        <span>Verified</span>
+                        <span>${t('verifiedBadge')}</span>
                       </span>
                     `
                     : `
                       <span class="hidden sm:inline-flex items-center gap-1.5 bg-amber-500/15 text-amber-800 border border-amber-500/30 px-3 py-1 rounded-full font-label text-xs font-bold animate-pulse">
                         <span class="material-symbols-outlined text-xs">pending</span>
-                        <span>Unverified</span>
+                        <span>${t('unverifiedBadge')}</span>
                       </span>
                     `
                 }
@@ -526,12 +517,10 @@
                   <div class="bg-amber-50/70 rounded-xl p-4 border border-amber-200 text-xs font-body text-amber-900 space-y-1">
                     <div class="font-bold flex items-center gap-1.5 text-amber-950">
                       <span class="material-symbols-outlined text-sm text-amber-700">warning</span>
-                      <span>${isMm ? 'အရေးကြီး သတိပေးချက်' : 'Important Note on Phone Verification'}</span>
+                      <span>${t('importantNotePhone')}</span>
                     </div>
                     <p>
-                      ${isMm
-                        ? 'ဖုန်းနံပါတ် ပြောင်းလဲလိုက်ပါက <code class="bg-amber-100 font-mono px-1.5 py-0.5 rounded text-amber-950 font-bold">phone_verified</code> အခြေအနေသည် "FALSE" (အတည်မပြုရသေး) အဖြစ် အလိုအလျောက် ပြန်လည်ပြောင်းလဲသွားမည်ဖြစ်ပြီး OTP ဖြင့် ပြန်လည်အတည်ပြုရန် လိုအပ်ပါသည်။'
-                        : 'When the phone number is changed, the `phone_verified` status will automatically reset to "FALSE" (Unverified) until confirmed via SMS OTP verification.'}
+                      ${t('phoneVerificationNotice')}
                     </p>
                   </div>
 
@@ -539,7 +528,7 @@
                     <!-- Current Phone -->
                     <div>
                       <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-2.5">
-                        ${isMm ? 'လက်ရှိ ဖုန်းနံပါတ်' : 'Current Phone Number'}
+                        ${t('currentPhoneNumber')}
                       </label>
                       <div class="w-full bg-[#EADFD1]/40 border border-[#EADFD1] rounded-xl px-4 py-2.5 font-body text-xs text-[#231916] font-medium flex items-center justify-between">
                         <span>${myData.userPhone || '+95 9 791 234 567'}</span>
@@ -550,7 +539,7 @@
                     <!-- New Phone Input with Myanmar Prefix -->
                     <div>
                       <label for="u20-input-new-phone" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-2.5">
-                        ${isMm ? 'ဖုန်းနံပါတ် အသစ်ထည့်ရန်' : 'New Phone Number'} <span class="text-[#840f16]">*</span>
+                        ${t('newPhoneNumber')} <span class="text-[#840f16]">*</span>
                       </label>
                       <div class="flex items-center gap-2">
                         <div class="bg-[#EADFD1]/60 border border-[#EADFD1] rounded-xl px-3.5 py-2.5 font-label font-bold text-xs text-[#231916] shrink-0 flex items-center gap-1.5">
@@ -573,7 +562,7 @@
                         class="btn-primary px-6 py-2.5 rounded-full font-label text-xs font-bold shadow-xs cursor-pointer inline-flex items-center gap-2"
                       >
                         <span class="material-symbols-outlined text-sm">sms</span>
-                        <span>${isMm ? 'ဖုန်းနံပါတ်ပြောင်းလဲပြီး OTP ရယူမည်' : 'Update & Verify via OTP'}</span>
+                        <span>${t('updateVerifyOtp')}</span>
                       </button>
 
                       ${
@@ -584,7 +573,7 @@
                               id="u20-open-otp-modal-btn"
                               class="bg-white border border-[#840f16] text-[#840f16] hover:bg-[#840f16] hover:text-white px-4 py-2.5 rounded-full font-label text-xs font-bold transition-colors cursor-pointer"
                             >
-                              ${isMm ? 'OTP ကုဒ် ရိုက်ထည့်ရန်' : 'Enter OTP Verification Code'}
+                              ${t('enterOtpCode')}
                             </button>
                           `
                           : ''
@@ -612,16 +601,16 @@
               </div>
               <div class="min-w-0">
                 <h3 class="font-headline font-bold text-base sm:text-lg text-[#840f16] truncate">
-                  ${isMm ? 'အကောင့်ဖျက်သိမ်းခြင်း' : 'Account Withdrawal (Permanent Deletion)'}
+                  ${t('accountWithdrawal')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] truncate">
-                  ${isMm ? 'အကောင့်ဖျက်သိမ်းခြင်းဆိုင်ရာ စည်းမျဉ်းများ၊ ကြိုတင်မှာယူမှုများနှင့် PDPA ဥပဒေ' : 'Irreversible deletion, reservation cancellation, and PDPA compliance'}
+                  ${t('accountWithdrawalDesc')}
                 </p>
               </div>
             </div>
 
             <div class="flex items-center gap-3 shrink-0">
-              <span class="hidden sm:inline-block font-label text-xs text-[#840f16] font-semibold bg-[#840f16]/10 px-2.5 py-1 rounded-full">${isMm ? 'သတိပေးချက်' : 'Danger Zone'}</span>
+              <span class="hidden sm:inline-block font-label text-xs text-[#840f16] font-semibold bg-[#840f16]/10 px-2.5 py-1 rounded-full">${t('dangerZone')}</span>
               <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${isWithdrawOpen ? 'bg-[#840f16] text-white border border-[#840f16]' : 'bg-white text-[#840f16] border border-[#EADFD1]'}">
                 <span class="material-symbols-outlined text-base select-none pointer-events-none">${isWithdrawOpen ? 'expand_less' : 'expand_more'}</span>
               </div>
@@ -640,12 +629,10 @@
                     <div class="bg-white p-4 rounded-xl border border-[#EADFD1] space-y-2">
                       <div class="flex items-center gap-2 text-xs font-label font-bold text-[#840f16]">
                         <span class="material-symbols-outlined text-base">block</span>
-                        <span>${isMm ? 'သတိပေးချက်' : 'Irreversible'}</span>
+                        <span>${t('irreversible')}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm
-                          ? 'အကောင့်ဖျက်သိမ်းပြီးပါက မည်သည့်နည်းနှင့်မျှ ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။ စုဆောင်းထားသော Points များနှင့် VIP အခွင့်အရေးများ ဆုံးရှုံးပါမည်။'
-                          : 'Account deletion is permanent. Once withdrawn, member points and VIP perks cannot be restored.'}
+                        ${t('irreversibleDesc')}
                       </p>
                     </div>
 
@@ -653,12 +640,10 @@
                     <div class="bg-white p-4 rounded-xl border border-[#EADFD1] space-y-2">
                       <div class="flex items-center gap-2 text-xs font-label font-bold text-[#840f16]">
                         <span class="material-symbols-outlined text-base">event_busy</span>
-                        <span>${isMm ? 'ကြိုတင်မှာယူမှုများ' : 'Upcoming Bookings'}</span>
+                        <span>${t('upcomingBookingsWarning')}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm
-                          ? `အကောင့်ဖျက်လိုက်တာနှင့် လာရောက်ရန်ကျန်ရှိသော စိုတ်ထားမှုများ (${upcomingReservations.length} ခု) အလိုအလျောက် ပယ်ဖျက်သွားပါမည်။ ဆိုင်၏ Cancellation Policy အရ ပယ်ဖျက်ခ ရှိနိုင်ပါသည်။`
-                          : `All active upcoming reservations (${upcomingReservations.length}) will be auto-cancelled. Restaurant cancellation policies/fees may still apply.`}
+                        ${t('upcomingBookingsDesc')}
                       </p>
                     </div>
 
@@ -666,12 +651,10 @@
                     <div class="bg-white p-4 rounded-xl border border-[#EADFD1] space-y-2">
                       <div class="flex items-center gap-2 text-xs font-label font-bold text-[#104b2b]">
                         <span class="material-symbols-outlined text-base">shield</span>
-                        <span>${isMm ? 'ကိုယ်ရေးအချက်အလက် (PDPA)' : 'PDPA Anonymization'}</span>
+                        <span>${t('pdpaAnonymization')}</span>
                       </div>
                       <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                        ${isMm
-                          ? 'အကောင့်ဖျက်ပြီး ရက်ပေါင်း ၃၀ အတွင်း သင်၏ ကိုယ်ရေးအချက်အလက်များကို PDPA ဥပဒေနှင့်အညီ အပြီးပိုင်ဖျက်သိမ်းခြင်း သို့မဟုတ် Anonymization ဆောင်ရွက်ပေးပါမည်။'
-                          : 'Personal records are purged or anonymized within 30 days in strict accordance with PDPA regulations.'}
+                        ${t('pdpaAnonymizationDesc')}
                       </p>
                     </div>
 
@@ -681,30 +664,30 @@
                   <form id="u20-withdrawal-form" class="space-y-4 pt-2">
                     <div>
                       <label for="u20-withdraw-reason" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'ဖျက်သိမ်းရသည့် အကြောင်းရင်း ရွေးချယ်ပါ' : 'Reason for Account Withdrawal'} <span class="text-[#840f16]">*</span>
+                        ${t('reasonWithdrawal')} <span class="text-[#840f16]">*</span>
                       </label>
                       <select
                         id="u20-withdraw-reason"
                         class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl px-4 py-2.5 font-body text-xs text-[#231916] focus:outline-none cursor-pointer"
                         required
                       >
-                        <option value="" disabled selected>${isMm ? '-- အကြောင်းရင်း ရွေးချယ်ရန် --' : '-- Select a primary reason --'}</option>
-                        <option value="no_longer_using">${isMm ? 'အသုံးမပြုတော့သောကြောင့် (No longer using the service)' : 'No longer using the service'}</option>
-                        <option value="switch_account">${isMm ? 'အခြားအကောင့်တစ်ခု ပြောင်းလဲအသုံးပြုလို၍ (Switching to another account)' : 'Switching to another account'}</option>
-                        <option value="booking_issues">${isMm ? 'စားပွဲဝိုင်း ကြိုတင်မှာယူမှု ပြဿနာများကြောင့် (Booking/reservation difficulties)' : 'Booking difficulties'}</option>
-                        <option value="unsatisfied">${isMm ? 'စနစ် သို့မဟုတ် ဝန်ဆောင်မှုအား မနှစ်သက်၍ (Unsatisfied with service)' : 'Unsatisfied with service'}</option>
-                        <option value="other">${isMm ? 'အခြား အကြောင်းပြချက် (Other reason)' : 'Other reason'}</option>
+                        <option value="" disabled selected>${t('selectReasonPrompt')}</option>
+                        <option value="no_longer_using">${t('reasonNoLongerUsing')}</option>
+                        <option value="switch_account">${t('reasonSwitchAccount')}</option>
+                        <option value="booking_issues">${t('reasonBookingIssues')}</option>
+                        <option value="unsatisfied">${t('reasonUnsatisfied')}</option>
+                        <option value="other">${t('reasonOther')}</option>
                       </select>
                     </div>
 
                     <div>
                       <label for="u20-withdraw-feedback" class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1.5">
-                        ${isMm ? 'ဖြည့်စွက် အကြံပြုချက် (ရွေးချယ်နိုင်သည်)' : 'Additional Feedback (Optional)'}
+                        ${t('additionalFeedback')}
                       </label>
                       <textarea
                         id="u20-withdraw-feedback"
                         rows="2"
-                        placeholder="${isMm ? 'ကျွန်ုပ်တို့၏ ဝန်ဆောင်မှုကို တိုးတက်ကောင်းမွန်စေရန် အကြံပြုချက် ရေးသားနိုင်ပါသည်...' : 'Help us improve by leaving any additional remarks...'}"
+                        placeholder="${t('additionalFeedbackPlaceholder')}"
                         class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl p-3 font-body text-xs text-[#231916] focus:outline-none"
                       ></textarea>
                     </div>
@@ -713,9 +696,7 @@
                     <label class="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-red-200 cursor-pointer select-none">
                       <input type="checkbox" id="u20-withdraw-confirm-checkbox" class="mt-0.5 rounded text-[#840f16] focus:ring-[#840f16] w-4 h-4" required />
                       <span class="font-body text-xs text-[#231916] font-medium leading-relaxed">
-                        ${isMm
-                          ? 'အထက်ဖော်ပြပါ သတိပေးချက်များ၊ လာမည့် စားပွဲဝိုင်း စိုတ်ထားမှုများ အလိုအလျောက် ပယ်ဖျက်ခံရမည့် စည်းကမ်းများနှင့် ရက်ပေါင်း ၃၀ အတွင်း PDPA ဒေတာဖျက်သိမ်းမှုတို့ကို သဘောတူလက်ခံပါသည်။'
-                          : 'I understand that this action is irreversible, my upcoming reservations will be automatically cancelled, and my personal data will be processed per PDPA 30-day deletion.'}
+                        ${t('confirmWithdrawalCheck')}
                       </span>
                     </label>
 
@@ -724,7 +705,7 @@
                       class="w-full sm:w-auto bg-[#840f16] hover:bg-[#6b0c12] text-white px-8 py-3 rounded-full font-label font-bold text-xs shadow-md transition-all cursor-pointer inline-flex items-center justify-center gap-2"
                     >
                       <span class="material-symbols-outlined text-sm">person_remove</span>
-                      <span>${isMm ? 'အကောင့် အပြီးပိုင် ဖျက်သိမ်းမည်' : 'Permanently Delete My Account'}</span>
+                      <span>${t('deleteMyAccountBtn')}</span>
                     </button>
                   </form>
                 </div>
@@ -744,12 +725,7 @@
         const lang = e.currentTarget.getAttribute('data-select-lang');
         if (lang && store.setLanguage) {
           store.setLanguage(lang);
-          const toastMsg = window.YoyakuI18n ? window.YoyakuI18n.t(
-            'Display language updated to English',
-            'စနစ်ပြသရေး ဘာသာစကားအား မြန်မာ သို့ ပြောင်းလဲပြီးပါပြီ',
-            '表示言語を日本語に変更しました'
-          ) : 'Language updated';
-          store.showToast(toastMsg);
+          store.showToast(t('display_language_updated'));
         }
       });
     });
@@ -790,19 +766,14 @@
         e.preventDefault();
         const newEmailInput = containerElement.querySelector('#u20-input-new-email');
         const newEmail = newEmailInput ? newEmailInput.value.trim() : '';
-        const isMm = store.getState().currentLanguage === 'MM';
 
         if (!newEmail || !newEmail.includes('@')) {
-          store.showToast(isMm ? 'ကျေးဇူးပြု၍ အီးမေးလ်လိပ်စာ မှန်ကန်စွာ ထည့်ပါ' : 'Please enter a valid email address.');
+          store.showToast(t('enterValidEmailToast'));
           return;
         }
 
         store.requestEmailChange(newEmail);
-        store.showToast(
-          isMm
-            ? `အတည်ပြုလင့်ခ်ကို ${newEmail} သို့ ပေးပို့ထားပါသည်။`
-            : `Verification link sent to ${newEmail}!`
-        );
+        store.showToast(`${t('sendVerificationLink')}: ${newEmail}`);
       });
     }
 
@@ -810,13 +781,8 @@
     const simEmailBtn = containerElement.querySelector('#u20-simulate-verify-email-btn');
     if (simEmailBtn) {
       simEmailBtn.addEventListener('click', () => {
-        const isMm = store.getState().currentLanguage === 'MM';
         store.confirmPendingEmail();
-        store.showToast(
-          isMm
-            ? 'အီးမေးလ်လိပ်စာ အသစ် အောင်မြင်စွာ အတည်ပြုပြီးပါပြီ။'
-            : 'Email address updated and verified successfully!'
-        );
+        store.showToast(t('verifiedBadge'));
       });
     }
 
@@ -871,26 +837,17 @@
     if (pwForm) {
       pwForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const isMm = store.getState().currentLanguage === 'MM';
         const isAllValid = checkPasswordStrength();
 
         if (!isAllValid) {
-          store.showToast(
-            isMm
-              ? 'စကားဝှက်သည် အနည်းဆုံး ၈ လုံး၊ အင်္ဂလိပ်စာလုံးနှင့် ဂဏန်း ပါဝင်ပြီး တူညီရပါမည်။'
-              : 'Password must have 8+ characters, letters, numbers, and match.'
-          );
+          store.showToast(t('passwordChangeRules'));
           return;
         }
 
         // Reset form
         pwForm.reset();
         checkPasswordStrength();
-        store.showToast(
-          isMm
-            ? 'စကားဝှက်အသစ် ပြောင်းလဲပြီးပါပြီ။'
-            : 'Password updated successfully!'
-        );
+        store.showToast(t('password_updated'));
       });
     }
 
@@ -899,12 +856,11 @@
     if (phoneForm) {
       phoneForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const isMm = store.getState().currentLanguage === 'MM';
         const phoneInput = containerElement.querySelector('#u20-input-new-phone');
         let newPhone = phoneInput ? phoneInput.value.trim() : '';
 
         if (!newPhone) {
-          store.showToast(isMm ? 'ကျေးဇူးပြု၍ ဖုန်းနံပါတ် ထည့်ပါ' : 'Please enter a valid phone number.');
+          store.showToast(t('enterValidPhoneToast'));
           return;
         }
 
@@ -916,11 +872,7 @@
         }
 
         store.updatePhoneNumber(newPhone);
-        store.showToast(
-          isMm
-            ? `ဖုန်းနံပါတ် ${newPhone} သို့ ပြောင်းလဲထားပါသည်။ OTP ဖြင့် အတည်ပြုပါ (phone_verified: FALSE)`
-            : `Phone updated to ${newPhone}. Verification status reset to FALSE.`
-        );
+        store.showToast(`${t('phoneNumberChange')}: ${newPhone}`);
 
         // Open interactive OTP modal (U-13)
         store.openOtpModal({
@@ -955,15 +907,14 @@
         const reasonSelect = containerElement.querySelector('#u20-withdraw-reason');
         const feedbackInput = containerElement.querySelector('#u20-withdraw-feedback');
         const confirmCheck = containerElement.querySelector('#u20-withdraw-confirm-checkbox');
-        const isMm = store.getState().currentLanguage === 'MM';
 
         if (!reasonSelect || !reasonSelect.value) {
-          store.showToast(isMm ? 'ကျေးဇူးပြု၍ ဖျက်သိမ်းရသည့် အကြောင်းရင်း ရွေးချယ်ပါ' : 'Please select a reason for withdrawal.');
+          store.showToast(t('selectReasonWithdrawalToast'));
           return;
         }
 
         if (!confirmCheck || !confirmCheck.checked) {
-          store.showToast(isMm ? 'စည်းကမ်းချက်များကို သဘောတူရန် အမှန်ခြစ်ပါ' : 'Please confirm that you agree to the conditions.');
+          store.showToast(t('agreeConditionsToast'));
           return;
         }
 
@@ -984,9 +935,8 @@
     const reactivateBtn = containerElement.querySelector('#u20-reactivate-account-btn');
     if (reactivateBtn) {
       reactivateBtn.addEventListener('click', () => {
-        const isMm = store.getState().currentLanguage === 'MM';
         store.reactivateAccount();
-        store.showToast(isMm ? 'အကောင့်ကို ပြန်လည်အသက်သွင်းပြီးပါပြီ' : 'Account reactivated successfully!');
+        store.showToast(t('accountReactivatedToast'));
       });
     }
   }

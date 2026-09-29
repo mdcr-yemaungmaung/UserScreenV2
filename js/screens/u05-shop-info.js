@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
   const { generateCalendarGrid } = window.YoyakuComponents || {};
   const LIGHTBOX_FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
   let lightboxFocusReturnTarget = null;
@@ -101,14 +102,14 @@
               class="flex items-center gap-2 font-label text-xs font-bold text-[#9B1C25] hover:text-[#7F161E] bg-[#FFFDFC] border border-[#E8DDD0] px-4 py-2 rounded-full transition-colors cursor-pointer shadow-2xs"
             >
               <span class="material-symbols-outlined text-sm">arrow_back</span>
-              <span>${isMm ? 'ကြိုတင်ဘွတ်ကင် သို့' : 'Back to Booking'}</span>
+              <span>${t('shop_back_to_booking')}</span>
             </a>
           </div>
 
           <button
             id="detail-favorite-btn"
             type="button"
-            aria-label="${isFavorite ? (isMm ? 'အကြိုက်ဆုံးမှ ဖယ်ရှားမည်' : 'Remove from favorites') : (isMm ? 'အကြိုက်ဆုံးသို့ ထည့်မည်' : 'Add to favorites')}"
+            aria-label="${isFavorite ? t('shop_remove_fav') : t('shop_add_fav')}"
             class="w-10 h-10 flex items-center justify-center rounded-full border transition-all cursor-pointer shadow-2xs ${
               isFavorite
                 ? 'bg-[#9B1C25] text-white border-[#9B1C25]'
@@ -123,7 +124,7 @@
         <button
           type="button"
           id="hero-image-zoom"
-          aria-label="${isMm ? 'စားသောက်ဆိုင် ဓာတ်ပုံပြခန်း ဖွင့်မည်' : 'Open restaurant gallery'}"
+          aria-label="${t('shop_open_gallery')}"
           class="group relative h-[340px] w-full overflow-hidden rounded-3xl border border-[#EADFD1] shadow-2xl cursor-pointer text-left sm:h-[420px]"
         >
           <img
@@ -139,7 +140,7 @@
           <div class="absolute top-4 right-4 z-10">
             <span class="inline-flex items-center gap-1.5 bg-[#1c1311]/85 backdrop-blur-md text-white px-3.5 py-1.5 rounded-xl font-label text-xs font-bold shadow-lg">
               <span class="material-symbols-outlined text-sm">photo_camera</span>
-              <span>${isMm ? 'ပုံများကြည့်ရန်' : 'View Gallery'} (${(restaurant.images || []).length})</span>
+              <span>${t('shop_view_gallery')} (${(restaurant.images || []).length})</span>
             </span>
           </div>
 
@@ -160,7 +161,7 @@
               </div>
               <div class="space-y-1 min-w-0">
                 <div class="font-label text-xs font-bold uppercase tracking-wider text-[#840f16]">
-                  ${isMm ? 'အထူးအသိပေးချက် (Notice)' : 'Special Announcement / Notice'}
+                  ${t('shop_special_notice')}
                 </div>
                 <p class="font-body text-xs sm:text-sm font-semibold text-[#231916] leading-relaxed">
                   ${isMm ? (restaurant.specialNotice || restaurant.specialNoticeEn) : (restaurant.specialNoticeEn || restaurant.specialNotice)}
@@ -181,15 +182,15 @@
             <div class="bg-[#FFFDFC] p-5 sm:p-6 rounded-3xl border border-[#E8DDD0] space-y-4 shadow-xs">
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div class="space-y-1">
-                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${isMm ? 'စျေးနှုန်း' : 'Price Range'}</div>
+                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${t('shop_price_range')}</div>
                   <div class="font-headline text-xs sm:text-sm font-bold text-[#231916]">${restaurant.priceRange}</div>
                 </div>
                 <div class="space-y-1">
-                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${isMm ? 'အစားအစာအမျိုးအစား' : 'Cuisine Style'}</div>
+                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${t('shop_cuisine_style')}</div>
                   <div class="font-headline text-xs sm:text-sm font-bold text-[#840f16]">${restaurant.cuisine}</div>
                 </div>
                 <div class="col-span-2 sm:col-span-1 space-y-1">
-                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${isMm ? 'ဖွင့်ချိန်' : 'Opening Hours'}</div>
+                  <div class="font-label text-[10px] text-[#58413f] font-bold uppercase">${t('shop_opening_hours')}</div>
                   <div class="font-headline text-xs sm:text-sm font-bold text-[#104b2b]">${restaurant.openingHours}</div>
                 </div>
               </div>
@@ -197,7 +198,7 @@
               <div class="pt-3 border-t border-[#E8DDD0] flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-[#840f16] text-lg">call</span>
-                  <span class="font-label text-xs font-bold text-[#58413f]">${isMm ? 'ဆက်သွယ်ရန် ဖုန်းနံပါတ်:' : 'Public Phone:'}</span>
+                  <span class="font-label text-xs font-bold text-[#58413f]">${t('shop_public_phone')}</span>
                   <a href="tel:${restaurant.phone || '09-798123456'}" class="font-label text-xs font-bold text-[#840f16] hover:underline">
                     ${restaurant.phonePublic || restaurant.phone || '09-798 123 456'}
                   </a>
@@ -220,7 +221,7 @@
                     : 'text-[#58413f] hover:text-[#231916]'
                 }"
               >
-                ${isMm ? 'ဆိုင်အချက်အလက်' : 'Overview'}
+                ${t('shop_tab_overview')}
               </button>
 
               <button
@@ -231,7 +232,7 @@
                     : 'text-[#58413f] hover:text-[#231916]'
                 }"
               >
-                ${isMm ? 'မီနူးများ' : 'Menus'}
+                ${t('shop_tab_menus')}
               </button>
 
               <button
@@ -242,7 +243,7 @@
                     : 'text-[#58413f] hover:text-[#231916]'
                 }"
               >
-                ${isMm ? 'ထင်မြင်ချက်များ' : 'Reviews'}
+                ${t('shop_tab_reviews')}
               </button>
             </div>
 
@@ -257,7 +258,7 @@
                       ? `
                   <div class="space-y-3 pt-2">
                     <h3 class="font-headline text-xl font-bold text-[#231916]">
-                      ${isMm ? 'ဆိုင်အကြောင်း (About)' : 'About This Shop'}
+                      ${t('shop_about_title')}
                     </h3>
                     <p class="font-body text-xs sm:text-sm text-[#58413f] leading-relaxed">${descriptionText}</p>
                   </div>
@@ -268,7 +269,7 @@
                   <!-- Facilities & Amenities Icons (အဆောက်အအုံနှင့် ဝန်ဆောင်မှုဆိုင်ရာ အိုင်ကွန်များ) -->
                   <div class="space-y-3 pt-2">
                     <h3 class="font-headline text-xl font-bold text-[#231916]">
-                      ${isMm ? 'အဆောက်အအုံနှင့် ဝန်ဆောင်မှုများ (Facilities)' : 'Facilities & Amenities'}
+                      ${t('shop_facilities_title')}
                     </h3>
                     <div class="flex flex-wrap gap-2.5 sm:gap-3">
                       ${(restaurant.facilities && restaurant.facilities.length > 0
@@ -301,7 +302,7 @@
                       <div class="space-y-3 pt-2">
                         <div class="flex items-center justify-between">
                           <h3 class="font-headline text-xl font-bold text-[#231916]">
-                            ${isMm ? 'ဆိုင်၏ ပုံပြခန်း (Gallery)' : 'Photo Gallery'}
+                            ${t('shop_photo_gallery_title')}
                           </h3>
                         </div>
 
@@ -312,7 +313,7 @@
                             <button
                               type="button"
                               data-gallery-idx="${idx}"
-                              aria-label="${isMm ? `ဓာတ်ပုံ ${idx + 1} ကိုကြည့်မည်` : `Open gallery image ${idx + 1}`}"
+                              aria-label="${t('shop_open_gallery')} ${idx + 1}"
                               class="group relative h-40 overflow-hidden rounded-2xl border border-[#EADFD1] shadow-xs cursor-pointer text-left"
                             >
                               <img src="${img}" alt="Gallery ${idx + 1}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -334,7 +335,7 @@
                     <div class="flex flex-wrap items-center justify-between gap-2">
                       <div>
                         <h3 class="font-headline text-xl font-bold text-[#231916]">
-                          ${isMm ? 'တည်နေရာနှင့် မြေပုံ' : 'Location & Map'}
+                          ${t('shop_location_map_title')}
                         </h3>
                         <p class="font-body text-xs text-[#58413f] mt-0.5">
                           ${restaurant.address}
@@ -347,7 +348,7 @@
                         class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#840f16] text-white text-xs font-label font-bold hover:bg-[#a52a2a] transition-colors shadow-sm"
                       >
                         <span class="material-symbols-outlined text-sm">near_me</span>
-                        <span>${isMm ? 'Google Maps တွင်ဖွင့်မည်' : 'Open in Google Maps'}</span>
+                        <span>${t('shop_open_google_maps')}</span>
                       </a>
                     </div>
 
@@ -401,10 +402,10 @@
                             <div class="font-headline text-base sm:text-lg font-bold text-[#840f16] border-b-2 border-[#840f16]/30 pb-2.5 flex items-center justify-between">
                               <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-xl sm:text-2xl text-[#840f16] fill-1">local_fire_department</span>
-                                <span>${isMm ? 'လူကြိုက်များသော ဟင်းလျာများ' : 'Popular Dishes'}</span>
+                                <span>${t('shop_popular_dishes')}</span>
                               </div>
                               <span class="font-label text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#840f16]/10 text-[#840f16]">
-                                ${popularItems.length} ${isMm ? 'ခု' : 'items'}
+                                ${popularItems.length} ${t('shop_items_suffix')}
                               </span>
                             </div>
 
@@ -551,7 +552,7 @@
                           ${restaurant.rating} <span class="text-sm font-normal text-[#58413f]">/ 5.0</span>
                         </h3>
                         <p class="font-body text-xs text-[#58413f] mt-0.5">
-                          ${isMm ? `စုစုပေါင်း သုံးသပ်ချက် ${restaurant.reviewCount} ခု` : `Based on ${restaurant.reviewCount} verified guest reviews`}
+                          ${restaurant.reviewCount} ${t('shop_based_on_reviews')}
                         </p>
                       </div>
 
@@ -570,7 +571,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div class="space-y-1">
                         <div class="flex justify-between font-label text-xs font-semibold text-[#58413f]">
-                          <span>${isMm ? 'ဝန်ဆောင်မှု (Service)' : 'Service'}</span>
+                          <span>${t('shop_service_rating')}</span>
                           <span class="font-bold text-[#231916]">${restaurant.ratingBreakdown?.service || 4.9}</span>
                         </div>
                         <div class="w-full h-2 bg-[#EADFD1] rounded-full overflow-hidden">
@@ -580,7 +581,7 @@
 
                       <div class="space-y-1">
                         <div class="flex justify-between font-label text-xs font-semibold text-[#58413f]">
-                          <span>${isMm ? 'ဈေးနှုန်းနှင့် တန်ဖိုး (Value)' : 'Value'}</span>
+                          <span>${t('shop_value_rating')}</span>
                           <span class="font-bold text-[#231916]">${restaurant.ratingBreakdown?.value || 4.8}</span>
                         </div>
                         <div class="w-full h-2 bg-[#EADFD1] rounded-full overflow-hidden">
@@ -590,7 +591,7 @@
 
                       <div class="space-y-1">
                         <div class="flex justify-between font-label text-xs font-semibold text-[#58413f]">
-                          <span>${isMm ? 'ပတ်ဝန်းကျင် (Atmosphere)' : 'Ambience'}</span>
+                          <span>${t('shop_ambience_rating')}</span>
                           <span class="font-bold text-[#231916]">${restaurant.ratingBreakdown?.ambience || 4.9}</span>
                         </div>
                         <div class="w-full h-2 bg-[#EADFD1] rounded-full overflow-hidden">
@@ -617,7 +618,7 @@
                                     <div class="font-headline text-sm font-bold text-[#231916]">${r.author}</div>
                                     <div class="text-[10px] font-label text-[#104b2b] font-bold flex items-center gap-1">
                                       <span class="material-symbols-outlined text-xs">verified</span>
-                                      <span>${isMm ? 'အတည်ပြုပြီး အလည်အပတ်' : 'Verified Diner'}</span>
+                                      <span>${t('shop_verified_diner')}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -652,7 +653,7 @@
                           `
                             )
                             .join('')
-                        : `<p class="font-body text-xs text-[#58413f]">${isMm ? 'မှတ်ချက် မရှိသေးပါ။ ပထမဆုံး သုံးသပ်ချက် ပေးပို့နိုင်ပါသည်။' : 'No reviews yet.'}</p>`
+                        : `<p class="font-body text-xs text-[#58413f]">${t('shop_no_reviews_yet')}</p>`
                     }
                   </div>
                 </div>
@@ -668,13 +669,13 @@
 
               <div class="border-b border-[#EADFD1] pb-4">
                 <div class="text-[#840f16] font-label text-xs font-bold uppercase tracking-wider">
-                  ${isMm ? 'ချက်ချင်း စာပွဲ ကြိုတင်ယူခြင်း' : 'Instant Reservation'}
+                  ${t('shop_instant_reservation')}
                 </div>
                 <h3 class="font-headline text-2xl font-bold text-[#231916] mt-1">
-                  ${isMm ? 'စာပွဲ ကြိုတင်မှာယူမည်' : 'Book a Table'}
+                  ${t('shop_book_a_table')}
                 </h3>
                 <p class="font-body text-xs text-[#58413f] mt-1">
-                  ${isMm ? 'အပိုကြေးမရှိပါ။ ချက်ချင်း အတည်ပြုချက်ရရှိပါမည်။' : 'Zero booking fees. Instant confirmation.'}
+                  ${t('shop_zero_fees_hint')}
                 </p>
               </div>
 
@@ -683,12 +684,12 @@
                 id="detail-confirm-reserve-btn"
                 class="w-full btn-primary py-4 rounded-2xl font-label text-sm font-semibold shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 hover:shadow-xl"
               >
-                <span>${isMm ? 'ကြိုတင် မှာယူမည်' : 'Book Now'}</span>
+                <span>${t('shop_book_now')}</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
 
               <div class="text-center font-label text-[11px] text-[#58413f]">
-                ${isMm ? 'အတည်ပြုချက် လက်မှတ်ကို အက်ပ်အတွင်း သိမ်းဆည်းပေးပါမည်' : 'Instant confirmation pass stored in app'}
+                ${t('shop_instant_confirmation_pass_hint')}
               </div>
 
             </div>
@@ -703,7 +704,7 @@
             class="bg-[#840f16] hover:bg-[#6b0c12] active:bg-[#52090d] text-white px-5 sm:px-6 py-3.5 rounded-full font-label text-sm font-bold shadow-[0_8px_20px_rgba(132,15,22,0.4)] flex items-center gap-2 cursor-pointer border border-[#f5ebdc]/30 transition-all duration-200 active:scale-95 hover:shadow-[0_10px_24px_rgba(132,15,22,0.5)]"
           >
             <span class="material-symbols-outlined text-lg">calendar_month</span>
-            <span>${isMm ? 'ကြိုတင်မှာယူမည်' : 'Book Now'}</span>
+            <span>${t('shop_book_now')}</span>
           </button>
         </div>
 
@@ -716,7 +717,7 @@
                 id="lightbox-close-btn"
                 type="button"
                 data-lightbox-initial-focus
-                aria-label="${isMm ? 'ဓာတ်ပုံပြခန်း ပိတ်မည်' : 'Close gallery lightbox'}"
+                aria-label="${t('shop_close_gallery')}"
                 class="absolute top-5 right-5 text-white/80 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
               >
                 <span class="material-symbols-outlined text-2xl">close</span>
@@ -730,7 +731,7 @@
                 tabindex="-1"
                 class="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center justify-center space-y-3"
               >
-                <span id="u03-lightbox-title" class="sr-only">${isMm ? 'စားသောက်ဆိုင် ဓာတ်ပုံပြခန်း' : 'Restaurant photo gallery'}</span>
+                <span id="u03-lightbox-title" class="sr-only">${t('shop_photo_gallery')}</span>
                 <img
                   src="${restaurant.images[activeLightboxIndex] || restaurant.heroImage}"
                   alt="Enlarged gallery view"
@@ -738,15 +739,15 @@
                 />
 
                 <div class="flex items-center justify-between w-full text-white/80 font-label text-xs px-4 pt-2">
-                  <button id="lightbox-prev-btn" type="button" aria-label="${isMm ? 'ယခင် ဓာတ်ပုံ' : 'Previous gallery image'}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
+                  <button id="lightbox-prev-btn" type="button" aria-label="${t('shop_prev_image')}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
-                    <span>${isMm ? 'ယခင်ပုံ' : 'Previous'}</span>
+                    <span>${t('shop_prev_image')}</span>
                   </button>
 
                   <span>${activeLightboxIndex + 1} / ${(restaurant.images || []).length}</span>
 
-                  <button id="lightbox-next-btn" type="button" aria-label="${isMm ? 'နောက် ဓာတ်ပုံ' : 'Next gallery image'}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
-                    <span>${isMm ? 'နောက်ပုံ' : 'Next'}</span>
+                  <button id="lightbox-next-btn" type="button" aria-label="${t('shop_next_image')}" class="flex items-center gap-1 hover:text-white cursor-pointer px-3 py-1.5 rounded-full bg-white/10">
+                    <span>${t('shop_next_image')}</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
                 </div>

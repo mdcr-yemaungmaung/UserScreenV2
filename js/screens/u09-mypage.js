@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
   const { renderRatingBadge, renderCuisineTag, renderTrendingCard } = window.YoyakuComponents || {};
   const MYPAGE_MODAL_FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
   let myPageModalFocusReturnTarget = null;
@@ -90,13 +91,13 @@
     `;
   }
 
-  function renderStatusPill(status, isMm) {
+  function renderStatusPill(status) {
     const s = (status || '').toLowerCase();
     if (s === 'confirmed') {
       return `
         <span class="resv-status-badge resv-status-confirmed">
           <span class="material-symbols-outlined text-sm status-icon">check_circle</span>
-          <span>${isMm ? 'အတည်ပြုပြီး' : 'Confirmed'}</span>
+          <span>${t('mypage_confirmed')}</span>
         </span>
       `;
     }
@@ -104,7 +105,7 @@
       return `
         <span class="resv-status-badge resv-status-pending">
           <span class="material-symbols-outlined text-sm status-icon">schedule</span>
-          <span>${isMm ? 'စောင့်ဆိုင်းဆဲ' : 'Pending'}</span>
+          <span>${t('mypage_pending')}</span>
         </span>
       `;
     }
@@ -112,7 +113,7 @@
       return `
         <span class="resv-status-badge resv-status-completed">
           <span class="material-symbols-outlined text-sm status-icon">task_alt</span>
-          <span>${isMm ? 'ပြီးမြောက်ပြီး' : 'Completed'}</span>
+          <span>${t('mypage_completed')}</span>
         </span>
       `;
     }
@@ -120,7 +121,7 @@
       return `
         <span class="resv-status-badge resv-status-cancelled">
           <span class="material-symbols-outlined text-sm status-icon">cancel</span>
-          <span>${isMm ? 'ပယ်ဖျက်ပြီး' : 'Cancelled'}</span>
+          <span>${t('mypage_cancelled')}</span>
         </span>
       `;
     }
@@ -163,7 +164,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EADFD1] pb-4">
           <div>
             <h2 class="font-headline text-2xl font-bold text-[#231916]">
-              ${isMm ? 'စိုတ်ထားမှု မှတ်တမ်း' : 'Reservation History'}
+              ${t('mypage_res_history')}
             </h2>
           </div>
 
@@ -176,7 +177,7 @@
                   : 'font-semibold text-[#58413f] hover:text-[#231916]'
               }"
             >
-              ${isMm ? 'လာမည့် စိုတ်ထားမှုများ' : 'Upcoming'} (${allReservations.filter(r => r.status === 'Confirmed' || r.status === 'Pending').length})
+              ${t('mypage_upcoming')} (${allReservations.filter(r => r.status === 'Confirmed' || r.status === 'Pending').length})
             </button>
             <button
               data-subtab="past"
@@ -186,7 +187,7 @@
                   : 'font-semibold text-[#58413f] hover:text-[#231916]'
               }"
             >
-              ${isMm ? 'အားလုံး' : 'All'} (${allReservations.length})
+              ${t('mypage_all')} (${allReservations.length})
             </button>
           </div>
         </div>
@@ -198,9 +199,9 @@
               ? `
                 ${window.YoyakuComponents.renderEmptyState({
                   icon: 'event_busy',
-                  title: isMm ? 'စိုတ်ထားမှု မှတ်တမ်း မရှိသေးပါ' : `No ${currentSubTab} reservations found`,
-                  message: isMm ? 'ရန်ကုန်မြို့ရှိ အဆင့်မြင့် စားသောက်ဆိုင်များကို ရှာဖွေပြီး စားပွဲဝိုင်း ချက်ချင်း စိုတ်ယူလိုက်ပါ' : `You have no ${currentSubTab} reservations. Browse our curated dining catalog to book your next experience.`,
-                  actionLabel: isMm ? 'ဆိုင်များ ရှာဖွေရန်' : 'Explore Restaurants',
+                  title: t('mypage_no_res_title'),
+                  message: t('mypage_no_res_msg'),
+                  actionLabel: t('mypage_explore_restaurants'),
                   actionId: 'mypage-explore-btn'
                 })}
               `
@@ -272,7 +273,7 @@
                               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                             </svg>
-                            <span class="font-semibold">${item.guests} ${isMm ? 'ဦး' : (item.guests === 1 ? 'guest' : 'guests')}</span>
+                            <span class="font-semibold">${item.guests} ${t('mypage_guest_unit')}</span>
                           </span>
                         </div>
 
@@ -287,11 +288,11 @@
                             <button
                               data-mypage-view-detail-id="${item.id}"
                               class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-[#840f16] hover:text-white text-[#231916] border border-[#EADFD1] font-label font-bold text-xs transition-colors cursor-pointer shadow-2xs"
-                              title="${isMm ? 'အသေးစိတ်နှင့် ပြင်ဆင်ရန်' : 'Details & Modify'}"
-                              aria-label="${isMm ? 'အသေးစိတ်နှင့် ပြင်ဆင်ရန်' : 'Details & Modify'}"
+                              title="${t('mypage_details_and_modify')}"
+                              aria-label="${t('mypage_details_and_modify')}"
                             >
                               <span class="material-symbols-outlined text-base">visibility</span>
-                              <span>${isMm ? 'အသေးစိတ်' : 'Details'}</span>
+                              <span>${t('mypage_details')}</span>
                             </button>
 
                             <!-- QR Pass Button (only for Confirmed) -->
@@ -299,11 +300,11 @@
                             <button
                               data-mypage-view-pass-id="${item.id}"
                               class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-[#840f16] hover:text-white text-[#231916] border border-[#EADFD1] font-label font-bold text-xs transition-colors cursor-pointer shadow-2xs"
-                              title="${isMm ? 'QR ကုဒ်ကြည့်ရန်' : 'View QR Pass'}"
-                              aria-label="${isMm ? 'QR ကုဒ်ကြည့်ရန်' : 'View QR Pass'}"
+                              title="${t('mypage_view_qr_pass')}"
+                              aria-label="${t('mypage_view_qr_pass')}"
                             >
                               <span class="material-symbols-outlined text-base">qr_code_2</span>
-                              <span>${isMm ? 'QR ကုဒ်' : 'QR Pass'}</span>
+                              <span>${t('mypage_qr_pass')}</span>
                             </button>
                             ` : ''}
 
@@ -317,7 +318,7 @@
                                     class="inline-flex items-center justify-center gap-1.5 bg-[#FFF3D6] hover:bg-[#FFE7AB] border border-[#D08E1C]/40 text-[#8F5D0B] font-label font-bold text-xs px-3.5 py-2 rounded-full shadow-2xs transition-all cursor-pointer"
                                   >
                                     <span class="material-symbols-outlined text-sm text-[#D08E1C]">star</span>
-                                    <span>${isMm ? 'သုံးသပ်ချက်' : 'Review'}</span>
+                                    <span>${t('mypage_review')}</span>
                                   </button>
                                   <button
                                     data-rebook-id="${item.id}"
@@ -327,10 +328,10 @@
                                     data-rebook-time="${item.time}"
                                     data-rebook-guests="${item.guests}"
                                     class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-[#FAF4EB] border border-[#EADFD1] text-[#58413F] font-label font-bold text-xs px-3.5 py-2 rounded-full transition-colors cursor-pointer shadow-2xs"
-                                    title="${isMm ? 'ယခင် အချက်အလက်များဖြင့် ပြန်စိုတ်ရန်' : 'Rebook with Same Conditions'}"
+                                    title="${t('mypage_rebook_title')}"
                                   >
                                     <span class="material-symbols-outlined text-base">restart_alt</span>
-                                    <span>${isMm ? 'ပြန်စိုတ်ရန်' : 'Rebook'}</span>
+                                    <span>${t('mypage_rebook')}</span>
                                   </button>
                                 `
                                 : ''
@@ -357,7 +358,7 @@
       <div class="space-y-6">
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${isMm ? 'အကြိုက်ဆုံး ဆိုင်များ' : 'Saved Favorites'}
+            ${t('mypage_saved_favorites')}
           </h2>
         </div>
 
@@ -397,12 +398,12 @@
                       data-favorite-book-id="${r.id}"
                       class="btn-primary flex-1 py-2 rounded-full font-label text-xs font-bold text-center cursor-pointer shadow-2xs"
                     >
-                      ${isMm ? 'ဝိုင်းစိုတ်မည်' : 'Book Table'}
+                      ${t('mypage_book_table')}
                     </button>
                     <button
                       data-favorite-remove-id="${r.id}"
                       class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#840f16]/10 text-[#840f16] flex items-center justify-center cursor-pointer transition-colors"
-                      title="${isMm ? 'အကြိုက်ဆုံးမှ ဖယ်ရှားရန်' : 'Remove'}"
+                      title="${t('mypage_remove_fav')}"
                     >
                       <span class="material-symbols-outlined text-base">favorite</span>
                     </button>
@@ -427,7 +428,7 @@
       <div class="space-y-6">
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${isMm ? 'ဘောက်ချာနှင့် ကူပွန်များ' : 'Vouchers & Promo Codes'}
+            ${t('mypage_vouchers_title')}
           </h2>
         </div>
 
@@ -454,7 +455,7 @@
                       data-copy-coupon="${c.code}"
                       class="btn-primary px-4 py-1.5 rounded-full font-label font-bold text-xs cursor-pointer shadow-xs"
                     >
-                      ${isMm ? 'ကုဒ်ကူးမည်' : 'Copy Code'}
+                      ${t('mypage_copy_code')}
                     </button>
                   </div>
                 </div>
@@ -472,7 +473,7 @@
       <div class="space-y-6">
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${isMm ? 'အမှတ်နှင့် အသင်းဝင်အဆင့်' : 'Points & VIP Membership'}
+            ${t('mypage_points_vip')}
           </h2>
         </div>
 
@@ -539,7 +540,7 @@
         <div class="flex items-center justify-between border-b border-[#EADFD1] pb-4">
           <div>
             <h2 class="font-headline text-2xl font-bold text-[#231916]">
-              ${isMm ? 'အသိပေးချက် စင်တာ' : 'Notification Center'}
+              ${t('mypage_notif_center')}
             </h2>
           </div>
 
@@ -547,7 +548,7 @@
             id="mark-all-notifs-read-btn"
             class="text-xs font-label font-bold text-[#840f16] hover:underline cursor-pointer"
           >
-            ${isMm ? 'အားလုံး ဖတ်ပြီးကြောင်း မှတ်သားရန်' : 'Mark all as read'}
+            ${t('mypage_mark_all_read')}
           </button>
         </div>
 
@@ -557,7 +558,7 @@
               ? `
                 ${window.YoyakuComponents.renderEmptyState({
                   icon: 'notifications_off',
-                  title: isMm ? 'အသိပေးချက် မရှိသေးပါ' : 'No notifications'
+                  title: t('mypage_no_notifs')
                 })}
               `
               : notifications
@@ -599,7 +600,7 @@
       <div class="space-y-6">
         <div class="border-b border-[#EADFD1] pb-4">
           <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${isMm ? 'အထူး ကြေညာချက်များ' : 'System Announcements'}
+            ${t('mypage_sys_announcements')}
           </h2>
         </div>
 
@@ -644,15 +645,15 @@
     const activePassQrImg = window.YoyakuPrototype ? window.YoyakuPrototype.createQrDataUri(`YOYAKU-${activePassResNo}`) : `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=YOYAKU-PASS-${activePassResNo}`;
 
     const menuItems = [
-      { id: 'reservations', label: isMm ? 'စိုတ်ထားမှု မှတ်တမ်း' : 'Reservation History', icon: 'calendar_today' },
-      { id: 'favorites', label: isMm ? 'အကြိုက်ဆုံး ဆိုင်များ' : 'Favorites', icon: 'favorite_border' },
-      { id: 'coupons', label: isMm ? 'ဘောက်ချာနှင့် ကူပွန်များ' : 'Coupons', icon: 'sell' },
-      { id: 'points', label: isMm ? 'အမှတ်နှင့် အသင်းဝင်အဆင့်' : 'Points & Membership', icon: 'workspace_premium' },
-      { id: 'notifications', label: isMm ? 'အသိပေးချက် စင်တာ' : 'Notification Center', icon: 'notifications' },
-      { id: 'notif-settings', label: isMm ? 'အသိပေးချက် ဆက်တင်' : 'Notification Settings', icon: 'tune' },
-      { id: 'announcements', label: isMm ? 'အထူး ကြေညာချက်များ' : 'Announcements', icon: 'campaign' },
-      { id: 'account', label: isMm ? 'အကောင့် ဆက်တင်' : 'Account Settings', icon: 'manage_accounts' },
-      { id: 'design-system', label: isMm ? 'ဒီဇိုင်း စနစ်' : 'Design System', icon: 'palette' }
+      { id: 'reservations', label: t('mypage_tab_reservations'), icon: 'calendar_today' },
+      { id: 'favorites', label: t('mypage_tab_favorites'), icon: 'favorite_border' },
+      { id: 'coupons', label: t('mypage_tab_coupons'), icon: 'sell' },
+      { id: 'points', label: t('mypage_tab_points'), icon: 'workspace_premium' },
+      { id: 'notifications', label: t('mypage_tab_notifications'), icon: 'notifications' },
+      { id: 'notif-settings', label: t('mypage_tab_notif_settings'), icon: 'tune' },
+      { id: 'announcements', label: t('mypage_tab_announcements'), icon: 'campaign' },
+      { id: 'account', label: t('mypage_tab_account'), icon: 'manage_accounts' },
+      { id: 'design-system', label: t('mypage_tab_design_system'), icon: 'palette' }
     ];
 
     // Helper to render the active screen in the right container
@@ -696,7 +697,7 @@
         <div class="hidden lg:flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#EADFD1] pb-4">
           <div>
             <h1 class="font-headline text-3xl sm:text-4xl font-extrabold text-[#231916] tracking-tight">
-              ${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ' : 'My Page'}
+              ${t('mypage_title')}
             </h1>
           </div>
 
@@ -704,7 +705,7 @@
             id="mypage-new-reservation-btn"
             class="btn-primary px-6 py-2.5 rounded-full font-label text-xs font-semibold shadow-md flex items-center gap-2 cursor-pointer"
           >
-            <span>${isMm ? 'ဝိုင်းအသစ် စိုတ်ရန်' : 'Book New Table'}</span>
+            <span>${t('mypage_book_new_table')}</span>
             <span class="material-symbols-outlined text-sm">add</span>
           </button>
         </div>
@@ -726,7 +727,7 @@
                       class="inline-flex items-center gap-2 text-xs font-label font-bold text-[#840f16] hover:text-[#680b11] cursor-pointer py-1"
                     >
                       <span class="material-symbols-outlined text-base">arrow_back</span>
-                      <span>${isMm ? 'ကျွန်ုပ်၏ စာမျက်နှာ မီနူးသို့ ပြန်သွားရန်' : 'Back to Menu'}</span>
+                      <span>${t('mypage_back_to_menu')}</span>
                     </button>
                   </div>
 
@@ -771,8 +772,8 @@
                         <span class="material-symbols-outlined text-base">language</span>
                       </div>
                       <div class="min-w-0">
-                        <div class="font-headline font-bold text-xs text-[#231916]">${isMm ? 'ဘာသာစကား' : 'Language'}</div>
-                        <div class="font-body text-[11px] text-[#8d7b75]">${isMm ? 'မြန်မာဘာသာ အသုံးပြုနေသည်' : 'Currently English'}</div>
+                        <div class="font-headline font-bold text-xs text-[#231916]">${t('mypage_language_setting')}</div>
+                        <div class="font-body text-[11px] text-[#8d7b75]">${isMm ? t('mypage_current_lang_mm') : t('mypage_current_lang_en')}</div>
                       </div>
                     </div>
 
@@ -824,7 +825,7 @@
                     class="w-full py-3 rounded-xl border border-[#840f16]/30 bg-[#FFF8F6] text-[#840f16] font-headline font-bold text-sm hover:bg-[#840f16]/10 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
                   >
                     <span class="material-symbols-outlined text-lg">logout</span>
-                    <span>${isMm ? 'အကောင့်ထွက်ရန်' : 'Logout'}</span>
+                    <span>${t('mypage_logout')}</span>
                   </button>
                 `
             }
@@ -894,7 +895,7 @@
                   class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#840f16] hover:bg-[#840f16]/10 font-label font-bold text-xs tracking-wide transition-colors text-left cursor-pointer"
                 >
                   <span class="material-symbols-outlined text-lg">logout</span>
-                  <span>${isMm ? 'အကောင့်ထွက်ရန်' : 'Logout'}</span>
+                  <span>${t('mypage_logout')}</span>
                 </button>
               </div>
 
@@ -905,10 +906,10 @@
                     <div class="w-6 h-6 rounded-lg bg-[#840f16] text-white flex items-center justify-center">
                       <span class="material-symbols-outlined text-sm">install_mobile</span>
                     </div>
-                    <span class="font-headline font-bold text-xs text-[#231916]">${isMm ? 'Yoyaku PWA အက်ပ်' : 'Yoyaku Mobile PWA'}</span>
+                    <span class="font-headline font-bold text-xs text-[#231916]">${t('mypage_pwa_title')}</span>
                   </div>
                   <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                    ${isMm ? 'အော့ဖ်လိုင်း QR Pass နှင့် လျင်မြန်သော ဝိုင်းစိုတ်မှုအတွက် သင့်ဖုန်းတွင် ထည့်သွင်းပါ' : 'Instant offline passes and lightning-fast table reservations.'}
+                    ${t('mypage_pwa_desc')}
                   </p>
                   <button
                     type="button"
@@ -916,7 +917,7 @@
                     class="w-full py-2 px-3 rounded-xl bg-[#840f16] hover:bg-[#680b11] text-white font-label text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
                   >
                     <span class="material-symbols-outlined text-sm">download</span>
-                    <span>${isMm ? 'အက်ပ် ထည့်သွင်းရန်' : 'Install App'}</span>
+                    <span>${t('mypage_install_app')}</span>
                   </button>
                 </div>
               </div>
@@ -954,13 +955,13 @@
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div class="flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#840f16]">qr_code_2</span>
-                      <h3 id="mypage-qr-pass-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'စားပွဲဝိုင်း Check-in QR' : 'Table Check-in Pass'}</h3>
+                      <h3 id="mypage-qr-pass-title" class="font-headline text-lg font-bold text-[#231916]">${t('mypage_qr_modal_title')}</h3>
                     </div>
                     <button
                       type="button"
                       data-mypage-modal-close
                       data-mypage-modal-initial-focus
-                      aria-label="${isMm ? 'QR pass ကို ပိတ်မည်' : 'Close QR pass'}"
+                      aria-label="${t('mypage_close_qr')}"
                       class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] hover:text-[#840f16] cursor-pointer transition-colors"
                     >
                       <span class="material-symbols-outlined text-base">close</span>
@@ -969,11 +970,11 @@
 
                   <!-- Restaurant & Reservation ID -->
                   <div class="space-y-2">
-                    <div class="font-headline font-bold text-base text-[#231916]">${activePassRestName || (isMm ? 'စားသောက်ဆိုင်' : 'Restaurant')}</div>
+                    <div class="font-headline font-bold text-base text-[#231916]">${activePassRestName || t('mypage_restaurant_label')}</div>
 
                     <!-- Reservation ID Display without Box Shape -->
                     <div class="flex items-center justify-center gap-1.5">
-                      <span class="text-[11px] font-bold text-[#7A6B65] uppercase tracking-wider">${isMm ? 'ဘွတ်ကင် နံပါတ်' : 'Reservation ID'}:</span>
+                      <span class="text-[11px] font-bold text-[#7A6B65] uppercase tracking-wider">${t('mypage_res_id_label')}:</span>
                       <span class="font-mono text-xs sm:text-sm font-extrabold text-[#840f16] tracking-wide">${activePassResNo}</span>
                     </div>
                   </div>
@@ -988,10 +989,10 @@
                     />
                   </div>
 
-                  <p id="mypage-qr-pass-description" class="font-body text-xs text-[#58413f] leading-relaxed">${isMm ? 'စားသောက်ဆိုင်သို့ ရောက်ရှိပါက ဤ QR ကုဒ်ကို ပြသပါ' : 'Present this digital pass upon arrival for instant table seating.'}</p>
+                  <p id="mypage-qr-pass-description" class="font-body text-xs text-[#58413f] leading-relaxed">${t('mypage_qr_desc')}</p>
 
                   <button type="button" data-mypage-modal-close class="btn-primary w-full py-3 rounded-full font-label text-xs font-bold cursor-pointer">
-                    ${isMm ? 'ပိတ်မည်' : 'Close Pass'}
+                    ${t('mypage_close_pass')}
                   </button>
                 </div>
               </div>
@@ -1015,13 +1016,13 @@
                 >
                   <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
                     <div>
-                      <h3 id="mypage-review-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'သုံးသပ်ချက် ရေးသားရန်' : 'Write a Review'}</h3>
-                      <p class="font-body text-xs text-[#58413f]" id="review-modal-restaurant-name">${isMm ? 'သင်၏ စားသောက်မှု အတွေ့အကြုံကို မျှဝေပါ' : 'Share your dining experience with other guests'}</p>
+                      <h3 id="mypage-review-title" class="font-headline text-lg font-bold text-[#231916]">${t('mypage_write_review_title')}</h3>
+                      <p class="font-body text-xs text-[#58413f]" id="review-modal-restaurant-name">${t('mypage_review_desc')}</p>
                     </div>
                     <button
                       type="button"
                       data-mypage-modal-close
-                      aria-label="${isMm ? 'သုံးသပ်ချက်ရေးရန် dialog ကို ပိတ်မည်' : 'Close review dialog'}"
+                      aria-label="${t('mypage_close_review')}"
                       class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer"
                     >
                       <span class="material-symbols-outlined text-base">close</span>
@@ -1031,22 +1032,22 @@
                   <form id="write-review-form" class="space-y-4">
                     <div>
                       <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-2">
-                        ${isMm ? 'အလုံးစုံ အဆင့်သတ်မှတ်ချက်' : 'Overall Rating'}
+                        ${t('mypage_overall_rating')}
                       </label>
-                      <div class="flex items-center gap-1.5" id="star-rating-selector" role="group" aria-label="${isMm ? 'သုံးသပ်ချက် အဆင့်သတ်မှတ်မှု' : 'Review rating selector'}">
-                        <button type="button" data-star="1" data-mypage-modal-initial-focus aria-label="${isMm ? '၁ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 1 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                      <div class="flex items-center gap-1.5" id="star-rating-selector" role="group" aria-label="${t('mypage_rating_selector_label')}">
+                        <button type="button" data-star="1" data-mypage-modal-initial-focus aria-label="${t('mypage_rate_star_prefix')} 1 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
                           <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
                         </button>
-                        <button type="button" data-star="2" aria-label="${isMm ? '၂ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 2 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                        <button type="button" data-star="2" aria-label="${t('mypage_rate_star_prefix')} 2 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
                           <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
                         </button>
-                        <button type="button" data-star="3" aria-label="${isMm ? '၃ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 3 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                        <button type="button" data-star="3" aria-label="${t('mypage_rate_star_prefix')} 3 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
                           <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
                         </button>
-                        <button type="button" data-star="4" aria-label="${isMm ? '၄ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 4 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                        <button type="button" data-star="4" aria-label="${t('mypage_rate_star_prefix')} 4 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
                           <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
                         </button>
-                        <button type="button" data-star="5" aria-label="${isMm ? '၅ ပွင့် အဆင့်သတ်မှတ်မည်' : 'Rate 5 out of 5'}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
+                        <button type="button" data-star="5" aria-label="${t('mypage_rate_star_prefix')} 5 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
                           <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
                         </button>
                         <span class="ml-2 font-label text-xs font-bold text-[#D08E1C]" id="star-rating-label" aria-live="polite">5.0 - Exceptional</span>
@@ -1055,12 +1056,12 @@
 
                     <div>
                       <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1">
-                        ${isMm ? 'သုံးသပ်ချက် အသေးစိတ်' : 'Your Review'}
+                        ${t('mypage_your_review')}
                       </label>
                       <textarea
                         id="review-text-input"
                         rows="4"
-                        placeholder="${isMm ? 'အစားအသောက် အရသာ၊ ဝန်ဆောင်မှုနှင့် ဆိုင်အပြင်အဆင် အကြောင်းကို ရေးသားပါ...' : 'Share what you loved about the food, ambiance, seating, and service...'}"
+                        placeholder="${t('mypage_review_placeholder')}"
                         class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl p-3 font-body text-xs text-[#231916] focus:outline-none"
                         required
                       ></textarea>
@@ -1070,7 +1071,7 @@
                       type="submit"
                       class="btn-primary w-full py-3 rounded-full font-label font-bold text-xs cursor-pointer shadow-md"
                     >
-                      ${isMm ? 'သုံးသပ်ချက် တင်သွင်းမည်' : 'Publish Review'}
+                      ${t('mypage_publish_review')}
                     </button>
                   </form>
                 </div>
@@ -1098,12 +1099,12 @@
                       <div class="w-8 h-8 rounded-full bg-[#D08E1C]/10 text-[#D08E1C] flex items-center justify-center">
                         <span class="material-symbols-outlined text-lg">sms</span>
                       </div>
-                      <h3 id="mypage-phone-otp-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'ဖုန်းနံပါတ် OTP အတည်ပြုခြင်း' : 'Verify Phone Number (OTP)'}</h3>
+                      <h3 id="mypage-phone-otp-title" class="font-headline text-lg font-bold text-[#231916]">${t('mypage_otp_title')}</h3>
                     </div>
                     <button
                       type="button"
                       data-mypage-modal-close
-                      aria-label="${isMm ? 'OTP အတည်ပြု dialog ကို ပိတ်မည်' : 'Close OTP verification dialog'}"
+                      aria-label="${t('mypage_close_otp')}"
                       class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer"
                     >
                       <span class="material-symbols-outlined text-base">close</span>
@@ -1112,13 +1113,13 @@
 
                   <div class="space-y-3">
                     <p id="mypage-phone-otp-description" class="font-body text-xs text-[#58413f] leading-relaxed">
-                      ${isMm ? `လျှို့ဝှက် ဂဏန်း ၆ လုံးပါ SMS ကို <strong class="text-[#231916]">${myData.userPhone || ''}</strong> သို့ ပေးပို့ထားပါသည်။` : `We have sent a 6-digit verification code to <strong class="text-[#231916]">${myData.userPhone || ''}</strong> via SMS.`}
+                      ${t('mypage_otp_desc_prefix')} <strong class="text-[#231916]">${myData.userPhone || ''}</strong> ${t('mypage_otp_desc_suffix')}
                     </p>
 
                     <div class="p-3 bg-[#FFF3D6] rounded-xl border border-[#EADFD1] flex items-center justify-between text-xs">
-                      <span class="text-[#58413f] font-mono">${isMm ? 'နမူနာကုဒ်:' : 'Demo Code:'} <strong>123456</strong></span>
+                      <span class="text-[#58413f] font-mono">${t('mypage_demo_code')} <strong>123456</strong></span>
                       <button id="u20-autofill-otp-btn" type="button" class="text-[#840f16] font-bold underline cursor-pointer hover:opacity-80">
-                        ${isMm ? 'အလိုအလျောက် ထည့်ရန်' : 'Auto Fill'}
+                        ${t('mypage_autofill')}
                       </button>
                     </div>
 
@@ -1136,9 +1137,9 @@
                       </div>
 
                       <div class="flex items-center justify-between text-xs text-[#58413f] pt-1">
-                        <span>Didn't receive code?</span>
+                        <span>${t('mypage_didnt_receive_code')}</span>
                         <button type="button" id="u20-resend-otp-btn" class="text-[#840f16] font-bold hover:underline cursor-pointer">
-                          Resend SMS
+                          ${t('mypage_resend_sms')}
                         </button>
                       </div>
 
@@ -1146,7 +1147,7 @@
                         type="submit"
                         class="btn-primary w-full py-3 rounded-full font-label font-bold text-xs cursor-pointer shadow-md mt-2"
                       >
-                        ${isMm ? 'အတည်ပြုမည်' : 'Verify & Confirm'}
+                        ${t('mypage_verify_btn')}
                       </button>
                     </form>
                   </div>
@@ -1175,9 +1176,9 @@
                   </div>
 
                   <div class="text-center space-y-1">
-                    <h3 id="mypage-confirm-withdraw-title" class="font-headline text-lg font-bold text-[#231916]">${isMm ? 'အကောင့် အပြီးတိုင် ဖျက်သိမ်းရန် သေချာပါသလား?' : 'Permanently Withdraw Account?'}</h3>
+                    <h3 id="mypage-confirm-withdraw-title" class="font-headline text-lg font-bold text-[#231916]">${t('mypage_withdraw_title')}</h3>
                     <p id="mypage-confirm-withdraw-description" class="font-body text-xs text-[#58413f]">
-                      ${isMm ? 'သင်၏ စားပွဲဝိုင်း မှတ်တမ်းများ၊ အကြိုက်ဆုံးဆိုင်များနှင့် Gourmet Points (2,450 PTS) များ အားလုံး ပျက်ပြယ်သွားပါမည်။' : 'All active reservations, saved favorites, and your accumulated 2,450 Gourmet Points will be permanently deleted.'}
+                      ${t('mypage_withdraw_desc')}
                     </p>
                   </div>
 
@@ -1188,13 +1189,13 @@
                       data-mypage-modal-initial-focus
                       class="flex-1 py-2.5 rounded-full border border-[#EADFD1] text-[#58413f] hover:bg-[#FBF3E2] font-label text-xs font-semibold cursor-pointer"
                     >
-                      ${isMm ? 'မဖျက်တော့ပါ' : 'Keep Account'}
+                      ${t('mypage_keep_account')}
                     </button>
                     <button
                       id="u20-confirm-withdraw-final-btn"
                       class="flex-1 py-2.5 rounded-full bg-[#840f16] hover:bg-[#680b11] text-white font-label text-xs font-bold cursor-pointer shadow-md"
                     >
-                      ${isMm ? 'အပြီးတိုင် ဖျက်မည်' : 'Confirm Delete'}
+                      ${t('mypage_confirm_delete')}
                     </button>
                   </div>
                 </div>
@@ -1254,10 +1255,9 @@
       btn.addEventListener('click', (e) => {
         const navId = e.currentTarget.getAttribute('data-mypage-nav');
         if (navId === 'logout') {
-          const isMm = store.getState().currentLanguage === 'MM';
           store.toggleAuth(false);
           store.setActiveTab('discover');
-          store.showToast(isMm ? 'အကောင့်ထွက်ပြီးပါပြီ' : 'Logged out successfully.');
+          store.showToast(t('toast_logged_out'));
         } else {
           store.setMyPageActiveMenu(navId);
         }
@@ -1279,7 +1279,7 @@
         const code = e.currentTarget.getAttribute('data-copy-resv-id');
         if (code) {
           navigator.clipboard.writeText(code);
-          store.showToast(`Reservation ID ${code} copied to clipboard!`);
+          store.showToast(t('booking_id_copied'));
         }
       });
     });
@@ -1294,7 +1294,7 @@
         if (resv) {
           store.showToast(`Calendar reminder added for ${resv.restaurantName} on ${resv.date} at ${resv.time}!`);
         } else {
-          store.showToast('Reservation reminder saved to calendar.');
+          store.showToast(t('cal_selected_date'));
         }
       });
     });
@@ -1305,7 +1305,7 @@
         e.stopPropagation();
         const phone = e.currentTarget.getAttribute('data-call-venue-phone');
         if (phone) {
-          store.showToast(`Connecting to venue concierge: ${phone}`);
+          store.showToast(`${t('connecting_venue_concierge')} ${phone}`);
         }
       });
     });
@@ -1392,19 +1392,17 @@
       reviewForm.addEventListener('submit', (e) => {
         e.preventDefault();
         store.closeMyPageModal();
-        store.showToast('Thank you! Your review has been submitted (+500 Points earned).');
+        store.showToast(t('toast_review_submitted'));
       });
     }
-
-
 
     // Copy coupon code
     containerElement.querySelectorAll('[data-copy-coupon]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const code = e.currentTarget.getAttribute('data-copy-coupon');
         navigator.clipboard.writeText(code);
-        e.currentTarget.innerText = 'Copied!';
-        store.showToast('Coupon code copied to clipboard!');
+        e.currentTarget.innerText = t('toast_copied');
+        store.showToast(t('toast_coupon_copied'));
       });
     });
 
@@ -1423,7 +1421,7 @@
     // Remove favorite restaurant
     containerElement.querySelectorAll('[data-favorite-remove-id]').forEach(btn => {
       btn.addEventListener('click', () => {
-        store.showToast('Removed from favorites.');
+        store.showToast(t('toast_fav_removed'));
       });
     });
 
@@ -1435,7 +1433,7 @@
           ...data,
           notifications: (data.notifications || []).map(n => ({ ...n, isUnread: false }))
         }));
-        store.showToast('All notifications marked as read.');
+        store.showToast(t('toast_notifs_all_read'));
       });
     }
 
@@ -1492,7 +1490,7 @@
     const resendOtpBtn = containerElement.querySelector('#u20-resend-otp-btn');
     if (resendOtpBtn) {
       resendOtpBtn.addEventListener('click', () => {
-        store.showToast('New verification code sent via SMS!');
+        store.showToast(t('toast_otp_resent'));
       });
     }
 

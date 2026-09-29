@@ -16,9 +16,7 @@
     const otpState = state.otpModalState || {};
     if (!otpState.isOpen) return '';
 
-    const isMm = state.currentLanguage === 'MM';
-    const isJa = state.currentLanguage === 'JA';
-    const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
+    const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
     const phone = otpState.phoneNumber || state.myPageData.userPhone || '+95 9 123 456 789';
     const errorMsg = otpState.error || '';
 
@@ -38,14 +36,14 @@
               </div>
               <div>
                 <h3 id="u13-otp-title" class="font-headline text-lg font-bold text-[#241A18]">
-                  ${t('SMS Verification', 'SMS အတည်ပြုကုဒ် ရိုက်ထည့်ပါ', 'SMS認証コードの入力')}
+                  ${t('sms_verification')}
                 </h3>
               </div>
             </div>
             <button
               type="button"
               id="u13-close-otp-btn"
-              aria-label="${t('Close', 'ပိတ်မည်', '閉じる')}"
+              aria-label="${t('close')}"
               class="w-8 h-8 rounded-full bg-[#F8EFE5] hover:bg-[#E8DDD0] flex items-center justify-center text-[#6D6561] transition-colors cursor-pointer"
             >
               <span class="material-symbols-outlined text-base">close</span>
@@ -55,11 +53,7 @@
           <!-- Body -->
           <div class="space-y-4 pt-4">
             <p class="font-body text-xs text-[#6D6561] leading-relaxed">
-              ${t(
-                `A 6-digit verification code was sent via SMS to <strong class="text-[#241A18] font-mono">${phone}</strong>.`,
-                `ဂဏန်း ၆ လုံးပါ လျှို့ဝှက်အတည်ပြုကုဒ်ကို <strong class="text-[#241A18] font-mono">${phone}</strong> သို့ SMS ပေးပို့ထားပါသည်။`,
-                `<strong class="text-[#241A18] font-mono">${phone}</strong> 宛てに送信された6桁の認証コードを入力してください。`
-              )}
+              ${t('sms_sent_prefix')} <strong class="text-[#241A18] font-mono">${phone}</strong>
             </p>
 
             ${errorMsg ? `
@@ -72,7 +66,7 @@
             <form id="u13-otp-form" class="space-y-4 pt-1">
               <div>
                 <label for="u13-otp-input" class="block text-[11px] font-bold uppercase tracking-wider text-[#6D6561] font-label mb-2 text-center">
-                  ${t('Enter 6-Digit Code', 'အတည်ပြုကုဒ် (ဂဏန်း ၆ လုံး)', '6桁のコード')}
+                  ${t('enter_code_label')}
                 </label>
                 <input
                   type="text"
@@ -90,13 +84,13 @@
 
               <!-- Resend timer & actions -->
               <div class="flex items-center justify-between text-xs text-[#6D6561] pt-1 px-1">
-                <span>${t("Didn't receive code?", 'ကုဒ်မရရှိသေးပါက', 'コードが届かない場合')}</span>
+                <span>${t('didnt_receive_code')}</span>
                 <button
                   type="button"
                   id="u13-resend-otp-btn"
                   class="text-[#9B1C25] font-bold hover:underline cursor-pointer disabled:text-[#9A908B] disabled:no-underline disabled:cursor-not-allowed"
                 >
-                  ${t('Resend SMS', 'ကုဒ်ပြန်လည်တောင်းမည်', 'SMSを再送信')}
+                  ${t('resend_sms')}
                 </button>
               </div>
 
@@ -107,7 +101,7 @@
                   class="w-full py-3.5 rounded-full font-label font-bold text-xs text-white bg-[#9B1C25] hover:bg-[#7F161E] active:scale-95 transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span class="material-symbols-outlined text-base">verified_user</span>
-                  <span>${t('Verify & Continue', 'အတည်ပြုပြီး ရှေ့ဆက်မည်', '認証して次へ進む')}</span>
+                  <span>${t('verify_and_continue')}</span>
                 </button>
               </div>
             </form>

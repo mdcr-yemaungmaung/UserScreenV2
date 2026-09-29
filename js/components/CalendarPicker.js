@@ -112,39 +112,23 @@
     maxDate,
     isUnavailableFn = null,
   }) {
-    const monthNames = [
+    const i18n = window.I18n || window.YoyakuI18n;
+    const currentLang = (i18n && i18n.getRawLang) ? i18n.getRawLang() : 'EN';
+    const monthNames = (i18n && i18n.getMonthNames) ? i18n.getMonthNames('en') : [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    const monthNamesMM = [
-      'ဇန်နဝါရီ', 'ဖေဖော်ဝါရီ', 'မတ်', 'ဧပြီ', 'မေ', 'ဇွန်',
-      'ဇူလိုင်', 'သြဂုတ်', 'စက်တင်ဘာ', 'အောက်တိုဘာ', 'နိုဝင်ဘာ', 'ဒီဇင်ဘာ'
-    ];
-    const monthNamesJA = [
-      '1月', '2月', '3月', '4月', '5月', '6月',
-      '7月', '8月', '9月', '10月', '11月', '12月'
-    ];
 
-    const currentLang = (window.store && window.store.getState)
-      ? (window.store.getState().currentLanguage || 'EN')
-      : (localStorage.getItem('yoyaku_lang') || 'EN');
+    const localizedMonthTitle = (i18n && i18n.formatMonthYear)
+      ? i18n.formatMonthYear(year, month, currentLang)
+      : `${monthNames[month]} ${year}`;
 
-    let localizedMonthTitle = `${monthNames[month]} ${year}`;
-    if (currentLang === 'MM') {
-      localizedMonthTitle = `${monthNamesMM[month]} ${year}`;
-    } else if (currentLang === 'JA') {
-      localizedMonthTitle = `${year}年 ${monthNamesJA[month]}`;
-    }
-
-    const prevMonthTitle = currentLang === 'MM' ? 'ယခင်လ' : (currentLang === 'JA' ? '前月' : 'Previous Month');
-    const nextMonthTitle = currentLang === 'MM' ? 'နောက်လ' : (currentLang === 'JA' ? '翌月' : 'Next Month');
-    const selectedLabel = currentLang === 'MM' ? 'ရွေးချယ်ထားသော ရက်:' : (currentLang === 'JA' ? '選択中:' : 'Selected:');
-
-    const dayHeaders = currentLang === 'MM'
-      ? ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'တေး', 'ကြာ', 'နေ']
-      : (currentLang === 'JA'
-        ? ['日', '月', '火', '水', '木', '金', '土']
-        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']);
+    const prevMonthTitle = i18n ? i18n.t('cal_prev_month') : 'Previous Month';
+    const nextMonthTitle = i18n ? i18n.t('cal_next_month') : 'Next Month';
+    const selectedLabel = i18n ? i18n.t('cal_selected_date') : 'Selected:';
+    const dayHeaders = (i18n && i18n.getDayHeaders)
+      ? i18n.getDayHeaders(currentLang)
+      : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
     const todayMid = startOfToday();
     const curYear = todayMid.getFullYear();

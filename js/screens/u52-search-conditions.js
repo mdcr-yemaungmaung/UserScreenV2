@@ -1,6 +1,7 @@
 (() => {
   window.YoyakuComponents = window.YoyakuComponents || {};
   const store = window.store;
+  const t = (k) => window.I18n ? window.I18n.t(k) : (window.YoyakuI18n ? window.YoyakuI18n.t(k) : k);
 
   // Master Township Hierarchy & Zones for Yangon and Myanmar
   const LOCATION_ZONES = [
@@ -323,58 +324,58 @@
 
     // Time presets
     const timePeriods = [
-      { id: 'any', label: isMm ? 'အချိန်မရွေး (Any Time)' : 'Any Time', icon: 'all_inclusive', sub: isMm ? 'တစ်နေ့လုံး' : 'Flexible' },
-      { id: 'lunch', label: isMm ? 'နေ့လယ်စာ (11:30–14:30)' : 'Lunch (11:30–14:30)', icon: 'wb_sunny', sub: isMm ? 'နေ့လယ်စာစားချိန်' : 'Lunch Service', defaultTime: '12:30' },
-      { id: 'afternoon', label: isMm ? 'မွန်းလွဲပိုင်း (14:30–17:30)' : 'Afternoon (14:30–17:30)', icon: 'local_cafe', sub: isMm ? 'မွန်းလွဲချိန်' : 'Afternoon Dining', defaultTime: '15:30' },
-      { id: 'dinner', label: isMm ? 'ညစာ (17:30–21:30)' : 'Dinner (17:30–21:30)', icon: 'dark_mode', sub: isMm ? 'ညစာစားချိန်' : 'Prime Evening', defaultTime: '18:30' },
-      { id: 'late', label: isMm ? 'ညဉ့်နက် (21:30–Late)' : 'Late Night (21:30–Late)', icon: 'nightlife', sub: isMm ? 'ညဉ့်နက်ပိုင်း' : 'Late Dining', defaultTime: '21:30' }
+      { id: 'any', label: t('time_period_any'), icon: 'all_inclusive', sub: t('time_period_any_sub') },
+      { id: 'lunch', label: t('time_period_lunch'), icon: 'wb_sunny', sub: t('time_period_lunch_sub'), defaultTime: '12:30' },
+      { id: 'afternoon', label: t('time_period_afternoon'), icon: 'local_cafe', sub: t('time_period_afternoon_sub'), defaultTime: '15:30' },
+      { id: 'dinner', label: t('time_period_dinner'), icon: 'dark_mode', sub: t('time_period_dinner_sub'), defaultTime: '18:30' },
+      { id: 'late', label: t('time_period_late'), icon: 'nightlife', sub: t('time_period_late_sub'), defaultTime: '21:30' }
     ];
 
     const exactTimes = ['11:30', '12:00', '12:30', '13:00', '13:30', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
 
     // Party sizes
     const partySizes = [
-      { id: 'All Sizes', label: isMm ? 'လူဦးရေ အားလုံး' : 'Any Party Size', icon: 'group' },
-      { id: '1', label: isMm ? '၁ ယောက် (တစ်ဦးတည်း)' : '1 Person (Solo)', icon: 'person' },
-      { id: '2', label: isMm ? '၂ ယောက် (အတွဲ / မိတ်ဆွေ)' : '2 Guests (Date)', icon: 'people' },
-      { id: '3', label: isMm ? '၃ ယောက်' : '3 Guests', icon: 'group' },
-      { id: '4', label: isMm ? '၄ ယောက် (မိသားစု)' : '4 Guests (Family)', icon: 'groups' },
-      { id: '6', label: isMm ? '၆ ယောက် (အဖွဲ့လိုက်)' : '6 Guests (Group)', icon: 'groups_2' },
-      { id: '8+', label: isMm ? '၈+ ယောက် (VIP ဘန်ကက်)' : '8+ Guests (Banquet)', icon: 'diversity_3' }
+      { id: 'All Sizes', label: t('party_size_all'), icon: 'group' },
+      { id: '1', label: t('party_size_1'), icon: 'person' },
+      { id: '2', label: t('party_size_2'), icon: 'people' },
+      { id: '3', label: t('party_size_3'), icon: 'group' },
+      { id: '4', label: t('party_size_4'), icon: 'groups' },
+      { id: '6', label: t('party_size_6'), icon: 'groups_2' },
+      { id: '8+', label: t('party_size_8plus'), icon: 'diversity_3' }
     ];
 
     // Budget tiers
     const budgetTiers = [
-      { id: 'all', label: isMm ? 'အားလုံး' : 'Any Budget', sub: isMm ? 'ဈေးနှုန်းကန့်သတ်မထားပါ' : 'No price limit' },
-      { id: 'under15k', label: '< 15,000 MMK', sub: isMm ? 'အလွန်သက်သာသော' : 'Budget Friendly' },
-      { id: '15k-35k', label: '15K – 35K MMK', sub: isMm ? 'ပုံမှန်စားသောက်ဆိုင်' : 'Casual Mid-tier' },
-      { id: '35k-60k', label: '35K – 60K MMK', sub: isMm ? 'အဆင့်မြင့်စားသောက်ဆိုင်' : 'Premium Dining' },
-      { id: '60k+', label: '60,000+ MMK', sub: isMm ? 'နန်းတွင်းအဆင့်မြင့်' : 'Luxury & Fine Dining' }
+      { id: 'all', label: t('budget_all'), sub: t('budget_all_sub') },
+      { id: 'under15k', label: '< 15,000 MMK', sub: t('budget_under15k_sub') },
+      { id: '15k-35k', label: '15K – 35K MMK', sub: t('budget_15k_35k_sub') },
+      { id: '35k-60k', label: '35K – 60K MMK', sub: t('budget_35k_60k_sub') },
+      { id: '60k+', label: '60,000+ MMK', sub: t('budget_60k_plus_sub') }
     ];
 
     // Seating preferences
     const seatingOptions = [
-      { id: 'all', label: isMm ? 'ထိုင်ခုံအားလုံး' : 'Any Seating Style', icon: 'table_restaurant' },
-      { id: 'Private Room', label: isMm ? 'သီးသန့် VIP / တာတာမိခန်း' : 'VIP Private Room', icon: 'meeting_room' },
-      { id: 'Lake View Window', label: isMm ? 'ကန်ရေပြင် / နေဝင်ဆည်းဆာရှုခင်း' : 'Lake & Waterfront View', icon: 'water' },
-      { id: 'Outdoor Seating', label: isMm ? 'ဥယျာဉ် / အပြင်ဘက်မြက်ခင်း' : 'Outdoor Garden Lawn', icon: 'deck' },
-      { id: 'Bar Counter', label: isMm ? 'စားဖိုမှူးကောင်တာ / ဘား' : 'Chef Counter & Bar', icon: 'local_bar' }
+      { id: 'all', label: t('seating_style_all'), icon: 'table_restaurant' },
+      { id: 'Private Room', label: t('seating_private_room'), icon: 'meeting_room' },
+      { id: 'Lake View Window', label: t('seating_lake_view'), icon: 'water' },
+      { id: 'Outdoor Seating', label: t('seating_outdoor'), icon: 'deck' },
+      { id: 'Bar Counter', label: t('seating_bar_counter'), icon: 'local_bar' }
     ];
 
     // Amenities & Dietary options (Multi-select)
     const featurePills = [
-      { id: 'Wi-Fi', label: isMm ? 'အခမဲ့ ဝိုင်ဖိုင် (Wi-Fi)' : 'Free High-Speed Wi-Fi', icon: 'wifi' },
-      { id: 'Air Conditioned', label: isMm ? 'လေအေးပေးစက် အပြည့်' : 'Full Air Conditioning', icon: 'ac_unit' },
-      { id: 'Valet Parking', label: isMm ? 'သီးသန့် ကားပါကင် / Valet' : 'Private / Valet Parking', icon: 'directions_car' },
-      { id: '24/7 Backup Generator', label: isMm ? '၂၄ နာရီ မီးစက်အပြည့်' : '24/7 Backup Generator', icon: 'bolt' },
-      { id: 'Halal Friendly', label: isMm ? 'ဟလာလ် အသိအမှတ်ပြု' : 'Halal Friendly', icon: 'verified' },
-      { id: 'Vegetarian Options', label: isMm ? 'သက်သတ်လွတ် ရရှိနိုင်' : 'Vegetarian / Vegan', icon: 'spa' },
-      { id: 'Lake / Sunset View', label: isMm ? 'ကန်ရှုခင်း / နေဝင်ချိန်' : 'Lake / Sunset Panorama', icon: 'nature_people' },
-      { id: 'Private Room', label: isMm ? 'VIP သီးသန့်ခန်းများ' : 'VIP Dining Alcoves', icon: 'meeting_room' },
-      { id: 'Outdoor Seating', label: isMm ? 'ပြင်ပ ဥယျာဉ်ထိုင်ခုံ' : 'Garden Terrace', icon: 'deck' },
-      { id: 'Wine & Cocktail Bar', label: isMm ? 'ဝိုင်နှင့် ကော့တေးဘား' : 'Wine Cellar & Cocktails', icon: 'wine_bar' },
-      { id: 'Live Music', label: isMm ? 'တိုက်ရိုက် တေးဂီတ / Jazz' : 'Live Jazz & Music', icon: 'music_note' },
-      { id: 'Pet Friendly', label: isMm ? 'အိမ်မွေးတိရိစ္ဆာန် ခွင့်ပြု' : 'Pet-Friendly Patio', icon: 'pets' }
+      { id: 'Wi-Fi', label: t('feat_wifi'), icon: 'wifi' },
+      { id: 'Air Conditioned', label: t('feat_ac'), icon: 'ac_unit' },
+      { id: 'Valet Parking', label: t('feat_parking'), icon: 'directions_car' },
+      { id: '24/7 Backup Generator', label: t('feat_generator'), icon: 'bolt' },
+      { id: 'Halal Friendly', label: t('feat_halal'), icon: 'verified' },
+      { id: 'Vegetarian Options', label: t('feat_veg'), icon: 'spa' },
+      { id: 'Lake / Sunset View', label: t('feat_lake_view'), icon: 'nature_people' },
+      { id: 'Private Room', label: t('feat_private_room'), icon: 'meeting_room' },
+      { id: 'Outdoor Seating', label: t('feat_garden'), icon: 'deck' },
+      { id: 'Wine & Cocktail Bar', label: t('feat_wine'), icon: 'wine_bar' },
+      { id: 'Live Music', label: t('feat_live_music'), icon: 'music_note' },
+      { id: 'Pet Friendly', label: t('feat_pet_friendly'), icon: 'pets' }
     ];
 
     // Popular Quick Keywords
@@ -423,7 +424,7 @@
               <button 
                 id="search-cond-close-btn"
                 class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#241A18] hover:text-[#9B1C25] active:scale-95 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
-                title="${isMm ? 'ပိတ်မည်' : 'Close'}"
+                title="${t('close_btn')}"
                 aria-label="Close search conditions"
               >
                 <span class="material-symbols-outlined text-xl">close</span>
@@ -436,7 +437,7 @@
               class="px-3.5 py-1.5 sm:py-2 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#6D6561] hover:text-[#9B1C25] font-label text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
             >
               <span class="material-symbols-outlined text-base">restart_alt</span>
-              <span>${isMm ? 'ပြန်စမည်' : 'Reset'}</span>
+              <span>${t('reset_btn')}</span>
             </button>
           </div>
 
@@ -448,9 +449,9 @@
               <div class="flex items-center justify-between">
                 <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                   <span class="material-symbols-outlined text-[#9B1C25] text-base">search</span>
-                  <span>${isMm ? 'အမည် / ဟင်းလျာ / အဓိကစကားလုံး' : 'Keyword, Restaurant, or Dish'}</span>
+                  <span>${t('keyword_label')}</span>
                 </label>
-                <span class="font-label text-xs text-[#6D6561] font-semibold">${activeKeyword ? `"${activeKeyword}"` : (isMm ? 'အားလုံး' : 'All venues')}</span>
+                <span class="font-label text-xs text-[#6D6561] font-semibold">${activeKeyword ? `"${activeKeyword}"` : t('all_venues')}</span>
               </div>
               
               <div class="relative flex items-center">
@@ -458,7 +459,7 @@
                 <input 
                   type="text"
                   id="cond-keyword-input"
-                  placeholder="${isMm ? 'ဥပမာ- ရွှေတိဂုံအနီး၊ အိုမာကာဆေ၊ မုန့်ဟင်းခါး၊ သီးသန့် VIP ခန်း...' : 'e.g. Inya Lake, Omakase, Sourdough, Padonmar, Dim Sum, Garden Terrace...'}"
+                  placeholder="${t('cond_kw_placeholder')}"
                   value="${activeKeyword}"
                   class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] focus:ring-2 focus:ring-[#9B1C25]/15 rounded-2xl pl-11 pr-10 py-3.5 font-body text-sm text-[#241A18] placeholder:text-[#A19690] focus:outline-none transition-all shadow-2xs"
                 />
@@ -466,7 +467,7 @@
                   <button 
                     id="cond-clear-kw-btn"
                     class="absolute right-3 w-7 h-7 rounded-full bg-[#F8EFE5] hover:bg-[#F3DFD5] text-[#6D6561] flex items-center justify-center cursor-pointer transition-colors"
-                    title="${isMm ? 'ရှင်းမည်' : 'Clear'}"
+                    title="${t('clear_btn')}"
                   >
                     <span class="material-symbols-outlined text-sm">close</span>
                   </button>
@@ -475,7 +476,7 @@
 
               <!-- Popular Quick Tag Suggestions -->
               <div class="flex items-center flex-wrap gap-1.5 pt-1">
-                <span class="font-label text-[11px] text-[#6D6561] font-semibold mr-1">${isMm ? 'အကြံပြုချက်များ:' : 'Popular:'}</span>
+                <span class="font-label text-[11px] text-[#6D6561] font-semibold mr-1">${t('popular_suggestions')}</span>
                 ${popularTags.map(tag => `
                   <button 
                     data-cond-quick-tag="${tag}"
@@ -495,10 +496,10 @@
                 <div class="flex items-center justify-between">
                   <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                     <span class="material-symbols-outlined text-[#9B1C25] text-base">calendar_today</span>
-                    <span>${isMm ? 'ရက်စွဲ သတ်မှတ်ချက် (Date Preference)' : 'Reservation Date'}</span>
+                    <span>${t('date_preference_label')}</span>
                   </label>
                   <span class="font-label text-xs font-bold text-[#9B1C25]">
-                    ${activeDateMode === 'any' || activeDate === 'any' ? (isMm ? 'ရက်စွဲမကန့်သတ်ပါ (Any Date)' : 'Flexible / Any Date') : activeDateLabel}
+                    ${activeDateMode === 'any' || activeDate === 'any' ? t('any_date') : activeDateLabel}
                   </span>
                 </div>
 
@@ -515,13 +516,15 @@
                     }"
                   >
                     <span class="material-symbols-outlined text-lg ${activeDateMode === 'any' || activeDate === 'any' ? 'text-[#FFF4F1]' : 'text-[#9B1C25]'}">all_inclusive</span>
-                    <span class="font-headline text-xs font-bold leading-tight">${isMm ? 'ရက်စွဲမကန့်သတ်' : 'Any Date'}</span>
-                    <span class="hidden lg:block font-body text-[10px] ${activeDateMode === 'any' || activeDate === 'any' ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'}">${isMm ? 'အမြဲတမ်းရှာဖွေမည်' : 'Browse All'}</span>
+                    <span class="font-headline text-xs font-bold leading-tight">${t('any_date')}</span>
+                    <span class="hidden lg:block font-body text-[10px] ${activeDateMode === 'any' || activeDate === 'any' ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'}">${t('browse_all')}</span>
                   </button>
 
                   <!-- Quick Presets -->
                   ${['Today', 'Tomorrow', 'This Weekend', 'Next Week'].map(dLabel => {
                     const isSel = activeDateMode !== 'any' && activeDate !== 'any' && activeDateLabel === dLabel;
+                    const dateText = dLabel === 'Today' ? t('date_today') : dLabel === 'Tomorrow' ? t('date_tomorrow') : dLabel === 'This Weekend' ? t('date_weekend') : t('date_next_week');
+                    const subText = dLabel === 'Today' ? t('date_tonight') : t('date_advance');
                     return `
                       <button
                         data-cond-date="${dLabel}"
@@ -533,9 +536,9 @@
                       >
                         <span class="material-symbols-outlined text-lg ${isSel ? 'text-[#FFF4F1]' : 'text-[#9B1C25]'}">event</span>
                         <span class="font-headline text-xs font-bold leading-tight">
-                          ${dLabel === 'Today' ? (isMm ? 'ယနေ့' : 'Today') : dLabel === 'Tomorrow' ? (isMm ? 'မနက်ဖြန်' : 'Tomorrow') : dLabel === 'This Weekend' ? (isMm ? 'စနေ/တနင်္ဂနွေ' : 'Weekend') : (isMm ? 'လာမည့်အပတ်' : 'Next Week')}
+                          ${dateText}
                         </span>
-                        <span class="hidden lg:block font-body text-[10px] ${isSel ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'}">${dLabel === 'Today' ? (isMm ? 'ယနေ့ည' : 'Tonight') : (isMm ? 'ကြိုတင်' : 'Advance')}</span>
+                        <span class="hidden lg:block font-body text-[10px] ${isSel ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'}">${subText}</span>
                       </button>
                     `;
                   }).join('')}
@@ -548,9 +551,9 @@
                 <div class="flex items-center justify-between">
                   <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                     <span class="material-symbols-outlined text-[#9B1C25] text-base">schedule</span>
-                    <span>${isMm ? 'အချိန်အပိုင်းအခြား ရွေးချယ်ရန်' : 'Preferred Dining Time & Period'}</span>
+                    <span>${t('time_period_title')}</span>
                   </label>
-                  <span class="font-label text-xs text-[#6D6561] font-semibold">${activeTime === 'any' ? (isMm ? 'အချိန်မရွေး' : 'Any Time') : activeTime}</span>
+                  <span class="font-label text-xs text-[#6D6561] font-semibold">${activeTime === 'any' ? t('time_period_any') : activeTime}</span>
                 </div>
 
                 <!-- Period Cards -->
@@ -583,20 +586,20 @@
 
                 <!-- Exact Time Slots Chips -->
                 <div class="pt-2">
-                  <span class="font-label text-[11px] font-bold text-[#6D6561] block mb-1.5 uppercase tracking-wider">${isMm ? 'သီးသန့် အချိန်နာရီ' : 'Exact Hourly Slots'}</span>
+                  <span class="font-label text-[11px] font-bold text-[#6D6561] block mb-1.5 uppercase tracking-wider">${t('exact_hourly_slots')}</span>
                   <div class="flex flex-wrap gap-1.5">
-                    ${exactTimes.map(t => {
-                      const isSel = activeTime === t;
+                    ${exactTimes.map(tVal => {
+                      const isSel = activeTime === tVal;
                       return `
                         <button
-                          data-cond-time="${t}"
+                          data-cond-time="${tVal}"
                           class="search-chip-btn px-3 py-1.5 rounded-xl border text-xs font-label font-bold cursor-pointer ${
                             isSel
                               ? 'bg-[#9B1C25] text-white border-[#9B1C25] shadow-xs'
                               : 'bg-[#FFFDFC] text-[#241A18] border-[#E8DDD0] hover:border-[#9B1C25]'
                           }"
                         >
-                          ${t}
+                          ${tVal}
                         </button>
                       `;
                     }).join('')}
@@ -608,7 +611,7 @@
               <div class="space-y-3">
                 <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                   <span class="material-symbols-outlined text-[#9B1C25] text-base">group</span>
-                  <span>${isMm ? 'လူဦးရေ (ဧည့်သည်အရေအတွက်)' : 'Party Size / Number of Guests'}</span>
+                  <span>${t('party_size_section_title')}</span>
                 </label>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
@@ -639,14 +642,14 @@
                 <div>
                   <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                     <span class="material-symbols-outlined text-[#9B1C25] text-base">location_on</span>
-                    <span>${isMm ? 'တည်နေရာနှင့် မြို့နယ်များ (Township Selector)' : 'Locations & Townships'}</span>
+                    <span>${t('locations_section_title')}</span>
                   </label>
                   <p class="font-body text-xs text-[#6D6561] mt-0.5">
-                    ${isMm ? 'မြို့နယ်ဇုန်အလိုက် ရွေးချယ်နိုင်သလို မြို့နယ်အမည် ရိုက်ထည့်၍လည်း ရှာဖွေနိုင်ပါသည်' : 'Filter by regional zones, browse townships, or multi-select dining areas'}
+                    ${t('locations_section_desc')}
                   </p>
                 </div>
                 ${activeSelectedAreas.length > 0 && !activeSelectedAreas.includes('All Areas') ? `
-                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeSelectedAreas.length} ${isMm ? 'ခု ရွေးချယ်ထား' : 'Selected'}</span>
+                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeSelectedAreas.length} ${t('selected_count_suffix')}</span>
                 ` : ''}
               </div>
 
@@ -676,7 +679,7 @@
                 <input
                   type="text"
                   id="cond-location-search"
-                  placeholder="${isMm ? 'မြို့နယ် ရှာဖွေပါ (ဥပမာ- ဗဟန်း၊ မရမ်းကုန်း၊ စမ်းချောင်း၊ ကျောက်တံတား...)' : 'Type to find township (e.g. Bahan, Inya Lake, Sanchaung, Mandalay...)'}"
+                  placeholder="${t('township_search_placeholder')}"
                   value="${locationQuery}"
                   class="w-full bg-[#FFFDFC] border border-[#E8DDD0] focus:border-[#9B1C25] focus:ring-2 focus:ring-[#9B1C25]/15 rounded-xl pl-10 pr-9 py-2.5 font-body text-xs text-[#241A18] placeholder:text-[#A19690] focus:outline-none transition-all"
                 />
@@ -692,12 +695,12 @@
 
               <!-- Townships Grid (Supports Multi-Select & Single Tap) -->
               <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto pr-1">
-                ${displayedTownships.map(t => {
-                  const isSel = (t.id === 'All Areas' && (activeSelectedAreas.length === 0 || activeSelectedAreas.includes('All Areas') || activeArea === 'All Areas')) ||
-                                activeSelectedAreas.includes(t.id) || activeArea === t.id;
+                ${displayedTownships.map(tItem => {
+                  const isSel = (tItem.id === 'All Areas' && (activeSelectedAreas.length === 0 || activeSelectedAreas.includes('All Areas') || activeArea === 'All Areas')) ||
+                                activeSelectedAreas.includes(tItem.id) || activeArea === tItem.id;
                   return `
                     <button
-                      data-cond-area-item="${t.id}"
+                      data-cond-area-item="${tItem.id}"
                       class="search-chip-btn p-3 rounded-2xl border text-left cursor-pointer flex flex-col justify-between gap-1 transition-all ${
                         isSel
                           ? 'bg-[#9B1C25] text-white border-[#9B1C25] shadow-sm'
@@ -705,12 +708,12 @@
                       }"
                     >
                       <div class="flex items-center justify-between w-full">
-                        <span class="material-symbols-outlined text-base ${isSel ? 'text-[#FFF4F1]' : 'text-[#9B1C25]'}">${t.icon}</span>
+                        <span class="material-symbols-outlined text-base ${isSel ? 'text-[#FFF4F1]' : 'text-[#9B1C25]'}">${tItem.icon}</span>
                         ${isSel ? '<span class="material-symbols-outlined text-xs text-white">check_circle</span>' : ''}
                       </div>
                       <div>
-                        <div class="font-headline text-xs font-extrabold leading-snug line-clamp-1">${isMm ? t.nameMm : t.nameEn}</div>
-                        <div class="font-body text-[10px] ${isSel ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'} line-clamp-1">${t.sub}</div>
+                        <div class="font-headline text-xs font-extrabold leading-snug line-clamp-1">${isMm ? tItem.nameMm : tItem.nameEn}</div>
+                        <div class="font-body text-[10px] ${isSel ? 'text-[#FFF4F1]/80' : 'text-[#6D6561]'} line-clamp-1">${tItem.sub}</div>
                       </div>
                     </button>
                   `;
@@ -724,14 +727,14 @@
                 <div>
                   <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                     <span class="material-symbols-outlined text-[#9B1C25] text-base">restaurant_menu</span>
-                    <span>${isMm ? 'ဟင်းလျာနှင့် အစားအစာ အမျိုးအစားများ (Cuisine Clusters)' : 'Cuisines & Dining Genres'}</span>
+                    <span>${t('cuisines_section_title')}</span>
                   </label>
                   <p class="font-body text-xs text-[#6D6561] mt-0.5">
-                    ${isMm ? 'မြန်မာ့ရိုးရာ၊ ဂျပန်၊ အီတလီ၊ ပင်လယ်စာနှင့် ကော်ဖီဆိုင်များစွာမှ စိတ်ကြိုက်ရွေးချယ်ပါ' : 'Select from Burmese heritage, Japanese omakase, Italian trattorias, or artisan bakeries'}
+                    ${t('cuisines_section_desc')}
                   </p>
                 </div>
                 ${activeSelectedCuisines.length > 0 && !activeSelectedCuisines.includes('All Cuisines') ? `
-                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeSelectedCuisines.length} ${isMm ? 'ခု ရွေးချယ်ထား' : 'Selected'}</span>
+                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeSelectedCuisines.length} ${t('selected_count_suffix')}</span>
                 ` : ''}
               </div>
 
@@ -794,7 +797,7 @@
             <div class="space-y-3 pt-6">
               <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                 <span class="material-symbols-outlined text-[#9B1C25] text-base">chair</span>
-                <span>${isMm ? 'ထိုင်ခုံနှင့် အငွေ့အသက် ရွေးချယ်မှု' : 'Atmosphere & Seating Arrangements'}</span>
+                <span>${t('atmosphere_section_title')}</span>
               </label>
 
               <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -825,9 +828,9 @@
               <div class="flex items-center justify-between">
                 <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                   <span class="material-symbols-outlined text-[#9B1C25] text-base">payments</span>
-                  <span>${isMm ? 'ခန့်မှန်း ကုန်ကျစရိတ် (MMK per Guest)' : 'Budget Range per Guest (MMK)'}</span>
+                  <span>${t('budget_section_title')}</span>
                 </label>
-                <span class="font-label text-xs text-[#6D6561] font-semibold">${activeBudgetTier === 'all' ? (isMm ? 'မကန့်သတ်' : 'No Limit') : activeBudgetTier}</span>
+                <span class="font-label text-xs text-[#6D6561] font-semibold">${activeBudgetTier === 'all' ? t('budget_no_limit') : activeBudgetTier}</span>
               </div>
 
               <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -852,7 +855,7 @@
               <!-- Custom Min / Max inputs -->
               <div class="pt-2 grid grid-cols-2 gap-3 max-w-md">
                 <div>
-                  <label class="font-label text-[11px] text-[#6D6561] font-semibold block mb-1">${isMm ? 'အနည်းဆုံး (MMK)' : 'Min Price (MMK)'}</label>
+                  <label class="font-label text-[11px] text-[#6D6561] font-semibold block mb-1">${t('min_price_label')}</label>
                   <input
                     type="number"
                     id="cond-minprice-input"
@@ -862,7 +865,7 @@
                   />
                 </div>
                 <div>
-                  <label class="font-label text-[11px] text-[#6D6561] font-semibold block mb-1">${isMm ? 'အများဆုံး (MMK)' : 'Max Price (MMK)'}</label>
+                  <label class="font-label text-[11px] text-[#6D6561] font-semibold block mb-1">${t('max_price_label')}</label>
                   <input
                     type="number"
                     id="cond-maxprice-input"
@@ -879,10 +882,10 @@
               <div class="flex items-center justify-between">
                 <label class="font-label text-xs sm:text-sm font-bold text-[#241A18] flex items-center gap-1.5 uppercase tracking-wider">
                   <span class="material-symbols-outlined text-[#9B1C25] text-base">local_offer</span>
-                  <span>${isMm ? 'အထူးဝန်ဆောင်မှုများနှင့် အဆင်ပြေမှုများ (Amenities)' : 'Dietary Options & Venue Facilities'}</span>
+                  <span>${t('amenities_section_title')}</span>
                 </label>
                 ${activeFeatures.length > 0 ? `
-                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeFeatures.length} selected</span>
+                  <span class="font-label text-xs text-[#9B1C25] font-bold">${activeFeatures.length} ${t('selected_count_suffix')}</span>
                 ` : ''}
               </div>
 
@@ -916,10 +919,10 @@
               <div class="w-3 h-3 rounded-full ${matchCount > 0 ? 'bg-[#104b2b] animate-pulse' : 'bg-[#BA1A1A]'}"></div>
               <div>
                 <span class="font-headline text-sm sm:text-base font-extrabold text-[#241A18] block leading-tight">
-                  ${matchCount} ${isMm ? 'ဆိုင် တွေ့ရှိပါသည်' : 'Venues Match Criteria'}
+                  ${matchCount} ${t('venues_match_criteria')}
                 </span>
                 <span class="font-body text-[11px] text-[#6D6561]">
-                  ${matchCount > 0 ? (isMm ? 'ချက်ချင်း စိုတ်ယူနိုင်ပါသည်' : 'Real-time available slots') : (isMm ? 'သတ်မှတ်ချက်များကို ပြန်လည်ညှိနှိုင်းပါ' : 'Try expanding date or location')}
+                  ${matchCount > 0 ? t('realtime_available_slots') : t('try_expanding_conditions')}
                 </span>
               </div>
             </div>
@@ -929,14 +932,14 @@
                 id="search-cond-cancel-btn"
                 class="hidden sm:inline-flex px-4 py-2.5 rounded-full font-label text-xs font-bold text-[#6D6561] hover:text-[#241A18] hover:bg-[#F8EFE5] transition-colors cursor-pointer"
               >
-                ${isMm ? 'မလုပ်တော့ပါ' : 'Cancel'}
+                ${t('cancel')}
               </button>
 
               <button
                 id="search-cond-apply-btn"
                 class="px-6 sm:px-8 py-3 rounded-full bg-[#9B1C25] hover:bg-[#7F161E] text-white font-label text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md hover:shadow-lg active:scale-95"
               >
-                <span>${isMm ? 'ရှာဖွေပါ' : 'Search'}</span>
+                <span>${t('search_action_btn')}</span>
                 <span class="material-symbols-outlined text-base">search</span>
               </button>
             </div>

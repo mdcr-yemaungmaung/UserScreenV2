@@ -536,15 +536,13 @@
       this.notify();
     }
 
-    t(en, mm, ja) {
+    t(keyOrEn, mm, ja) {
       if (window.YoyakuI18n && typeof window.YoyakuI18n.t === 'function') {
-        return window.YoyakuI18n.t(en, mm, ja);
+        return window.YoyakuI18n.t(keyOrEn, mm, ja);
       }
-      const lang = this.state.currentLanguage;
-      if (lang === 'JA') return (ja !== undefined && ja !== null && ja !== '') ? ja : en;
-      if (lang === 'MM') return (mm !== undefined && mm !== null && mm !== '') ? mm : en;
-      return en;
+      return keyOrEn;
     }
+
 
     toggleAuth(status = null) {
       if (status !== null) {
@@ -1443,12 +1441,8 @@
         const normPhone = (p) => (p || '').replace(/[^0-9]/g, '').replace(/^95/, '').replace(/^0/, '');
         const cleanPhone = normPhone(phone);
 
-        const isMm = this.state.currentLanguage === 'MM';
-        const isJa = this.state.currentLanguage === 'JA';
-        const t = (en, mm, ja) => window.YoyakuI18n ? window.YoyakuI18n.t(en, mm, ja) : (isJa ? (ja || en) : (isMm ? mm : en));
-
         if (!cleanResNo) {
-          this.setLoginError('lookup_notfound', t('Please enter your reservation number.', 'ဘွတ်ကင်နံပါတ် ရိုက်ထည့်ပေးပါ။', '予約番号を入力してください。'));
+          this.setLoginError('lookup_notfound', window.I18n.t('please_enter_res_no'));
           return;
         }
 
@@ -1475,14 +1469,10 @@
           this.state.loginState.errorType = 'none';
           this.state.loginState.errorMessage = null;
           this.state.loginState.isInvalidFormat = false;
-          this.showToast(t('Reservation found!', 'ဘွတ်ကင် အချက်အလက် တွေ့ရှိပါသည်', '予約情報が見つかりました！'));
+          this.showToast(window.I18n.t('reservation_found'));
         } else {
           this.state.loginState.lookupResult = null;
-          this.setLoginError('lookup_notfound', t(
-            'Reservation not found. Please verify your reservation number and phone number.',
-            'ဘွတ်ကင်နံပါတ် သို့မဟုတ် ဖုန်းနံပါတ် မကိုက်ညီပါ။ အချက်အလက်များ ပြန်လည်စစ်ဆေးပေးပါ။',
-            '予約が見つかりませんでした。予約番号と電話番号をご確認ください。'
-          ));
+          this.setLoginError('lookup_notfound', window.I18n.t('reservation_not_found'));
         }
         this.notify();
       }, 600);
