@@ -308,18 +308,10 @@
                             </button>
                             ` : ''}
 
-                            <!-- Extra Actions for Completed (Review & Rebook) -->
+                            <!-- Extra Actions for Completed (Rebook) -->
                             ${
                               isCompleted
                                 ? `
-                                  <button
-                                    data-write-review-id="${item.id}"
-                                    data-review-restaurant="${item.restaurantName}"
-                                    class="inline-flex items-center justify-center gap-1.5 bg-[#FFF3D6] hover:bg-[#FFE7AB] border border-[#D08E1C]/40 text-[#8F5D0B] font-label font-bold text-xs px-3.5 py-2 rounded-full shadow-2xs transition-all cursor-pointer"
-                                  >
-                                    <span class="material-symbols-outlined text-sm text-[#D08E1C]">star</span>
-                                    <span>${t('mypage_review')}</span>
-                                  </button>
                                   <button
                                     data-rebook-id="${item.id}"
                                     data-rebook-rest-id="${item.restaurantId}"
@@ -349,186 +341,7 @@
     `;
   }
 
-  // 2. FAVORITES PANEL
-  function renderFavoritesPanel(state, isMm) {
-    const { RESTAURANTS_DATA } = window.YoyakuData || {};
-    const favoriteRestaurants = (RESTAURANTS_DATA || []).slice(0, 3);
 
-    return `
-      <div class="space-y-6">
-        <div class="border-b border-[#EADFD1] pb-4">
-          <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${t('mypage_saved_favorites')}
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          ${favoriteRestaurants
-            .map(r => `
-              <div class="bg-[#FFFDFC] rounded-2xl sm:rounded-3xl border border-[#E8DDD0] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer">
-                <div class="relative h-44 overflow-hidden">
-                  <img
-                    src="${r.image || (r.images && r.images[0]) || 'assets/images/shop_theglasspavilion_1.jpg'}"
-                    alt="${r.name}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  ${renderRatingBadge(r)}
-                </div>
-
-                <div class="p-4 sm:p-5 space-y-3 flex-1 flex flex-col justify-between">
-                  <div class="space-y-1.5">
-                    <div>
-                      ${renderCuisineTag(r.cuisine || 'Fine Dining', false)}
-                    </div>
-                    <h3 class="font-headline font-bold text-base text-[#231916] line-clamp-1 hover:text-[#840f16] cursor-pointer" data-resv-select-id="${r.id}">
-                      ${r.name}
-                    </h3>
-                    <p class="font-body text-xs text-[#58413f] flex items-center gap-1 line-clamp-1">
-                      <span class="material-symbols-outlined text-sm text-[#8d7b75]">location_on</span>
-                      <span>${r.location || r.area || 'Yangon'}</span>
-                    </p>
-                    <div class="font-label text-xs font-bold text-[#840f16] pt-1">
-                      ${r.priceRange || '65,000 ~ 150,000 MMK'}
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-2 pt-2 border-t border-[#E8DDD0]">
-                    <button
-                      data-favorite-book-id="${r.id}"
-                      class="btn-primary flex-1 py-2 rounded-full font-label text-xs font-bold text-center cursor-pointer shadow-2xs"
-                    >
-                      ${t('mypage_book_table')}
-                    </button>
-                    <button
-                      data-favorite-remove-id="${r.id}"
-                      class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#840f16]/10 text-[#840f16] flex items-center justify-center cursor-pointer transition-colors"
-                      title="${t('mypage_remove_fav')}"
-                    >
-                      <span class="material-symbols-outlined text-base">favorite</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            `)
-            .join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  // (Waitlist feature removed per v2.2 specification)
-
-  // 4. COUPONS PANEL
-  function renderCouponsPanel(state, isMm) {
-    const myData = state.myPageData || {};
-    const coupons = myData.claimedCoupons || [];
-
-    return `
-      <div class="space-y-6">
-        <div class="border-b border-[#EADFD1] pb-4">
-          <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${t('mypage_vouchers_title')}
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          ${coupons
-            .map(
-              c => `
-                <div class="bg-[#FFFDFC] p-5 rounded-2xl sm:rounded-3xl border border-[#E8DDD0] flex flex-col justify-between space-y-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
-                  <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-[#840f16]/5 rounded-full pointer-events-none"></div>
-
-                  <div class="space-y-1">
-                    <div class="inline-flex items-center gap-1 text-[10px] font-label font-bold uppercase tracking-wider text-[#D08E1C] bg-[#FFF3D6] px-2 py-0.5 rounded-md">
-                      <span>PROMO</span>
-                    </div>
-                    <div class="font-headline font-bold text-base text-[#840f16]">${c.title}</div>
-                    <div class="font-body text-xs text-[#58413f]">Valid till ${c.validTill} · Applicable on dining bookings</div>
-                  </div>
-
-                  <div class="flex items-center justify-between pt-3 border-t border-[#EADFD1]">
-                    <div class="font-mono text-xs font-bold text-[#231916] bg-[#FBF3E2] px-3 py-1.5 rounded-lg border border-[#EADFD1]">
-                      ${c.code}
-                    </div>
-                    <button
-                      data-copy-coupon="${c.code}"
-                      class="btn-primary px-4 py-1.5 rounded-full font-label font-bold text-xs cursor-pointer shadow-xs"
-                    >
-                      ${t('mypage_copy_code')}
-                    </button>
-                  </div>
-                </div>
-              `
-            )
-            .join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  // 5. POINTS & MEMBERSHIP PANEL
-  function renderPointsPanel(state, isMm) {
-    return `
-      <div class="space-y-6">
-        <div class="border-b border-[#EADFD1] pb-4">
-          <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${t('mypage_points_vip')}
-          </h2>
-        </div>
-
-        <!-- VIP Membership Card -->
-        <div class="bg-gradient-to-br from-[#231916] via-[#3a221f] to-[#58413f] text-white p-6 sm:p-8 rounded-xl space-y-4 shadow-lg border border-[#D08E1C]/40 relative overflow-hidden">
-          <div class="absolute right-0 top-0 w-48 h-48 bg-[#D08E1C]/10 rounded-full blur-2xl pointer-events-none"></div>
-
-          <div class="flex justify-between items-start">
-            <div>
-              <div class="font-label text-xs uppercase font-bold tracking-widest text-[#D08E1C] flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">workspace_premium</span>
-                <span>VIP Gold Gourmet Member</span>
-              </div>
-              <div class="font-headline text-3xl sm:text-4xl font-extrabold text-white mt-1">2,450 <span class="text-lg font-normal text-[#EADFD1]">PTS</span></div>
-            </div>
-            <span class="bg-[#D08E1C]/20 border border-[#D08E1C]/50 text-[#f5d592] text-xs font-label font-bold px-3 py-1 rounded-full">
-              Tier 3 / Gold
-            </span>
-          </div>
-
-          <div class="space-y-1.5 pt-2">
-            <div class="flex justify-between text-xs text-[#EADFD1] font-label">
-              <span>Progress to Platinum Concierge</span>
-              <span>2,450 / 3,000 PTS</span>
-            </div>
-            <div class="w-full h-2.5 bg-white/10 rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-[#D08E1C] to-[#f3cb7d] rounded-full" style="width: 81.6%"></div>
-            </div>
-            <p class="text-[11px] text-[#EADFD1]/80">550 more points needed to unlock Platinum 24/7 personal dining concierge.</p>
-          </div>
-        </div>
-
-        <!-- Point Perks Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div class="bg-[#FFF8F6] p-4 rounded-xl border border-[#EADFD1] space-y-1 text-center">
-            <div class="font-headline font-bold text-lg text-[#840f16]">+500 PTS</div>
-            <div class="font-label text-xs font-bold text-[#231916]">Per Online Booking</div>
-            <p class="font-body text-[11px] text-[#58413f]">Awarded upon dining completion</p>
-          </div>
-
-          <div class="bg-[#FFF8F6] p-4 rounded-xl border border-[#EADFD1] space-y-1 text-center">
-            <div class="font-headline font-bold text-lg text-[#840f16]">+200 PTS</div>
-            <div class="font-label text-xs font-bold text-[#231916]">Verified Review</div>
-            <p class="font-body text-[11px] text-[#58413f]">Share feedback with guests</p>
-          </div>
-
-          <div class="bg-[#FFF8F6] p-4 rounded-xl border border-[#EADFD1] space-y-1 text-center">
-            <div class="font-headline font-bold text-lg text-[#840f16]">1 PT = 10 MMK</div>
-            <div class="font-label text-xs font-bold text-[#231916]">Direct Redemption</div>
-            <p class="font-body text-[11px] text-[#58413f]">Apply to course bills</p>
-          </div>
-        </div>
-      </div>
-    `;
-  }
 
   // 6. NOTIFICATIONS PANEL
   function renderNotificationsPanel(state, isMm) {
@@ -594,42 +407,6 @@
     `;
   }
 
-  // 7. ANNOUNCEMENTS PANEL
-  function renderAnnouncementsPanel(state, isMm) {
-    return `
-      <div class="space-y-6">
-        <div class="border-b border-[#EADFD1] pb-4">
-          <h2 class="font-headline text-2xl font-bold text-[#231916]">
-            ${t('mypage_sys_announcements')}
-          </h2>
-        </div>
-
-        <div class="space-y-4">
-          <div class="bg-[#FFF8F6] p-6 rounded-xl border border-[#EADFD1] space-y-3 shadow-xs">
-            <div class="flex items-center gap-2">
-              <span class="bg-[#840f16] text-white text-[10px] font-label font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">New Menu</span>
-              <span class="font-body text-xs text-[#8d7b75]">August 2026</span>
-            </div>
-            <h3 class="font-headline font-bold text-lg text-[#231916]">Seasonal Monsoon Degustation Menus Launched</h3>
-            <p class="font-body text-xs text-[#58413f] leading-relaxed">
-              Experience special monsoon wine pairings and chef degustation sets across our top-rated lakeside dining venues in Bahan and Inya Lake. Limited seats available for weekend reservations.
-            </p>
-          </div>
-
-          <div class="bg-[#FFF8F6] p-6 rounded-xl border border-[#EADFD1] space-y-3 shadow-xs">
-            <div class="flex items-center gap-2">
-              <span class="bg-[#D08E1C] text-white text-[10px] font-label font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Feature</span>
-              <span class="font-body text-xs text-[#8d7b75]">August 2026</span>
-            </div>
-            <h3 class="font-headline font-bold text-lg text-[#231916]">Viber Digital Pass Delivery (Phase 2 Preview)</h3>
-            <p class="font-body text-xs text-[#58413f] leading-relaxed">
-              Guests can now link their Viber account to receive instant reservation confirmations and 1-tap QR check-in passes directly on their mobile device.
-            </p>
-          </div>
-        </div>
-      </div>
-    `;
-  }
 
   // MAIN MY PAGE VIEW RENDERER
   function renderMyPageView(state) {
@@ -646,12 +423,7 @@
 
     const menuItems = [
       { id: 'reservations', label: t('mypage_tab_reservations'), icon: 'calendar_today' },
-      { id: 'favorites', label: t('mypage_tab_favorites'), icon: 'favorite_border' },
-      { id: 'coupons', label: t('mypage_tab_coupons'), icon: 'sell' },
-      { id: 'points', label: t('mypage_tab_points'), icon: 'workspace_premium' },
       { id: 'notifications', label: t('mypage_tab_notifications'), icon: 'notifications' },
-      { id: 'notif-settings', label: t('mypage_tab_notif_settings'), icon: 'tune' },
-      { id: 'announcements', label: t('mypage_tab_announcements'), icon: 'campaign' },
       { id: 'account', label: t('mypage_tab_account'), icon: 'manage_accounts' },
       { id: 'design-system', label: t('mypage_tab_design_system'), icon: 'palette' }
     ];
@@ -661,23 +433,8 @@
       if (activeMenu === 'account') {
         return window.YoyakuComponents.renderAccountSettingsView ? window.YoyakuComponents.renderAccountSettingsView(state) : '';
       }
-      if (activeMenu === 'notif-settings') {
-        return window.YoyakuComponents.renderNotificationSettingsView ? window.YoyakuComponents.renderNotificationSettingsView(state) : '';
-      }
-      if (activeMenu === 'favorites') {
-        return renderFavoritesPanel(state, isMm);
-      }
-      if (activeMenu === 'coupons') {
-        return renderCouponsPanel(state, isMm);
-      }
-      if (activeMenu === 'points') {
-        return renderPointsPanel(state, isMm);
-      }
       if (activeMenu === 'notifications') {
         return renderNotificationsPanel(state, isMm);
-      }
-      if (activeMenu === 'announcements') {
-        return renderAnnouncementsPanel(state, isMm);
       }
       if (activeMenu === 'design-system') {
         return window.YoyakuComponents.renderComponentGallery
@@ -758,9 +515,9 @@
                     </div>
 
                     <div class="pt-1">
-                      <span class="inline-flex items-center gap-1.5 bg-[#FFF3D6] text-[#8f5d0b] border border-[#D08E1C]/40 text-xs font-label font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-2xs">
-                        <span class="material-symbols-outlined text-sm text-[#D08E1C]">star</span>
-                        <span>VIP Member</span>
+                      <span class="inline-flex items-center gap-1.5 bg-[#E6F4EA] text-[#137333] border border-[#137333]/30 text-xs font-label font-bold tracking-wider px-3.5 py-1 rounded-full shadow-2xs">
+                        <span class="material-symbols-outlined text-sm text-[#137333]">verified</span>
+                        <span>${t('mypage_verified_member')}</span>
                       </span>
                     </div>
                   </div>
@@ -852,9 +609,9 @@
                   ${myData.userEmail || 'alex@example.com'}
                 </p>
                 <div class="pt-1">
-                  <span class="inline-flex items-center gap-1 bg-[#D08E1C]/15 text-[#8f5d0b] border border-[#D08E1C]/30 text-[10px] font-label font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                    <span class="material-symbols-outlined text-[12px] text-[#D08E1C]">workspace_premium</span>
-                    <span>VIP Member</span>
+                  <span class="inline-flex items-center gap-1 bg-[#E6F4EA] text-[#137333] border border-[#137333]/30 text-[10px] font-label font-bold tracking-wider px-2.5 py-0.5 rounded-full">
+                    <span class="material-symbols-outlined text-[12px] text-[#137333]">verified</span>
+                    <span>${t('mypage_verified_member')}</span>
                   </span>
                 </div>
               </div>
@@ -897,29 +654,6 @@
                   <span class="material-symbols-outlined text-lg">logout</span>
                   <span>${t('mypage_logout')}</span>
                 </button>
-              </div>
-
-              <!-- PWA Install & Offline Badge -->
-              <div class="pt-3 border-t border-[#EADFD1]">
-                <div class="bg-[#FFF8F6] border border-[#EADFD1] rounded-xl p-3.5 space-y-2 text-left">
-                  <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-lg bg-[#840f16] text-white flex items-center justify-center">
-                      <span class="material-symbols-outlined text-sm">install_mobile</span>
-                    </div>
-                    <span class="font-headline font-bold text-xs text-[#231916]">${t('mypage_pwa_title')}</span>
-                  </div>
-                  <p class="font-body text-[11px] text-[#58413f] leading-relaxed">
-                    ${t('mypage_pwa_desc')}
-                  </p>
-                  <button
-                    type="button"
-                    id="mypage-pwa-install-btn"
-                    class="w-full py-2 px-3 rounded-xl bg-[#840f16] hover:bg-[#680b11] text-white font-label text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
-                  >
-                    <span class="material-symbols-outlined text-sm">download</span>
-                    <span>${t('mypage_install_app')}</span>
-                  </button>
-                </div>
               </div>
             </nav>
 
@@ -1000,85 +734,7 @@
             : ''
         }
 
-        <!-- WRITE REVIEW MODAL -->
-        ${
-          activeModal === 'review'
-            ? `
-              <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-3 sm:p-4 animate-fadeIn">
-                <div
-                  data-mypage-modal-shell
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby="mypage-review-title"
-                  aria-describedby="review-modal-restaurant-name"
-                  tabindex="-1"
-                  class="mt-auto w-full max-w-lg rounded-[24px] border border-[#EADFD1] bg-[#FFF8F6] p-6 text-left shadow-2xl max-h-[90vh] overflow-y-auto sm:mt-0 sm:rounded-xl"
-                >
-                  <div class="flex justify-between items-center border-b border-[#EADFD1] pb-3">
-                    <div>
-                      <h3 id="mypage-review-title" class="font-headline text-lg font-bold text-[#231916]">${t('mypage_write_review_title')}</h3>
-                      <p class="font-body text-xs text-[#58413f]" id="review-modal-restaurant-name">${t('mypage_review_desc')}</p>
-                    </div>
-                    <button
-                      type="button"
-                      data-mypage-modal-close
-                      aria-label="${t('mypage_close_review')}"
-                      class="w-8 h-8 rounded-full bg-[#FBF3E2] hover:bg-[#EADFD1] flex items-center justify-center text-[#58413f] cursor-pointer"
-                    >
-                      <span class="material-symbols-outlined text-base">close</span>
-                    </button>
-                  </div>
 
-                  <form id="write-review-form" class="space-y-4">
-                    <div>
-                      <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-2">
-                        ${t('mypage_overall_rating')}
-                      </label>
-                      <div class="flex items-center gap-1.5" id="star-rating-selector" role="group" aria-label="${t('mypage_rating_selector_label')}">
-                        <button type="button" data-star="1" data-mypage-modal-initial-focus aria-label="${t('mypage_rate_star_prefix')} 1 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
-                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
-                        </button>
-                        <button type="button" data-star="2" aria-label="${t('mypage_rate_star_prefix')} 2 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
-                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
-                        </button>
-                        <button type="button" data-star="3" aria-label="${t('mypage_rate_star_prefix')} 3 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
-                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
-                        </button>
-                        <button type="button" data-star="4" aria-label="${t('mypage_rate_star_prefix')} 4 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
-                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
-                        </button>
-                        <button type="button" data-star="5" aria-label="${t('mypage_rate_star_prefix')} 5 ${t('mypage_rate_star_suffix')}" aria-pressed="true" class="text-[#D08E1C] cursor-pointer transition-colors">
-                          <span class="material-symbols-outlined text-[28px] leading-none pointer-events-none">star</span>
-                        </button>
-                        <span class="ml-2 font-label text-xs font-bold text-[#D08E1C]" id="star-rating-label" aria-live="polite">5.0 - Exceptional</span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label class="block font-label text-xs font-bold text-[#231916] uppercase tracking-wider mb-1">
-                        ${t('mypage_your_review')}
-                      </label>
-                      <textarea
-                        id="review-text-input"
-                        rows="4"
-                        placeholder="${t('mypage_review_placeholder')}"
-                        class="w-full bg-white border border-[#EADFD1] focus:border-[#840f16] rounded-xl p-3 font-body text-xs text-[#231916] focus:outline-none"
-                        required
-                      ></textarea>
-                    </div>
-
-                    <button
-                      type="submit"
-                      class="btn-primary w-full py-3 rounded-full font-label font-bold text-xs cursor-pointer shadow-md"
-                    >
-                      ${t('mypage_publish_review')}
-                    </button>
-                  </form>
-                </div>
-              </div>
-            `
-            : ''
-        }
 
         <!-- PHONE OTP VERIFICATION MODAL -->
         ${
@@ -1217,19 +873,7 @@
     const newResvBtn = containerElement.querySelector('#mypage-new-reservation-btn');
     if (newResvBtn) {
       newResvBtn.addEventListener('click', () => {
-        store.setActiveTab('discover');
-      });
-    }
-
-    // PWA install buttons
-    const pwaInstallBtn = containerElement.querySelector('#mypage-pwa-install-btn');
-    if (pwaInstallBtn) {
-      pwaInstallBtn.addEventListener('click', () => {
-        if (window.PwaManager) {
-          window.PwaManager.promptInstall();
-        } else {
-          store.openInfoModal('pwa_install');
-        }
+        window.location.hash = '#/s/gilded-fork';
       });
     }
 
@@ -1256,7 +900,7 @@
         const navId = e.currentTarget.getAttribute('data-mypage-nav');
         if (navId === 'logout') {
           store.toggleAuth(false);
-          store.setActiveTab('discover');
+          window.location.hash = '#/login';
           store.showToast(t('toast_logged_out'));
         } else {
           store.setMyPageActiveMenu(navId);
@@ -1338,93 +982,6 @@
       });
     });
 
-    // Write review button
-    containerElement.querySelectorAll('[data-write-review-id]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const restName = e.currentTarget.getAttribute('data-review-restaurant');
-        rememberMyPageModalTrigger(e.currentTarget);
-        store.openMyPageModal('review');
-        setTimeout(() => {
-          const titleElem = document.getElementById('review-modal-restaurant-name');
-          if (titleElem && restName) {
-            titleElem.innerText = `Reviewing: ${restName}`;
-          }
-        }, 10);
-      });
-    });
-
-    // Star rating picker in review modal
-    containerElement.querySelectorAll('#star-rating-selector [data-star]').forEach(starBtn => {
-      starBtn.addEventListener('click', (e) => {
-        const rating = parseInt(e.currentTarget.getAttribute('data-star'), 10);
-        const parent = document.getElementById('star-rating-selector');
-        if (parent) {
-          const ratingLabels = isMm
-            ? {
-                1: '1.0 - အားနည်းသည်',
-                2: '2.0 - အသင့်အတင့်',
-                3: '3.0 - ကောင်းသည်',
-                4: '4.0 - အလွန်ကောင်းသည်',
-                5: '5.0 - အလွန်ထူးချွန်သည်'
-              }
-            : {
-                1: '1.0 - Poor',
-                2: '2.0 - Fair',
-                3: '3.0 - Good',
-                4: '4.0 - Very Good',
-                5: '5.0 - Exceptional'
-              };
-          parent.querySelectorAll('[data-star]').forEach(b => {
-            const starVal = parseInt(b.getAttribute('data-star'), 10);
-            b.className = starVal <= rating ? 'text-[#D08E1C] cursor-pointer transition-colors' : 'text-[#CFC2B6] cursor-pointer transition-colors';
-            b.setAttribute('aria-pressed', starVal <= rating ? 'true' : 'false');
-          });
-          const lbl = document.getElementById('star-rating-label');
-          if (lbl) lbl.innerText = ratingLabels[rating] || `${rating}.0`;
-        }
-      });
-    });
-
-    // Review submit
-    const reviewForm = containerElement.querySelector('#write-review-form');
-    if (reviewForm) {
-      reviewForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        store.closeMyPageModal();
-        store.showToast(t('toast_review_submitted'));
-      });
-    }
-
-    // Copy coupon code
-    containerElement.querySelectorAll('[data-copy-coupon]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const code = e.currentTarget.getAttribute('data-copy-coupon');
-        navigator.clipboard.writeText(code);
-        e.currentTarget.innerText = t('toast_copied');
-        store.showToast(t('toast_coupon_copied'));
-      });
-    });
-
-    // Book favorite restaurant
-    containerElement.querySelectorAll('[data-favorite-book-id]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const restId = e.currentTarget.getAttribute('data-favorite-book-id');
-        const { RESTAURANTS_DATA } = window.YoyakuData || {};
-        const rest = (RESTAURANTS_DATA || []).find(r => r.id === restId) || (RESTAURANTS_DATA && RESTAURANTS_DATA[0]);
-        if (rest) {
-          store.openBookingModal(rest);
-        }
-      });
-    });
-
-    // Remove favorite restaurant
-    containerElement.querySelectorAll('[data-favorite-remove-id]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        store.showToast(t('toast_fav_removed'));
-      });
-    });
-
     // Mark all notifs read
     const markAllReadBtn = containerElement.querySelector('#mark-all-notifs-read-btn');
     if (markAllReadBtn) {
@@ -1451,7 +1008,7 @@
     const exploreBtn = containerElement.querySelector('#mypage-explore-btn');
     if (exploreBtn) {
       exploreBtn.addEventListener('click', () => {
-        store.setActiveTab('discover');
+        window.location.hash = '#/s/gilded-fork';
       });
     }
 
@@ -1467,9 +1024,6 @@
     const activeMenu = state.myPageActiveMenu || 'reservations';
     if (activeMenu === 'account' && window.YoyakuComponents.attachAccountSettingsEvents) {
       window.YoyakuComponents.attachAccountSettingsEvents(containerElement);
-    }
-    if (activeMenu === 'notif-settings' && window.YoyakuComponents.attachNotificationSettingsEvents) {
-      window.YoyakuComponents.attachNotificationSettingsEvents(containerElement);
     }
     if (activeMenu === 'design-system' && window.YoyakuComponents.attachComponentGalleryEvents) {
       window.YoyakuComponents.attachComponentGalleryEvents(containerElement);

@@ -898,6 +898,7 @@
     mypage_tab_account: { en: 'Account Settings', mm: 'အကောင့် ဆက်တင်', ja: 'アカウント設定' },
     mypage_tab_design_system: { en: 'Design System', mm: 'ဒီဇိုင်း စနစ်', ja: 'デザインシステム' },
     mypage_title: { en: 'My Page', mm: 'ကျွန်ုပ်၏ စာမျက်နှာ', ja: 'マイページ' },
+    mypage_verified_member: { en: 'Verified Member', mm: 'အတည်ပြုပြီး အဖွဲ့ဝင်', ja: '認証済み会員' },
     mypage_book_new_table: { en: 'Book New Table', mm: 'ဝိုင်းအသစ် စိုတ်ရန်', ja: '新規予約' },
     mypage_back_to_menu: { en: 'Back to Menu', mm: 'ကျွန်ုပ်၏ စာမျက်နှာ မီနူးသို့ ပြန်သွားရန်', ja: 'メニューに戻る' },
     mypage_language_setting: { en: 'Language', mm: 'ဘာသာစကား', ja: '言語' },
