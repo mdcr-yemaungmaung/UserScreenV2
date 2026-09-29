@@ -71,9 +71,15 @@
   function syncRouteDrivenState() {
     const hash = window.location.hash || '';
 
-    // If empty hash, default to U-01 (Booking page for default restaurant: /s/gilded-fork)
-    if (!hash || hash === '#') {
+    // Default route: Option B Direct Booking (U-01 Booking page for /s/gilded-fork)
+    if (!hash || hash === '#' || hash === '#/') {
       window.location.hash = '#/s/gilded-fork';
+      const rest = store.getRestaurantBySlug ? store.getRestaurantBySlug('gilded-fork') : null;
+      if (rest) {
+        store.setSelectedRestaurant(null);
+        store.openBookingModal(rest);
+        store.setBookingStep(1);
+      }
       return;
     }
 
@@ -229,20 +235,9 @@
       return;
     }
 
-    // Post-Pkg1 Deferred routes
-    if (hash.startsWith('#/discover')) {
-      store.closeBookingModal();
-      store.setSelectedRestaurant(null);
-      store.clearSelectedReservationDetail();
-      store.setActiveTab('discover');
-      return;
-    }
-
-    if (hash.startsWith('#/search') || hash.startsWith('#/resultlist')) {
-      store.closeBookingModal();
-      store.setSelectedRestaurant(null);
-      store.clearSelectedReservationDetail();
-      store.setActiveTab('resultlist');
+    // Any unlinked non-Pkg1 routes fallback to U-01 Direct Booking
+    if (hash.startsWith('#/discover') || hash.startsWith('#/search') || hash.startsWith('#/resultlist') || hash.startsWith('#/favorites') || hash.startsWith('#/curated')) {
+      window.location.hash = '#/s/gilded-fork';
       return;
     }
   }
@@ -336,10 +331,11 @@
     }
 
     const isDirectBookingFlow = !!(state.bookingModalState && state.bookingModalState.isOpen);
-    const hideBottomNav = isDirectBookingFlow || !!state.selectedRestaurant || !!state.selectedReservationId || state.activeTab === 'root-lp';
+    // Option B: No Bottom Bar / Header-Only for Pkg1
+    const hideBottomNav = true;
 
     root.innerHTML = `
-      <div class="min-h-screen flex flex-col justify-between ${hideBottomNav ? 'pb-0' : 'pb-20 md:pb-0'}">
+      <div class="min-h-screen flex flex-col justify-between pb-0">
         <!-- Top Navigation Header -->
         ${renderTopNavBar ? renderTopNavBar(state) : ''}
 

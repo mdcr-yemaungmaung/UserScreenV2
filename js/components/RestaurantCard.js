@@ -351,78 +351,127 @@
     return null;
   }
 
-  // Trending Dishes Style Card (used in Home trending section, Component Gallery, etc.)
+  // Trending Venues Style Card (per extra/homePage.md Section 12 & 13)
   function renderTrendingCard(restaurant, state, options = {}) {
     const isFavorite = state.favorites.includes(restaurant.id);
     const isMm = state.currentLanguage === 'MM';
     const restaurantTitle = isMm ? (restaurant.nameMM || restaurant.name) : restaurant.name;
     const locationText = restaurant.location || restaurant.area || 'Yangon';
-    const cuisineText = restaurant.cuisine || (isMm ? 'အစားအစာမျိုးစုံ' : 'Signature Dining');
+    const cuisineText = restaurant.cuisine || (isMm ? 'မြန်မာ အစားအစာ' : 'Burmese');
+    const startingPrice = restaurant.startingPrice || (restaurant.priceRange ? restaurant.priceRange.split('-')[0].trim() : '25,000 MMK');
 
-    const dish = getTrendingDish(restaurant);
-    const dishTitle = dish ? (isMm ? (dish.nameMM || dish.name) : dish.name) : (isMm ? 'အထူး ဟင်းပွဲ' : 'Chef Signature Dish');
-    const dishPrice = dish?.price || (restaurant.priceRange ? restaurant.priceRange.split('-')[0].trim() : '25,000 MMK');
-    const dishDesc = dish ? (dish.description || '') : '';
-    const cardImage = dish?.image || restaurant.heroImage || 'assets/images/gilded_fork.jpg';
+    // Backward-compatible dish mode if explicitly requested
+    if (options.mode === 'dish') {
+      const dish = getTrendingDish(restaurant);
+      const dishTitle = dish ? (isMm ? (dish.nameMM || dish.name) : dish.name) : (isMm ? 'အထူး ဟင်းပွဲ' : 'Chef Signature Dish');
+      const dishPrice = dish?.price || startingPrice;
+      const dishDesc = dish ? (dish.description || '') : '';
+      const cardImage = dish?.image || restaurant.heroImage || 'assets/images/gilded_fork.jpg';
 
-    return `
-      <div
-        data-card-select-id="${restaurant.id}"
-        class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
-      >
-        <!-- Image Container with Overlays -->
-        <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden bg-[#231916]">
-          <img
-            src="${cardImage}"
-            alt="${dishTitle}"
-            referrerpolicy="no-referrer"
-            loading="lazy"
-            onerror="this.onerror=null; this.src='${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}';"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none"></div>
-
-          <!-- Top Floating Controls -->
-          <div class="absolute top-3 inset-x-3 flex items-center justify-end z-10">
-            ${renderFavoriteButton(restaurant.id, isFavorite)}
+      return `
+        <div
+          data-card-select-id="${restaurant.id}"
+          class="shrink-0 w-[260px] sm:w-[290px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+        >
+          <div class="relative aspect-[16/10] min-h-[190px] sm:min-h-[210px] overflow-hidden bg-[#231916]">
+            <img
+              src="${cardImage}"
+              alt="${dishTitle}"
+              referrerpolicy="no-referrer"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}';"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none"></div>
+            <div class="absolute top-3 inset-x-3 flex items-center justify-end z-10">
+              ${renderFavoriteButton(restaurant.id, isFavorite)}
+            </div>
+            <div class="absolute bottom-3 inset-x-3.5 z-10 text-white space-y-1 pointer-events-none">
+              <h3 class="font-headline text-lg sm:text-xl font-bold leading-tight truncate text-white drop-shadow-sm" title="${restaurantTitle}">
+                ${restaurantTitle}
+              </h3>
+              <div class="flex items-center gap-1.5 text-xs text-[#f5d592] font-semibold">
+                <span class="material-symbols-outlined text-xs fill-1">star</span>
+                <span>${restaurant.rating || 4.9}</span>
+                <span class="text-white/70">(${restaurant.reviewCount || 128})</span>
+                <span class="text-white/50">•</span>
+                <span class="text-white/90 font-medium truncate">${locationText}</span>
+              </div>
+            </div>
           </div>
-
-          <!-- Bottom Image Overlay: Restaurant Name above, Rating & Location under -->
-          <div class="absolute bottom-3 inset-x-3.5 z-10 text-white space-y-1 pointer-events-none">
-            <h3 class="font-headline text-lg sm:text-xl font-bold leading-tight truncate text-white drop-shadow-sm" title="${restaurantTitle}">
-              ${restaurantTitle}
-            </h3>
-            <div class="flex items-center gap-1.5 text-xs text-[#f5d592] font-semibold">
-              <span class="material-symbols-outlined text-xs fill-1">star</span>
-              <span>${restaurant.rating || 4.9}</span>
-              <span class="text-white/70">(${restaurant.reviewCount || 128})</span>
-              <span class="text-white/50">•</span>
-              <span class="text-white/90 font-medium truncate">${locationText}</span>
+          <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
+            <div class="min-w-0 space-y-1">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">restaurant_menu</span>
+                <p class="font-headline text-[1.02rem] sm:text-[1.1rem] font-extrabold leading-tight text-[#241A18] truncate" title="${dishTitle}">
+                  ${dishTitle}
+                </p>
+              </div>
+              ${dishDesc ? `
+                <p class="text-xs sm:text-sm font-body font-medium text-[#6D6561] line-clamp-1" title="${dishDesc}">
+                  ${dishDesc}
+                </p>
+              ` : ''}
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-[#E8DDD0] flex items-center justify-between min-w-0">
+              <span class="font-label text-xs font-semibold text-[#6D6561]">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
+              <span class="font-label text-sm sm:text-base font-extrabold text-[#9B1C25] truncate" title="${dishPrice}">${dishPrice}</span>
             </div>
           </div>
         </div>
+      `;
+    }
 
-        <!-- Card Content Area (Dishes Menu and Price Under) -->
-        <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
-          <div class="min-w-0 space-y-1">
-            <!-- Food Menu Icon and Dish Title -->
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="material-symbols-outlined text-[#9B1C25] text-xl sm:text-2xl shrink-0">restaurant_menu</span>
-              <p class="font-headline text-[1.02rem] sm:text-[1.1rem] font-extrabold leading-tight text-[#241A18] truncate" title="${dishTitle}">
-                ${dishTitle}
-              </p>
-            </div>
-            ${dishDesc ? `
-              <p class="text-xs sm:text-sm font-body font-medium text-[#6D6561] line-clamp-1" title="${dishDesc}">
-                ${dishDesc}
-              </p>
-            ` : ''}
+    // Default: Section 12 & 13 "Trending Venues"
+    return `
+      <div
+        data-card-select-id="${restaurant.id}"
+        class="shrink-0 w-[270px] sm:w-[300px] lg:w-auto snap-start group relative bg-[#FFFDFC] border border-[#E8DDD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col text-left h-full"
+      >
+        <!-- Large Restaurant Photo with Rounded Top Corners -->
+        <div class="relative aspect-[16/10] min-h-[180px] sm:min-h-[200px] overflow-hidden bg-[#231916]">
+          <img
+            src="${restaurant.heroImage || 'assets/images/gilded_fork.jpg'}"
+            alt="${restaurantTitle}"
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='assets/images/gilded_fork.jpg';"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+
+          <!-- Floating Rating Badge -->
+          <div class="absolute top-3 left-3 z-10">
+            <span class="inline-flex items-center gap-1 bg-[#FFFDFC]/95 backdrop-blur-md px-2.5 py-1 rounded-full shadow-xs font-label text-xs font-bold text-[#241A18]">
+              <span class="material-symbols-outlined text-xs text-[#C69A2B] fill-1 leading-none">star</span>
+              <span>${restaurant.rating || '4.9'}</span>
+            </span>
           </div>
 
-          <!-- Price Row -->
+          <!-- Favorite Heart Button (Heart Icon, Not Bookmark) -->
+          <div class="absolute top-3 right-3 z-10">
+            ${renderFavoriteButton(restaurant.id, isFavorite)}
+          </div>
+        </div>
+
+        <!-- Venue Details -->
+        <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between bg-[#FFFDFC] min-w-0">
+          <div class="min-w-0 space-y-1">
+            <h3 class="font-headline text-base sm:text-lg font-bold leading-tight truncate text-[#241A18] group-hover:text-[#9B1C25] transition-colors" title="${restaurantTitle}">
+              ${restaurantTitle}
+            </h3>
+            <div class="flex items-center gap-1.5 text-xs text-[#6D6561] font-medium truncate">
+              <span class="material-symbols-outlined text-sm text-[#9B1C25] shrink-0">location_on</span>
+              <span class="truncate">${cuisineText} · ${locationText}</span>
+            </div>
+          </div>
+
+          <!-- Starting Price Row -->
           <div class="mt-3 pt-2.5 border-t border-[#E8DDD0] flex items-center justify-between min-w-0">
-            <span class="font-label text-xs font-semibold text-[#6D6561]">${isMm ? 'စျေးနှုန်း' : 'Price'}</span>
-            <span class="font-label text-sm sm:text-base font-extrabold text-[#9B1C25] truncate" title="${dishPrice}">${dishPrice}</span>
+            <span class="font-label text-xs font-medium text-[#6D6561]">${isMm ? 'စတင်စျေးနှုန်း' : 'Starting price'}</span>
+            <span class="font-headline text-sm sm:text-base font-extrabold text-[#9B1C25] truncate">
+              ${isMm ? `${startingPrice} မှ` : `From ${startingPrice}`}
+            </span>
           </div>
         </div>
       </div>

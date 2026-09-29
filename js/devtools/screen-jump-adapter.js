@@ -145,28 +145,15 @@
         </div>
 
         <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:20px;">
-          <!-- Pkg1 Section -->
+          <!-- Pkg1 Section Only -->
           <div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-              <span style="font-size:10px;font-weight:800;background:#9B1C25;color:#fff;padding:2px 8px;border-radius:10px;">Core Booking & Users</span>
+              <span style="font-size:10px;font-weight:800;background:#9B1C25;color:#fff;padding:2px 8px;border-radius:10px;">Pkg1 Core Screens (U-01 ~ U-14)</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:6px;">
               ${pkg1Screens.map(s => `
                 <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#FFFDFC;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s;">
-                  <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
-                </button>
-              `).join('')}
-            </div>
-          </div>
-
-          <!-- Post Pkg1 Section -->
-          <div>
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-              <span style="font-size:10px;font-weight:800;background:#64748b;color:#fff;padding:2px 8px;border-radius:10px;">Portal & Growth</span>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              ${postPkg1Screens.map(s => `
-                <button data-jump-id="${s.id}" style="width:100%;text-align:left;padding:8px 12px;border:1px solid #E8DDD0;border-radius:12px;background:#F8FAFC;display:flex;align-items:center;gap:10px;cursor:pointer;opacity:0.85;">
+                  <span style="font-family:monospace;font-size:11px;font-weight:700;color:#9B1C25;background:#F3DFD5;padding:2px 6px;border-radius:6px;">${s.id}</span>
                   <span style="font-size:12px;font-weight:600;color:#241A18;flex:1;">${s.name}</span>
                 </button>
               `).join('')}
